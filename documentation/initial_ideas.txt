@@ -1,0 +1,2 @@
+﻿Goal: browser-based MMO with 2d graphics situated in space (to minimize required animation skills).
+Main feature: Long-term playability.
