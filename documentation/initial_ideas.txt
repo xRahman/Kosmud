@@ -1,2 +1,39 @@
-﻿Goal: browser-based MMO with 2d graphics situated in space (to minimize required animation skills).
+﻿==============================================================
+
+Goal: browser-based MMO with 2d graphics situated in space (to minimize required animation skills).
 Main feature: Long-term playability.
+
+==============================================================
+
+Action mode
+------------
+
+Klient (display engine) může nezávisle řešit kosmetické věci jako zobrazování
+explozí a podobně.
+- může v zásadě řešit i dráhu letu raket, pokud mu server pošle zadání
+  (třeba za jak dlouho má raketa trefit). I když to asi nepůjde, naváděná
+  raketa nejspíš bude muset mít vlastní simulaci, jinak mi bude haprovat
+  rychlost letu.
+
+Řešení, kde by server dopředu spočítal výsledek (kdy raketa zasáhne cíl)
+ a klient by to pak prostě jen zobrazil tak, aby to vyšlo, by mělo spoustu
+ výhod - nemusel bych vůbec řešit simulaci fyziky na klientu. Taky by to
+ kompletně pořešilo latenci, protože všechny hráčcské akce by měly delay mezi
+ spuštěním a tím, kdy dorazí k cíli (s výjimkou self-targeted efektů, ale to
+ zas může vyřešit bufferování akcí, takže dopředu vím, co bude následovat).
+- mohlo by to být částečně simulované, tzn. rakta by kus cesty letěla fyzikou
+  a v určité vzdálenosti od cíle (nebo od předpokládané polohy cíle) by prostě
+  provedla "terminal maneuver".
+
+Otázka je, co s uhýbáním nenaváděným střelám (railgun). To by asi měl simulovat
+klient (ví, kdy střela vystřelila a jak letí). Server bude pouze potvrzovat,
+že si klient hráčovu pozici nevymýšlí (tzn. že se hráč opravdu mohl dostat
+tam, kam tvrdí, že se dostal).
+
+Q: Půjde na serveru pustit fyzika modelovaná phaserem?
+- to je otázka. Je to browser skript ne, node modul...
+
+Časování
+- nebudu si to komplikovat, všechno se bude dít až po potvrzení od serveru.
+  - tzn klik nebo pohyb myší pošla na server request na změnu směru/rychlosti,
+    server pošle zpět potvrzení a až pak to klient vyrenderuje.

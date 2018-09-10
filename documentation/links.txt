@@ -1,0 +1,37 @@
+﻿==============================================================
+
+Phaser html 5 engine
+---------------------
+
+Space shooter game tutorial:
+http://codeperfectionist.com/articles/phaser-js-tutorial-building-a-polished-space-shooter-game-part-1/
+
+Create A Basic Multiplayer Game In Phaser 3 With Socket.io
+https://gamedevacademy.org/create-a-basic-multiplayer-game-in-phaser-3-with-socket-io-part-1/?a=13
+
+
+Simple space game shooter with Phaser 3.x and Matter.js physics with Lance-gg multiplayer client and server build.
+https://github.com/Lightnet/project-phaser3-matterjs
+
+
+Phaser with typescript tutorials:
+http://www.gamefromscratch.com/page/Adventures-in-Phaser-with-TypeScript-tutorial-series.aspx
+
+
+Support for popular 3rd party tools (e.g., Tiled, Texture Packer, etc.)
+
+==============================================================
+
+matter.js physics engine
+--------------------------
+
+https://github.com/liabru/matter-js
+
+
+==============================================================
+
+box2d physics engine
+----------------------
+
+http://box2d-js.sourceforge.net/index2.html
+https://www.codeproject.com/Articles/492883/Box-D-and-JavaScript-Part
