@@ -1,0 +1,35 @@
+﻿==============================================================
+
+Combat
+-------
+
+Saturovat point defense cíle - klamnými raketami, EMPčkem, domluvit se
+v grupě a odpálit rakety naráz, apod.
+- pak odpálit damagící rakety a torpéda.
+
+Teammates naopak mohou s point defensí pomoci (vmanévrovat do salva, odpálit PD cooldowny apod.)
+- přilétající rakety budou vidět, takže bude čas na reakci.
+
+
+==============================================================
+
+- Obecně bych to asi rád hrál ve větším zoomu (a tudíž na delší vzdálenosti) než se hraje
+Starsector. Už jen proto, že taranování spaceshipou je divný..
+
+- Míření s předstazováním spíš asi ne (nebo možná jen s určitým druhem zbraní), toho mám dost
+z WoWS. Měl by stačit požadavek 
+
+Handling
+---------
+
+Selektování dragnutím obdélníku (například prioritní cíle pro point defence).
+
+
+Panování "kamery" do stran kolem lodi je docela dobrý, umožňuje se to "rozhlížet" kolem.
+- otázka je, jak to půjde dohromady se selektováním a tak. Ale asi to funguje dobře,
+  když si tam chci něco targetnout, tak se tam potřebuju zároveň dostat myší. Kde přesně mám
+  v tu chvíli loď není až tak podstatný (vrátím se na ní tím, že dojedu myší zpět na střed
+  obrazovky).
+- takhle může fungovat i naklikávání, selekce dragováním (naklikává se primární cíl a může
+  to bejt u malejch cílů s nějakou rezervou - highligh při mouse proximity, aby se nemuselo
+  klikat úplně přesně. Na velký cíle nebude problém kliknout).

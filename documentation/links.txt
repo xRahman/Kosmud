@@ -20,6 +20,9 @@ http://www.gamefromscratch.com/page/Adventures-in-Phaser-with-TypeScript-tutoria
 
 Support for popular 3rd party tools (e.g., Tiled, Texture Packer, etc.)
 
+Using Tiled map editor with Phaser (tutorial)
+https://gamedevacademy.org/html5-phaser-tutorial-top-down-games-with-tiled/
+
 ==============================================================
 
 matter.js physics engine
