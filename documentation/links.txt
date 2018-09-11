@@ -38,3 +38,11 @@ box2d physics engine
 
 http://box2d-js.sourceforge.net/index2.html
 https://www.codeproject.com/Articles/492883/Box-D-and-JavaScript-Part
+
+
+==============================================================
+
+Linux server hosting:
+----------------------
+
+https://aws.amazon.com/getting-started/tutorials/launch-a-virtual-machine/
