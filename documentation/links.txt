@@ -27,6 +27,10 @@ https://gamedevacademy.org/html5-phaser-tutorial-top-down-games-with-tiled/
 Oficial tutorial:
 http://phaser.io/tutorials/making-your-first-phaser-3-game/part4
 
+
+How to run Phaser healess in node.js
+https://medium.com/@16patsle/running-phaser-3-on-the-server-4c0d09ffd5e6
+
 ==============================================================
 
 matter.js physics engine
