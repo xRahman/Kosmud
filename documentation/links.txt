@@ -54,3 +54,28 @@ Linux server hosting:
 ----------------------
 
 https://aws.amazon.com/getting-started/tutorials/launch-a-virtual-machine/
+
+
+
+==============================================================
+
+Excalibur.js typescript html5 engine
+
+==============================================================
+
+Node.js multiplayer server:
+----------------------------
+
+http://lance.gg/
+
+https://github.com/lance-gg
+
+https://github.com/lance-gg/spaaace
+
+https://excaliburjs.com/
+
+
+http://docs.lance.gg/r3.0.0/tutorial-spaceships.html
+
+
+https://github.com/Lightnet/project-phaser3-prototype
