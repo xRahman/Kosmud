@@ -3,3 +3,12 @@ TODO: Nahradit fs-promise něčím jiným
 
 
 TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
+
+TODO: Zkontrolovat, že http server neservuje soubory mimo www-root.
+
+TODO: Vyzkoušet ES6 moduly v browseru.
+https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7
+   <script type="module" src="module.js"></script>
+- nefungují, protože browser vyžaduje v importech '.js' a typescript
+  ho tam se zapnutým outputem "module": "es2015" nedává.
+  viz https://github.com/Microsoft/TypeScript/issues/16577

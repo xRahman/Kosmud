@@ -16,6 +16,12 @@
     <script src="/js/phaser/phaser.js"></script>
     <!-- Run javascript module loader, then run script Main.js -->
     <script src="/js/requirejs/require.js" data-main="/js/Main.js"></script>
+    <!--
+      // Až budou fungovat ES6 moduly, tak se pak používají takhle:
+      // (teď nefungují, protože browser vyžaduje '.js' na konci a typescript
+      //  ho tam nedává.)
+    <script type="module" src="./js/Client/KosmudClient.js"></script>
+    -->
 
     <div id="phaser-test-div"></div>
 

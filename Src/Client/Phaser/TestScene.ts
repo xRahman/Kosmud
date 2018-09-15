@@ -16,7 +16,6 @@ export class TestScene extends Phaser.Scene
   public create()
   {
     this.add.tileSprite(0, 0, 1024, 768, 'background');
-
     this.add.sprite(400, 500, 'ship');
   }
 
