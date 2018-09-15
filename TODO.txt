@@ -1,0 +1,5 @@
+TODO: Nahradit fs-promise něčím jiným
+  npm WARN deprecated fs-promise@2.0.3: Use mz or fs-extra^3.0 with Promise Support
+
+
+TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)

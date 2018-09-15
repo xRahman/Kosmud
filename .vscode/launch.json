@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations":
+    [
+        {
+            "name": "Launch KosmudServer",
+            "type": "node", // default
+            "request": "launch",
+            "protocol": "inspector",
+            "program": "${workspaceRoot}/Src/Server/KosmudServer.ts",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs":
+            [
+                "--nolazy"/*,
+                "--harmony_rest_parameters",
+                "--harmony_proxies"*/
+            ],
+            "env":
+            {
+                "NODE_ENV": "development"
+            },
+            "console": "externalTerminal",
+            "sourceMaps": true,
+            "outFiles": [ "${workspaceRoot}/Server/js/**/*.js" ]
+        }
+    ]
+}

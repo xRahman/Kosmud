@@ -1,0 +1,37 @@
+/*
+  Part of BrutusNEXT
+
+  Tasks definition for vs code.
+
+  Note:
+    Because we need to build two projects (client and server)
+  and there can only be one build task active in vs code, we
+  use an external script (located at ./.vscode/Build.js) run
+  under node.js to launch two external tsc processes.
+*/
+
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "command": "node",
+  "isShellCommand": true,
+  "echoCommand": true, // Task runner will output what it is trying to do.
+  "suppressTaskName": true, // Do not add 'taskName' as parameter to 'tsc'.
+  "showOutput": "always",   // Output tsc messages.
+  "tasks":
+  [
+    {
+      "taskName": "Build",
+      "args":
+      [
+        "./.vscode/Build.js"
+      ],
+      "problemMatcher": "$tsc",
+      // Watch file changes ('--watch' must be passed to tsc for this to work).
+      "isBackground": true,
+      // Run this task on "Ctrl+Shift+B".
+      "isBuildCommand": true
+    }
+  ]
+}

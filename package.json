@@ -1,0 +1,30 @@
+{
+  "name": "Kosmud",
+  "version": "0.0.1",
+  "description": "2d MUD in space",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xRahman/Kosmud.git"
+  },
+  "keywords": [
+    "2d",
+    "game",
+    "MUD",
+    "space"
+  ],
+  "author": "Rahman",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/xRahman/Kosmud/issues"
+  },
+  "homepage": "https://github.com/xRahman/Kosmud#readme",
+  "dependencies": {
+    "@types/node": "^10.9.4",
+    "extfs": "0.0.7",
+    "fastpriorityqueue": "^0.6.1",
+    "fs-promise": "^2.0.3",
+    "phaser": "^3.12.0",
+    "source-map-support": "^0.5.9",
+    "typescript": "^3.0.3"
+  }
+}
