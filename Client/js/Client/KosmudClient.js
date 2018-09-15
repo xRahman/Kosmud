@@ -1,4 +1,3 @@
-"use strict";
 /*
 
                 _  __                             _
@@ -12,30 +11,9 @@
                      Client program entry point
 
 */
-//import {ClientApp} from '../client/lib/app/ClientApp';
-/// Tohle je asi zbytečný. Sice to funguje, ale udělá to jen to, že
-/// chrome místo 'Uncaught (in promise) Error: [ERROR]: ...' vypíše
-/// 'Uncaught Error: [ERROR]: ...'. To už je asi lepší nechat tam to
-/// info, že error nastal v async funkci.
-///
-/// Also unlike in node.js, Chrome doesn't silently eat exceptions
-/// occuring inside promises so we don't really need to re-throw
-/// then on client.
-///
-// This handler catches exceptions thrown from withing async (promisified)
-// functions.
-// window.addEventListener
-// (
-//   'unhandledrejection',
-//   (event: PromiseRejectionEvent) =>
-//   {
-//     if (event.reason.name === ClientApp.APP_ERROR)
-//     {
-//       event.preventDefault();
-//       throw event.reason;
-//     }
-//   }
-// );
-//ClientApp.run(CLIENT_APP_VERSION);
-alert('Yes!');
+define(["require", "exports", "../Client/Phaser/PhaserTest"], function (require, exports, PhaserTest_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    let phaserTest = new PhaserTest_1.PhaserTest();
+});
 //# sourceMappingURL=KosmudClient.js.map

@@ -21,7 +21,7 @@ requirejs.config
       // 'd3': '../js/d3/d3.min',
       // 'js-beautify': '../js/js-beautify/beautify',
       // 'fastbitset': '../js/fastbitset/FastBitSet'
-      
+      'phaser': '../js/phaser/phaser'
     }
   }
 );
@@ -33,6 +33,7 @@ requirejs.config
 //   been loaded yet for context: _
 //require(['js-beautify']);
 //require(['fastbitset']);
+require(['phaser']);
 
 // Launch the client.
 require(['./Client/KosmudClient']);

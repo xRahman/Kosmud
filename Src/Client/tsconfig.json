@@ -10,8 +10,8 @@
     "noEmitOnError": true,
     "outDir": "../../Client/js",
     "rootDir": "../",
-    "sourceMap": true,
-    "sourceRoot": "../",
+    "sourceMap": true
+    // "sourceRoot": "../",
     // // Print names of generated files during the compilation.
     // "listFiles": true,
     // // Report module resolution log messages.
@@ -21,4 +21,11 @@
     // // '"isWatching": true' in tasks.json. We do it there.
     // "compileOnSave": true
   }
+  /*,
+  "files":
+  [
+    // Typescript definition file for phaser.
+    "./Phaser/phaser.d.ts"
+  ]
+  */
 }

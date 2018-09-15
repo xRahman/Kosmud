@@ -40,4 +40,6 @@
 
 //ClientApp.run(CLIENT_APP_VERSION);
 
-alert('Yes!');
+import {PhaserTest} from '../Client/Phaser/PhaserTest';
+
+let phaserTest = new PhaserTest();
