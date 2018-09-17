@@ -22,12 +22,14 @@
     // //  is passed to 'tsc', but the same functionality is turned on by
     // // '"isWatching": true' in tasks.json. We do it there.
     // "compileOnSave": true
-  }
-  /*,
-  "files":
-  [
-    // Typescript definition file for phaser.
-    "./Phaser/phaser.d.ts"
-  ]
-  */
+  }//,
+  // Not listing "files" means that every file in directory structure
+  // beginning with tsconfig.json will be compiled, including all .d.ts
+  // files.
+  //
+  // "files":
+  // [
+  //   // Typescript definition file for phaser.
+  //   "./Phaser/phaser.d.ts"
+  // ]
 }
