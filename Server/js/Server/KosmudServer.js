@@ -30,12 +30,11 @@ const Server_1 = require("../Server/Application/Server");
 // import {AdminLevel} from '../shared/lib/admin/AdminLevel';
 // ///import {Script} from '../server/lib/prototype/Script';
 // ///let parser = require('commander');
-// Include package.json file (located in BrutusNext directory)
-// (it contains version number and list of all required modules along with
+// Include package.json file (located in Kosmud directory)
+// (it contains version number and list of all required modules and
 // their required version).
-// (In case you were wondering, we need to get all the way up
-//  from '/build/server/js/server' because the require() is
-//  done in runtime.)
+// (In case you were wondering, we need to get all the way up from
+//  '/Server/js/Server' because the require() is done in runtime.)
 let packageDotJson = require('../../../package.json');
 // // This handler catches exceptions thrown from withing async (promisified)
 // // functions. A new exception is thrown, which will crash the mud and print

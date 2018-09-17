@@ -1,13 +1,10 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Implements game server.
-
-  Manages an instance of server application.
+  Implements server application.
 
   Usage:
-    ServerApp.createInstance();
-    ServerApp.run(port);
+    Server.run(appName, version);
 */
 
 import {Application} from '../../Shared/Application';

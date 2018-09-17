@@ -1,14 +1,11 @@
 "use strict";
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Implements game server.
-
-  Manages an instance of server application.
+  Implements server application.
 
   Usage:
-    ServerApp.createInstance();
-    ServerApp.run(port);
+    Server.run(appName, version);
 */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
