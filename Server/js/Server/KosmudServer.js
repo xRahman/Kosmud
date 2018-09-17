@@ -117,5 +117,5 @@ let packageDotJson = require('../../../package.json');
 // // Run the main() function.
 // // (it's not done automatically in JavaScript)
 // main();
-Server_1.Server.run(packageDotJson.name, packageDotJson.version);
+Server_1.Server.start(packageDotJson.name, packageDotJson.version);
 //# sourceMappingURL=KosmudServer.js.map

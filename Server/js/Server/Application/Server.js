@@ -5,7 +5,7 @@
   Implements server application.
 
   Usage:
-    Server.run(appName, version);
+    Server.start(appName, version);
 */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -83,7 +83,7 @@ class Server extends Application_1.Application {
     // ------------- Public static methods ----------------
     // Loads the game (or creates a new default one
     // if there is no ./data directory).
-    static run(appName, version) {
+    static start(appName, version) {
         return __awaiter(this, void 0, void 0, function* () {
             if (Application_1.Application.instance) {
                 ERROR_1.ERROR(Application_1.Application.instance.constructor.name + " is already running");

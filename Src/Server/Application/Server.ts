@@ -4,7 +4,7 @@
   Implements server application.
 
   Usage:
-    Server.run(appName, version);
+    Server.start(appName, version);
 */
 
 import {Application} from '../../Shared/Application';
@@ -84,7 +84,7 @@ export class Server extends Application
 
   // Loads the game (or creates a new default one
   // if there is no ./data directory).
-  public static async run(appName: string, version: string)
+  public static async start(appName: string, version: string)
   {
     if (Application.instance)
     {

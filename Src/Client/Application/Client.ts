@@ -4,13 +4,14 @@
   Implements client application.
 
   Usage:
-    Client.run(version);
+    Client.start(version);
 */
 
-// import {ERROR} from '../../../shared/lib/error/ERROR';
+import {PhaserTest} from '../../Client/Phaser/PhaserTest';
+
+import {ERROR} from '../../Shared/Error/ERROR';
 // import {FATAL_ERROR} from '../../../shared/lib/error/FATAL_ERROR';
-// import {Syslog} from '../../../shared/lib/log/Syslog';
-// import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
+import {Syslog} from '../../Shared/Syslog';
 import {MessageType} from '../../Shared/MessageType';
 import {ClientSyslog} from '../../Client/Application/ClientSyslog';
 // import {WebSocketEvent} from '../../../shared/lib/net/WebSocketEvent';
@@ -84,47 +85,48 @@ export class Client extends Application
   //     alert("An error occured. Please reload the browser tab to log back in.");
   // }
 
-  // // Creates and runs an instance of ClientApp.
-  // public static async run(version: string)
-  // {
-  //   let clientApp = this.instance;
+  // Creates and runs an instance of ClientApp.
+  public static async start()
+  {
+    if (Application.instance)
+    {
+      ERROR(Application.instance.constructor.name + " is already running");
+      return;
+    }
 
-  //   if (clientApp.isAlreadyRunning())
-  //     return;
+    let client = Application.instance = new Client();
 
-  //   // Log our name and version.
-  //   Syslog.log
-  //   (
-  //     "BrutusNext client v. " + version,
-  //     MessageType.SYSTEM_INFO,
-  //     AdminLevel.IMMORTAL
-  //   );
+    Syslog.log("Starting Kosmud client version...", MessageType.SYSTEM_INFO);
 
-  //   if (!ClientSocket.checkWebSocketSupport())
-  //     return;
 
-  //   clientApp.initClasses();
-  //   clientApp.initGUI();
+    /// Test.
+    (client as any)['phaserTest'] = <any>new PhaserTest();
 
-  //   clientApp.connection.connect();
+    // if (!ClientSocket.checkWebSocketSupport())
+    //   return;
 
-  //   clientApp.showLoginWindow();
+    // clientApp.initClasses();
+    // clientApp.initGUI();
+
+    // clientApp.connection.connect();
+
+    // clientApp.showLoginWindow();
     
-  //   /// TEST:
-  //   //ClientApp.setState(ClientApp.State.IN_GAME);
+    /// TEST:
+    //ClientApp.setState(ClientApp.State.IN_GAME);
 
-  //   /// TODO: Stáhnout viewport data ze serveru.
-  //   /// I když možná nestačí connection.connect(), ještě se asi bude
-  //   /// muset player přilogovat - aby se dalo vůbec zjistit, kde je
-  //   /// (a tedy co se má stáhnout a renderovat).
-  //   /// TODO: Vyrenderovat je do mapy.
+    /// TODO: Stáhnout viewport data ze serveru.
+    /// I když možná nestačí connection.connect(), ještě se asi bude
+    /// muset player přilogovat - aby se dalo vůbec zjistit, kde je
+    /// (a tedy co se má stáhnout a renderovat).
+    /// TODO: Vyrenderovat je do mapy.
 
-  //   /// Možná bych se prozatím mohl vykašlat na zjišťování pozice avataru
-  //   /// a prostě stáhnout nějaký fixní výřez (ono v něm stejně nic nebude).
+    /// Možná bych se prozatím mohl vykašlat na zjišťování pozice avataru
+    /// a prostě stáhnout nějaký fixní výřez (ono v něm stejně nic nebude).
 
-  //   /// Jinak asi fakt budu muset udělat logovací komponenty, protože
-  //   /// z telnet-style loginu v clientu nepoznám, že se hráč nalogoval do hry.
-  // }
+    /// Jinak asi fakt budu muset udělat logovací komponenty, protože
+    /// z telnet-style loginu v clientu nepoznám, že se hráč nalogoval do hry.
+  }
 
   // --------------- Protected methods ------------------
 

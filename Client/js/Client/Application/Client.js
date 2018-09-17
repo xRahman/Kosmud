@@ -4,9 +4,9 @@
   Implements client application.
 
   Usage:
-    Client.run(version);
+    Client.start(version);
 */
-define(["require", "exports", "../../Client/Application/ClientSyslog", "../../Shared/Application"], function (require, exports, ClientSyslog_1, Application_1) {
+define(["require", "exports", "../../Client/Phaser/PhaserTest", "../../Shared/Error/ERROR", "../../Shared/Syslog", "../../Shared/MessageType", "../../Client/Application/ClientSyslog", "../../Shared/Application"], function (require, exports, PhaserTest_1, ERROR_1, Syslog_1, MessageType_1, ClientSyslog_1, Application_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // import {Entity} from '../../../shared/lib/entity/Entity';
@@ -57,37 +57,34 @@ define(["require", "exports", "../../Client/Application/ClientSyslog", "../../Sh
         //   if (state === ClientApp.State.ERROR)
         //     alert("An error occured. Please reload the browser tab to log back in.");
         // }
-        // // Creates and runs an instance of ClientApp.
-        // public static async run(version: string)
-        // {
-        //   let clientApp = this.instance;
-        //   if (clientApp.isAlreadyRunning())
-        //     return;
-        //   // Log our name and version.
-        //   Syslog.log
-        //   (
-        //     "BrutusNext client v. " + version,
-        //     MessageType.SYSTEM_INFO,
-        //     AdminLevel.IMMORTAL
-        //   );
-        //   if (!ClientSocket.checkWebSocketSupport())
-        //     return;
-        //   clientApp.initClasses();
-        //   clientApp.initGUI();
-        //   clientApp.connection.connect();
-        //   clientApp.showLoginWindow();
-        //   /// TEST:
-        //   //ClientApp.setState(ClientApp.State.IN_GAME);
-        //   /// TODO: Stáhnout viewport data ze serveru.
-        //   /// I když možná nestačí connection.connect(), ještě se asi bude
-        //   /// muset player přilogovat - aby se dalo vůbec zjistit, kde je
-        //   /// (a tedy co se má stáhnout a renderovat).
-        //   /// TODO: Vyrenderovat je do mapy.
-        //   /// Možná bych se prozatím mohl vykašlat na zjišťování pozice avataru
-        //   /// a prostě stáhnout nějaký fixní výřez (ono v něm stejně nic nebude).
-        //   /// Jinak asi fakt budu muset udělat logovací komponenty, protože
-        //   /// z telnet-style loginu v clientu nepoznám, že se hráč nalogoval do hry.
-        // }
+        // Creates and runs an instance of ClientApp.
+        static async start() {
+            if (Application_1.Application.instance) {
+                ERROR_1.ERROR(Application_1.Application.instance.constructor.name + " is already running");
+                return;
+            }
+            let client = Application_1.Application.instance = new Client();
+            Syslog_1.Syslog.log("Starting Kosmud client version...", MessageType_1.MessageType.SYSTEM_INFO);
+            /// Test.
+            client['phaserTest'] = new PhaserTest_1.PhaserTest();
+            // if (!ClientSocket.checkWebSocketSupport())
+            //   return;
+            // clientApp.initClasses();
+            // clientApp.initGUI();
+            // clientApp.connection.connect();
+            // clientApp.showLoginWindow();
+            /// TEST:
+            //ClientApp.setState(ClientApp.State.IN_GAME);
+            /// TODO: Stáhnout viewport data ze serveru.
+            /// I když možná nestačí connection.connect(), ještě se asi bude
+            /// muset player přilogovat - aby se dalo vůbec zjistit, kde je
+            /// (a tedy co se má stáhnout a renderovat).
+            /// TODO: Vyrenderovat je do mapy.
+            /// Možná bych se prozatím mohl vykašlat na zjišťování pozice avataru
+            /// a prostě stáhnout nějaký fixní výřez (ono v něm stejně nic nebude).
+            /// Jinak asi fakt budu muset udělat logovací komponenty, protože
+            /// z telnet-style loginu v clientu nepoznám, že se hráč nalogoval do hry.
+        }
         // --------------- Protected methods ------------------
         // ~ Overrides App.reportException().
         reportException(error) {

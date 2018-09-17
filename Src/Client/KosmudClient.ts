@@ -40,13 +40,7 @@
 
 //ClientApp.run(CLIENT_APP_VERSION);
 
-// Include package.json file (located in Kosmud directory)
-// (it contains version number and list of all required modules and
-// their required version).
-// (In case you were wondering, we need to get all the way up from
-//  '/Client/js/Client' because the require() is done in runtime.)
-let packageDotJson = require('../../../package.json');
+import {Client} from '../Client/Application/Client';
 
-import {PhaserTest} from '../Client/Phaser/PhaserTest';
-
-let phaserTest = new PhaserTest();
+//Client.run(packageDotJson.name, packageDotJson.version);
+Client.start();

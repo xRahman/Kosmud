@@ -135,4 +135,4 @@ let packageDotJson = require('../../../package.json');
 // // (it's not done automatically in JavaScript)
 // main();
 
-Server.run(packageDotJson.name, packageDotJson.version);
+Server.start(packageDotJson.name, packageDotJson.version);
