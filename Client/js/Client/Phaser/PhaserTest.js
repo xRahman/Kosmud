@@ -4,12 +4,13 @@ define(["require", "exports", "../../Shared/Error/ERROR", "../../Client/Phaser/T
     //const Phaser = require('phaser');
     class PhaserTest {
         constructor() {
+            this.scene = new TestScene_1.TestScene();
             this.config = {
                 type: Phaser.AUTO,
                 width: 400,
                 height: 300,
                 parent: 'phaser-test-div',
-                scene: new TestScene_1.TestScene()
+                scene: this.scene
             };
             this.game = new Phaser.Game(this.config);
             // /// Test
@@ -33,8 +34,17 @@ define(["require", "exports", "../../Shared/Error/ERROR", "../../Client/Phaser/T
                 ERROR_1.ERROR("Failed to find 'phaserTestDiv' element");
                 return;
             }
-            console.log('Resizing game to ' + phaserTestDiv.clientWidth + ', ' + phaserTestDiv.clientHeight);
-            this.game.resize(phaserTestDiv.clientWidth, phaserTestDiv.clientHeight);
+            let width = phaserTestDiv.clientWidth;
+            let height = phaserTestDiv.clientHeight;
+            console.log('Resizing game to ' + width + ', ' + height);
+            this.game.resize(width, height);
+            this.scene.cameras.resize(width, height);
+            if (this.scene.background) {
+                this.scene.background.setDisplaySize(width, height);
+            }
+            else {
+                ERROR_1.ERROR('Invalid background reference');
+            }
         }
     }
     exports.PhaserTest = PhaserTest;

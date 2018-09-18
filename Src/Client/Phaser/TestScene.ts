@@ -7,10 +7,12 @@ export class TestScene extends Phaser.Scene
     super('TestScene');
   }
 
+  public background: Phaser.GameObjects.Sprite | null = null;
+
   public preload()
   {
     this.load.image('ship', '/graphics/ships/hecate.png');
-    this.load.image('background', '/graphics/background/deep_space0.jpg');
+    this.load.image('background','/graphics/background/deep_space0.jpg');
   }
 
   public create()
@@ -23,7 +25,8 @@ export class TestScene extends Phaser.Scene
     /// than to see just a quarter of it.
     ///   Also we don't really need it to be tileSprite, because
     /// background doesn't move (it represents far-away space).
-    this.add.tileSprite(1920, 1200, 3840, 2400, 'background');
+    this.background = this.add.sprite(0, 0, 'background');
+    this.background.setDisplayOrigin(0, 0);
 
     /// At this moment I don't have a clue what these numbers mean.
     this.add.sprite(400, 500, 'ship');

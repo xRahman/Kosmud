@@ -26,13 +26,15 @@ export class PhaserTest
     );
   }
 
+  private scene = new TestScene();
+
   private config: GameConfig =
   {
     type: Phaser.AUTO,
     width: 400,
     height: 300,
     parent: 'phaser-test-div',
-    scene: new TestScene()
+    scene: this.scene
   };
 
   private game = new Phaser.Game(this.config);
@@ -50,9 +52,23 @@ export class PhaserTest
       return;
     }
 
-    console.log('Resizing game to ' + phaserTestDiv.clientWidth + ', ' + phaserTestDiv.clientHeight)
+    let width = phaserTestDiv.clientWidth;
+    let height = phaserTestDiv.clientHeight;
 
-    this.game.resize(phaserTestDiv.clientWidth, phaserTestDiv.clientHeight);
+    console.log('Resizing game to ' + width + ', ' + height)
+
+    this.game.resize(width, height);
+
+    this.scene.cameras.resize(width, height);
+
+    if (this.scene.background)
+    {
+      this.scene.background.setDisplaySize(width, height);
+    }
+    else
+    {
+      ERROR('Invalid background reference');
+    }
   }
 
   // private game = new Phaser.Game
