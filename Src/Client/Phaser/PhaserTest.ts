@@ -1,9 +1,31 @@
+import {ERROR} from '../../Shared/Error/ERROR';
 import {TestScene} from '../../Client/Phaser/TestScene';
 
 //const Phaser = require('phaser');
 
 export class PhaserTest
 {
+  constructor()
+  {
+    // /// Test
+    // let phaserTestDiv = document.getElementById('phaser-test-div');
+    // if (!phaserTestDiv)
+    // {
+    //   ERROR("Failed to find 'phaserTestDiv' element");
+    //   return;
+    // }
+    // phaserTestDiv.addEventListener
+    // (
+    //   'resize',
+    //   () => { this.onPhaserTestDivResize(); }
+    // );
+    window.addEventListener
+    (
+      'resize',
+      () => { this.onPhaserTestDivResize(); }
+    );
+  }
+
   private config =
   {
     type: Phaser.AUTO,
@@ -13,6 +35,24 @@ export class PhaserTest
   };
 
   private game = new Phaser.Game(this.config);
+
+  private onPhaserTestDivResize()
+  {
+    console.log('Test div resized');
+
+
+    let phaserTestDiv = document.getElementById('phaser-test-div');
+
+    if (!phaserTestDiv)
+    {
+      ERROR("Failed to find 'phaserTestDiv' element");
+      return;
+    }
+
+    console.log('Resizing game to ' + phaserTestDiv.clientWidth + ', ' + phaserTestDiv.clientHeight)
+
+    this.game.resize(phaserTestDiv.clientWidth, phaserTestDiv.clientHeight);
+  }
 
   // private game = new Phaser.Game
   // (

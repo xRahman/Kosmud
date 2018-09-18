@@ -52,8 +52,11 @@ export class Server extends Application
 
   // -------------- Static class data -------------------
 
-  // // ~ Overrides App.instance.
-  // protected static instance = new Server();
+  // Here we also assign Client instance to Application.instance property
+  // so it will be accessible from shared code. Without this, functions
+  // like ERROR() would not work because Application.instance would be
+  // 'null'.
+  protected static instance = Application.instance = new Server();
 
   // ----------------- Private data ---------------------
 
@@ -82,18 +85,8 @@ export class Server extends Application
 
   // ------------- Public static methods ----------------
 
-  // Loads the game (or creates a new default one
-  // if there is no ./data directory).
   public static async start(appName: string, version: string)
   {
-    if (Application.instance)
-    {
-      ERROR(Application.instance.constructor.name + " is already running");
-      return;
-    }
-
-    let server = Application.instance = new Server();
-
     // Log our name and version.
     /// TODO: Verze je ted v package.json - mela by se pri startu
     ///       serveru logovat.
@@ -120,7 +113,7 @@ export class Server extends Application
     //   await serverApp.loadData();
     
     // Http server also starts a websocket server inside it.
-    server.startHttpServer();
+    this.instance.startHttpServer();
   }
 
   // // -> Returns null if no message of the day is set at the moment.

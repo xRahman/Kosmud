@@ -21,7 +21,7 @@
 ///
 /// Also unlike in node.js, Chrome doesn't silently eat exceptions
 /// occuring inside promises so we don't really need to re-throw
-/// then on client.
+/// them in the client.
 ///
 // This handler catches exceptions thrown from withing async (promisified)
 // functions.

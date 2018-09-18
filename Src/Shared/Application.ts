@@ -34,8 +34,9 @@ export abstract class Application
 {
   // -------------- Static class data -------------------
 
-  // This needs to be inicialized in descendants.
-  protected static instance: Application;
+  // This property needs to be inicialized in descendants
+  // (see Client.instance or Server.instance).
+  protected static instance: Application | null = null;
 
   // ---------------- Protected data --------------------
 
@@ -46,34 +47,48 @@ export abstract class Application
 
   // --------------- Static accessors -------------------
 
-  // public static get entities() { return this.instance.entities; }
-  // public static get prototypes() { return this.instance.prototypes; }
+  // public static get entities() { return this.getInstance().entities; }
+  // public static get prototypes() { return this.getInstance().prototypes; }
+
+  private static getInstance(): Application
+  {
+    if (!this.instance)
+    {
+      throw new Error
+      (
+        "Application.instance is not inicialized. It needs to be"
+        + " assigned in all descendant classes (Client and Server)."
+      );
+    }
+
+    return this.instance;
+  }
 
   // ------------- Public static methods ----------------
 
   // Don't call this directly, use ERROR() instead.
   public static reportException(error: Error)
   {
-    this.instance.reportException(error);
+    this.getInstance().reportException(error);
   }
 
   // Don't call this directly, use ERROR() instead.
   public static reportError(message: string): void
   {
-    this.instance.reportError(message);
+    this.getInstance().reportError(message);
   }
 
   // Don't call this directly, use ERROR() instead.
   public static reportFatalError(message: string): void
   {
-    this.instance.reportFatalError(message);
+    this.getInstance().reportFatalError(message);
   }
 
   // Sends message to syslog.
   // (Don't call this directly, use Syslog.log() instead.)
   public static log(text: string, msgType: MessageType): void
   {
-    this.instance.log(text, msgType);
+    this.getInstance().log(text, msgType);
   }
 
   // --------------- Protected methods ------------------

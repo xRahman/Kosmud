@@ -38,23 +38,6 @@ class Server extends Application_1.Application {
     constructor() {
         // -------------- Static constants --------------------
         super(...arguments);
-        // public static readonly DATA_DIRECTORY = './server/data/';
-        // --------------- Static accessors -------------------
-        // public static get timeOfBoot() { return this.instance.timeOfBoot; }
-        // public static get game() { return this.instance.game; }
-        // public static get accounts() { return this.instance.accounts; }
-        // public static get connections() { return this.instance.connections; }
-        // public static get admins() { return this.instance.admins; }
-        // --------------- Static accessors -------------------
-        // // ~ Overrides App.entities()
-        // // (Override exists in order to return type be ServerEntities.)
-        // public static get entities() { return this.instance.entities; }
-        // // ~ Overrides App.prototypes()
-        // // (Override exists in order to return type be ServerPrototypes.)
-        // public static get prototypes() { return this.instance.prototypes; }
-        // -------------- Static class data -------------------
-        // // ~ Overrides App.instance.
-        // protected static instance = new Server();
         // ----------------- Private data ---------------------
         // // 'null' means no message of the day is set at the moment.
         // private messageOfTheDay: (string | null) = null;
@@ -81,15 +64,8 @@ class Server extends Application_1.Application {
     // // ~ Overrides App.prototypes.
     // protected prototypes = new ServerPrototypes();
     // ------------- Public static methods ----------------
-    // Loads the game (or creates a new default one
-    // if there is no ./data directory).
     static start(appName, version) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (Application_1.Application.instance) {
-                ERROR_1.ERROR(Application_1.Application.instance.constructor.name + " is already running");
-                return;
-            }
-            let server = Application_1.Application.instance = new Server();
             // Log our name and version.
             /// TODO: Verze je ted v package.json - mela by se pri startu
             ///       serveru logovat.
@@ -110,7 +86,7 @@ class Server extends Application_1.Application {
             // else
             //   await serverApp.loadData();
             // Http server also starts a websocket server inside it.
-            server.startHttpServer();
+            this.instance.startHttpServer();
         });
     }
     // // -> Returns null if no message of the day is set at the moment.
@@ -170,5 +146,25 @@ class Server extends Application_1.Application {
         this.httpServer.start();
     }
 }
+// public static readonly DATA_DIRECTORY = './server/data/';
+// --------------- Static accessors -------------------
+// public static get timeOfBoot() { return this.instance.timeOfBoot; }
+// public static get game() { return this.instance.game; }
+// public static get accounts() { return this.instance.accounts; }
+// public static get connections() { return this.instance.connections; }
+// public static get admins() { return this.instance.admins; }
+// --------------- Static accessors -------------------
+// // ~ Overrides App.entities()
+// // (Override exists in order to return type be ServerEntities.)
+// public static get entities() { return this.instance.entities; }
+// // ~ Overrides App.prototypes()
+// // (Override exists in order to return type be ServerPrototypes.)
+// public static get prototypes() { return this.instance.prototypes; }
+// -------------- Static class data -------------------
+// Here we also assign Client instance to Application.instance property
+// so it will be accessible from shared code. Without this, functions
+// like ERROR() would not work because Application.instance would be
+// 'null'.
+Server.instance = Application_1.Application.instance = new Server();
 exports.Server = Server;
 //# sourceMappingURL=Server.js.map

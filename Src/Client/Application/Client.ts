@@ -19,7 +19,7 @@ import {Application} from '../../Shared/Application';
 // import {Entity} from '../../../shared/lib/entity/Entity';
 // import {ClientEntities} from '../../../client/lib/entity/ClientEntities';
 // import {ClientPrototypes} from '../../../client/lib/entity/ClientPrototypes';
-// import {Document} from '../../../client/gui/Document';
+import {Document} from '../../Client/Gui/Document';
 // import {Connection} from '../../../client/lib/connection/Connection';
 // import {ClientSocket} from '../../../client/lib/net/ClientSocket';
 // import {Windows} from '../../../client/gui/window/Windows';
@@ -32,15 +32,18 @@ export class Client extends Application
 
   // --------------- Static accessors -------------------
 
-  // public static get document() { return this.instance.document; }
+  public static get document() { return this.instance.document; }
   // public static get windows() { return this.instance.windows; }
   // public static get connection() { return this.instance.connection; }
   // public static get state() { return this.instance.state; }
 
   // -------------- Static class data -------------------
 
-  // // ~ Overrides App.instance.
-  // protected static instance = new ClientApp();
+  // Here we also assign Client instance to Application.instance property
+  // so it will be accessible from shared code. Without this, functions
+  // like ERROR() would not work because Application.instance would be
+  // 'null'.
+  protected static instance = Application.instance = new Client();
 
   // ---------------- Protected data --------------------
 
@@ -53,13 +56,16 @@ export class Client extends Application
 
   // ----------------- Private data ---------------------
 
+  /// Test.
+  private phaserTest = new PhaserTest();
+
   // // There is only one connection per client application
   // // (it means one connection per browser tab if you
   // //  open the client in multiple tabs).
   // private connection = new Connection();
 
-  // // Html document.
-  // private document = new Document();
+  // Html document.
+  private document = new Document();
 
   // private windows = new Windows();
 
@@ -85,47 +91,22 @@ export class Client extends Application
   //     alert("An error occured. Please reload the browser tab to log back in.");
   // }
 
-  // Creates and runs an instance of ClientApp.
   public static async start()
   {
-    if (Application.instance)
-    {
-      ERROR(Application.instance.constructor.name + " is already running");
-      return;
-    }
-
-    let client = Application.instance = new Client();
-
     Syslog.log("Starting Kosmud client version...", MessageType.SYSTEM_INFO);
-
-
-    /// Test.
-    (client as any)['phaserTest'] = <any>new PhaserTest();
 
     // if (!ClientSocket.checkWebSocketSupport())
     //   return;
 
-    // clientApp.initClasses();
-    // clientApp.initGUI();
+    // this.instance.initClasses();
+    // this.instance.initGUI();
 
-    // clientApp.connection.connect();
+    // this.instance.connection.connect();
 
-    // clientApp.showLoginWindow();
+    // this.instance.showLoginWindow();
     
     /// TEST:
-    //ClientApp.setState(ClientApp.State.IN_GAME);
-
-    /// TODO: Stáhnout viewport data ze serveru.
-    /// I když možná nestačí connection.connect(), ještě se asi bude
-    /// muset player přilogovat - aby se dalo vůbec zjistit, kde je
-    /// (a tedy co se má stáhnout a renderovat).
-    /// TODO: Vyrenderovat je do mapy.
-
-    /// Možná bych se prozatím mohl vykašlat na zjišťování pozice avataru
-    /// a prostě stáhnout nějaký fixní výřez (ono v něm stejně nic nebude).
-
-    /// Jinak asi fakt budu muset udělat logovací komponenty, protože
-    /// z telnet-style loginu v clientu nepoznám, že se hráč nalogoval do hry.
+    //Client.setState(Client.State.IN_GAME);
   }
 
   // --------------- Protected methods ------------------
@@ -210,19 +191,19 @@ export class Client extends Application
 
 // ------------------ Type declarations ----------------------
 
-// Module is exported so you can use enum type from outside this file.
-// It must be declared after the class because Typescript says so...
-export module ClientApp
-{
-  export enum State
-  {
-    INITIAL,
-    LOGIN,
-    REGISTER,
-    TERMS,
-    CHARSELECT,
-    CHARGEN,
-    IN_GAME,
-    ERROR   // Player is asked to reload browser tab to recover.
-  }
-}
+// // Module is exported so you can use enum type from outside this file.
+// // It must be declared after the class because Typescript says so...
+// export module ClientApp
+// {
+//   export enum State
+//   {
+//     INITIAL,
+//     LOGIN,
+//     REGISTER,
+//     TERMS,
+//     CHARSELECT,
+//     CHARGEN,
+//     IN_GAME,
+//     ERROR   // Player is asked to reload browser tab to recover.
+//   }
+// }
