@@ -6,8 +6,9 @@ define(["require", "exports", "../../Shared/Error/ERROR", "../../Client/Phaser/T
         constructor() {
             this.config = {
                 type: Phaser.AUTO,
-                width: 1024,
-                height: 768,
+                width: 400,
+                height: 300,
+                parent: 'phaser-test-div',
                 scene: new TestScene_1.TestScene()
             };
             this.game = new Phaser.Game(this.config);

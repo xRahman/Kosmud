@@ -31,6 +31,8 @@ export class Document
     //   // application.
     //   () => { this.onDocumentResize(); }
     // );
+
+    this.setRootHtmlElementCss();
   }
 
   // ----------------- Private data ---------------------
@@ -41,6 +43,21 @@ export class Document
   // --------------- Static accessors -------------------
 
   // public static get $body() { return ClientApp.document.$body; }
+
+  private setRootHtmlElementCss()
+  {
+    console.log('Setting CSS to <html>');
+
+    // Seting height of <html> element to 100% is necessary for the
+    // <body> element and everything in it to stretch over whole
+    // browser viewport (otherwise <body> would match it's height
+    // to it's content).
+    document.documentElement.style.height = "100%";
+    // '!important' is used so that other style won't overrule this
+    document.documentElement.style.outline = '0 none';
+    document.documentElement.style.margin = '0px';
+    document.documentElement.style.padding = "0px";
+  }
 
   // ---------------- Event handlers --------------------
 

@@ -15,29 +15,27 @@ define(["require", "exports"], function (require, exports) {
             if (!body)
                 throw new Error("Unable to find <body> element by id '" + id + "'");
             this.element = body;
-            this.applyCSS();
+            this.setCss();
         }
         // --------------- Static accessors -------------------
         // ---------------- Event handlers --------------------
         // ---------------- Private methods -------------------
-        applyCSS() {
+        setCss() {
             console.log('Setting CSS to <body>');
             /// TODO: Předělat to na zápis přímo do properties elementu
             /// (místo setování přes jména atributů).
-            // '!important' is used so that other style won't overrule this
-            this.element.setAttribute('outline', '0 none !important;');
-            this.element.setAttribute('outline', '0 none !important;');
+            this.element.style.outline = '0 none';
             // Margin is defined to ensure the same behaviour in all browsers
-            this.element.setAttribute('margin', '0 !important;');
+            this.element.style.margin = '0px';
             // Padding: 0 is defined to ensure the same behaviour in all browsers
-            this.element.setAttribute('padding', '0 !important;');
-            this.element.setAttribute('width', '100%;');
-            this.element.setAttribute('height', '100%;');
-            this.element.setAttribute('min-height', '100%;');
-            this.element.setAttribute('min-width', '100%;');
-            this.element.setAttribute('position', 'absolute;');
+            this.element.style.padding = '0px';
+            this.element.style.width = '100%';
+            this.element.style.height = '100%';
+            this.element.style.minHeight = '100%';
+            this.element.style.minWidth = '100%';
+            this.element.style.position = 'absolute';
             // this.element.setAttribute('display', 'flex;');
-            this.element.setAttribute('background-color', 'black;');
+            // this.element.style.backgroundColor = 'black';
             // this.element.setAttribute('background-image', 'url(/images/background-landscape.jpg);');
             /* Fonts are saved on server so we don't need alternatives */
             // this.element.setAttribute('font-family', 'CourierNew;');
@@ -46,7 +44,7 @@ define(["require", "exports"], function (require, exports) {
               If we wanted to allow users to change font size, we should
                 set this attribute so all fonts scale accordingly.
             */
-            this.element.setAttribute('font-size', '1em; /* Browser default (usually 16px) */');
+            // this.element.setAttribute('font-size', '1em; /* Browser default (usually 16px) */');
             /* Disable text selection */
             // this.element.setAttribute('-khtml-user-select', 'none;');
             // this.element.setAttribute('-moz-user-select', 'none;');

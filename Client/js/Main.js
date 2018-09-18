@@ -33,7 +33,7 @@ requirejs.config
 //   been loaded yet for context: _
 //require(['js-beautify']);
 //require(['fastbitset']);
-require(['phaser']);
+// require(['phaser']);
 
 // Launch the client.
 require(['./Client/KosmudClient']);
