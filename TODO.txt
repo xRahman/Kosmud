@@ -1,3 +1,11 @@
+TODO: Mrknout na:
+  var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'parent');
+  ...
+  game.scale.scaleMode = Phaser.ScaleManager.RESIZE
+https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width-instead-of-content-width
+
+
+
 TODO: Nahradit fs-promise něčím jiným
   npm WARN deprecated fs-promise@2.0.3: Use mz or fs-extra^3.0 with Promise Support
 
