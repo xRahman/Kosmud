@@ -8,7 +8,7 @@
 */
 
 import {Application} from '../../Shared/Application';
-import {ERROR} from '../../Shared/Error/ERROR';
+import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
 import {ServerSyslog} from '../../Server/Application/ServerSyslog';
 import {MessageType} from '../../Shared/MessageType';

@@ -1,4 +1,4 @@
-define(["require", "exports", "../../Shared/Error/ERROR", "../../Client/Phaser/TestScene"], function (require, exports, ERROR_1, TestScene_1) {
+define(["require", "exports", "../../Shared/ERROR", "../../Client/Phaser/TestScene"], function (require, exports, ERROR_1, TestScene_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     //const Phaser = require('phaser');

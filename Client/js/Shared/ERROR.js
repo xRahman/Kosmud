@@ -8,7 +8,7 @@
                (Even if MUD doesn't crash right away)
        --------------------------------------------------------
 */
-define(["require", "exports", "../../Shared/Application"], function (require, exports, Application_1) {
+define(["require", "exports", "../Shared/Application"], function (require, exports, Application_1) {
     /*
       ERROR() just prints error message, FATAL_ERROR() also terminates the program.
     

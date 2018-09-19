@@ -1,4 +1,4 @@
-import {ERROR} from '../../Shared/Error/ERROR';
+import {ERROR} from '../../Shared/ERROR';
 import {TestScene} from '../../Client/Phaser/TestScene';
 
 //const Phaser = require('phaser');

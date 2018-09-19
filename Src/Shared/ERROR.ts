@@ -8,6 +8,7 @@
                (Even if MUD doesn't crash right away)
        --------------------------------------------------------
 */
+
 /*
   ERROR() just prints error message, FATAL_ERROR() also terminates the program.
 
@@ -38,6 +39,7 @@
   Don't include name of the function where error occured. It will be added
   automatically to the stack trace.
 */
+
 /*
   Implementation notes:
     Functions ERROR() and FATAL_ERROR() are exported directly (without
@@ -46,11 +48,12 @@
 
   They are named with CAPS to diferentiate them from javascript Error object.
 */
+
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-const Application_1 = require("../../Shared/Application");
-function ERROR(message) {
-    Application_1.Application.reportError('[ERROR]: ' + message);
+
+import {Application} from '../Shared/Application';
+
+export function ERROR(message: string)
+{
+  Application.reportError('[ERROR]: ' + message);
 }
-exports.ERROR = ERROR;
-//# sourceMappingURL=ERROR.js.map

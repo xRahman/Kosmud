@@ -17,7 +17,7 @@
     );
 */
 
-import {REPORT} from '../Shared/Error/REPORT';
+import {REPORT} from '../Shared/REPORT';
 import {Application} from '../Shared/Application';
 import {MessageType} from '../Shared/MessageType';
 

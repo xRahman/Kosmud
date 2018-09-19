@@ -3,7 +3,7 @@
 
   Abstract ancestor of classes that encapsulate DOM elements.
 */
-define(["require", "exports", "../../Shared/Error/ERROR"], function (require, exports, ERROR_1) {
+define(["require", "exports", "../../Shared/ERROR"], function (require, exports, ERROR_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Component {

@@ -31,7 +31,7 @@
 'use strict';
 
 //import {Utils} from '../../../shared/lib/utils/Utils';
-import {Application} from '../../Shared/Application';
+import {Application} from '../Shared/Application';
 
 // Note: 'error' parameter has type 'any' because when you catch
 // an error, typescript has no way of knowing it's type. You still

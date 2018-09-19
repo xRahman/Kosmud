@@ -18,7 +18,7 @@
     );
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-const REPORT_1 = require("../Shared/Error/REPORT");
+const REPORT_1 = require("../Shared/REPORT");
 const Application_1 = require("../Shared/Application");
 const MessageType_1 = require("../Shared/MessageType");
 class Syslog {

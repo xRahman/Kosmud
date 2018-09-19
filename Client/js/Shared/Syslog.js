@@ -16,7 +16,7 @@
       AdminLevels.CREATOR
     );
 */
-define(["require", "exports", "../Shared/Error/REPORT", "../Shared/Application", "../Shared/MessageType"], function (require, exports, REPORT_1, Application_1, MessageType_1) {
+define(["require", "exports", "../Shared/REPORT", "../Shared/Application", "../Shared/MessageType"], function (require, exports, REPORT_1, Application_1, MessageType_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Syslog {

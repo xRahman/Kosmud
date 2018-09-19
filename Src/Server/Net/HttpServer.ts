@@ -4,7 +4,7 @@
   Implements http server.
 */
 
-import {ERROR} from '../../Shared/Error/ERROR';
+import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
 import {FileSystem} from '../../Server/FS/FileSystem';
 import {MessageType} from '../../Shared/MessageType';

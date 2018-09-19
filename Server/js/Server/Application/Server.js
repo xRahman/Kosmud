@@ -17,7 +17,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Application_1 = require("../../Shared/Application");
-const ERROR_1 = require("../../Shared/Error/ERROR");
+const ERROR_1 = require("../../Shared/ERROR");
 const Syslog_1 = require("../../Shared/Syslog");
 const ServerSyslog_1 = require("../../Server/Application/ServerSyslog");
 const MessageType_1 = require("../../Shared/MessageType");

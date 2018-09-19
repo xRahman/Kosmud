@@ -3,7 +3,7 @@
 
   Implements runtime exception reporting.
 */
-define(["require", "exports", "../../Shared/Application"], function (require, exports, Application_1) {
+define(["require", "exports", "../Shared/Application"], function (require, exports, Application_1) {
     /*
       IMPORTANT: Parameter of RERPORT() must be an Error object.
     

@@ -24,7 +24,7 @@
   automatically.
 */
 
-import {ERROR} from '../Shared/Error/ERROR';
+import {ERROR} from '../Shared/ERROR';
 // import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 import {MessageType} from '../Shared/MessageType';
 // import {Entities} from '../../../shared/lib/entity/Entities';

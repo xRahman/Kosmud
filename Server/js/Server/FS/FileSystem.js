@@ -13,7 +13,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ERROR_1 = require("../../Shared/Error/ERROR");
+const ERROR_1 = require("../../Shared/ERROR");
 const Syslog_1 = require("../../Shared/Syslog");
 const MessageType_1 = require("../../Shared/MessageType");
 const SavingQueue_1 = require("../../Server/FS/SavingQueue");

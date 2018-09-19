@@ -4,7 +4,7 @@
   Wraps filesystem I/O operations.
 */
 
-import {ERROR} from '../../Shared/Error/ERROR';
+import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
 import {MessageType} from '../../Shared/MessageType';
 import {SavingQueue} from '../../Server/FS/SavingQueue';
