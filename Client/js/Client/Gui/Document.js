@@ -3,7 +3,7 @@
 
   Functionality attached to html document.
 */
-define(["require", "exports", "../../Client/Gui/Body"], function (require, exports, Body_1) {
+define(["require", "exports", "../../Client/Gui/Html", "../../Client/Gui/Body"], function (require, exports, Html_1, Body_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
     // import {Windows} from '../../Client/Gui/Windows';
@@ -12,6 +12,7 @@ define(["require", "exports", "../../Client/Gui/Body"], function (require, expor
             // ----------------- Private data ---------------------
             //private body: Body | null = null;
             this.body = new Body_1.Body();
+            this.html = new Html_1.Html();
             document.addEventListener('DOMContentLoaded', () => { this.onDocumentReady(); });
             // // Attach handler for 'window.resize' event.
             // $(window).resize
@@ -22,22 +23,23 @@ define(["require", "exports", "../../Client/Gui/Body"], function (require, expor
             //   // application.
             //   () => { this.onDocumentResize(); }
             // );
-            this.setRootHtmlElementCss();
+            // this.setRootHtmlElementCss();
         }
         // --------------- Static accessors -------------------
         // public static get $body() { return ClientApp.document.$body; }
-        setRootHtmlElementCss() {
-            console.log('Setting CSS to <html>');
-            // Seting height of <html> element to 100% is necessary for the
-            // <body> element and everything in it to stretch over whole
-            // browser viewport (otherwise <body> would match it's height
-            // to it's content).
-            document.documentElement.style.height = "100%";
-            // '!important' is used so that other style won't overrule this
-            document.documentElement.style.outline = '0 none';
-            document.documentElement.style.margin = '0px';
-            document.documentElement.style.padding = "0px";
-        }
+        // private setRootHtmlElementCss()
+        // {
+        //   console.log('Setting CSS to <html>');
+        //   // Seting height of <html> element to 100% is necessary for the
+        //   // <body> element and everything in it to stretch over whole
+        //   // browser viewport (otherwise <body> would match it's height
+        //   // to it's content).
+        //   document.documentElement.style.height = "100%";
+        //   // '!important' is used so that other style won't overrule this
+        //   document.documentElement.style.outline = '0 none';
+        //   document.documentElement.style.margin = '0px';
+        //   document.documentElement.style.padding = "0px";
+        // }
         // ---------------- Event handlers --------------------
         // This handler is run when web page is completely loaded.
         onDocumentReady() {

@@ -1,3 +1,6 @@
+TODO: Prostudovat avanced Typescript typy:
+  https://levelup.gitconnected.com/advanced-typescript-types-with-examples-1d144e4eda9e
+
 TODO: Mrknout na:
   var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'parent');
   ...
