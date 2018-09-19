@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  <body> html element.
+  <body> element.
 */
 
 'use strict';

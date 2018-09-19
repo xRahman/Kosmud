@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  <body> html element.
+  <body> element.
 */
 define(["require", "exports", "../../Client/Gui/Component"], function (require, exports, Component_1) {
     'use strict';

@@ -2,7 +2,7 @@
 /*
   Part of Kosmud
 
-  Implements server application.
+  Server application.
 
   Usage:
     Server.start(appName, version);
@@ -18,87 +18,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Application_1 = require("../../Shared/Application");
 const ERROR_1 = require("../../Shared/Error/ERROR");
-// import {FATAL_ERROR} from '../../../shared/lib/error/FATAL_ERROR';
-// import {Time} from '../../../shared/lib/utils/Time';
-// import {ServerEntities} from '../../../server/lib/entity/ServerEntities';
-// import {FileSystem} from '../../../server/lib/fs/FileSystem';
-// import {Admins} from '../../../server/lib/admin/Admins';
-// import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
-// import {Connections} from '../../../server/lib/connection/Connections';
-// import {ServerPrototypes} from '../../../server/lib/entity/ServerPrototypes';
-// import {Accounts} from '../../../server/lib/account/Accounts';
 const Syslog_1 = require("../../Shared/Syslog");
 const ServerSyslog_1 = require("../../Server/Application/ServerSyslog");
 const MessageType_1 = require("../../Shared/MessageType");
-// import {Game} from '../../../server/game/Game';
-// import {GameEntity} from '../../../server/game/GameEntity';
-// ///import {TelnetServer} from '../../../server/lib/net/TelnetServer';
 const HttpServer_1 = require("../../server/Net/HttpServer");
 class Server extends Application_1.Application {
     constructor() {
         // -------------- Static constants --------------------
         super(...arguments);
         // ----------------- Private data ---------------------
-        // // 'null' means no message of the day is set at the moment.
-        // private messageOfTheDay: (string | null) = null;
-        // private admins = new Admins();
-        // private timeOfBoot = new Time();
-        // private game = new Game();
         /// Http server also runs a websocket server inside it.
         this.httpServer = new HttpServer_1.HttpServer();
-        // private async createDefaultData()
-        // {
-        //   await this.game.createDefaultWorld();
-        // }
-        // private async loadData()
-        // {
-        //   // Load the game.
-        //   await this.game.load();
-        // }
     }
-    // private connections = new Connections();
-    // private accounts = new Accounts();
     // ---------------- Protected data --------------------
-    // // ~ Overrides App.entities.
-    // protected entities = new ServerEntities(this.timeOfBoot);
-    // // ~ Overrides App.prototypes.
-    // protected prototypes = new ServerPrototypes();
     // ------------- Public static methods ----------------
     static start(appName, version) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Log our name and version.
-            /// TODO: Verze je ted v package.json - mela by se pri startu
-            ///       serveru logovat.
-            Syslog_1.Syslog.log("Starting Kosmud server...", MessageType_1.MessageType.SYSTEM_INFO);
-            ///test();
-            // serverApp.initClasses();
-            // // We need to check if './data/' directory exists before
-            // // initPrototypes() is called, because it will be created
-            // // there it doesn't exist.
-            // let dataExists = await FileSystem.exists(ServerApp.DATA_DIRECTORY);
-            // // Create root prototype entities if they don't exist yet or load
-            // // them from disk. Then recursively load all prototype entities
-            // // inherited from them.
-            // await this.prototypes.init();
-            // // If /server/data/ directory didn't exist, create and save a new world.
-            // if (!dataExists)
-            //   await serverApp.createDefaultData();
-            // else
-            //   await serverApp.loadData();
+            Syslog_1.Syslog.log("Starting " + appName + " server (v" + version + ")...", MessageType_1.MessageType.SYSTEM_INFO);
             // Http server also starts a websocket server inside it.
             this.instance.startHttpServer();
         });
     }
-    // // -> Returns null if no message of the day is set at the moment.
-    // public static getMotd(): string
-    // {
-    //   /// TODO: motd by se mělo savovat na disk - tj. ideálně by to
-    //   /// měla být property nejaké entity (třeba config).
-    //   let motd = this.instance.messageOfTheDay;
-    //   if (motd === null)
-    //     return "There is no message of the day at this time.";
-    //   return "&gMessage of the day:\n&_" + motd;
-    // }
     // --------------- Protected methods ------------------
     // ~ Overrides App.reportException().
     reportException(error) {
@@ -120,7 +60,7 @@ class Server extends Application_1.Application {
     // ~ Overrides App.reportFatalError().
     // Reports error message and stack trace and terminates the program.
     // (Don't call this method directly, use FATAL_ERROR()
-    //  from /shared/lib/error/ERROR).
+    //  from /Shared/Error/ERROR).
     reportFatalError(message) {
         let errorMsg = message + "\n"
             + Syslog_1.Syslog.getTrimmedStackTrace();
@@ -146,20 +86,8 @@ class Server extends Application_1.Application {
         this.httpServer.start();
     }
 }
-// public static readonly DATA_DIRECTORY = './server/data/';
 // --------------- Static accessors -------------------
-// public static get timeOfBoot() { return this.instance.timeOfBoot; }
-// public static get game() { return this.instance.game; }
-// public static get accounts() { return this.instance.accounts; }
-// public static get connections() { return this.instance.connections; }
-// public static get admins() { return this.instance.admins; }
 // --------------- Static accessors -------------------
-// // ~ Overrides App.entities()
-// // (Override exists in order to return type be ServerEntities.)
-// public static get entities() { return this.instance.entities; }
-// // ~ Overrides App.prototypes()
-// // (Override exists in order to return type be ServerPrototypes.)
-// public static get prototypes() { return this.instance.prototypes; }
 // -------------- Static class data -------------------
 // Here we also assign Client instance to Application.instance property
 // so it will be accessible from shared code. Without this, functions

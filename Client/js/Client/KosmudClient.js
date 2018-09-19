@@ -1,5 +1,4 @@
 /*
-
                 _  __                             _
                | |/ /                            | |
                | ' / ___  ___ _ __ ___  _   _  __| |
@@ -9,12 +8,10 @@
 
 
                      Client program entry point
-
 */
 define(["require", "exports", "../Client/Application/Client"], function (require, exports, Client_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    //Client.run(packageDotJson.name, packageDotJson.version);
     Client_1.Client.start();
 });
 //# sourceMappingURL=KosmudClient.js.map
