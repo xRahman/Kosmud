@@ -17,6 +17,7 @@ export class ServerSyslog
     // Output to stdout.
     console.log(entry);
 
-    // TODO: Output to log file.
+    // Output to log file.
+    /// TODO
   }
 }
