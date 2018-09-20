@@ -37,6 +37,18 @@ https://jwiese.eu/en/blog/2018/04/phaser-3---loading-screen--asset-organization/
 Procedural dungeon:
 https://itnext.io/modular-game-worlds-in-phaser-3-tilemaps-3-procedural-dungeon-3bc19b841cd
 
+
+Minimap:
+(also generated starfield example)
+http://labs.phaser.io/edit.html?src=src\camera\minimap%20camera.js
+
+Phaser 3 forum:
+http://www.html5gamedevs.com/forum/33-phaser-3/
+
+
+Paralax scrolling:
+https://gamedevelopment.tutsplus.com/tutorials/parallax-scrolling-a-simple-effective-way-to-add-depth-to-a-2d-game--cms-21510
+
 ==============================================================
 
 matter.js physics engine

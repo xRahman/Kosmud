@@ -1,0 +1,10 @@
+﻿==============================================================
+
+Kamery
+---------------------
+
+- camera.ignore(sprite) způsobí, že se 'sprite' nebude při pohledu
+  touto kamerou renderovat:
+
+    this.cameras.main.ignore(this.background);
+

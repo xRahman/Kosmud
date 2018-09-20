@@ -30,6 +30,9 @@ export class TestScene extends Phaser.Scene
       Body.getCanvasDivElement().clientHeight / 2,
       'background'
     );
+    /// This should make the background not to move with camera but it
+    /// doesn't work.
+    //this.background.setScrollFactor(0, 0);
     //this.background.setDisplayOrigin(0, 0);
 
     /// At this moment I don't have a clue what these numbers mean.
@@ -45,6 +48,8 @@ export class TestScene extends Phaser.Scene
 
   public update()
   {
+    /// A way to scroll the camera:
+    this.cameras.main.x += 1;
   }
 
   public onDivResize(canvasWidth: number, canvasHeight: number)

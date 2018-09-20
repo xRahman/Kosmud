@@ -17,6 +17,9 @@ define(["require", "exports", "../../Shared/ERROR", "../../Client/Gui/Body"], fu
             // top left of the window (which is [0, 0] in  phaser) without
             // knowing the size of the background image.
             this.background = this.add.sprite(Body_1.Body.getCanvasDivElement().clientWidth / 2, Body_1.Body.getCanvasDivElement().clientHeight / 2, 'background');
+            /// This should make the background not to move with camera but it
+            /// doesn't work.
+            //this.background.setScrollFactor(0, 0);
             //this.background.setDisplayOrigin(0, 0);
             /// At this moment I don't have a clue what these numbers mean.
             this.add.sprite(400, 500, 'ship');
@@ -24,6 +27,8 @@ define(["require", "exports", "../../Shared/ERROR", "../../Client/Gui/Body"], fu
             this.onDivResize(Body_1.Body.getCanvasDivElement().clientWidth, Body_1.Body.getCanvasDivElement().clientHeight);
         }
         update() {
+            /// A way to scroll the camera:
+            this.cameras.main.x += 1;
         }
         onDivResize(canvasWidth, canvasHeight) {
             if (!this.cameras) {
