@@ -3,7 +3,7 @@
 
   <body> element.
 */
-define(["require", "exports", "../../Client/Gui/Component"], function (require, exports, Component_1) {
+define(["require", "exports", "../../Client/Gui/Component", "../../Client/Gui/CanvasDiv"], function (require, exports, Component_1, CanvasDiv_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
     const BODY_ELEMENT_ID = 'body';
@@ -14,6 +14,11 @@ define(["require", "exports", "../../Client/Gui/Component"], function (require, 
             // ! Throws an exception on error.
             this.element = getBodyElement();
             this.setCss(Body.css);
+            this.canvasDiv = new CanvasDiv_1.CanvasDiv(this.element);
+        }
+        // --------------- Static accessors -------------------
+        static getCanvasDivElement() {
+            return Body.instance.canvasDiv.getElement();
         }
     }
     Body.css = {
@@ -33,6 +38,7 @@ define(["require", "exports", "../../Client/Gui/Component"], function (require, 
         //  components with disabled text selection)
         cursor: 'default'
     };
+    Body.instance = new Body();
     exports.Body = Body;
     // ----------------- Auxiliary Functions ---------------------
     // ! Throws an exception on error.

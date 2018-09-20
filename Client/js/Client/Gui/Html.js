@@ -21,6 +21,7 @@ define(["require", "exports", "../../Client/Gui/Component"], function (require, 
         margin: "0px",
         padding: "0px"
     };
+    Html.instance = new Html();
     exports.Html = Html;
 });
 //# sourceMappingURL=Html.js.map

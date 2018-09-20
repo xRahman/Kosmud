@@ -1,28 +1,24 @@
 /*
   Part of Kosmud
 
-  <body> element.
+  Div element containing html canvas.
 */
 
-'use strict';
-
 import {Component} from '../../Client/Gui/Component';
-import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
 
-const BODY_ELEMENT_ID = 'body';
-
-export class Body extends Component
+export class CanvasDiv extends Component
 {
   // ! Throws an exception on error.
-  constructor()
+  constructor(parent: HTMLElement)
   {
     super();
 
     // ! Throws an exception on error.
-    this.element = getBodyElement();
-    this.setCss(Body.css);
+    this.element = this.createDiv(parent);
+    this.setCss(CanvasDiv.css);
 
-    this.canvasDiv = new CanvasDiv(this.element);
+    /// TODO: Předělat na parametr:
+    this.element.id = CanvasDiv.ELEMENT_ID;
   }
 
   protected static css: Partial<CSSStyleDeclaration> =
@@ -46,14 +42,7 @@ export class Body extends Component
     cursor: 'default'
   }
 
-  private static instance = new Body();
-
   // --------------- Static accessors -------------------
-
-  public static getCanvasDivElement()
-  {
-    return Body.instance.canvasDiv.getElement();
-  }
 
   // ---------------- Protected data -------------------- 
 
@@ -61,28 +50,16 @@ export class Body extends Component
 
   // ----------------- Private data ---------------------
 
-  private canvasDiv: CanvasDiv;
-
   // ---------------- Event handlers --------------------
 
   // ---------------- Private methods -------------------
+}
 
+// ------------------ Type Declarations ----------------------
+
+export module CanvasDiv
+{
+  export const ELEMENT_ID = 'canvas_div';
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-// ! Throws an exception on error.
-function getBodyElement()
-{
-  let body = document.getElementById(BODY_ELEMENT_ID);
-
-  if (!body)
-  {
-    throw new Error
-    (
-      "Unable to find <body> element by id '" + BODY_ELEMENT_ID + "'"
-    );
-  }
-
-  return body;
-}

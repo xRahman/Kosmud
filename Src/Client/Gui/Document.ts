@@ -4,14 +4,17 @@
   Functionality attached to html document.
 */
 
-'use strict';
-
 // import {ERROR} from '../../Shared/Error/ERROR';
 // import { REPORT } from '../../Shared/Error/REPORT';
 // import {Client} from '../../Client/Application/Client';
 import {Html} from '../../Client/Gui/Html';
 import {Body} from '../../Client/Gui/Body';
 // import {Windows} from '../../Client/Gui/Windows';
+
+// This does nothing, it's here only to mark these modules as 'used'.
+// (We need to import them from somewhere to inicialize them).
+Html;
+Body;
 
 export class Document
 {
@@ -21,11 +24,6 @@ export class Document
   }
 
   // ----------------- Private data ---------------------
-
-  // <body> element.
-  private body = new Body();
-  // <html> element.
-  private html = new Html();
 
   // --------------- Static accessors -------------------
 

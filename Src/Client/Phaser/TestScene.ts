@@ -1,5 +1,7 @@
 //const Phaser = require('phaser');
 
+import {ERROR} from '../../Shared/ERROR';
+
 export class TestScene extends Phaser.Scene
 {
   constructor()
@@ -34,5 +36,19 @@ export class TestScene extends Phaser.Scene
 
   public update()
   {
+  }
+
+  public onDivResize(width: number, height: number)
+  {
+    this.cameras.resize(width, height);
+
+    if (this.background)
+    {
+      this.background.setDisplaySize(width, height);
+    }
+    else
+    {
+      ERROR('Invalid background reference');
+    }
   }
 }

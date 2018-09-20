@@ -14,11 +14,13 @@ export abstract class Component
 
   // ---------------- Protected data -------------------- 
 
-  protected element: HTMLElement | null = null;
+  protected abstract element: HTMLElement;
 
   // ----------------- Public data ---------------------- 
 
   // --------------- Public accessors -------------------
+
+  public getElement() { return this.element; }
 
   // ---------------- Public methods --------------------
 
@@ -49,12 +51,72 @@ export abstract class Component
     }
   }
 
-  // ---------------- Private methods -------------------
+  protected createDiv
+  (
+    parent: HTMLElement,
+    insertMode: Component.InsertMode = Component.InsertMode.APPEND
+  )
+  : HTMLDivElement
+  {
+    let div = <HTMLDivElement>document.createElement('div');
 
+    insertToParent(div, parent, insertMode);
+
+    /// TODO: Nastavit atributy, css.
+
+    return div;
+  }
+
+  // ---------------- Private methods -------------------
 }
 
 // ------------------ Type Declarations ----------------------
 
-// export module Component
-// {
-// }
+export module Component
+{
+  export enum InsertMode
+  {
+    // Insert as the last child (default).
+    APPEND,
+    // Insert as the first child.
+    PREPEND,
+    // Html contents of $parent is cleared first.
+    REPLACE
+  }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function clearHtmlContent(element: HTMLElement)
+{
+  while (element.lastChild)
+    element.removeChild(element.lastChild);
+}
+
+function insertToParent
+(
+  element: HTMLElement,
+  parent: HTMLElement,
+  mode: Component.InsertMode
+)
+{
+  switch (mode)
+  {
+    case Component.InsertMode.APPEND:
+      parent.appendChild(element);
+      break;
+
+    case Component.InsertMode.PREPEND:
+      parent.insertBefore(element, parent.firstChild);
+      break;
+
+    case Component.InsertMode.REPLACE:
+      clearHtmlContent(parent);
+      parent.appendChild(element);
+      break;
+
+    default:
+      ERROR("Unknown insert mode. Element is not inserted to parent");
+      break;
+  }
+}

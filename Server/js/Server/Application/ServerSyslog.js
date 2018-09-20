@@ -13,7 +13,8 @@ class ServerSyslog {
         let entry = "[" + MessageType_1.MessageType[msgType] + "] " + text;
         // Output to stdout.
         console.log(entry);
-        // TODO: Output to log file.
+        // Output to log file.
+        /// TODO
     }
 }
 exports.ServerSyslog = ServerSyslog;

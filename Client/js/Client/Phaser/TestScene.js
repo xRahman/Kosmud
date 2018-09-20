@@ -1,5 +1,5 @@
 //const Phaser = require('phaser');
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../../Shared/ERROR"], function (require, exports, ERROR_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class TestScene extends Phaser.Scene {
@@ -26,6 +26,15 @@ define(["require", "exports"], function (require, exports) {
             this.add.sprite(400, 500, 'ship');
         }
         update() {
+        }
+        onDivResize(width, height) {
+            this.cameras.resize(width, height);
+            if (this.background) {
+                this.background.setDisplaySize(width, height);
+            }
+            else {
+                ERROR_1.ERROR('Invalid background reference');
+            }
         }
     }
     exports.TestScene = TestScene;

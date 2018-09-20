@@ -27,9 +27,15 @@ export class Html extends Component
     padding: "0px"
   }
 
-  // ----------------- Private data ---------------------
+  private static instance = new Html();
 
   // --------------- Static accessors -------------------
+
+  // ---------------- Protected data -------------------- 
+
+  protected element: HTMLElement;
+
+  // ----------------- Private data ---------------------
 
   // ---------------- Event handlers --------------------
 

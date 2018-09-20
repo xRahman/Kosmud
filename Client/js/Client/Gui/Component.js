@@ -7,15 +7,9 @@ define(["require", "exports", "../../Shared/ERROR"], function (require, exports,
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Component {
-        constructor() {
-            // -------------- Static class data -------------------
-            // ----------------- Private data --------------------- 
-            // ---------------- Protected data -------------------- 
-            this.element = null;
-            // ---------------- Private methods -------------------
-        }
         // ----------------- Public data ---------------------- 
         // --------------- Public accessors -------------------
+        getElement() { return this.element; }
         // ---------------- Public methods --------------------
         // --------------- Protected methods ------------------
         setCss(css) {
@@ -36,11 +30,47 @@ define(["require", "exports", "../../Shared/ERROR"], function (require, exports,
                 }
             }
         }
+        createDiv(parent, insertMode = Component.InsertMode.APPEND) {
+            let div = document.createElement('div');
+            insertToParent(div, parent, insertMode);
+            /// TODO: Nastavit atributy, css.
+            return div;
+        }
     }
     exports.Component = Component;
+    // ------------------ Type Declarations ----------------------
+    (function (Component) {
+        let InsertMode;
+        (function (InsertMode) {
+            // Insert as the last child (default).
+            InsertMode[InsertMode["APPEND"] = 0] = "APPEND";
+            // Insert as the first child.
+            InsertMode[InsertMode["PREPEND"] = 1] = "PREPEND";
+            // Html contents of $parent is cleared first.
+            InsertMode[InsertMode["REPLACE"] = 2] = "REPLACE";
+        })(InsertMode = Component.InsertMode || (Component.InsertMode = {}));
+    })(Component = exports.Component || (exports.Component = {}));
+    // ----------------- Auxiliary Functions ---------------------
+    function clearHtmlContent(element) {
+        while (element.lastChild)
+            element.removeChild(element.lastChild);
+    }
+    function insertToParent(element, parent, mode) {
+        switch (mode) {
+            case Component.InsertMode.APPEND:
+                parent.appendChild(element);
+                break;
+            case Component.InsertMode.PREPEND:
+                parent.insertBefore(element, parent.firstChild);
+                break;
+            case Component.InsertMode.REPLACE:
+                clearHtmlContent(parent);
+                parent.appendChild(element);
+                break;
+            default:
+                ERROR_1.ERROR("Unknown insert mode. Element is not inserted to parent");
+                break;
+        }
+    }
 });
-// ------------------ Type Declarations ----------------------
-// export module Component
-// {
-// }
 //# sourceMappingURL=Component.js.map
