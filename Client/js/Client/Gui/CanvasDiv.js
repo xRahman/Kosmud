@@ -13,7 +13,7 @@ define(["require", "exports", "../../Client/Gui/Component"], function (require, 
             // ! Throws an exception on error.
             this.element = this.createDiv(parent);
             this.setCss(CanvasDiv.css);
-            /// TODO: Předělat na parametr:
+            /// TODO: Předělat na parametr funkce createDiv():
             this.element.id = CanvasDiv.ELEMENT_ID;
         }
     }

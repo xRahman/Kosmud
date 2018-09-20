@@ -9,6 +9,8 @@ export class PhaserTest
 {
   constructor()
   {
+    this.game = new Phaser.Game(this.config);
+
     window.addEventListener
     (
       'resize',
@@ -27,7 +29,7 @@ export class PhaserTest
     scene: this.scene
   };
 
-  private game = new Phaser.Game(this.config);
+  private game: Phaser.Game;
 
   private onDivResize()
   {

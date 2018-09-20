@@ -17,7 +17,7 @@ export class CanvasDiv extends Component
     this.element = this.createDiv(parent);
     this.setCss(CanvasDiv.css);
 
-    /// TODO: Předělat na parametr:
+    /// TODO: Předělat na parametr funkce createDiv():
     this.element.id = CanvasDiv.ELEMENT_ID;
   }
 

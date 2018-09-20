@@ -25,20 +25,46 @@ class Application {
     // ------------- Public static methods ----------------
     // Don't call this directly, use ERROR() instead.
     static reportException(error) {
-        this.getInstance().reportException(error);
+        // If someone tries to report exception before
+        // an application instance is created (for example
+        // directly from a class inicialization), we can't
+        // use regular logging process.
+        if (!this.instance)
+            throw error;
+        this.instance.reportException(error);
     }
     // Don't call this directly, use ERROR() instead.
     static reportError(message) {
-        this.getInstance().reportError(message);
+        // If someone tries to report error before
+        // an application instance is created (for example
+        // directly from a class inicialization), we can't
+        // use regular logging process.
+        if (!this.instance) {
+            throw new Error("ERROR() occured before application was created:"
+                + ' "' + message + '"');
+        }
+        this.instance.reportError(message);
     }
     // Don't call this directly, use ERROR() instead.
     static reportFatalError(message) {
-        this.getInstance().reportFatalError(message);
+        // If someone tries to report error before
+        // an application instance is created (for example
+        // directly from a class inicialization), we can't
+        // use regular logging process.
+        if (!this.instance) {
+            throw new Error("FATAL_ERROR() occured before application was created:"
+                + ' "' + message + '"');
+        }
+        this.instance.reportFatalError(message);
     }
     // Sends message to syslog.
     // (Don't call this directly, use Syslog.log() instead.)
     static log(text, msgType) {
-        this.getInstance().log(text, msgType);
+        if (!this.instance) {
+            throw new Error("Attempt to use Syslog before application was created."
+                + " Log message: " + text);
+        }
+        this.instance.log(text, msgType);
     }
 }
 // -------------- Static class data -------------------
