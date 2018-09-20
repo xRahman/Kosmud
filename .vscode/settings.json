@@ -24,12 +24,16 @@
   },
   "search.exclude":
   {
-      ".git/": true,
-      "node_modules/": true,
-      "documentation/": true,
-      "deprecated/": true,
-      "build/": true,
-      "**/*.bat": true
+    "_Resources": true,
+    ".git/": true,
+    "**/*.bat": true,
+    "amend": true,
+    "Client/": true,
+    "commit": true,
+    "deprecated/": true,
+    "Documentation/": true,
+    "node_modules/": true,
+    "Server/": true
   },
 
   "editor.rulers": [80],
