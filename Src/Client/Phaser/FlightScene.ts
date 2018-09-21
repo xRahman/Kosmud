@@ -1,7 +1,6 @@
+/// Phaser is listed in html direcly for now (should be imported though).
 //const Phaser = require('phaser');
 
-import {ERROR} from '../../Shared/ERROR';
-import {Body} from '../../Client/Gui/Body';
 import {Canvas} from '../../Client/Phaser/Canvas';
 
 export class FlightScene extends Phaser.Scene
@@ -48,8 +47,13 @@ export class FlightScene extends Phaser.Scene
 
   public update()
   {
-    /// A way to scroll the camera:
-    // this.cameras.main.x += 1;
+    // Note: Setting 'x' and 'y' to the camera ignores
+    // 'scrollFactor' set on game objects. So in  order to
+    // 'use scrollFactor' we need to set 'scrollX' and 'scrollY'.
+    if (this.cameras.main.x < -500 || this.cameras.main.x > 500)
+      this.cameras.main.scrollX -= 1;
+    else
+      this.cameras.main.scrollX += 1;
   }
 
   private createBackground()
@@ -71,12 +75,14 @@ export class FlightScene extends Phaser.Scene
     //this.background.setDisplayOrigin(0, 0);
 
     this.resizeBackground();
+    this.background.setScrollFactor(0);
   }
 
   private createShip()
   {
     /// At this moment I don't have a clue what these numbers mean.
-    this.add.sprite(400, 500, 'ship');
+    let ship = this.add.sprite(400, 500, 'ship');
+    ship.setScrollFactor(0.5);
   }
 
   // ! Throws exception on error.

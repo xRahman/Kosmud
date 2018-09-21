@@ -49,6 +49,9 @@ http://www.html5gamedevs.com/forum/33-phaser-3/
 Paralax scrolling:
 https://gamedevelopment.tutsplus.com/tutorials/parallax-scrolling-a-simple-effective-way-to-add-depth-to-a-2d-game--cms-21510
 
+Scene manager:
+https://photonstorm.github.io/phaser3-docs/Phaser.Scenes.SceneManager.html#methods
+
 ==============================================================
 
 matter.js physics engine

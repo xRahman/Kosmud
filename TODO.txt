@@ -1,13 +1,6 @@
-TODO: Zvážit, jestli se na ERROR() nevyprdnout úplně.
-- v browseru stejně nakonec skončím vyhozením výjimky.
-- stejně chci nakonec logovat i exceptiony.
-- throw Error() má správně stack a není třeba nic uřezávat.
-Vlastně jediné použití ERRORU() co mě napadá, je, když chci něco
-  jen zalogovat a pokračovat dál ve fci (throw je jako return);
-ZÁVĚR: Zkusím co nejvíc používat throw Error().
-
 TODO: Prostudovat avanced Typescript typy:
   https://levelup.gitconnected.com/advanced-typescript-types-with-examples-1d144e4eda9e
+- nebo si to možná hodit do nějakého typescriptového howtu či manuálu.
 
 TODO: Mrknout na:
   var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'parent');

@@ -1,18 +1,12 @@
-import {ERROR} from '../../Shared/ERROR';
 import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
-// import {Body} from '../../Client/Gui/Body';
 import {Canvas} from '../../Client/Phaser/Canvas';
 import {FlightScene} from '../../Client/Phaser/FlightScene';
 
+/// Phaser is listed in html direcly for now (should be imported though).
 //const Phaser = require('phaser');
 
 export class PhaserEngine
 {
-  constructor()
-  {
-    this.game = new Phaser.Game(this.config);
-  }
-
   private static instance = new PhaserEngine();
 
   private canvas = new Canvas();
@@ -27,19 +21,16 @@ export class PhaserEngine
     scene: this.flightScene
   };
 
-  private game: Phaser.Game;
+  private game = new Phaser.Game(this.config)
 
   public static onCanvasDivResize()
   {
-    this.instance.onCanvasDivResize();
-  }
+    let canvas = this.instance.canvas;
 
-  private onCanvasDivResize()
-  {
     console.log('Test div resized');
 
-    this.canvas.updateSize();
-    this.game.resize(this.canvas.getWidth(), this.canvas.getHeight());
-    this.flightScene.onCanvasResize();
+    canvas.updateSize();
+    this.instance.game.resize(canvas.getWidth(), canvas.getHeight());
+    this.instance.flightScene.onCanvasResize();
   }
 }

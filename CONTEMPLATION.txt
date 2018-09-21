@@ -1,0 +1,13 @@
+
+TODO: Zvážit, jestli se na ERROR() nevyprdnout úplně.
+- v browseru stejně nakonec skončím vyhozením výjimky.
+- stejně chci nakonec logovat i exceptiony.
+- throw Error() má správně stack a není třeba nic uřezávat.
+Vlastně jediné použití ERRORU() co mě napadá, je, když chci něco
+  jen zalogovat a pokračovat dál ve fci (throw je jako return);
+ZÁVĚR: Zkusím co nejvíc používat throw Error().
+
+
+Pozn.: Nehybnost backgroundu by šla kromě scrollFactoru 0 vyřešit
+  ještě tím, že by se renderoval do samostatné scény. Viz sceneManager.
+  (Pokud budu mít ui, tak na to asi stejně dojde).
