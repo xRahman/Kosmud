@@ -3,7 +3,7 @@
 
   Div element containing html canvas.
 */
-define(["require", "exports", "../../Client/Gui/Component"], function (require, exports, Component_1) {
+define(["require", "exports", "../../Client/Gui/Component", "../../Client/Phaser/PhaserEngine"], function (require, exports, Component_1, PhaserEngine_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class CanvasDiv extends Component_1.Component {
@@ -12,9 +12,17 @@ define(["require", "exports", "../../Client/Gui/Component"], function (require, 
             super();
             // ! Throws an exception on error.
             this.element = this.createDiv(parent);
+            /// TODO: Předělat na parametr funkce createDiv():
             this.setCss(CanvasDiv.css);
             /// TODO: Předělat na parametr funkce createDiv():
             this.element.id = CanvasDiv.ELEMENT_ID;
+            window.addEventListener('resize', () => { this.onResize(); });
+        }
+        // ----------------- Private data ---------------------
+        // ---------------- Event handlers --------------------
+        onResize() {
+            console.log('Test div resized');
+            PhaserEngine_1.PhaserEngine.onCanvasDivResize();
         }
     }
     CanvasDiv.css = {

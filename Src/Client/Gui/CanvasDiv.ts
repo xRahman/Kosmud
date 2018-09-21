@@ -5,6 +5,7 @@
 */
 
 import {Component} from '../../Client/Gui/Component';
+import {PhaserEngine} from '../../Client/Phaser/PhaserEngine';
 
 export class CanvasDiv extends Component
 {
@@ -15,10 +16,19 @@ export class CanvasDiv extends Component
 
     // ! Throws an exception on error.
     this.element = this.createDiv(parent);
+
+    /// TODO: Předělat na parametr funkce createDiv():
     this.setCss(CanvasDiv.css);
 
     /// TODO: Předělat na parametr funkce createDiv():
     this.element.id = CanvasDiv.ELEMENT_ID;
+
+
+    window.addEventListener
+    (
+      'resize',
+      () => { this.onResize(); }
+    );
   }
 
   protected static css: Partial<CSSStyleDeclaration> =
@@ -51,6 +61,13 @@ export class CanvasDiv extends Component
   // ----------------- Private data ---------------------
 
   // ---------------- Event handlers --------------------
+
+  private onResize()
+  {
+    console.log('Test div resized');
+
+    PhaserEngine.onCanvasDivResize();
+  }
 
   // ---------------- Private methods -------------------
 }

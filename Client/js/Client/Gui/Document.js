@@ -7,10 +7,8 @@ define(["require", "exports", "../../Client/Gui/Html", "../../Client/Gui/Body"],
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     // import {Windows} from '../../Client/Gui/Windows';
-    // This does nothing, it's here only to mark these modules as 'used'.
-    // (We need to import them from somewhere to inicialize them).
-    Html_1.Html;
-    Body_1.Body;
+    Html_1.Html; // Inits the class.
+    Body_1.Body; // Inits the class.
     class Document {
         constructor() {
             window.addEventListener('resize', () => { this.onDocumentResize(); });

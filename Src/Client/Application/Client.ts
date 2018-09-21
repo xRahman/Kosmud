@@ -7,7 +7,7 @@
     Client.start();
 */
 
-import {PhaserTest} from '../../Client/Phaser/PhaserTest';
+import {PhaserEngine} from '../Phaser/PhaserEngine';
 
 import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
@@ -15,6 +15,7 @@ import {Syslog} from '../../Shared/Syslog';
 import {ClientSyslog} from '../../Client/Application/ClientSyslog';
 import {Document} from '../../Client/Gui/Document';
 
+PhaserEngine;   // Inits the class.
 
 export class Client extends Application
 {
@@ -35,9 +36,6 @@ export class Client extends Application
   // ---------------- Protected data --------------------
 
   // ----------------- Private data ---------------------
-
-  /// Test.
-  private phaserTest = new PhaserTest();
 
   // Html document.
   private document = new Document();

@@ -6,17 +6,16 @@
   Usage:
     Client.start();
 */
-define(["require", "exports", "../../Client/Phaser/PhaserTest", "../../Shared/Application", "../../Shared/MessageType", "../../Shared/Syslog", "../../Client/Application/ClientSyslog", "../../Client/Gui/Document"], function (require, exports, PhaserTest_1, Application_1, MessageType_1, Syslog_1, ClientSyslog_1, Document_1) {
+define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Application", "../../Shared/MessageType", "../../Shared/Syslog", "../../Client/Application/ClientSyslog", "../../Client/Gui/Document"], function (require, exports, PhaserEngine_1, Application_1, MessageType_1, Syslog_1, ClientSyslog_1, Document_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    PhaserEngine_1.PhaserEngine; // Inits the class.
     class Client extends Application_1.Application {
         constructor() {
             // -------------- Static constants --------------------
             super(...arguments);
             // ---------------- Protected data --------------------
             // ----------------- Private data ---------------------
-            /// Test.
-            this.phaserTest = new PhaserTest_1.PhaserTest();
             // Html document.
             this.document = new Document_1.Document();
             // ---------------- Event handlers --------------------

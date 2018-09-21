@@ -11,10 +11,8 @@ import {Html} from '../../Client/Gui/Html';
 import {Body} from '../../Client/Gui/Body';
 // import {Windows} from '../../Client/Gui/Windows';
 
-// This does nothing, it's here only to mark these modules as 'used'.
-// (We need to import them from somewhere to inicialize them).
-Html;
-Body;
+Html;   // Inits the class.
+Body;   // Inits the class.
 
 export class Document
 {
