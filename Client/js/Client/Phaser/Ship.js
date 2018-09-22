@@ -5,11 +5,28 @@ define(["require", "exports"], function (require, exports) {
     class Ship {
         constructor(scene) {
             this.scene = scene;
-            this.sprite = null;
             this.sprite = createShipSprite(this.scene);
         }
         static preload(scene) {
             scene.load.image(SHIP_SPRITE_ID, '/graphics/ships/hecate.png');
+        }
+        // ---------------- Public methods --------------------
+        update(cursors) {
+            if (cursors.left && cursors.left.isDown) {
+                //this.sprite.x -= 1;
+                this.sprite.rotation -= 0.01;
+                //Phaser.Math.
+            }
+            if (cursors.right && cursors.right.isDown) {
+                //this.sprite.x += 1;
+                this.sprite.rotation += 0.01;
+            }
+            if (cursors.up && cursors.up.isDown) {
+                this.sprite.y -= 1;
+            }
+            if (cursors.down && cursors.down.isDown) {
+                this.sprite.y += 1;
+            }
         }
     }
     exports.Ship = Ship;

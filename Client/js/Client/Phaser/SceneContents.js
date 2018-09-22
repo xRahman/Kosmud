@@ -15,6 +15,7 @@ define(["require", "exports", "../../Client/Phaser/Camera", "../../Client/Phaser
         // This method is run periodically be Phaser.
         update() {
             this.camera.update();
+            this.ship.update(this.cursors);
         }
         onCanvasResize() {
             this.background.resize();

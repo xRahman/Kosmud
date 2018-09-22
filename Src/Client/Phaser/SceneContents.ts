@@ -25,6 +25,8 @@ export class SceneContents
   public update()
   {
     this.camera.update();
+
+    this.ship.update(this.cursors);
   }
 
   public onCanvasResize()

@@ -1,3 +1,10 @@
+https://github.com/Lightnet/project-phaser3-matterjs
+https://gamedevacademy.org/phaser-3-tutorial/
+https://github.com/liabru/matter-js/wiki/Tutorials
+http://docs.lance.gg/r3.0.0/tutorial-spaceships.html
+https://www.mikewesthad.com/blog.html
+---
+
 TODO: Objekty ve scéně by měly být v classe, která se celá
   nainstancuje ve Scene.create(), ať nemusím testovat, jestli to existuje.
   - problém je, že některé věci se vyrábí v preloadu...

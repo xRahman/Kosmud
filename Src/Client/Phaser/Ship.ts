@@ -8,7 +8,7 @@ export class Ship
     this.sprite = createShipSprite(this.scene);
   }
 
-  private sprite: Phaser.GameObjects.Sprite | null = null;
+  private sprite: Phaser.GameObjects.Sprite;
 
   public static preload(scene: Phaser.Scene)
   {
@@ -16,6 +16,33 @@ export class Ship
   }
 
   // ---------------- Public methods --------------------
+
+  public update(cursors: Phaser.Input.Keyboard.CursorKeys)
+  {
+    if (cursors.left && cursors.left.isDown)
+    {
+      //this.sprite.x -= 1;
+      this.sprite.rotation -= 0.01;
+
+      //Phaser.Math.
+    }
+
+    if (cursors.right && cursors.right.isDown)
+    {
+      //this.sprite.x += 1;
+      this.sprite.rotation += 0.01;
+    }
+
+    if (cursors.up && cursors.up.isDown)
+    {
+      this.sprite.y -= 1;
+    }
+
+    if (cursors.down && cursors.down.isDown)
+    {
+      this.sprite.y += 1;
+    }
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
