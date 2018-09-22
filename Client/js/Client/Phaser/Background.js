@@ -1,26 +1,19 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    const BACKGROUND_SPRITE_ID = 'background';
     class Background {
         constructor(scene, canvas) {
             this.scene = scene;
             this.canvas = canvas;
-            this.sprite = null;
-        }
-        // ---------------- Public methods --------------------
-        preload() {
-            this.scene.load.image('background', '/graphics/background/deep_space0.jpg');
-        }
-        // ! Throws exception on error.
-        create() {
-            if (this.sprite)
-                throw new Error("Background sprite already exists");
             this.sprite = createBackgroundSprite(this.scene, this.canvas);
-            console.log('Creating background sprite: ');
-            console.log(this.sprite);
             // Update size and position to cover whole canvas.
             this.resize();
         }
+        static preload(scene) {
+            scene.load.image(BACKGROUND_SPRITE_ID, '/graphics/background/deep_space0.jpg');
+        }
+        // ---------------- Public methods --------------------
         // ! Throws exception on error.
         resize() {
             if (!this.sprite) {
@@ -92,7 +85,7 @@ define(["require", "exports"], function (require, exports) {
         // of canvas coords is at the top left. We want to center
         // the background in the canvas so we need to place it
         // to [canvasWidth / 2, canvasHeight / 2] coordinates.
-        let backgroundSprite = scene.add.sprite(canvas.getWidth() / 2, canvas.getHeight() / 2, 'background');
+        let backgroundSprite = scene.add.sprite(canvas.getWidth() / 2, canvas.getHeight() / 2, BACKGROUND_SPRITE_ID);
         // 'scrollFactor' 0 means that the background won't move
         // along with camera (note that camera must be moved using
         // '.scrollX' and '.scrollY' rather than '.x' and '.y' for

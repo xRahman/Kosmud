@@ -1,6 +1,6 @@
 import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
 import {Canvas} from '../../Client/Phaser/Canvas';
-import {FlightScene} from '../../Client/Phaser/FlightScene';
+import {Scene} from '../../Client/Phaser/Scene';
 
 /// Phaser is listed in html direcly for now (should be imported though).
 //const Phaser = require('phaser');
@@ -10,7 +10,7 @@ export class PhaserEngine
   private static instance = new PhaserEngine();
 
   private canvas = new Canvas();
-  private flightScene = new FlightScene(this.canvas);
+  private flightScene = new Scene(this.canvas, 'FlightScene');
 
   private config: GameConfig =
   {

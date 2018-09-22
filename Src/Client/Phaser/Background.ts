@@ -1,34 +1,29 @@
 import {Canvas} from '../../Client/Phaser/Canvas';
 
+const BACKGROUND_SPRITE_ID = 'background';
+
 export class Background
 {
   constructor(private scene: Phaser.Scene, private canvas: Canvas)
   {
-  }
-
-  private sprite: Phaser.GameObjects.Sprite | null = null;
-
-  // ---------------- Public methods --------------------
-
-  public preload()
-  {
-    this.scene.load.image('background', '/graphics/background/deep_space0.jpg');
-  }
-
-  // ! Throws exception on error.
-  public create()
-  {
-    if (this.sprite)
-      throw new Error("Background sprite already exists");
-
     this.sprite = createBackgroundSprite(this.scene, this.canvas);
-
-    console.log('Creating background sprite: ');
-    console.log(this.sprite);
 
     // Update size and position to cover whole canvas.
     this.resize();
   }
+
+  private sprite: Phaser.GameObjects.Sprite;
+
+  public static preload(scene: Phaser.Scene)
+  {
+    scene.load.image
+    (
+      BACKGROUND_SPRITE_ID,
+      '/graphics/background/deep_space0.jpg'
+    );
+  }
+
+  // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
   public resize()
@@ -126,7 +121,7 @@ function createBackgroundSprite(scene: Phaser.Scene, canvas: Canvas)
   (
     canvas.getWidth() / 2,
     canvas.getHeight() / 2,
-    'background'
+    BACKGROUND_SPRITE_ID
   );
 
   // 'scrollFactor' 0 means that the background won't move

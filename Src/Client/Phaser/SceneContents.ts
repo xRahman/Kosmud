@@ -1,46 +1,25 @@
 
+import {Scene} from '../../Client/Phaser/Scene';
 import {Canvas} from '../../Client/Phaser/Canvas';
 import {Camera} from '../../Client/Phaser/Camera';
 import {Background} from '../../Client/Phaser/Background';
 import {Ship} from '../../Client/Phaser/Ship';
 
-export class FlightScene extends Phaser.Scene
+export class SceneContents
 {
-  constructor(private canvas: Canvas)
+  constructor(private canvas: Canvas, private scene: Scene)
   {
-    super('FlightScene');
-    // this.scene = new Phaser.Scene('FlightScene');
-    // this.camera = new Camera(this.scene);
   }
 
   // ----------------- Private data ---------------------
  
-  // private camera: Camera;
-  private camera = new Camera(this);
+  private camera = new Camera(this.scene);
+  private cursors = this.scene.input.keyboard.createCursorKeys();
 
-  private background = new Background(this, this.canvas);
-  private ship = new Ship(this);
+  private background = new Background(this.scene, this.canvas);
+  private ship = new Ship(this.scene);
 
   // ---------------- Public methods --------------------
-
-  // This method is run be Phaser.
-  public preload()
-  {
-    console.log('preload');
-
-    this.background.preload();
-    this.ship.preload();
-  }
-
-  // This method is run be Phaser.
-  public create()
-  {
-    console.log('create');
-
-    this.camera.create();
-    this.background.create();
-    this.ship.create();
-  }
 
   // This method is run periodically be Phaser.
   public update()
@@ -65,6 +44,11 @@ export class FlightScene extends Phaser.Scene
   }
 
   // ---------------- Private methods -------------------
+
+  // private onKeyupA()
+  // {
+  //   this.ship.turn(-1);
+  // }
 }
 
 // ----------------- Auxiliary Functions ---------------------

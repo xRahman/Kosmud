@@ -1,32 +1,17 @@
 define(["require", "exports", "../../Client/Phaser/Camera", "../../Client/Phaser/Background", "../../Client/Phaser/Ship"], function (require, exports, Camera_1, Background_1, Ship_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class FlightScene extends Phaser.Scene {
-        constructor(canvas) {
-            super('FlightScene');
+    class SceneContents {
+        constructor(canvas, scene) {
             this.canvas = canvas;
+            this.scene = scene;
             // ----------------- Private data ---------------------
-            // private camera: Camera;
-            this.camera = new Camera_1.Camera(this);
-            this.background = new Background_1.Background(this, this.canvas);
-            this.ship = new Ship_1.Ship(this);
-            // this.scene = new Phaser.Scene('FlightScene');
-            // this.camera = new Camera(this.scene);
+            this.camera = new Camera_1.Camera(this.scene);
+            this.cursors = this.scene.input.keyboard.createCursorKeys();
+            this.background = new Background_1.Background(this.scene, this.canvas);
+            this.ship = new Ship_1.Ship(this.scene);
         }
         // ---------------- Public methods --------------------
-        // This method is run be Phaser.
-        preload() {
-            console.log('preload');
-            this.background.preload();
-            this.ship.preload();
-        }
-        // This method is run be Phaser.
-        create() {
-            console.log('create');
-            this.camera.create();
-            this.background.create();
-            this.ship.create();
-        }
         // This method is run periodically be Phaser.
         update() {
             this.camera.update();
@@ -44,7 +29,7 @@ define(["require", "exports", "../../Client/Phaser/Camera", "../../Client/Phaser
             // this.cameras.resize(width, height);
         }
     }
-    exports.FlightScene = FlightScene;
+    exports.SceneContents = SceneContents;
 });
 // ----------------- Auxiliary Functions ---------------------
-//# sourceMappingURL=FlightScene.js.map
+//# sourceMappingURL=SceneContents.js.map
