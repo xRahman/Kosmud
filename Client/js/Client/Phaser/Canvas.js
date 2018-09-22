@@ -1,4 +1,3 @@
-//const Phaser = require('phaser');
 define(["require", "exports", "../../Client/Gui/Body"], function (require, exports, Body_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

@@ -1,4 +1,3 @@
-//const Phaser = require('phaser');
 
 import {Body} from '../../Client/Gui/Body';
 

@@ -21,7 +21,7 @@ export class PhaserEngine
     scene: this.flightScene
   };
 
-  private game = new Phaser.Game(this.config)
+  private game = new Phaser.Game(this.config);
 
   public static onCanvasDivResize()
   {
