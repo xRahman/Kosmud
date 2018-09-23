@@ -17,7 +17,7 @@ const ERROR_1 = require("../../Shared/ERROR");
 const Syslog_1 = require("../../Shared/Syslog");
 const FileSystem_1 = require("../../Server/FS/FileSystem");
 const MessageType_1 = require("../../Shared/MessageType");
-// import {WebSocketServer} from '../../../server/lib/net/WebSocketServer';
+const WebSocketServer_1 = require("../../Server/Net/WebSocketServer");
 // Built-in node.js modules.
 const http = require("http"); // Import namespace 'http' from node.js.
 const url = require("url"); // Import namespace 'url' from node.js.
@@ -47,6 +47,8 @@ class HttpServer {
         // ----------------- Private data ---------------------
         this.port = HttpServer.DEFAULT_PORT;
         this.httpServer = null;
+        // Websocket server runs inside a http server.
+        this.webSocketServer = new WebSocketServer_1.WebSocketServer();
     }
     static get WWW_ROOT() { return './Client'; }
     static get DEFAULT_PORT() { return 80; }
@@ -63,8 +65,6 @@ class HttpServer {
         Syslog_1.Syslog.log("Starting http server at port " + port, MessageType_1.MessageType.SYSTEM_INFO);
         this.httpServer.listen(port, () => { this.onStartListening(); });
     }
-    // // Websocket server runs inside a http server.
-    // private webSocketServer = new WebSocketServer();
     // ---------------- Event handlers --------------------
     // Runs when server is ready and listening.
     onStartListening() {
@@ -74,8 +74,8 @@ class HttpServer {
         }
         Syslog_1.Syslog.log("Http server is up and listening", MessageType_1.MessageType.HTTP_SERVER);
         this.open = true;
-        // // Start a websocket server inside the http server.
-        // this.webSocketServer.start(this.httpServer);
+        // Start a websocket server inside the http server.
+        this.webSocketServer.start(this.httpServer);
     }
     // Handles http requests.
     onRequest(request, response) {

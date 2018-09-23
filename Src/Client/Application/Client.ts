@@ -8,12 +8,13 @@
 */
 
 import {PhaserEngine} from '../Phaser/PhaserEngine';
-
 import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
 import {Syslog} from '../../Shared/Syslog';
 import {ClientSyslog} from '../../Client/Application/ClientSyslog';
 import {Document} from '../../Client/Gui/Document';
+import {Connection} from '../../Client/Net/Connection';
+import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 
 PhaserEngine;   // Inits the class.
 
@@ -24,6 +25,7 @@ export class Client extends Application
   // --------------- Static accessors -------------------
 
   public static get document() { return this.instance.document; }
+  public static get connection() { return this.instance.connection; }
 
   // -------------- Static class data -------------------
 
@@ -37,6 +39,11 @@ export class Client extends Application
 
   // ----------------- Private data ---------------------
 
+  // There is only one connection per client application
+  // (it means one connection per browser tab if you
+  //  open the client in multiple tabs).
+  private connection = new Connection();
+
   // Html document.
   private document = new Document();
 
@@ -45,6 +52,9 @@ export class Client extends Application
   public static async start()
   {
     Syslog.log("Starting Kosmud client version...", MessageType.SYSTEM_INFO);
+
+    Client.instance.initGUI();
+    Client.instance.connection.connect();
   }
 
   // --------------- Protected methods ------------------
@@ -86,7 +96,28 @@ export class Client extends Application
     throw error;
   }
 
+  private initGUI()
+  {
+    window.onbeforeunload =
+      (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
+  }
+
   // ---------------- Event handlers --------------------
+
+  private onBeforeUnload(event: BeforeUnloadEvent)
+  {
+    this.connection.reportClosingBrowserTab();
+
+    // Close the connection to prevent browser from closing it
+    // abnormally with event code 1006.
+    //   For some strange reson this doesn't alway work in Chrome.
+    // If we call socket.close(1000, "Tab closed"), onClose() event
+    // handler on respective server socket will receive the reason
+    // but sometimes code will be 1006 instead of 1000. To circumvent
+    // this, we send WebSocketEvent.REASON_CLOSE when socket is closed
+    // from onBeforeUnload() and we check for it in ServerSocket.onClose().
+    this.connection.close(WebSocketEvent.TAB_CLOSED);
+  }
 }
 
 // ------------------ Type declarations ----------------------

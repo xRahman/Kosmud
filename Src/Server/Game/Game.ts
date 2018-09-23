@@ -39,8 +39,9 @@ export class Game
 
   private updateClients()
   {
-    console.log('Ship position:'
-      + ' ' + this.ship.getX() + ', ' + this.ship.getY() + ','
-      + ' angle: ' + this.ship.getAngle());
+    /// TODO:
+    // console.log('Ship position:'
+    //   + ' ' + this.ship.getX() + ', ' + this.ship.getY() + ','
+    //   + ' angle: ' + this.ship.getAngle());
   }
 }

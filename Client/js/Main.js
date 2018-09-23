@@ -19,9 +19,9 @@ requirejs.config
       // 'jquery': '../js/jquery/jquery.slim',
       // // Alias so that you can use 'import d3 = require('d3');'.
       // 'd3': '../js/d3/d3.min',
-      // 'js-beautify': '../js/js-beautify/beautify',
-      // 'fastbitset': '../js/fastbitset/FastBitSet'
-      'phaser': '../js/phaser/phaser'
+      'js-beautify': '../js/js-beautify/beautify',
+      'fastbitset': '../js/fastbitset/FastBitSet'
+      // 'phaser': '../js/phaser/phaser'
     }
   }
 );
@@ -31,8 +31,8 @@ requirejs.config
 // If I don't reuire 3rd party modules here, I get error like:
 //   Uncaught Error: Module name "js-beautify" has not
 //   been loaded yet for context: _
-//require(['js-beautify']);
-//require(['fastbitset']);
+require(['js-beautify']);
+require(['fastbitset']);
 // require(['phaser']);
 
 // Launch the client.

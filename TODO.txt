@@ -1,3 +1,7 @@
+TODO: Zjistit, co mi to tam chodí za system message.
+
+TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.
+
 TODO: Serializable by nemělo nic vědět o entitách.
 
 TODO: Klikání na objekty ve hře:

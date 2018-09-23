@@ -6,7 +6,7 @@
   Usage:
     Client.start();
 */
-define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Application", "../../Shared/MessageType", "../../Shared/Syslog", "../../Client/Application/ClientSyslog", "../../Client/Gui/Document"], function (require, exports, PhaserEngine_1, Application_1, MessageType_1, Syslog_1, ClientSyslog_1, Document_1) {
+define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Application", "../../Shared/MessageType", "../../Shared/Syslog", "../../Client/Application/ClientSyslog", "../../Client/Gui/Document", "../../Client/Net/Connection", "../../Shared/Net/WebSocketEvent"], function (require, exports, PhaserEngine_1, Application_1, MessageType_1, Syslog_1, ClientSyslog_1, Document_1, Connection_1, WebSocketEvent_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     PhaserEngine_1.PhaserEngine; // Inits the class.
@@ -16,15 +16,21 @@ define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Applicatio
             super(...arguments);
             // ---------------- Protected data --------------------
             // ----------------- Private data ---------------------
+            // There is only one connection per client application
+            // (it means one connection per browser tab if you
+            //  open the client in multiple tabs).
+            this.connection = new Connection_1.Connection();
             // Html document.
             this.document = new Document_1.Document();
-            // ---------------- Event handlers --------------------
         }
         // --------------- Static accessors -------------------
         static get document() { return this.instance.document; }
+        static get connection() { return this.instance.connection; }
         // ------------- Public static methods ----------------
         static async start() {
             Syslog_1.Syslog.log("Starting Kosmud client version...", MessageType_1.MessageType.SYSTEM_INFO);
+            Client.instance.initGUI();
+            Client.instance.connection.connect();
         }
         // --------------- Protected methods ------------------
         // ~ Overrides App.reportException().
@@ -52,6 +58,23 @@ define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Applicatio
             // source maps (so in .ts files) rathen than in .js files
             // (which is not so useful).
             throw error;
+        }
+        initGUI() {
+            window.onbeforeunload =
+                (event) => { this.onBeforeUnload(event); };
+        }
+        // ---------------- Event handlers --------------------
+        onBeforeUnload(event) {
+            this.connection.reportClosingBrowserTab();
+            // Close the connection to prevent browser from closing it
+            // abnormally with event code 1006.
+            //   For some strange reson this doesn't alway work in Chrome.
+            // If we call socket.close(1000, "Tab closed"), onClose() event
+            // handler on respective server socket will receive the reason
+            // but sometimes code will be 1006 instead of 1000. To circumvent
+            // this, we send WebSocketEvent.REASON_CLOSE when socket is closed
+            // from onBeforeUnload() and we check for it in ServerSocket.onClose().
+            this.connection.close(WebSocketEvent_1.WebSocketEvent.TAB_CLOSED);
         }
     }
     // -------------- Static class data -------------------

@@ -19,22 +19,25 @@ import {ServerSocket} from '../../Server/Net/ServerSocket';
 import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
 import {Packet} from '../../Shared/Protocol/Packet';
+import {SystemMessage} from '../../Server/Protocol/SystemMessage';
 // import {MudMessage} from '../../../server/lib/protocol/MudMessage';
 
 // 3rd party modules.
 import * as WebSocket from 'ws';
 
-/// TODO: Tak v Connection bych tohle opravdu nehledal...
+/// TODO: Tohohle se zbavit
+/// - Tak v Connection bych tohle opravdu nehledal...
 /// (Navíc to očividně typescript nekontroluje...)
 // Force module import (so that the module code is assuredly executed
 // instead of typescript just registering a type). This ensures that
 // class constructor is added to Classes so it can be deserialized.
-import '../../../server/lib/protocol/Command';
-import '../../../server/lib/protocol/SystemMessage';
-import '../../../server/lib/protocol/LoginRequest';
-import '../../../server/lib/protocol/RegisterRequest';
-import '../../../server/lib/protocol/ChargenRequest';
-import '../../../server/lib/protocol/EnterGameRequest';
+// import '../../../server/lib/protocol/Command';
+// import '../../../server/lib/protocol/SystemMessage';
+// import '../../../server/lib/protocol/LoginRequest';
+// import '../../../server/lib/protocol/RegisterRequest';
+// import '../../../server/lib/protocol/ChargenRequest';
+// import '../../../server/lib/protocol/EnterGameRequest';
+SystemMessage;
 
 export class Connection implements SharedConnection
 {

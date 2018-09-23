@@ -8,7 +8,7 @@ import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
 import {FileSystem} from '../../Server/FS/FileSystem';
 import {MessageType} from '../../Shared/MessageType';
-// import {WebSocketServer} from '../../../server/lib/net/WebSocketServer';
+import {WebSocketServer} from '../../Server/Net/WebSocketServer';
 
 // Built-in node.js modules.
 import * as http from 'http';  // Import namespace 'http' from node.js.
@@ -92,8 +92,8 @@ export class HttpServer
 
   private httpServer: (http.Server | null) = null;
 
-  // // Websocket server runs inside a http server.
-  // private webSocketServer = new WebSocketServer();
+  // Websocket server runs inside a http server.
+  private webSocketServer = new WebSocketServer();
   
   // ---------------- Event handlers --------------------
 
@@ -114,8 +114,8 @@ export class HttpServer
 
     this.open = true;
 
-    // // Start a websocket server inside the http server.
-    // this.webSocketServer.start(this.httpServer);
+    // Start a websocket server inside the http server.
+    this.webSocketServer.start(this.httpServer);
   }
 
   // Handles http requests.

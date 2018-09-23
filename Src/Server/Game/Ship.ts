@@ -6,8 +6,6 @@
 
 import {PhysicsBody} from "./PhysicsBody";
 
-import * as Matter from 'matter-js';
-
 export class Ship
 {
   constructor(private physicsBody: PhysicsBody) {}

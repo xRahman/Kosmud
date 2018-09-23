@@ -21,17 +21,20 @@ const MessageType_1 = require("../../Shared/MessageType");
 const ServerSocket_1 = require("../../Server/Net/ServerSocket");
 const Connections_1 = require("../../Server/Net/Connections");
 const Packet_1 = require("../../Shared/Protocol/Packet");
-/// TODO: Tak v Connection bych tohle opravdu nehledal...
+const SystemMessage_1 = require("../../Server/Protocol/SystemMessage");
+/// TODO: Tohohle se zbavit
+/// - Tak v Connection bych tohle opravdu nehledal...
 /// (Navíc to očividně typescript nekontroluje...)
 // Force module import (so that the module code is assuredly executed
 // instead of typescript just registering a type). This ensures that
 // class constructor is added to Classes so it can be deserialized.
-require("../../../server/lib/protocol/Command");
-require("../../../server/lib/protocol/SystemMessage");
-require("../../../server/lib/protocol/LoginRequest");
-require("../../../server/lib/protocol/RegisterRequest");
-require("../../../server/lib/protocol/ChargenRequest");
-require("../../../server/lib/protocol/EnterGameRequest");
+// import '../../../server/lib/protocol/Command';
+// import '../../../server/lib/protocol/SystemMessage';
+// import '../../../server/lib/protocol/LoginRequest';
+// import '../../../server/lib/protocol/RegisterRequest';
+// import '../../../server/lib/protocol/ChargenRequest';
+// import '../../../server/lib/protocol/EnterGameRequest';
+SystemMessage_1.SystemMessage;
 class Connection {
     constructor(webSocket, ip, url) {
         this.socket = new ServerSocket_1.ServerSocket(this, webSocket, ip, url);

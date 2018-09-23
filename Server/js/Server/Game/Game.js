@@ -24,9 +24,10 @@ class Game {
         this.ship.moveForward();
     }
     updateClients() {
-        console.log('Ship position:'
-            + ' ' + this.ship.getX() + ', ' + this.ship.getY() + ','
-            + ' angle: ' + this.ship.getAngle());
+        /// TODO:
+        // console.log('Ship position:'
+        //   + ' ' + this.ship.getX() + ', ' + this.ship.getY() + ','
+        //   + ' angle: ' + this.ship.getAngle());
     }
 }
 exports.Game = Game;
