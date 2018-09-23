@@ -1,3 +1,9 @@
+TODO: Zamyslet se, jestli by se nedaly enumy nahradit stringama
+- na druhou stranu by se pak posílalo o dost víc dat po síti, což
+  asi nechci. Takže v případě paketů zůstanu raději u enumů.
+  (Na druhou stranu u stringových typů šlo nějak zajistit, že jsem
+   vyčerpal všechny možnosti - to je fajn.)
+
 TODO: Zjistit, co mi to tam chodí za system message.
 
 TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.

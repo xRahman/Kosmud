@@ -8,7 +8,6 @@
 define(["require", "exports", "../../Shared/Protocol/Packet"], function (require, exports, Packet_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
-    // import {Classes} from '../../Shared/Class/Classes';
     class SharedSystemMessage extends Packet_1.Packet {
         constructor() {
             super();

@@ -3,14 +3,14 @@
 
   Part of client-server communication protocol.
 
-  System message.
+  Player pressed something on the keyboard, clicked a mouse button etc.
 */
 
 'use strict';
 
 import {Packet} from '../../Shared/Protocol/Packet';
 
-export abstract class SharedSystemMessage extends Packet
+export abstract class SharedPlayerInput extends Packet
 {
   constructor()
   {
@@ -21,20 +21,20 @@ export abstract class SharedSystemMessage extends Packet
 
   // ----------------- Public data ----------------------
 
-  public type = SharedSystemMessage.Type.UNDEFINED;
-
-  public message: (string | null) = null;
+  public type = SharedPlayerInput.Type.UNDEFINED;
 }
 
 // ------------------ Type declarations ----------------------
 
 // Module is exported so you can use enum type from outside this file.
 // It must be declared after the class because Typescript says so...
-export module SharedSystemMessage
+export module SharedPlayerInput
 {
+  /// TODO: Tohle zatím provizorně.
   export enum Type
   {
     UNDEFINED,
-    CLIENT_CLOSED_BROWSER_TAB
+    KEY_DOWN,
+    KEY_UP
   }
 }
