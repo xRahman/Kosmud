@@ -1,7 +1,7 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Specifies structure of static property attributes.
+  Static property attributes.
 */
 
 /*
@@ -29,18 +29,6 @@
    - tohle bych ovšem musel přidat do Attributable.
 */
 
-'use strict';
-
-/*
-TODO:
-{
-  saved,
-  edited,
-  sentBrief,  // Sent to client in brief mode.
-  sentFull,   // Sent to client in full mode.
-  received    // Received from client.
-}
-*/
 
 export interface Attributes
 {

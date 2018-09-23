@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Enables using static attributes of class methods and data variables.
 */
@@ -24,9 +24,7 @@
 
 'use strict';
 
-import {ERROR} from '../../../shared/lib/error/ERROR';
-///import {Nameable} from '../../../shared/lib/class/Nameable';
-import {Attributes} from '../../../shared/lib/class/Attributes';
+import {Attributes} from '../../Shared/Class/Attributes';
 
 ///export class Attributable extends Nameable
 export class Attributable
@@ -97,52 +95,4 @@ export class Attributable
   }
 
   // --------------- Private methods --------------------
-
-  /// Deprecated - the check is not really needed.
-  // private getPropertyAttributes(propertyName: string): Attributes
-  // {
-  //   // This trick dynamically accesses static class property without
-  //   // the need to use something like NamedClass.property;
-  //   // (it's the same as if you could write (typeof(istance)).property).
-  //   let attributes = this.constructor[propertyName];
-
-  //   if (attributes === null)
-  //   {
-  //     // 'this.constructor.name' is the name of the class.
-  //     ERROR("'null' static property atributes for property"
-  //       + " '" + propertyName + "'. Make sure that 'static"
-  //       + " " + propertyName + "' declared in class"
-  //       + " " + this.constructor.name + " (or in some of it's ancestors)"
-  //       + " is not null");
-  //     return undefined;
-  //   }
-
-  //   return attributes;
-  // }
-
-  /// This won't help because when a property is written
-  /// on the instance, it becomes it's 'own' property and
-  /// there is no way to find you where it's actually decalred.
-  // // Traverses prototype tree to find 'this' on which
-  // // property 'propertyName' is 'own' property.
-  // private getPropertyThis(propertyName)
-  // {
-  //   if (this.hasOwnProperty(propertyName))
-  //     return this;
-
-  //   let prototype = Object.getPrototypeOf(this);
-
-  //   if (prototype && prototype['getPropertyThis'])
-  //   {
-  //     let prototypeThis = prototype.getPropertyThis();
-
-  //     if (prototypeThis)
-  //       return prototypeThis;
-  //   }
-
-  //   ERROR("Failed to find 'this' for property"
-  //     + " '" + propertyName + "'");
-
-  //   return this;
-  // }
 }

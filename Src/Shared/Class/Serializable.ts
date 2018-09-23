@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Allows serializing to and from JSON format.
 */
@@ -38,14 +38,14 @@
 
 'use strict';
 
-import {ERROR} from '../../../shared/lib/error/ERROR';
-import {FATAL_ERROR} from '../../../shared/lib/error/FATAL_ERROR';
-import {Utils} from '../../../shared/lib/utils/Utils';
-import {Classes} from '../../../shared/lib/class/Classes';
-import {AnyClass} from '../../../shared/lib/class/Classes';
-import {JsonObject} from '../../../shared/lib/json/JsonObject';
-import {Attributable} from '../../../shared/lib/class/Attributable';
-import {App} from '../../../shared/lib/app/App';
+import {ERROR} from '../../Shared/ERROR';
+import {FATAL_ERROR} from '../../Shared/FATAL_ERROR';
+import {Utils} from '../../Shared/Utils';
+import {Classes} from '../../Shared/Class/Classes';
+import {AnyClass} from '../../Shared/Class/Classes';
+import {JsonObject} from '../../Shared/Class/JsonObject';
+import {Attributable} from '../../Shared/Class/Attributable';
+import {Application} from '../../Shared/Application';
 
 // 3rd party modules.
 let FastBitSet = require('fastbitset');
@@ -1271,7 +1271,7 @@ export class Serializable extends Attributable
         + pathString);
     }
 
-    if (!App.entities)
+    if (!Application.entities)
     {
       ERROR("Unexpected 'null' value");
       return null;
@@ -1280,7 +1280,7 @@ export class Serializable extends Attributable
     // Note: We have to access entities using App.entities rather than
     //   Etities because importing {Entities} to Serializable would lead
     //   to circular imports expection.
-    return App.entities.getReference(id)
+    return Application.entities.getReference(id)
   }
 
 //+
