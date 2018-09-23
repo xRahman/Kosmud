@@ -9,10 +9,10 @@
 import {ERROR} from '../../Shared/ERROR';
 import {Utils} from '../../Shared/Utils';
 import {Syslog} from '../../Shared/Syslog';
-import {WebSocketEvent} from '../../../shared/lib/net/WebSocketEvent';
-import {Packet} from '../../../shared/lib/protocol/Packet';
-import {Connection} from '../../../server/lib/connection/Connection';
-import {MessageType} from '../../../shared/lib/message/MessageType';
+import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
+import {Packet} from '../../Shared/Protocol/Packet';
+import {Connection} from '../../Server/Net/Connection';
+import {MessageType} from '../../Shared/MessageType';
 // import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 
 import * as WebSocket from 'ws';

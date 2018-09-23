@@ -21,6 +21,7 @@
   "dependencies": {
     "@types/matter-js": "^0.10.1",
     "@types/node": "^10.9.4",
+    "@types/ws": "^6.0.1",
     "extfs": "0.0.7",
     "fastbitset": "^0.2.7",
     "fastpriorityqueue": "^0.6.1",

@@ -14,6 +14,7 @@ import {ServerSyslog} from '../../Server/Application/ServerSyslog';
 import {MessageType} from '../../Shared/MessageType';
 import {HttpServer} from '../../Server/Net/HttpServer';
 import {Game} from '../../Server/Game/Game'
+import {Connections} from '../../Server/Net/Connections';
 
 export class Server extends Application
 {
@@ -21,7 +22,7 @@ export class Server extends Application
 
   // --------------- Static accessors -------------------
 
-  // --------------- Static accessors -------------------
+  public static get connections() { return this.instance.connections; }
 
   // -------------- Static class data -------------------
 
@@ -41,6 +42,8 @@ export class Server extends Application
   // ----------------- Private data ---------------------
 
   private game = new Game();
+
+  private connections = new Connections();
 
   // ------------- Public static methods ----------------
 

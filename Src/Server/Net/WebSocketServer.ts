@@ -25,16 +25,15 @@
 
 'use strict';
 
-import {ERROR} from '../../../shared/lib/error/ERROR';
-import {FATAL_ERROR} from '../../../shared/lib/error/FATAL_ERROR';
-import {Syslog} from '../../../shared/lib/log/Syslog';
-import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
-import {MessageType} from '../../../shared/lib/message/MessageType';
-import {ServerApp} from '../../../server/lib/app/ServerApp';
-import {Connection} from '../../../server/lib/connection/Connection';
-import {Connections} from '../../../server/lib/connection/Connections';
-import {HttpServer} from '../../../server/lib/net/HttpServer';
-import {ServerSocket} from '../../../server/lib/net/ServerSocket';
+import {ERROR} from '../../Shared/ERROR';
+import {FATAL_ERROR} from '../../Shared/FATAL_ERROR';
+import {Syslog} from '../../Shared/Syslog';
+import {MessageType} from '../../Shared/MessageType';
+import {Server} from '../../Server/Application/Server';
+import {Connection} from '../../Server/Net/Connection';
+import {Connections} from '../../Server/Net/Connections';
+import {HttpServer} from '../../Server/Net/HttpServer';
+import {ServerSocket} from '../../Server/Net/ServerSocket';
 
 // 3rd party modules.
 import * as WebSocket from 'ws';
@@ -65,8 +64,7 @@ export class WebSocketServer
     Syslog.log
     (
       "Starting websocket server",
-      MessageType.SYSTEM_INFO,
-      AdminLevel.IMMORTAL
+      MessageType.SYSTEM_INFO
     );
 
     // Websocket server runs inside a http server so the same port can be used
@@ -88,8 +86,7 @@ export class WebSocketServer
     Syslog.log
     (
       "Websocket server is up and listening to new connections",
-      MessageType.WEBSOCKET_SERVER,
-      AdminLevel.IMMORTAL
+      MessageType.WEBSOCKET_SERVER
     );
 
     this.open = true;
@@ -104,6 +101,10 @@ export class WebSocketServer
   )
   {
     let ip = request.connection.remoteAddress;
+
+    if (!ip)
+      ip = "Unknown ip address";
+
     ///let ip = ServerSocket.parseRemoteAddress(socket);
 
     // Request.url is only valid for request obtained from http.Server.
@@ -138,8 +139,7 @@ export class WebSocketServer
     Syslog.log
     (
       "Accepting connection " + connection.getOrigin(),
-      MessageType.WEBSOCKET_SERVER,
-      AdminLevel.IMMORTAL
+      MessageType.WEBSOCKET_SERVER
     );
   }
 
@@ -161,8 +161,7 @@ export class WebSocketServer
     Syslog.log
     (
       "Denying connection " + address + ": " + reason,
-      MessageType.WEBSOCKET_SERVER,
-      AdminLevel.IMMORTAL
+      MessageType.WEBSOCKET_SERVER
     );
 
     socket.close();

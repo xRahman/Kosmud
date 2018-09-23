@@ -23,6 +23,7 @@ const ServerSyslog_1 = require("../../Server/Application/ServerSyslog");
 const MessageType_1 = require("../../Shared/MessageType");
 const HttpServer_1 = require("../../Server/Net/HttpServer");
 const Game_1 = require("../../Server/Game/Game");
+const Connections_1 = require("../../Server/Net/Connections");
 class Server extends Application_1.Application {
     constructor() {
         // -------------- Static constants --------------------
@@ -33,7 +34,10 @@ class Server extends Application_1.Application {
         // ---------------- Protected data --------------------
         // ----------------- Private data ---------------------
         this.game = new Game_1.Game();
+        this.connections = new Connections_1.Connections();
     }
+    // --------------- Static accessors -------------------
+    static get connections() { return this.instance.connections; }
     // ------------- Public static methods ----------------
     static start(appName, version) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -91,8 +95,6 @@ class Server extends Application_1.Application {
         this.httpServer.start();
     }
 }
-// --------------- Static accessors -------------------
-// --------------- Static accessors -------------------
 // -------------- Static class data -------------------
 // Here we also assign Client instance to Application.instance property
 // so it will be accessible from shared code. Without this, functions

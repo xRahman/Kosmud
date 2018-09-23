@@ -155,71 +155,72 @@ export class Serializable extends Attributable
     return JsonObject.stringify(jsonObject);
   }
 
-  // Extracts data from plain javascript Object to this instance.
-  // -> Returns 'null' on failure.
-  public recreateEntity(jsonObject: Object, path: (string | null) = null)
-  : Serializable | null
-  {
-    // Check version and input data validity.
-    if (!this.deserializeCheck(jsonObject, path))
-      return null;
+  // TODO: This should not be in Serializable.
+//   // Extracts data from plain javascript Object to this instance.
+//   // -> Returns 'null' on failure.
+//   public recreateEntity(jsonObject: Object, path: (string | null) = null)
+//   : Serializable | null
+//   {
+//     // Check version and input data validity.
+//     if (!this.deserializeCheck(jsonObject, path))
+//       return null;
 
-    // Copy all properties from 'jsonObject'.
-    for (let propertyName in jsonObject)
-    {
-      // Property 'className' isn't assigned (it represents the
-      // name of the javascript class which cannot be changed).
-      if (propertyName === Serializable.CLASS_NAME_PROPERTY)
-        continue
+//     // Copy all properties from 'jsonObject'.
+//     for (let propertyName in jsonObject)
+//     {
+//       // Property 'className' isn't assigned (it represents the
+//       // name of the javascript class which cannot be changed).
+//       if (propertyName === Serializable.CLASS_NAME_PROPERTY)
+//         continue
 
-      // Property 'version' also isn't assigned - it is saved only
-      // to allow for custom loading code when it changes.
-      if (propertyName === Serializable.VERSION_PROPERTY)
-        continue;
+//       // Property 'version' also isn't assigned - it is saved only
+//       // to allow for custom loading code when it changes.
+//       if (propertyName === Serializable.VERSION_PROPERTY)
+//         continue;
 
-/// TODO: Tohle asi není dobrej nápad, nepůjdou díky tomu vytvářet
-///   properties v runtimu (tedy půjdou, ale po savu/loadu se ztratí).
-      // Only properties that exist on the class that is being loaded
-      // are loaded from save. It means that you can remove properties
-      // from existing classes without converting existing save files
-      // (no syslog message is generated).
-      //   Note that if a property is not initialized in typescript,
-      // it's not created on javascript instance at all - so make sure
-      // that you initialize all properties if you want them to be
-      // deserialized.
-      /// if (!(propertyName in this))
-      ///   continue;
+// /// TODO: Tohle asi není dobrej nápad, nepůjdou díky tomu vytvářet
+// ///   properties v runtimu (tedy půjdou, ale po savu/loadu se ztratí).
+//       // Only properties that exist on the class that is being loaded
+//       // are loaded from save. It means that you can remove properties
+//       // from existing classes without converting existing save files
+//       // (no syslog message is generated).
+//       //   Note that if a property is not initialized in typescript,
+//       // it's not created on javascript instance at all - so make sure
+//       // that you initialize all properties if you want them to be
+//       // deserialized.
+//       /// if (!(propertyName in this))
+//       ///   continue;
 
-      // Allow custom property deserialization in descendants.
-      let customValue = this.customDeserializeProperty
-      (
-        propertyName,
-        (jsonObject as any)[propertyName]
-      );
-      if (customValue !== undefined)
-      {
-        (this as any)[propertyName] = customValue;
-        continue;
-      }
+//       // Allow custom property deserialization in descendants.
+//       let customValue = this.customDeserializeProperty
+//       (
+//         propertyName,
+//         (jsonObject as any)[propertyName]
+//       );
+//       if (customValue !== undefined)
+//       {
+//         (this as any)[propertyName] = customValue;
+//         continue;
+//       }
 
-      let param: DeserializeParam =
-      {
-        propertyName: propertyName,
-        targetProperty: (this as any)[propertyName],
-        sourceProperty: (jsonObject as any)[propertyName],
-        path: path
-      };
+//       let param: DeserializeParam =
+//       {
+//         propertyName: propertyName,
+//         targetProperty: (this as any)[propertyName],
+//         sourceProperty: (jsonObject as any)[propertyName],
+//         path: path
+//       };
 
-      // We are cycling over properties in JSON object, not in Serializable
-      // that is being loaded. It means that properties that are not present
-      // in the save will not get overwritten with 'undefined'. This allows
-      // adding new properties to existing classes without the need to
-      // convert all save files.
-      (this as any)[propertyName] = this.deserializeProperty(param);
-    }
+//       // We are cycling over properties in JSON object, not in Serializable
+//       // that is being loaded. It means that properties that are not present
+//       // in the save will not get overwritten with 'undefined'. This allows
+//       // adding new properties to existing classes without the need to
+//       // convert all save files.
+//       (this as any)[propertyName] = this.deserializeProperty(param);
+//     }
 
-    return this;
-  }
+//     return this;
+//   }
 
   // -------------- Protected methods -------------------
 
@@ -633,9 +634,10 @@ export class Serializable extends Attributable
     if (result = this.deserializeAsMap(param))
       return result;
 
-    // Attempt to load property as a reference to an Entity.
-    if (result = this.deserializeAsEntityReference(param))
-      return result;
+    // TODO: This should not be in Serializable.
+    // // Attempt to load property as a reference to an Entity.
+    // if (result = this.deserializeAsEntityReference(param))
+    //   return result;
 
     // Attempt to load property as Array
     if (result = this.deserializeAsArray(param))
@@ -824,23 +826,23 @@ export class Serializable extends Attributable
     return this.readMap(param);
   }
 
-//+
-  // Attempts to convert 'param.sourceProperty' to the reference
-  // to an Entity.
-  // -> Returns 'null' if 'param'.sourceVariable is not an entity
-  //    reference record or if loading failed.
-  private deserializeAsEntityReference(param: DeserializeParam)
-  {
-    if (!this.isReference(param.sourceProperty))
-      return null;
+  // TODO: This should not be in Serializable.
+  // // Attempts to convert 'param.sourceProperty' to the reference
+  // // to an Entity.
+  // // -> Returns 'null' if 'param'.sourceVariable is not an entity
+  // //    reference record or if loading failed.
+  // private deserializeAsEntityReference(param: DeserializeParam)
+  // {
+  //   if (!this.isReference(param.sourceProperty))
+  //     return null;
 
-    return this.readEntityReference
-    (
-      param.sourceProperty,
-      param.propertyName,
-      this.composePathString(param.path)
-    );
-  }
+  //   return this.readEntityReference
+  //   (
+  //     param.sourceProperty,
+  //     param.propertyName,
+  //     this.composePathString(param.path)
+  //   );
+  // }
 
 //+
   // Attempts to convert 'param.sourceProperty' to Array.
@@ -1246,42 +1248,42 @@ export class Serializable extends Attributable
     return new Map(loadedArray);
   }
 
-//+
-  // Converts 'param.sourceProperty' to a reference to an Entity.
-  // If 'id' loaded from JSON already exists in Entities, existing
-  // entity will be returned. Otherwise an 'invalid'
-  // entity reference will be created and returned.
-  // -> Retuns an existing entity or an invalid entity reference.
-  protected readEntityReference
-  (
-    sourceProperty: Object,
-    propertyName: string,
-    pathString: string
-  )
-  {
-    if (!sourceProperty)
-      return null;
+  // TODO: This should not be in Serializable.
+  // // Converts 'param.sourceProperty' to a reference to an Entity.
+  // // If 'id' loaded from JSON already exists in Entities, existing
+  // // entity will be returned. Otherwise an 'invalid'
+  // // entity reference will be created and returned.
+  // // -> Retuns an existing entity or an invalid entity reference.
+  // protected readEntityReference
+  // (
+  //   sourceProperty: Object,
+  //   propertyName: string,
+  //   pathString: string
+  // )
+  // {
+  //   if (!sourceProperty)
+  //     return null;
     
-    let id = (sourceProperty as any)[Serializable.ID_PROPERTY];
+  //   let id = (sourceProperty as any)[Serializable.ID_PROPERTY];
 
-    if (id === undefined || id === null)
-    {
-      ERROR("Missing or invalid '" + Serializable.ID_PROPERTY + "'"
-        + " property when loading entity reference '" + propertyName + "'"
-        + pathString);
-    }
+  //   if (id === undefined || id === null)
+  //   {
+  //     ERROR("Missing or invalid '" + Serializable.ID_PROPERTY + "'"
+  //       + " property when loading entity reference '" + propertyName + "'"
+  //       + pathString);
+  //   }
 
-    if (!Application.entities)
-    {
-      ERROR("Unexpected 'null' value");
-      return null;
-    }
+  //   if (!Application.entities)
+  //   {
+  //     ERROR("Unexpected 'null' value");
+  //     return null;
+  //   }
 
-    // Note: We have to access entities using App.entities rather than
-    //   Etities because importing {Entities} to Serializable would lead
-    //   to circular imports expection.
-    return Application.entities.getReference(id)
-  }
+  //   // Note: We have to access entities using App.entities rather than
+  //   //   Etities because importing {Entities} to Serializable would lead
+  //   //   to circular imports expection.
+  //   return Application.entities.getReference(id)
+  // }
 
 //+
   // Converts 'param.sourceProperty' to Array.

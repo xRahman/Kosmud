@@ -1,3 +1,5 @@
+TODO: Serializable by nemělo nic vědět o entitách.
+
 TODO: Klikání na objekty ve hře:
   You could do this using Query.point giving a mouse position and
   Composite.allBodies(engine.world). This will give you a list of
