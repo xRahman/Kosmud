@@ -22,6 +22,7 @@
     "@types/matter-js": "^0.10.1",
     "@types/node": "^10.9.4",
     "extfs": "0.0.7",
+    "fastbitset": "^0.2.7",
     "fastpriorityqueue": "^0.6.1",
     "fs-promise": "^2.0.3",
     "js-beautify": "^1.8.6",
