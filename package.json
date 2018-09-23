@@ -19,10 +19,12 @@
   },
   "homepage": "https://github.com/xRahman/Kosmud#readme",
   "dependencies": {
+    "@types/matter-js": "^0.10.1",
     "@types/node": "^10.9.4",
     "extfs": "0.0.7",
     "fastpriorityqueue": "^0.6.1",
     "fs-promise": "^2.0.3",
+    "matter-js": "^0.14.2",
     "phaser": "^3.12.0",
     "source-map-support": "^0.5.9",
     "typescript": "^3.0.3"

@@ -21,7 +21,8 @@ const ERROR_1 = require("../../Shared/ERROR");
 const Syslog_1 = require("../../Shared/Syslog");
 const ServerSyslog_1 = require("../../Server/Application/ServerSyslog");
 const MessageType_1 = require("../../Shared/MessageType");
-const HttpServer_1 = require("../../server/Net/HttpServer");
+const HttpServer_1 = require("../../Server/Net/HttpServer");
+const Game_1 = require("../../Server/Game/Game");
 class Server extends Application_1.Application {
     constructor() {
         // -------------- Static constants --------------------
@@ -29,14 +30,18 @@ class Server extends Application_1.Application {
         // ----------------- Private data ---------------------
         /// Http server also runs a websocket server inside it.
         this.httpServer = new HttpServer_1.HttpServer();
+        // ---------------- Protected data --------------------
+        // ----------------- Private data ---------------------
+        this.game = new Game_1.Game();
     }
-    // ---------------- Protected data --------------------
     // ------------- Public static methods ----------------
     static start(appName, version) {
         return __awaiter(this, void 0, void 0, function* () {
             Syslog_1.Syslog.log("Starting " + appName + " server (v" + version + ")...", MessageType_1.MessageType.SYSTEM_INFO);
             // Http server also starts a websocket server inside it.
             this.instance.startHttpServer();
+            // Start the game loop.
+            this.instance.game.start();
         });
     }
     // --------------- Protected methods ------------------

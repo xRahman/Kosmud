@@ -64,6 +64,17 @@ https://github.com/liabru/matter-js/wiki/Tutorials
 Dobré tutorialy:
 https://www.mikewesthad.com/blog.html
 
+
+Getting started with Matter.js:
+https://code.tutsplus.com/series/getting-started-with-matterjs--cms-1186
+
+Matter.js documentation:
+http://brm.io/matter-js/docs/index.html
+
+
+Physics shape editor for phaser 3:
+https://www.codeandweb.com/physicseditor/tutorials/how-to-create-physics-shapes-for-phaser-3-and-matterjs
+
 ==============================================================
 
 box2d physics engine

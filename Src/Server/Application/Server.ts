@@ -12,7 +12,8 @@ import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
 import {ServerSyslog} from '../../Server/Application/ServerSyslog';
 import {MessageType} from '../../Shared/MessageType';
-import {HttpServer} from '../../server/Net/HttpServer';
+import {HttpServer} from '../../Server/Net/HttpServer';
+import {Game} from '../../Server/Game/Game'
 
 export class Server extends Application
 {
@@ -37,6 +38,10 @@ export class Server extends Application
 
   // ---------------- Protected data --------------------
 
+  // ----------------- Private data ---------------------
+
+  private game = new Game();
+
   // ------------- Public static methods ----------------
 
   public static async start(appName: string, version: string)
@@ -49,6 +54,9 @@ export class Server extends Application
 
     // Http server also starts a websocket server inside it.
     this.instance.startHttpServer();
+
+    // Start the game loop.
+    this.instance.game.start();
   }
 
   // --------------- Protected methods ------------------

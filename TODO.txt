@@ -1,8 +1,59 @@
+TODO: Klikání na objekty ve hře:
+  You could do this using Query.point giving a mouse position and
+  Composite.allBodies(engine.world). This will give you a list of
+  bodies under the mouse.
+
+Ok, seriózní TODO: Zprovoznit pohyb lodě tak, že na serveru to bude physics
+  body v matter.js a na klienta se bude posílat aktuální pozice a rotace.
+- importnout na serveru Matter.js
+  [done]
+- vytvořit testovací body pro ship
+  [done]
+- nasimulovat wsad (speed, rotation, position).
+  (Zatím nic moc, ale tohle teď skipnu, s tím si bude lepší hrát s vizuální
+   odezvou.)
+- ukrást websockety z BrutusNext
+- ukrást Serializable z BrutusNext
+- posílat po
+a klientu
+
+
+npm install --save @types/matter-js
+
+
+Note that Matter.Runner is not yet supported in nodejs, so you'll need your own game loop.
+
+      var Matter = require('matter-js/build/matter.js');
+
+      var engine = Matter.Engine.create();
+
+      var boxA = Matter.Bodies.rectangle(400, 200, 80, 80);
+      var boxB = Matter.Bodies.rectangle(450, 50, 80, 80);
+      var ground = Matter.Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+
+      Matter.World.add(engine.world, [boxA, boxB, ground]);
+
+      console.log('boxA', boxA.position);
+      console.log('boxB', boxB.position);
+
+      for (var i = 0; i < 100; i++) {
+          Matter.Events.trigger(engine, 'tick', { timestamp: engine.timing.timestamp });
+          Matter.Engine.update(engine, engine.timing.delta);
+          Matter.Events.trigger(engine, 'afterTick', { timestamp: engine.timing.timestamp });
+      }
+
+      console.log('boxA', boxA.position);
+      console.log('boxB', boxB.position);
+
+
+
+
+
 https://github.com/Lightnet/project-phaser3-matterjs
 https://gamedevacademy.org/phaser-3-tutorial/
 https://github.com/liabru/matter-js/wiki/Tutorials
 http://docs.lance.gg/r3.0.0/tutorial-spaceships.html
-https://www.mikewesthad.com/blog.html
+tilemapy a matter.js: https://www.mikewesthad.com/blog.html
 ---
 
 TODO: Objekty ve scéně by měly být v classe, která se celá
