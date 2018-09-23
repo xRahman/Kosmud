@@ -6,9 +6,9 @@
 
 'use strict';
 
-import {ERROR} from '../../../shared/lib/error/ERROR';
-import {FATAL_ERROR} from '../../../shared/lib/error/FATAL_ERROR';
-import {Serializable} from '../../../shared/lib/class/Serializable';
+import {ERROR} from '../Shared/ERROR';
+import {FATAL_ERROR} from '../Shared/FATAL_ERROR';
+import {Serializable} from '../Shared/Class/Serializable';
 
 // Types used for constructs like 'new Promise((resolve, reject) => { ... })'.
 export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;

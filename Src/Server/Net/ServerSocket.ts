@@ -6,14 +6,14 @@
 
 'use strict';
 
-import {ERROR} from '../../../shared/lib/error/ERROR';
-import {Utils} from '../../../shared/lib/utils/Utils';
-import {Syslog} from '../../../shared/lib/log/Syslog';
+import {ERROR} from '../../Shared/ERROR';
+import {Utils} from '../../Shared/Utils';
+import {Syslog} from '../../Shared/Syslog';
 import {WebSocketEvent} from '../../../shared/lib/net/WebSocketEvent';
-import {Packet} from '../../..//shared/lib/protocol/Packet';
+import {Packet} from '../../../shared/lib/protocol/Packet';
 import {Connection} from '../../../server/lib/connection/Connection';
 import {MessageType} from '../../../shared/lib/message/MessageType';
-import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
+// import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 
 import * as WebSocket from 'ws';
 
@@ -58,64 +58,6 @@ export class ServerSocket
 
   // ---------------- Public methods --------------------
 
-  /// To be deleted.
-  // public static parseRemoteUrl(webSocket: WebSocket)
-  // {
-  //   if (webSocket === null || webSocket === undefined)
-  //   {
-  //     ERROR('Attempt to read ulr from an invalid websocket');
-  //     return null;
-  //   }
-
-  //   if (webSocket.upgradeReq === null || webSocket.upgradeReq === undefined)
-  //   {
-  //     ERROR('Failed to read url from websocket');
-  //     return;
-  //   }
-
-  //   if (webSocket.upgradeReq.url === undefined)
-  //   {
-  //     ERROR("Missing url on websocket");
-
-  //     return null;
-  //   }
-
-  //   return webSocket.upgradeReq.url;
-  // }
-
-  /// To be deleted.
-  // // -> Returns remote ip adress read from 'socket'
-  // //    or 'null' if it doesn't exist on it.
-  // public static parseRemoteAddress(webSocket: WebSocket)
-  // {
-  //   if (webSocket === null || webSocket === undefined)
-  //   {
-  //     ERROR('Attempt to read address from an invalid websocket');
-  //     return null;
-  //   }
-
-  //   if
-  //   (
-  //     webSocket.upgradeReq === null
-  //     || webSocket.upgradeReq === undefined
-  //     || webSocket.upgradeReq.connection === null
-  //     || webSocket.upgradeReq.connection === undefined
-  //   )
-  //   {
-  //     ERROR('Failed to read address from websocket');
-  //     return;
-  //   }
-
-  //   if (webSocket.upgradeReq.connection.remoteAddress === undefined)
-  //   {
-  //     ERROR("Missing address on websocket");
-
-  //     return null;
-  //   }
-
-  //   return webSocket.upgradeReq.connection.remoteAddress;
-  // }
-
   // Sends packet to the client.
   public send(data: string)
   {
@@ -129,8 +71,7 @@ export class ServerSocket
       (
         "Client ERROR: Failed to send packet to websocket"
           + " " + this.getOrigin() + ". Reason: " + error.message,
-        MessageType.WEBSOCKET_SERVER,
-        AdminLevel.IMMORTAL
+        MessageType.WEBSOCKET_SERVER
       );
     }
   }
@@ -190,8 +131,7 @@ export class ServerSocket
     Syslog.log
     (
       message,
-      MessageType.WEBSOCKET_SERVER,
-      AdminLevel.IMMORTAL
+      MessageType.WEBSOCKET_SERVER
     );
   }
 
@@ -213,8 +153,7 @@ export class ServerSocket
       Syslog.log
       (
         "Connection " + this.getOrigin() + " has been closed",
-        MessageType.WEBSOCKET_SERVER,
-        AdminLevel.IMMORTAL
+        MessageType.WEBSOCKET_SERVER
       );
       return;
     }
@@ -280,8 +219,7 @@ export class ServerSocket
     (
       "Websocket ERROR: Error occured on websocket " + this.getOrigin()
         + " :" + event.message,
-      MessageType.WEBSOCKET_SERVER,
-      AdminLevel.IMMORTAL
+      MessageType.WEBSOCKET_SERVER
     );
   }
 
