@@ -56,7 +56,7 @@ export class Server extends Application
     );
 
     // Http server also starts a websocket server inside it.
-    this.instance.startHttpServer();
+    await this.instance.startHttpServer();
 
     // Start the game loop.
     this.instance.game.start();
@@ -118,7 +118,7 @@ export class Server extends Application
 
   // --------------- Private methods --------------------
 
-  private startHttpServer()
+  private async startHttpServer()
   {
     if (this.httpServer.isOpen())
     {
@@ -126,6 +126,6 @@ export class Server extends Application
       return;
     }
 
-    this.httpServer.start();
+    await this.httpServer.start();
   }
 }

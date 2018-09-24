@@ -1,3 +1,5 @@
+TODO: Přejmenovat adresáře Client/js, Server/js, atd. (na CamelCase)
+
 TODO: Zamyslet se, jestli by se nedaly enumy nahradit stringama
 - na druhou stranu by se pak posílalo o dost víc dat po síti, což
   asi nechci. Takže v případě paketů zůstanu raději u enumů.
@@ -25,9 +27,11 @@ Ok, seriózní TODO: Zprovoznit pohyb lodě tak, že na serveru to bude physics
   (Zatím nic moc, ale tohle teď skipnu, s tím si bude lepší hrát s vizuální
    odezvou.)
 - ukrást websockety z BrutusNext
+[done]
 - ukrást Serializable z BrutusNext
-- posílat po
-a klientu
+[done]
+- posílat pozici a rotaci a zobrazovat to na klientu.
+- posílat keyboard eventy (nejspíš už přeložené na herní akce?)
 
 
 npm install --save @types/matter-js

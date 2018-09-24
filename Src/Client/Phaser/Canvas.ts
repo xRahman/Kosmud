@@ -13,7 +13,5 @@ export class Canvas
   {
     this.width = Body.getCanvasDivElement().clientWidth;
     this.height = Body.getCanvasDivElement().clientHeight;
-
-    console.log('Resizing game to ' + this.width + ', ' + this.height);
   }
 }

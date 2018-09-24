@@ -18,11 +18,12 @@ const Syslog_1 = require("../../Shared/Syslog");
 const FileSystem_1 = require("../../Server/FS/FileSystem");
 const MessageType_1 = require("../../Shared/MessageType");
 const WebSocketServer_1 = require("../../Server/Net/WebSocketServer");
-// Built-in node.js modules.
-const http = require("http"); // Import namespace 'http' from node.js.
+const https = require("https"); // Import namespace 'https' from node.js.
 const url = require("url"); // Import namespace 'url' from node.js.
 // 'nodePath' to prevent conflicts with variable 'path'.
 const nodePath = require("path"); // Import namespace 'path' from node.js.
+const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
+const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
 const MIME_TYPE = {
     '.ico': 'image/x-icon',
     '.html': 'text/html',
@@ -45,37 +46,42 @@ class HttpServer {
         // Do we accept http requests?
         this.open = false;
         // ----------------- Private data ---------------------
-        this.port = HttpServer.DEFAULT_PORT;
-        this.httpServer = null;
+        this.port = HttpServer.DEFAULT_HTTP_PORT;
+        //private httpServer: (http.Server | null) = null;
+        this.httpsServer = null;
         // Websocket server runs inside a http server.
         this.webSocketServer = new WebSocketServer_1.WebSocketServer();
     }
     static get WWW_ROOT() { return './Client'; }
-    static get DEFAULT_PORT() { return 80; }
+    static get DEFAULT_HTTP_PORT() { return 80; }
+    static get DEFAULT_HTTPS_PORT() { return 443; }
     // --------------- Public accessors -------------------
     getPort() { return this.port; }
-    getServer() { return this.httpServer; }
+    getServer() { return this.httpsServer; }
     isOpen() { return this.open; }
     // ---------------- Public methods --------------------
-    // Starts the http server.
-    start({ port } = { port: HttpServer.DEFAULT_PORT }) {
-        this.port = port;
-        this.httpServer = http.createServer((request, response) => { this.onRequest(request, response); });
-        this.httpServer.on('error', (error) => { this.onError(error); });
-        Syslog_1.Syslog.log("Starting http server at port " + port, MessageType_1.MessageType.SYSTEM_INFO);
-        this.httpServer.listen(port, () => { this.onStartListening(); });
+    // Starts the https server.
+    start({ port } = { port: HttpServer.DEFAULT_HTTPS_PORT }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.port = port;
+            let certificate = yield loadCertificate();
+            this.httpsServer = https.createServer(certificate, (request, response) => { this.onRequest(request, response); });
+            this.httpsServer.on('error', (error) => { this.onError(error); });
+            Syslog_1.Syslog.log("Starting http server at port " + port, MessageType_1.MessageType.SYSTEM_INFO);
+            this.httpsServer.listen(port, () => { this.onStartListening(); });
+        });
     }
     // ---------------- Event handlers --------------------
     // Runs when server is ready and listening.
     onStartListening() {
-        if (this.httpServer === null) {
-            ERROR_1.ERROR("Invalid 'httpServer'");
+        if (this.httpsServer === null) {
+            ERROR_1.ERROR("Invalid 'httpsServer'");
             return;
         }
-        Syslog_1.Syslog.log("Http server is up and listening", MessageType_1.MessageType.HTTP_SERVER);
+        Syslog_1.Syslog.log("Https server is up and listening", MessageType_1.MessageType.HTTP_SERVER);
         this.open = true;
         // Start a websocket server inside the http server.
-        this.webSocketServer.start(this.httpServer);
+        this.webSocketServer.start(this.httpsServer);
     }
     // Handles http requests.
     onRequest(request, response) {
@@ -117,4 +123,15 @@ class HttpServer {
     }
 }
 exports.HttpServer = HttpServer;
+// ----------------- Auxiliary Functions ---------------------
+// ! Throws exception on error.
+function loadCertificate() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let key = yield FileSystem_1.FileSystem.readFile(PRIVATE_KEY_FILE);
+        let cert = yield FileSystem_1.FileSystem.readFile(CERTIFICATE_FILE);
+        if (!key || !cert)
+            throw new Error("Failed to load https key or certificate");
+        return { key: key, cert: cert };
+    });
+}
 //# sourceMappingURL=HttpServer.js.map

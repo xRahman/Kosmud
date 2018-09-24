@@ -3,6 +3,14 @@
 
   Connection to the server.
 */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializable", "../../Client/Application/Client", "../../Client/Net/ClientSocket", "../../Shared/Protocol/Packet", "../../Client/Protocol/SystemMessage"], function (require, exports, ERROR_1, Serializable_1, Client_1, ClientSocket_1, Packet_1, SystemMessage_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -74,16 +82,18 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializ
         // ---------------- Public methods --------------------
         /// TODO: Na serveru je prakticky stejná fce, asi by to chtělo sloučit
         /// do společného předka v /shared
-        async receiveData(data) {
-            /// TODO: deserialize() by mělo házet exception místo return null,
-            /// takže pak půjde zavolat:
-            ///   let packet = Serializable.deserialize(data).dynamicCast(Packet);
-            let deserializedPacket = Serializable_1.Serializable.deserialize(data);
-            if (!deserializedPacket)
-                return;
-            let packet = deserializedPacket.dynamicCast(Packet_1.Packet);
-            if (packet !== null)
-                await packet.process(this);
+        receiveData(data) {
+            return __awaiter(this, void 0, void 0, function* () {
+                /// TODO: deserialize() by mělo házet exception místo return null,
+                /// takže pak půjde zavolat:
+                ///   let packet = Serializable.deserialize(data).dynamicCast(Packet);
+                let deserializedPacket = Serializable_1.Serializable.deserialize(data);
+                if (!deserializedPacket)
+                    return;
+                let packet = deserializedPacket.dynamicCast(Packet_1.Packet);
+                if (packet !== null)
+                    yield packet.process(this);
+            });
         }
         /// Disabled for now.
         // public createAvatar(character: Character): Avatar

@@ -49,11 +49,11 @@ class WebSocketServer {
     // ---------------- Public methods --------------------
     isOpen() { return this.open; }
     // Starts the websocket server inside a http server.
-    start(httpServer) {
+    start(httpsServer) {
         Syslog_1.Syslog.log("Starting websocket server", MessageType_1.MessageType.SYSTEM_INFO);
         // Websocket server runs inside a http server so the same port can be used
         // (it is possible because WebSocket protocol is an extension of http).
-        this.webSocketServer = new WebSocket.Server({ server: httpServer });
+        this.webSocketServer = new WebSocket.Server({ server: httpsServer });
         this.webSocketServer.on('connection', (socket, request) => { this.onNewConnection(socket, request); });
         // Unlike telnet server, websocket server is up immediately,
         // so we don't have to register handler for 'listening' event

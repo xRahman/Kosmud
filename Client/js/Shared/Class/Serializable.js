@@ -90,6 +90,11 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/FATAL_ERROR", 
                 return null;
             }
             let instance = new Class;
+            if (!(instance instanceof Serializable)) {
+                ERROR_1.ERROR("Failed to deserialize data because class " + Class.name
+                    + " is not a Serializable class");
+                return null;
+            }
             return instance.deserialize(jsonObject);
         }
         // ---------------- Public methods --------------------
@@ -116,65 +121,55 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/FATAL_ERROR", 
                 return "";
             return JsonObject_1.JsonObject.stringify(jsonObject);
         }
-        // TODO: This should not be in Serializable.
-        //   // Extracts data from plain javascript Object to this instance.
-        //   // -> Returns 'null' on failure.
-        //   public recreateEntity(jsonObject: Object, path: (string | null) = null)
-        //   : Serializable | null
-        //   {
-        //     // Check version and input data validity.
-        //     if (!this.deserializeCheck(jsonObject, path))
-        //       return null;
-        //     // Copy all properties from 'jsonObject'.
-        //     for (let propertyName in jsonObject)
-        //     {
-        //       // Property 'className' isn't assigned (it represents the
-        //       // name of the javascript class which cannot be changed).
-        //       if (propertyName === Serializable.CLASS_NAME_PROPERTY)
-        //         continue
-        //       // Property 'version' also isn't assigned - it is saved only
-        //       // to allow for custom loading code when it changes.
-        //       if (propertyName === Serializable.VERSION_PROPERTY)
-        //         continue;
-        // /// TODO: Tohle asi není dobrej nápad, nepůjdou díky tomu vytvářet
-        // ///   properties v runtimu (tedy půjdou, ale po savu/loadu se ztratí).
-        //       // Only properties that exist on the class that is being loaded
-        //       // are loaded from save. It means that you can remove properties
-        //       // from existing classes without converting existing save files
-        //       // (no syslog message is generated).
-        //       //   Note that if a property is not initialized in typescript,
-        //       // it's not created on javascript instance at all - so make sure
-        //       // that you initialize all properties if you want them to be
-        //       // deserialized.
-        //       /// if (!(propertyName in this))
-        //       ///   continue;
-        //       // Allow custom property deserialization in descendants.
-        //       let customValue = this.customDeserializeProperty
-        //       (
-        //         propertyName,
-        //         (jsonObject as any)[propertyName]
-        //       );
-        //       if (customValue !== undefined)
-        //       {
-        //         (this as any)[propertyName] = customValue;
-        //         continue;
-        //       }
-        //       let param: DeserializeParam =
-        //       {
-        //         propertyName: propertyName,
-        //         targetProperty: (this as any)[propertyName],
-        //         sourceProperty: (jsonObject as any)[propertyName],
-        //         path: path
-        //       };
-        //       // We are cycling over properties in JSON object, not in Serializable
-        //       // that is being loaded. It means that properties that are not present
-        //       // in the save will not get overwritten with 'undefined'. This allows
-        //       // adding new properties to existing classes without the need to
-        //       // convert all save files.
-        //       (this as any)[propertyName] = this.deserializeProperty(param);
-        //     }
-        //     return this;
-        //   }
+        // Extracts data from plain javascript Object to this instance.
+        // -> Returns 'null' on failure.
+        deserialize(jsonObject, path = null) {
+            // Check version and input data validity.
+            if (!this.deserializeCheck(jsonObject, path))
+                return null;
+            // Copy all properties from 'jsonObject'.
+            for (let propertyName in jsonObject) {
+                // Property 'className' isn't assigned (it represents the
+                // name of the javascript class which cannot be changed).
+                if (propertyName === Serializable.CLASS_NAME_PROPERTY)
+                    continue;
+                // Property 'version' also isn't assigned - it is saved only
+                // to allow for custom loading code when it changes.
+                if (propertyName === Serializable.VERSION_PROPERTY)
+                    continue;
+                /// TODO: Tohle asi není dobrej nápad, nepůjdou díky tomu vytvářet
+                ///   properties v runtimu (tedy půjdou, ale po savu/loadu se ztratí).
+                // Only properties that exist on the class that is being loaded
+                // are loaded from save. It means that you can remove properties
+                // from existing classes without converting existing save files
+                // (no syslog message is generated).
+                //   Note that if a property is not initialized in typescript,
+                // it's not created on javascript instance at all - so make sure
+                // that you initialize all properties if you want them to be
+                // deserialized.
+                /// if (!(propertyName in this))
+                ///   continue;
+                // Allow custom property deserialization in descendants.
+                let customValue = this.customDeserializeProperty(propertyName, jsonObject[propertyName]);
+                if (customValue !== undefined) {
+                    this[propertyName] = customValue;
+                    continue;
+                }
+                let param = {
+                    propertyName: propertyName,
+                    targetProperty: this[propertyName],
+                    sourceProperty: jsonObject[propertyName],
+                    path: path
+                };
+                // We are cycling over properties in JSON object, not in Serializable
+                // that is being loaded. It means that properties that are not present
+                // in the save will not get overwritten with 'undefined'. This allows
+                // adding new properties to existing classes without the need to
+                // convert all save files.
+                this[propertyName] = this.deserializeProperty(param);
+            }
+            return this;
+        }
         // -------------- Protected methods -------------------
         // -> Returns 'undefined' if property is not customly serialized.
         customSerializeProperty(propertyName) {

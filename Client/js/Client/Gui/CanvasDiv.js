@@ -21,7 +21,6 @@ define(["require", "exports", "../../Client/Gui/Component", "../../Client/Phaser
         // ----------------- Private data ---------------------
         // ---------------- Event handlers --------------------
         onResize() {
-            console.log('Test div resized');
             PhaserEngine_1.PhaserEngine.onCanvasDivResize();
         }
     }

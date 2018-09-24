@@ -51,7 +51,7 @@ export class Client extends Application
 
   public static async start()
   {
-    Syslog.log("Starting Kosmud client version...", MessageType.SYSTEM_INFO);
+    Syslog.log("Starting Kosmud client...", MessageType.SYSTEM_INFO);
 
     Client.instance.initGUI();
     Client.instance.connection.connect();

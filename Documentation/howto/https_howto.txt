@@ -1,0 +1,26 @@
+﻿==============================================================
+
+Https on W7
+---------------------
+
+1) Download and install Win64 OpenSSL Light from
+   https://slproweb.com/products/Win32OpenSSL.html
+
+2) In ProgramFiles/OpenSSL-Win64-bin run following commands:
+
+openssl genrsa -out kosmud-key.pem 2048
+openssl req -new -key kosmud-key.pem -out kosmud.csr
+openssl x509 -req -in kosmud.csr -signkey kosmud-key.pem -out kosmud-cert.pem
+
+3) Copy files:
+
+kosmud-cert.pem
+kosmud.csr
+kosmud-key.pem
+
+to /Server/Keys directory.
+
+
+
+
+==============================================================

@@ -64,8 +64,6 @@ export class CanvasDiv extends Component
 
   private onResize()
   {
-    console.log('Test div resized');
-
     PhaserEngine.onCanvasDivResize();
   }
 

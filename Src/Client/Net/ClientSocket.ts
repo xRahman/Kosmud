@@ -150,7 +150,8 @@ export class ClientSocket
 
     ///this.socket = new WebSocket('ws://127.0.0.1:80/');
     /// Port 80 zjevně není třeba uvádět.
-    this.socket = new WebSocket('ws://' + window.location.hostname);
+    //this.socket = new WebSocket('wss://' + window.location.hostname + ':443');
+    this.socket = new WebSocket('wss://' + window.location.hostname);
 
     ///console.log('connect(). Status: ' + this.socket.readyState);
 

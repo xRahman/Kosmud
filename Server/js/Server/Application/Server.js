@@ -43,7 +43,7 @@ class Server extends Application_1.Application {
         return __awaiter(this, void 0, void 0, function* () {
             Syslog_1.Syslog.log("Starting " + appName + " server (v" + version + ")...", MessageType_1.MessageType.SYSTEM_INFO);
             // Http server also starts a websocket server inside it.
-            this.instance.startHttpServer();
+            yield this.instance.startHttpServer();
             // Start the game loop.
             this.instance.game.start();
         });
@@ -88,11 +88,13 @@ class Server extends Application_1.Application {
     }
     // --------------- Private methods --------------------
     startHttpServer() {
-        if (this.httpServer.isOpen()) {
-            ERROR_1.ERROR("Http server is already running");
-            return;
-        }
-        this.httpServer.start();
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.httpServer.isOpen()) {
+                ERROR_1.ERROR("Http server is already running");
+                return;
+            }
+            yield this.httpServer.start();
+        });
     }
 }
 // -------------- Static class data -------------------

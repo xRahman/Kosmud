@@ -6,6 +6,14 @@
   Usage:
     Client.start();
 */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Application", "../../Shared/MessageType", "../../Shared/Syslog", "../../Client/Application/ClientSyslog", "../../Client/Gui/Document", "../../Client/Net/Connection", "../../Shared/Net/WebSocketEvent"], function (require, exports, PhaserEngine_1, Application_1, MessageType_1, Syslog_1, ClientSyslog_1, Document_1, Connection_1, WebSocketEvent_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -27,10 +35,12 @@ define(["require", "exports", "../Phaser/PhaserEngine", "../../Shared/Applicatio
         static get document() { return this.instance.document; }
         static get connection() { return this.instance.connection; }
         // ------------- Public static methods ----------------
-        static async start() {
-            Syslog_1.Syslog.log("Starting Kosmud client version...", MessageType_1.MessageType.SYSTEM_INFO);
-            Client.instance.initGUI();
-            Client.instance.connection.connect();
+        static start() {
+            return __awaiter(this, void 0, void 0, function* () {
+                Syslog_1.Syslog.log("Starting Kosmud client...", MessageType_1.MessageType.SYSTEM_INFO);
+                Client.instance.initGUI();
+                Client.instance.connection.connect();
+            });
         }
         // --------------- Protected methods ------------------
         // ~ Overrides App.reportException().

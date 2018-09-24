@@ -27,6 +27,7 @@ class SystemMessage extends SharedSystemMessage_1.SharedSystemMessage {
     // ~ Overrides Packet.process().
     process(connection) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('SystemMessage.process()');
             switch (this.type) {
                 case SystemMessage.Type.UNDEFINED:
                     ERROR_1.ERROR("Received system message with unspecified type."

@@ -3,6 +3,14 @@
 
   Encapsulates a web socket.
 */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "../../Shared/ERROR", "../../Shared/Syslog", "../../Shared/Net/WebSocketEvent"], function (require, exports, ERROR_1, Syslog_1, WebSocketEvent_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -98,7 +106,8 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Syslog", "../.
             //  'error' event is fired and onSocketError() is launched.)
             ///this.socket = new WebSocket('ws://127.0.0.1:80/');
             /// Port 80 zjevně není třeba uvádět.
-            this.socket = new WebSocket('ws://' + window.location.hostname);
+            //this.socket = new WebSocket('wss://' + window.location.hostname + ':443');
+            this.socket = new WebSocket('wss://' + window.location.hostname);
             ///console.log('connect(). Status: ' + this.socket.readyState);
             if (this.socket)
                 this.init();
@@ -235,20 +244,22 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Syslog", "../.
             /// TODO: (info, že se podařilo připojit).
             /// To je asi zbytecny, server posle uvodni 'obrazovku'
         }
-        async onReceiveMessage(event) {
-            console.log('Received message: ' + event.data);
-            if (typeof event.data !== 'string') {
-                ERROR_1.ERROR("Websocket received non-string data."
-                    + " Message will not be processed because"
-                    + " we can only process string data");
-                return;
-            }
-            try {
-                await this.connection.receiveData(event.data);
-            }
-            catch (error) {
-                Syslog_1.Syslog.reportUncaughtException(error);
-            }
+        onReceiveMessage(event) {
+            return __awaiter(this, void 0, void 0, function* () {
+                console.log('Received message: ' + event.data);
+                if (typeof event.data !== 'string') {
+                    ERROR_1.ERROR("Websocket received non-string data."
+                        + " Message will not be processed because"
+                        + " we can only process string data");
+                    return;
+                }
+                try {
+                    yield this.connection.receiveData(event.data);
+                }
+                catch (error) {
+                    Syslog_1.Syslog.reportUncaughtException(error);
+                }
+            });
         }
         onError(event) {
             ///console.log('onSocketError(). Status: ' + this.socket.readyState);

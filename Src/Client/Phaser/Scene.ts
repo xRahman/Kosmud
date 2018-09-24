@@ -20,8 +20,6 @@ export class Scene extends Phaser.Scene
   // This method is run by Phaser.
   public preload()
   {
-    console.log('preload');
-
     Background.preload(this);
     Ship.preload(this);
   }

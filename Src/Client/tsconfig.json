@@ -1,8 +1,8 @@
 {
   "compilerOptions":
   {
-    // "target": "es6",
-    "target": "es2018",
+    "target": "es6",
+    //"target": "es2018",   // require('js-beautify') doesn't work with es2018.
     // "module": "es2015",  // 'es2015' to use ES6 modules.
     "module": "amd",  // 'amd' is used by require.js module loader.
     "strict": true,   // Enforce strict checking of 'null' and 'undefined'.

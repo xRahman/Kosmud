@@ -39,28 +39,28 @@ export class Background
     const imageWidth = this.sprite.width;
     const imageHeight = this.sprite.height;
 
-    if (canvasWidth === 0)
+    if (canvasWidth <= 0)
     {
       throw new Error("Background cannot be resized"
-        + " because canvas has zero width");
+        + " because canvas has invalid width");
     }
 
-    if (canvasHeight === 0)
+    if (canvasHeight <= 0)
     {
       throw new Error("Background cannot be resized"
-        + " because canvas has zero height");
+        + " because canvas has invalid height");
     }
 
-    if (imageWidth === 0)
+    if (imageWidth <= 0)
     {
       throw new Error("Background cannot be resized"
-        + " because background sprite has zero width");
+        + " because background sprite has invalid width");
     }
 
-    if (imageHeight === 0)
+    if (imageHeight <= 0)
     {
       throw new Error("Background cannot be resized"
-        + " because background sprite has zero height");
+        + " because background sprite has invalid height");
     }
 
     const canvasRatio = canvasWidth / canvasHeight;

@@ -11,7 +11,6 @@ define(["require", "exports", "../../Client/Phaser/Background", "../../Client/Ph
         // ---------------- Public methods --------------------
         // This method is run by Phaser.
         preload() {
-            console.log('preload');
             Background_1.Background.preload(this);
             Ship_1.Ship.preload(this);
         }

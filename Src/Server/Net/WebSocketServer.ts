@@ -42,6 +42,7 @@ import * as WebSocket from 'ws';
 import * as net from 'net';  // Import namespace 'net' from node.js.
 import * as events from 'events';  // Import namespace 'events' from node.js.
 import * as http from 'http';  // Import namespace 'http' from node.js.
+import * as https from 'https';  // Import namespace 'http' from node.js.
 
 export class WebSocketServer
 {
@@ -59,7 +60,7 @@ export class WebSocketServer
   public isOpen() { return this.open; }
 
   // Starts the websocket server inside a http server.
-  public start(httpServer: http.Server)
+  public start(httpsServer: https.Server)
   {
     Syslog.log
     (
@@ -69,7 +70,7 @@ export class WebSocketServer
 
     // Websocket server runs inside a http server so the same port can be used
     // (it is possible because WebSocket protocol is an extension of http).
-    this.webSocketServer = new WebSocket.Server({ server: httpServer });
+    this.webSocketServer = new WebSocket.Server({ server: httpsServer });
 
     this.webSocketServer.on
     (

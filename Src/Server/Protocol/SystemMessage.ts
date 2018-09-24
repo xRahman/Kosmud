@@ -27,6 +27,8 @@ export class SystemMessage extends SharedSystemMessage
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    console.log('SystemMessage.process()');
+
     switch (this.type)
     {
       case SystemMessage.Type.UNDEFINED:

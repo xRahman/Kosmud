@@ -18,7 +18,6 @@ define(["require", "exports", "../../Client/Gui/CanvasDiv", "../../Client/Phaser
         }
         static onCanvasDivResize() {
             let canvas = this.instance.canvas;
-            console.log('Test div resized');
             canvas.updateSize();
             this.instance.game.resize(canvas.getWidth(), canvas.getHeight());
             this.instance.flightScene.onCanvasResize();

@@ -11,7 +11,6 @@ define(["require", "exports", "../../Client/Gui/Body"], function (require, expor
         updateSize() {
             this.width = Body_1.Body.getCanvasDivElement().clientWidth;
             this.height = Body_1.Body.getCanvasDivElement().clientHeight;
-            console.log('Resizing game to ' + this.width + ', ' + this.height);
         }
     }
     exports.Canvas = Canvas;

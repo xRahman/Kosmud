@@ -12,9 +12,13 @@ import {WebSocketServer} from '../../Server/Net/WebSocketServer';
 
 // Built-in node.js modules.
 import * as http from 'http';  // Import namespace 'http' from node.js.
+import * as https from 'https';  // Import namespace 'https' from node.js.
 import * as url from 'url';  // Import namespace 'url' from node.js.
 // 'nodePath' to prevent conflicts with variable 'path'.
 import * as nodePath from 'path';  // Import namespace 'path' from node.js.
+
+const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
+const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
 
 const MIME_TYPE: { [key: string]: string } =
 {
@@ -45,29 +49,33 @@ export class HttpServer
   // Do we accept http requests?
   private open = false;
 
-  public static get DEFAULT_PORT() { return 80; }
+  public static get DEFAULT_HTTP_PORT() { return 80; }
+  public static get DEFAULT_HTTPS_PORT() { return 443; }
 
   // --------------- Public accessors -------------------
 
   public getPort() { return this.port; }
 
-  public getServer() { return this.httpServer; }
+  public getServer() { return this.httpsServer; }
 
   public isOpen() { return this.open; }
 
   // ---------------- Public methods --------------------
 
-  // Starts the http server.
-  public start({ port } = { port: HttpServer.DEFAULT_PORT })
+  // Starts the https server.
+  public async start({ port } = { port: HttpServer.DEFAULT_HTTPS_PORT })
   {
     this.port = port;
     
-    this.httpServer = http.createServer
+    let certificate = await loadCertificate();
+
+    this.httpsServer = https.createServer
     (
+      certificate,
       (request, response) => { this.onRequest(request, response); }
     );
 
-    this.httpServer.on
+    this.httpsServer.on
     (
       'error',
       (error) => { this.onError(error); }
@@ -79,7 +87,7 @@ export class HttpServer
       MessageType.SYSTEM_INFO
     );
 
-    this.httpServer.listen
+    this.httpsServer.listen
     (
       port,
       () => { this.onStartListening(); }
@@ -88,9 +96,10 @@ export class HttpServer
 
   // ----------------- Private data ---------------------
 
-  private port = HttpServer.DEFAULT_PORT;
+  private port = HttpServer.DEFAULT_HTTP_PORT;
 
-  private httpServer: (http.Server | null) = null;
+  //private httpServer: (http.Server | null) = null;
+  private httpsServer: (https.Server | null) = null;
 
   // Websocket server runs inside a http server.
   private webSocketServer = new WebSocketServer();
@@ -100,22 +109,22 @@ export class HttpServer
   // Runs when server is ready and listening.
   private onStartListening()
   {
-    if (this.httpServer === null)
+    if (this.httpsServer === null)
     {
-      ERROR("Invalid 'httpServer'");
+      ERROR("Invalid 'httpsServer'");
       return;
     }
 
     Syslog.log
     (
-      "Http server is up and listening",
+      "Https server is up and listening",
       MessageType.HTTP_SERVER
     );
 
     this.open = true;
 
     // Start a websocket server inside the http server.
-    this.webSocketServer.start(this.httpServer);
+    this.webSocketServer.start(this.httpsServer);
   }
 
   // Handles http requests.
@@ -178,4 +187,18 @@ export class HttpServer
       MessageType.HTTP_SERVER
     );
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+// ! Throws exception on error.
+async function loadCertificate()
+{
+  let key = await FileSystem.readFile(PRIVATE_KEY_FILE);
+  let cert = await  FileSystem.readFile(CERTIFICATE_FILE);
+
+  if (!key || !cert)
+    throw new Error("Failed to load https key or certificate");
+
+  return { key: key, cert: cert };
 }
