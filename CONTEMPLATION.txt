@@ -1,4 +1,6 @@
 
+-----------------------------------------------------------------------
+
 TODO: Zvážit, jestli se na ERROR() nevyprdnout úplně.
 - v browseru stejně nakonec skončím vyhozením výjimky.
 - stejně chci nakonec logovat i exceptiony.
@@ -11,3 +13,33 @@ ZÁVĚR: Zkusím co nejvíc používat throw Error().
 Pozn.: Nehybnost backgroundu by šla kromě scrollFactoru 0 vyřešit
   ještě tím, že by se renderoval do samostatné scény. Viz sceneManager.
   (Pokud budu mít ui, tak na to asi stejně dojde).
+
+
+-----------------------------------------------------------------------
+
+Úvaha o referencích na entity:
+
+- reference by se získávaly přes:
+    Entities.getReference(whoAsks, whatDoesHeWant, whereIsReferenceWritten);
+
+- Entities by si zapamatovaly toho, kdo si o referenci žádá (do seznamu
+  žadatelů) a odkazovanou entitu (do seznamu odkazovaných entit), případně
+  by to mohly mít entity poznamenané u sebe (seznam koho referencují a kdo
+  je referencuje).
+    Když se entita maže, tak musí tyhle seznamy projít a vyhodit se z nich,
+  plus odkazovaná entita zapíše do všech referencí na sebe 'null';
+
+- getReference bude vracet typ Entity | null. Díky tomu typescript vynutí
+  kontroly na null při každé manipulaci s referencí.
+
+Downside: Pořád nebude zaručeno, že si někdo nesavne referenci přímo,
+  místo aby si ji vzal přes Entities.getReference(). Tudíž je otázka,
+  jestli celé tohle cvičení má smysl.
+- na druhou stranu když si vzpomenu vzít si referenci správně, tak mě
+  pak typescript donutí všude psát null checky, když s ní budu manipulovat.
+
+Problém s implementací by mohl být, jak předat, kam se reference zapisuje.
+  Když předám getReference(this.badPlayer), tak se předá hodnota, tj.
+  nejspíš 'null' nebo co zrovna v té property bude. Musel bych předat
+  getReference(this, 'badPlayer') - což je problém, protože nemám string
+  s názvem proměnné.
