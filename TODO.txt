@@ -1,3 +1,108 @@
+TODO: Vyzkoušet npm/mixin
+
+-----------------------------------------------------------------------
+
+TODO: Rozhodnout dilema s pojmeovávání class:
+
+/Shared/SharedClass
+/Client/Class
+/ServerClass
+
+nebo
+
+/Shared/Class
+/Client/ClientClass
+/Server/ServerClass
+
+- První varianta může být trochu matoucí při find-in-files (jsem na serveru
+  nebo na klientu?)
+- ale dává smysl při posílání mezi klientem a serverem
+  (classy by se jmenují stejně, tudíž se vzájemně serializují/deserializují).
+- Navíc SharedCosi zní jako "sdílená část čehosi", což je intuitivní význam.
+
+
+
+-----------------------------------------------------------------------
+
+TODO: Zvážit, jestli nějak nerozlišit incoming a outgoing packety
+  (asi různé adresáře na klientu a na serveru).
+Anser: Nepotřebuju víc adresářů, řeší to dědičnost.
+
+  shared/packet
+  client/incomingPacket
+  client/outgoingPacket
+  server/incomingPacket
+  server/outgoingPacket
+
+  nebo
+
+  client/packet/in
+  client/packet/out
+
+  client/packet/incoming
+  client/packet/outgoing
+
+Respektive jinak: Možná to není otázka adresářů, ale dědičnosti.
+  - outgoing packety například asi nepotřebují metodu process().
+    Aha, jasně, na BNextu jsem to měl zděděné z Reuqest a Response.
+    Ale Packet měl metodu process s error messagem v body, což
+    asi není dobře - měl jsem zpracovávat Requesty a posílat Responsy.
+  - možná rootovej Packet vůbec není potřeba.
+
+Takže otázka zní: Pojmenovat ancestory Request a Response, nebo IncommingPacket
+  a OutgointPacket?
+  - incoming/outgoing mění význam podle toho, jestli jsem na serveru nebo
+    na klientu. To by mohlo mást...
+  - na druhou stranu třeba SceneUpdate není ani Request, ani Response. Na nic
+    totiž neresponduje, server ho posílá automaticky.
+- incoming/outgoing je asi dobrý v tom, že je jasný, že incoming má mít metodu
+  process a outgoing ne.
+- Response by asi šla zdědit z outgoingPacketu - hmm, vlastně nešla, protože
+  na serveru je outgoing a na clientu incoming. To bude možná problém...
+
+TODO: Upravit dědičnost packetů (nejspíš zrušit Packet a nahradit ho dvojicí
+  IncomingPacket/OutgointPacket).
+  - hmm, možná tady byl problém s křížovým děděním, Response/Request mají
+    taky nějaké sdílené vlastnosti a nedají se jednoduše zdědit
+    z Incoming/Outgoing packetu. Možná to vyřešit propertou:
+    RegisterRequest by byl například zděděnej z OutgoingPacketu a měl property
+    requestData: RegisterRequestData.
+
+Hmm, ono to možná vůbec nepůjde.
+  Pokud mám třeba SharedPlayerInput, v něm něco, co chci zdědit, a z toho
+  zdědím /Client/PlayerInput a /Server/PlayerInput, tak na clientu
+  je to outgoing packet a na serveru incomming.
+- což jsem zas u toho, že by všecha sdílená data toho packetu musela být
+  pověšená pod IncomingPacket/OutgoingPacket coby .data: PlayerInputData.
+
+Je fakt, že když bych měl PlayerInputData, tak bych k tomu nemusel dělat
+  client a server verzi (všechna data v packetu jsou shared).
+  Na druhou stranu by mi ale nic neohlídalo, že v client i server verzi
+  packetu mám property data: PlayerInputData - na to bych ty packety
+  musel dědit z nějakého interfacu (což bych ale asi mohl).
+
+Takže bych měl:
+  /Shared/IncomingPacket
+  /Shared/OutgoingPacket
+  /Shared/PlayerInputData
+  /Shared/PlayerInputInterface
+
+  a k tomu:
+
+  /Client/PlayerInput
+    class PlayerInput extends OutgoingPacket implements PlayerInputInterface
+    {
+    }
+
+  a na serveru obdobu.
+
+- Problém to úplně neřeší, protože pořád můžu zapomenout napsat to
+  'implements PlayerInputInterface' a tudíž mě nic neohlídá, ale
+  asi je to lepší než nic...
+
+
+-----------------------------------------------------------------------
+
 TODO: Přejmenovat adresáře Client/js, Server/js, atd. (na CamelCase)
 
 TODO: Zamyslet se, jestli by se nedaly enumy nahradit stringama
@@ -5,6 +110,8 @@ TODO: Zamyslet se, jestli by se nedaly enumy nahradit stringama
   asi nechci. Takže v případě paketů zůstanu raději u enumů.
   (Na druhou stranu u stringových typů šlo nějak zajistit, že jsem
    vyčerpal všechny možnosti - to je fajn.)
+- otázka je, jestli by nešlo tu kontrolu intelisensem dělat i u enumů
+  (TODO: Nastudovat to a vyzkoušet).
 
 TODO: Zjistit, co mi to tam chodí za system message.
 
