@@ -711,7 +711,7 @@ class Serializable extends Attributable_1.Attributable {
     createNewIfNull(param) {
         let instance = param.targetProperty;
         // If the target property exists, we will be loading into it.
-        if (instance !== null)
+        if (instance)
             return instance;
         // If target property doesn't exist, we have to create a new instance
         // (because 'null' has no properties so we can't call deserialize() on it).

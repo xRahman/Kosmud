@@ -270,6 +270,35 @@ export module Utils
 
     return str;
   }
+
+  // This function is used to enforce that all switch cases are handled
+  // when using compound type of switch argument.
+  //
+  //   Example:
+  //     iport {Utils} from '../Shared/Utils';
+  //
+  //     type Type = "Blue" | "Red";
+  //
+  //     function something(type: Type)
+  //     {
+  //       switch (type)
+  //       {
+  //         case "Blue":
+  //           doSomething();
+  //           break;
+  //
+  //         default:
+  //           // Typescript will show intelisense error here saying:
+  //           //   "Argument of type '"Red"' is not
+  //           //    assignable to parameter of type 'never'" because
+  //           //  you forgot to handle "Red" case.
+  //           Utils.reportMissingCase(type);
+  //       }
+  //     }
+  export function reportMissingCase(variable: never)
+  {
+    throw new Error("Unhandled switch case");
+  }
 }
 
 // ----------------- Private Module Stuff --------------------

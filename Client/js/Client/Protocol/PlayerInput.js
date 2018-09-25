@@ -3,12 +3,13 @@
 
   Client-side version of system message packet.
 */
-define(["require", "exports", "../../Shared/Class/Classes", "../../Shared/Protocol/SharedPlayerInput"], function (require, exports, Classes_1, SharedPlayerInput_1) {
-    'use strict';
+define(["require", "exports", "../../Shared/Class/Classes", "../../Shared/Protocol/OutgoingPacket"], function (require, exports, Classes_1, OutgoingPacket_1) {
+    "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class PlayerInput extends SharedPlayerInput_1.SharedPlayerInput {
-        constructor() {
+    class PlayerInput extends OutgoingPacket_1.OutgoingPacket {
+        constructor(data) {
             super();
+            this.data = data;
             this.version = 0;
         }
     }

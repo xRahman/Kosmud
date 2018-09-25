@@ -20,8 +20,20 @@ const Message_1 = require("../../Server/Net/Message");
 const MessageType_1 = require("../../Shared/MessageType");
 const ServerSocket_1 = require("../../Server/Net/ServerSocket");
 const Connections_1 = require("../../Server/Net/Connections");
-const Packet_1 = require("../../Shared/Protocol/Packet");
+const IncomingPacket_1 = require("../../Shared/Protocol/IncomingPacket");
 const SystemMessage_1 = require("../../Server/Protocol/SystemMessage");
+const SystemMessageData_1 = require("../../Shared/Protocol/SystemMessageData");
+const SceneUpdate_1 = require("../../Server/Protocol/SceneUpdate");
+const SceneUpdateData_1 = require("../../Shared/Protocol/SceneUpdateData");
+const PlayerInput_1 = require("../../Server/Protocol/PlayerInput");
+const PlayerInputData_1 = require("../../Shared/Protocol/PlayerInputData");
+// import {MudMessage} from '../../../server/lib/protocol/MudMessage';
+SystemMessage_1.SystemMessage;
+SystemMessageData_1.SystemMessageData;
+SceneUpdate_1.SceneUpdate;
+SceneUpdateData_1.SceneUpdateData;
+PlayerInput_1.PlayerInput;
+PlayerInputData_1.PlayerInputData;
 /// TODO: Tohohle se zbavit
 /// - Tak v Connection bych tohle opravdu nehledal...
 /// (Navíc to očividně typescript nekontroluje...)
@@ -145,7 +157,7 @@ class Connection {
             let deserializedPacket = Serializable_1.Serializable.deserialize(data);
             if (!deserializedPacket)
                 return;
-            let packet = deserializedPacket.dynamicCast(Packet_1.Packet);
+            let packet = deserializedPacket.dynamicCast(IncomingPacket_1.IncomingPacket);
             if (packet === null)
                 return;
             yield packet.process(this);

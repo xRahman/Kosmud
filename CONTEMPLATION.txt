@@ -43,3 +43,114 @@ Problém s implementací by mohl být, jak předat, kam se reference zapisuje.
   nejspíš 'null' nebo co zrovna v té property bude. Musel bych předat
   getReference(this, 'badPlayer') - což je problém, protože nemám string
   s názvem proměnné.
+
+- Předávání referencí by vyřešilo, kdyby entita nebyla pověšená přímo
+  v property (třeba .ch), ale až v .ch.ref. Ta by navíc asi mohla bejt
+  skrytá za Proxy, takže by se to používalo normálně. Když bych pak chtěl
+  tuhle referenci vynulovat, tak bych zapsal ch.ref = null.
+
+Otázka je, jestli tohle všechno má vůbec smysl. Zresetování properties
+  mazané entity sice nezajistí kontrolu ze strany typescriptu (to by musely
+  všechny properties všech entit být typu (Cosi | null)), abych vždycky musel
+  kontrolovat, že nepřistupuju na neexistující property, ale vyhodí výjimku,
+  takže se to v runtimu dozvím.
+- fakt teda je, že kontrola už v compile timu je výrazně lepší - odhalí
+  i případné chyby se vzácným výskytem.
+
+-----------------------------------------------------------------------
+
+Mixiny (vícenásobná dědičnost)
+--------------------------------
+
+
+TODO: Vyzkoušet npm/mixin
+- asi nebrat, typescript si s tím nerozumí.
+
+Typescriptové mixiny fungují tak, že je možné funkcí přidat properties
+  na libovolnou classu - to by teoreticky mohlo fungovat taky, až na to, že
+  ty přidávané properties nemohou mít vlastní strom dědičnosti, a že to má
+  dost divnou syntaxi...
+
+http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+- class MyClass extends mix(MyBaseClass).with(Mixin1, Mixin2) {  
+  /* ... */
+}
+
+Tohle by mohlo být zajímavé:
+(viz https://github.com/Microsoft/TypeScript/pull/13743#issuecomment-414547593)
+
+// Helper code:
+/// Odtud by se brala funkce Mixin()...
+
+export type Constructor<T = {}> = new (...args: any[]) => T;
+
+/* turns A | B | C into A & B & C */
+type UnionToIntersection<U> =
+	(U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never
+
+/* merges constructor types - self explanitory */
+type MergeConstructorTypes<T extends Array<Constructor<any>>> =
+	UnionToIntersection<InstanceType<T[number]>>;
+
+export function Mixin<T extends Array<Constructor<any>>>(constructors: T): Constructor<MergeConstructorTypes<T>> {
+	const cls = class {
+		state = {
+		}
+		constructor() {
+			constructors.forEach((c: any) => {
+				const oldState = this.state;
+				c.apply(this);
+				this.state = Object.assign({}, this.state, oldState);
+			});
+		}
+	} as any;
+	constructors.forEach((c: any) => {
+		Object.assign(cls.prototype, c.prototype);
+	});
+	return cls as any;
+}
+
+/// And the implementation.....
+
+
+export class FooMixin {
+	state = {
+		value: ""
+	}
+	getBlah() {
+		return "Blah"
+	}
+}
+
+export class BarMixin {
+	state = {
+		othervalue: "merge together"
+	}
+	getBar() {
+		return "Bar"
+	}
+}
+
+export class FooBar extends Mixin([FooMixin, BarMixin]) {
+	constructor() {
+		super();
+		this.getBlah = this.getBlah.bind(this);
+		this.getBar = this.getBar.bind(this);
+	}
+
+	test() {
+		this.state.value  // here on the typings good :)
+		this.state.othervalue // here on the typings good :) this proves the merge strategy for state
+		this.getBar(); // here :)
+		this.getBlah(); // here :)
+	}
+}
+
+- Vypadá to moc hezky, ale nefunguje to, protože na constructoru se nedá
+  zavolat apply ani call.
+    Tzn. řádka:
+      c.apply(this);
+    hodí exception.
+
+
+-----------------------------------------------------------------------

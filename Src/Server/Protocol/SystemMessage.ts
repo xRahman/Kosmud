@@ -1,21 +1,25 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Server-side functionality related to system message packet.
+  Incoming system message packet.
 */
 
 'use strict';
 
-import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
+import {Utils} from '../../Shared/Utils';
 import {MessageType} from '../../Shared/MessageType';
 import {Connection} from '../../Server/Net/Connection';
-import {SharedSystemMessage} from '../../Shared/Protocol/SharedSystemMessage';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {SystemMessageInterface} from '../../Shared/Protocol/SystemMessageData';
+import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
 import {Classes} from '../../Shared/Class/Classes';
 
-export class SystemMessage extends SharedSystemMessage
+export class SystemMessage
+  extends IncomingPacket
+  implements SystemMessageInterface
 {
-  constructor()
+  constructor(public data: SystemMessageData)
   {
     super();
 
@@ -24,40 +28,33 @@ export class SystemMessage extends SharedSystemMessage
 
   // ---------------- Public methods --------------------
 
-  // ~ Overrides Packet.process().
+  // ~ Overrides IncomingPacket.process().
   public async process(connection: Connection)
   {
     console.log('SystemMessage.process()');
 
-    switch (this.type)
+    switch (this.data.type)
     {
-      case SystemMessage.Type.UNDEFINED:
-        ERROR("Received system message with unspecified type."
-          + " Someone problably forgot to set 'packet.type'"
-          + " when sending system message from the client");
-        break;
-
-      case SystemMessage.Type.CLIENT_CLOSED_BROWSER_TAB:
-        this.reportClientClosedBrowserTab(connection);
+      case "Client closed browser tab":
+        reportClientClosedBrowserTab(connection);
         break;
 
       default:
-        ERROR("Received system message of unknown type.");
-        break;
+        Utils.reportMissingCase(this.data.type);
     }
-  }
-
-  // --------------- Private methods --------------------
-
-  private reportClientClosedBrowserTab(connection: Connection)
-  {
-    Syslog.log
-    (
-      connection.getUserInfo() + " has disconnected by"
-        + " closing or reloading browser tab",
-      MessageType.CONNECTION_INFO
-    );
   }
 }
 
 Classes.registerSerializableClass(SystemMessage);
+
+// ----------------- Auxiliary Functions ---------------------
+
+function reportClientClosedBrowserTab(connection: Connection)
+{
+  Syslog.log
+  (
+    connection.getUserInfo() + " has disconnected by"
+      + " closing or reloading browser tab",
+    MessageType.CONNECTION_INFO
+  );
+}

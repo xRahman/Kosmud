@@ -1,21 +1,22 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Server-side functionality related to system message packet.
+  Incoming player input packet.
 */
 
 'use strict';
 
-// import {ERROR} from '../../Shared/ERROR';
-// import {Syslog} from '../../Shared/Syslog';
-// import {MessageType} from '../../Shared/MessageType';
 import {Connection} from '../../Server/Net/Connection';
-import {SharedPlayerInput} from '../../Shared/Protocol/SharedPlayerInput';
 import {Classes} from '../../Shared/Class/Classes';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {PlayerInputInterface} from '../../Shared/Protocol/PlayerInputData';
+import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
 
-export class PlayerInput extends SharedPlayerInput
+export class PlayerInput
+  extends IncomingPacket
+  implements PlayerInputInterface
 {
-  constructor()
+  constructor(public data: PlayerInputData)
   {
     super();
 
@@ -24,27 +25,12 @@ export class PlayerInput extends SharedPlayerInput
 
   // ---------------- Public methods --------------------
 
-  // ~ Overrides Packet.process().
+  // ~ Overrides IncomingPacket.process().
   public async process(connection: Connection)
   {
     console.log('PlayerInput.process()');
 
-    // switch (this.type)
-    // {
-    //   case SystemMessage.Type.UNDEFINED:
-    //     ERROR("Received system message with unspecified type."
-    //       + " Someone problably forgot to set 'packet.type'"
-    //       + " when sending system message from the client");
-    //     break;
-
-    //   case SystemMessage.Type.CLIENT_CLOSED_BROWSER_TAB:
-    //     this.reportClientClosedBrowserTab(connection);
-    //     break;
-
-    //   default:
-    //     ERROR("Received system message of unknown type.");
-    //     break;
-    // }
+    /// TODO
   }
 
   // --------------- Private methods --------------------

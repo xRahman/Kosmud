@@ -7,21 +7,31 @@
 'use strict';
 
 import {Classes} from '../../Shared/Class/Classes';
-import {SharedSceneUpdate} from '../../Shared/Protocol/SharedSceneUpdate';
+import {Connection} from '../../Server/Net/Connection';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {SceneUpdateInterface} from '../../Shared/Protocol/SceneUpdateData';
+import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
 
-export class SceneUpdate extends SharedSceneUpdate
+export class SceneUpdate
+  extends IncomingPacket
+  implements SceneUpdateInterface
 {
-  constructor()
+  constructor(public data: SceneUpdateData)
   {
     super();
 
     this.version = 0;
   }
 
-  ///?
-  // This class is empty, all functionality is inherited from
-  // ancestor. It only exists to be added to Classes so it can
-  // be be dynamically instantiated.
+  // ---------------- Public methods --------------------
+
+  // ~ Overrides IncomingPacket.process().
+  public async process(connection: Connection)
+  {
+    console.log('PlayerInput.process()');
+
+    /// TODO
+  }
 }
 
 Classes.registerSerializableClass(SceneUpdate);

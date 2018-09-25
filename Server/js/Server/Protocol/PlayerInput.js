@@ -1,7 +1,7 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Server-side functionality related to system message packet.
+  Incoming player input packet.
 */
 'use strict';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -13,32 +13,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const SharedPlayerInput_1 = require("../../Shared/Protocol/SharedPlayerInput");
 const Classes_1 = require("../../Shared/Class/Classes");
-class PlayerInput extends SharedPlayerInput_1.SharedPlayerInput {
-    constructor() {
+const IncomingPacket_1 = require("../../Shared/Protocol/IncomingPacket");
+class PlayerInput extends IncomingPacket_1.IncomingPacket {
+    constructor(data) {
         super();
+        this.data = data;
         this.version = 0;
     }
     // ---------------- Public methods --------------------
-    // ~ Overrides Packet.process().
+    // ~ Overrides IncomingPacket.process().
     process(connection) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('PlayerInput.process()');
-            // switch (this.type)
-            // {
-            //   case SystemMessage.Type.UNDEFINED:
-            //     ERROR("Received system message with unspecified type."
-            //       + " Someone problably forgot to set 'packet.type'"
-            //       + " when sending system message from the client");
-            //     break;
-            //   case SystemMessage.Type.CLIENT_CLOSED_BROWSER_TAB:
-            //     this.reportClientClosedBrowserTab(connection);
-            //     break;
-            //   default:
-            //     ERROR("Received system message of unknown type.");
-            //     break;
-            // }
+            /// TODO
         });
     }
 }

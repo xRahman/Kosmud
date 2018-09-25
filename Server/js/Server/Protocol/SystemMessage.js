@@ -1,7 +1,7 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Server-side functionality related to system message packet.
+  Incoming system message packet.
 */
 'use strict';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -13,42 +13,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ERROR_1 = require("../../Shared/ERROR");
 const Syslog_1 = require("../../Shared/Syslog");
+const Utils_1 = require("../../Shared/Utils");
 const MessageType_1 = require("../../Shared/MessageType");
-const SharedSystemMessage_1 = require("../../Shared/Protocol/SharedSystemMessage");
+const IncomingPacket_1 = require("../../Shared/Protocol/IncomingPacket");
 const Classes_1 = require("../../Shared/Class/Classes");
-class SystemMessage extends SharedSystemMessage_1.SharedSystemMessage {
-    constructor() {
+class SystemMessage extends IncomingPacket_1.IncomingPacket {
+    constructor(data) {
         super();
+        this.data = data;
         this.version = 0;
     }
     // ---------------- Public methods --------------------
-    // ~ Overrides Packet.process().
+    // ~ Overrides IncomingPacket.process().
     process(connection) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('SystemMessage.process()');
-            switch (this.type) {
-                case SystemMessage.Type.UNDEFINED:
-                    ERROR_1.ERROR("Received system message with unspecified type."
-                        + " Someone problably forgot to set 'packet.type'"
-                        + " when sending system message from the client");
-                    break;
-                case SystemMessage.Type.CLIENT_CLOSED_BROWSER_TAB:
-                    this.reportClientClosedBrowserTab(connection);
+            switch (this.data.type) {
+                case "Client closed browser tab":
+                    reportClientClosedBrowserTab(connection);
                     break;
                 default:
-                    ERROR_1.ERROR("Received system message of unknown type.");
-                    break;
+                    Utils_1.Utils.reportMissingCase(this.data.type);
             }
         });
-    }
-    // --------------- Private methods --------------------
-    reportClientClosedBrowserTab(connection) {
-        Syslog_1.Syslog.log(connection.getUserInfo() + " has disconnected by"
-            + " closing or reloading browser tab", MessageType_1.MessageType.CONNECTION_INFO);
     }
 }
 exports.SystemMessage = SystemMessage;
 Classes_1.Classes.registerSerializableClass(SystemMessage);
+// ----------------- Auxiliary Functions ---------------------
+function reportClientClosedBrowserTab(connection) {
+    Syslog_1.Syslog.log(connection.getUserInfo() + " has disconnected by"
+        + " closing or reloading browser tab", MessageType_1.MessageType.CONNECTION_INFO);
+}
 //# sourceMappingURL=SystemMessage.js.map

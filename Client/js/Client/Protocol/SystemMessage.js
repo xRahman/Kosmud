@@ -1,14 +1,15 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Client-side version of system message packet.
+  Outgoing system message packet.
 */
-define(["require", "exports", "../../Shared/Class/Classes", "../../Shared/Protocol/SharedSystemMessage"], function (require, exports, Classes_1, SharedSystemMessage_1) {
+define(["require", "exports", "../../Shared/Class/Classes", "../../Shared/Protocol/OutgoingPacket"], function (require, exports, Classes_1, OutgoingPacket_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
-    class SystemMessage extends SharedSystemMessage_1.SharedSystemMessage {
-        constructor() {
+    class SystemMessage extends OutgoingPacket_1.OutgoingPacket {
+        constructor(data) {
             super();
+            this.data = data;
             this.version = 0;
         }
     }

@@ -18,9 +18,21 @@ import {ServerSocket} from '../../Server/Net/ServerSocket';
 // import {GameEntity} from '../../../server/game/GameEntity';
 import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
-import {Packet} from '../../Shared/Protocol/Packet';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 import {SystemMessage} from '../../Server/Protocol/SystemMessage';
+import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
+import {SceneUpdate} from '../../Server/Protocol/SceneUpdate';
+import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
+import {PlayerInput} from '../../Server/Protocol/PlayerInput';
+import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
 // import {MudMessage} from '../../../server/lib/protocol/MudMessage';
+SystemMessage;
+SystemMessageData;
+SceneUpdate;
+SceneUpdateData;
+PlayerInput;
+PlayerInputData;
 
 // 3rd party modules.
 import * as WebSocket from 'ws';
@@ -194,7 +206,7 @@ export class Connection implements SharedConnection
     if (!deserializedPacket)
       return;
 
-    let packet = deserializedPacket.dynamicCast(Packet);
+    let packet = deserializedPacket.dynamicCast(IncomingPacket);
 
     if (packet === null)
       return;
@@ -203,7 +215,7 @@ export class Connection implements SharedConnection
   }
 
   // Sends 'packet' to web socket.
-  public send(packet: Packet)
+  public send(packet: OutgoingPacket)
   {
     /// TODO: packet.serialize() sice zatím nevyhazuje výjimky,
     /// ale časem bude.

@@ -1,0 +1,1 @@
+{"version":3,"file":"SceneUpdate.js","sourceRoot":"","sources":["../../../../Src/Server/Protocol/SceneUpdate.ts"],"names":[],"mappings":"AAAA;;;;EAIE;;IAEF,YAAY,CAAC;;IAOb,MAAa,WACX,SAAQ,+BAAc;QAGtB,YAAmB,IAAqB;YAEtC,KAAK,EAAE,CAAC;YAFS,SAAI,GAAJ,IAAI,CAAiB;YAItC,IAAI,CAAC,OAAO,GAAG,CAAC,CAAC;QACnB,CAAC;KACF;IAVD,kCAUC;IAED,iBAAO,CAAC,yBAAyB,CAAC,WAAW,CAAC,CAAC"}

@@ -1,6 +1,5 @@
-TODO: Vyzkoušet npm/mixin
+TODO: Vyhodit z gitu zkompilovaný kód.
 
------------------------------------------------------------------------
 
 TODO: Rozhodnout dilema s pojmeovávání class:
 
@@ -100,6 +99,8 @@ Takže bych měl:
   'implements PlayerInputInterface' a tudíž mě nic neohlídá, ale
   asi je to lepší než nic...
 
+Otázka je, jestli k něčemu vůbec potřebuju ty interfacy...
+- asi je tady používám k neintuitivnímu účelu.
 
 -----------------------------------------------------------------------
 

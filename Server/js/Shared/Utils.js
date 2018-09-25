@@ -216,6 +216,34 @@ var Utils;
         return str;
     }
     Utils.ensureDotAtTheEnd = ensureDotAtTheEnd;
+    // This function is used to enforce that all switch cases are handled
+    // when using compound type of switch argument.
+    //
+    //   Example:
+    //     iport {Utils} from '../Shared/Utils';
+    //
+    //     type Type = "Blue" | "Red";
+    //
+    //     function something(type: Type)
+    //     {
+    //       switch (type)
+    //       {
+    //         case "Blue":
+    //           doSomething();
+    //           break;
+    //
+    //         default:
+    //           // Typescript will show intelisense error here saying:
+    //           //   "Argument of type '"Red"' is not
+    //           //    assignable to parameter of type 'never'" because
+    //           //  you forgot to handle "Red" case.
+    //           Utils.reportMissingCase(type);
+    //       }
+    //     }
+    function reportMissingCase(variable) {
+        throw new Error("Unhandled switch case");
+    }
+    Utils.reportMissingCase = reportMissingCase;
 })(Utils = exports.Utils || (exports.Utils = {}));
 // ----------------- Private Module Stuff --------------------
 /// Not used anymore. All file names are encoded now.

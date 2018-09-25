@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializable", "../../Client/Application/Client", "../../Client/Net/ClientSocket", "../../Shared/Protocol/Packet", "../../Client/Protocol/SystemMessage"], function (require, exports, ERROR_1, Serializable_1, Client_1, ClientSocket_1, Packet_1, SystemMessage_1) {
+define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializable", "../../Client/Application/Client", "../../Client/Net/ClientSocket", "../../Shared/Protocol/IncomingPacket", "../../Client/Protocol/SystemMessage", "../../Shared/Protocol/SystemMessageData", "../../Client/Protocol/SceneUpdate", "../../Shared/Protocol/SceneUpdateData", "../../Client/Protocol/PlayerInput", "../../Shared/Protocol/PlayerInputData"], function (require, exports, ERROR_1, Serializable_1, Client_1, ClientSocket_1, IncomingPacket_1, SystemMessage_1, SystemMessageData_1, SceneUpdate_1, SceneUpdateData_1, PlayerInput_1, PlayerInputData_1) {
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
     // import {Account} from '../../../client/lib/account/Account';
@@ -26,6 +26,12 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializ
     // import '../../../client/lib/protocol/RegisterResponse';
     // import '../../../client/lib/protocol/ChargenResponse';
     // import '../../../client/lib/protocol/EnterGameResponse';
+    SystemMessage_1.SystemMessage;
+    SystemMessageData_1.SystemMessageData;
+    SceneUpdate_1.SceneUpdate;
+    SceneUpdateData_1.SceneUpdateData;
+    PlayerInput_1.PlayerInput;
+    PlayerInputData_1.PlayerInputData;
     class Connection {
         constructor() {
             this.socket = null;
@@ -90,7 +96,7 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializ
                 let deserializedPacket = Serializable_1.Serializable.deserialize(data);
                 if (!deserializedPacket)
                     return;
-                let packet = deserializedPacket.dynamicCast(Packet_1.Packet);
+                let packet = deserializedPacket.dynamicCast(IncomingPacket_1.IncomingPacket);
                 if (packet !== null)
                     yield packet.process(this);
             });
@@ -134,9 +140,7 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializ
         // }
         // Sends system message to the connection.
         sendSystemMessage(type, message) {
-            let packet = new SystemMessage_1.SystemMessage();
-            packet.type = type;
-            packet.message = message;
+            let packet = new SystemMessage_1.SystemMessage(new SystemMessageData_1.SystemMessageData(type, message));
             this.send(packet);
         }
         /// Disabled for now.
@@ -154,7 +158,7 @@ define(["require", "exports", "../../Shared/ERROR", "../../Shared/Class/Serializ
             //   this.activeAvatar.clientMessage(message);
         }
         reportClosingBrowserTab() {
-            this.sendSystemMessage(SystemMessage_1.SystemMessage.Type.CLIENT_CLOSED_BROWSER_TAB, null);
+            this.sendSystemMessage("Client closed browser tab", "");
         }
         close(reason = null) {
             if (this.socket)

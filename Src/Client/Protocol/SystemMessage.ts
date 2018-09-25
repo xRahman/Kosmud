@@ -1,26 +1,26 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Client-side version of system message packet.
+  Outgoing system message packet.
 */
 
 'use strict';
 
 import {Classes} from '../../Shared/Class/Classes';
-import {SharedSystemMessage} from '../../Shared/Protocol/SharedSystemMessage';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
+import {SystemMessageInterface} from '../../Shared/Protocol/SystemMessageData';
+import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
 
-export class SystemMessage extends SharedSystemMessage
+export class SystemMessage
+  extends OutgoingPacket
+  implements SystemMessageInterface
 {
-  constructor()
+  constructor(public data: SystemMessageData)
   {
     super();
 
     this.version = 0;
   }
-
-  // This class is empty, all functionality is inherited from
-  // ancestor. It only exists to be added to Classes so it can
-  // be be dynamically instantiated.
 }
 
 Classes.registerSerializableClass(SystemMessage);

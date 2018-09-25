@@ -11,7 +11,6 @@ import {Syslog} from '../../Shared/Syslog';
 import {Utils} from '../../Shared/Utils';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {JsonObject} from '../../Shared/Class/JsonObject';
-import {Packet} from '../../Shared/Protocol/Packet';
 import {Connection} from '../../Client/Net/Connection';
 
 export class ClientSocket

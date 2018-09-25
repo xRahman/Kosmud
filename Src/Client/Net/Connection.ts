@@ -16,10 +16,15 @@ import {ClientSocket} from '../../Client/Net/ClientSocket';
 // import {Windows} from '../../../client/gui/window/Windows';
 // import {ScrollWindow} from '../../../client/gui/scroll/ScrollWindow';
 // import {Avatar} from '../../../client/lib/connection/Avatar';
-import {Packet} from '../../Shared/Protocol/Packet';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 // import {Command} from '../../../client/lib/protocol/Command';
-import {SharedSystemMessage} from '../../Shared/Protocol/SharedSystemMessage';
 import {SystemMessage} from '../../Client/Protocol/SystemMessage';
+import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
+import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
+import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
+import {PlayerInput} from '../../Client/Protocol/PlayerInput';
+import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
 // import {Account} from '../../../client/lib/account/Account';
 // import {Character} from '../../../client/game/character/Character';
 
@@ -33,6 +38,12 @@ import {SystemMessage} from '../../Client/Protocol/SystemMessage';
 // import '../../../client/lib/protocol/RegisterResponse';
 // import '../../../client/lib/protocol/ChargenResponse';
 // import '../../../client/lib/protocol/EnterGameResponse';
+SystemMessage;
+SystemMessageData;
+SceneUpdate;
+SceneUpdateData;
+PlayerInput;
+PlayerInputData;
 
 export class Connection implements SharedConnection
 {
@@ -71,7 +82,7 @@ export class Connection implements SharedConnection
 
   // ---------------- Static methods --------------------
 
-  public static send(packet: Packet)
+  public static send(packet: OutgoingPacket)
   {
     let connection = Client.connection;
 
@@ -121,7 +132,7 @@ export class Connection implements SharedConnection
     if (!deserializedPacket)
       return;
     
-    let packet = deserializedPacket.dynamicCast(Packet);
+    let packet = deserializedPacket.dynamicCast(IncomingPacket);
 
     if (packet !== null)
       await packet.process(this);
@@ -176,16 +187,12 @@ export class Connection implements SharedConnection
   // }
 
   // Sends system message to the connection.
-  public sendSystemMessage
-  (
-    type: SharedSystemMessage.Type,
-    message: string | null
-  )
+  public sendSystemMessage(type: SystemMessageData.Type, message: string)
   {
-    let packet = new SystemMessage();
-
-    packet.type = type;
-    packet.message = message;
+    let packet = new SystemMessage
+    (
+      new SystemMessageData(type, message)
+    );
 
     this.send(packet);
   }
@@ -209,7 +216,7 @@ export class Connection implements SharedConnection
 
   public reportClosingBrowserTab()
   {
-    this.sendSystemMessage(SystemMessage.Type.CLIENT_CLOSED_BROWSER_TAB, null);
+    this.sendSystemMessage("Client closed browser tab", "");
   }
 
   public close(reason: (string | null) = null)
@@ -222,7 +229,7 @@ export class Connection implements SharedConnection
 
   // ---------------- Private methods -------------------
 
-  private send(packet: Packet)
+  private send(packet: OutgoingPacket)
   {
     if (!this.socket)
     {
