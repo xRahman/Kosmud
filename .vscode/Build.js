@@ -16,10 +16,10 @@ const fs = require('fs');
 
 console.log('Removing old build...');
 
-rmTree("./Client/js/Client");
-rmTree("./Client/js/Shared");
-rmTree("./Server/js/Server");
-rmTree("./Server/js/Shared");
+rmTree("./Client/Js/Client");
+rmTree("./Client/Js/Shared");
+rmTree("./Server/Js/Server");
+rmTree("./Server/Js/Shared");
 
 console.log('Compiling typescript code...');
 

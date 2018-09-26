@@ -1,1 +1,0 @@
-{"version":3,"file":"SystemMessage.js","sourceRoot":"","sources":["../../../../Src/Client/Protocol/SystemMessage.ts"],"names":[],"mappings":"AAAA;;;;EAIE;;IAEF,YAAY,CAAC;;IAOb,MAAa,aACX,SAAQ,+BAAc;QAGtB,YAAmB,IAAuB;YAExC,KAAK,EAAE,CAAC;YAFS,SAAI,GAAJ,IAAI,CAAmB;YAIxC,IAAI,CAAC,OAAO,GAAG,CAAC,CAAC;QACnB,CAAC;KACF;IAVD,sCAUC;IAED,iBAAO,CAAC,yBAAyB,CAAC,aAAa,CAAC,CAAC"}

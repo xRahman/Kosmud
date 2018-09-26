@@ -25,7 +25,7 @@
             },
             "console": "externalTerminal",
             "sourceMaps": true,
-            "outFiles": [ "${workspaceRoot}/Server/js/**/*.js" ]
+            "outFiles": [ "${workspaceRoot}/Server/Js/**/*.js" ]
         }
     ]
 }

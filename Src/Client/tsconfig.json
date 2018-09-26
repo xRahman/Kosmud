@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "newLine": "LF",
     "noEmitOnError": true,
-    "outDir": "../../Client/js",
+    "outDir": "../../Client/Js",
     "rootDir": "../",
     "sourceMap": true
     // "sourceRoot": "../",

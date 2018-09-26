@@ -75,6 +75,14 @@ http://brm.io/matter-js/docs/index.html
 Physics shape editor for phaser 3:
 https://www.codeandweb.com/physicseditor/tutorials/how-to-create-physics-shapes-for-phaser-3-and-matterjs
 
+
+https://github.com/Lightnet/project-phaser3-matterjs
+https://gamedevacademy.org/phaser-3-tutorial/
+https://github.com/liabru/matter-js/wiki/Tutorials
+http://docs.lance.gg/r3.0.0/tutorial-spaceships.html
+tilemapy a matter.js: https://www.mikewesthad.com/blog.html
+
+
 ==============================================================
 
 box2d physics engine

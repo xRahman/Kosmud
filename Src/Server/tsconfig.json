@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "newLine": "LF",
     "noEmitOnError": true,
-    "outDir": "../../Server/js",
+    "outDir": "../../Server/Js",
     "rootDir": "../",
     "sourceMap": true,
     //"sourceRoot": "../"

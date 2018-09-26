@@ -1,0 +1,9 @@
+TODO: Přejmenovat adresáře Client/js, Server/js, atd. (na CamelCase)
+[done]
+
+TODO: Objekty ve scéně by měly být v classe, která se celá
+  nainstancuje ve Scene.create(), ať nemusím testovat, jestli to existuje.
+  - problém je, že některé věci se vyrábí v preloadu...
+    Preload s konkrétními sprity nesouvisí - z jedné textury se dá vyrobit
+    milión lodí. 
+[done]
