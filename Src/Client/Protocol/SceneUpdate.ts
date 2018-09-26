@@ -7,7 +7,7 @@
 'use strict';
 
 import {Classes} from '../../Shared/Class/Classes';
-import {Connection} from '../../Server/Net/Connection';
+import {Connection} from '../../Client/Net/Connection';
 import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
 import {SceneUpdateInterface} from '../../Shared/Protocol/SceneUpdateData';
 import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
