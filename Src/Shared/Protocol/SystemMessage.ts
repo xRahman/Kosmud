@@ -3,34 +3,40 @@
 
   Part of client-server communication protocol.
 
-  Description of change of scene contents which is sent to client.
+  System message.
 */
 
 'use strict';
 
 import {Classes} from '../../Shared/Class/Classes';
 import {Serializable} from '../../Shared/Class/Serializable';
-import {GameEntity} from '../../Shared/Game/GameEntity';
 
-export class SceneUpdateData extends Serializable
+export class SystemMessage extends Serializable
 {
-  constructor(public shipPosition: GameEntity.Position)
+  constructor
+  (
+    public type: SystemMessage.Type,
+    public message: string
+  )
   {
     super();
 
     this.version = 0;
   }
-
-  // ----------------- Public data ----------------------
-
 }
 
-Classes.registerSerializableClass(SceneUpdateData);
+Classes.registerSerializableClass(SystemMessage);
 
 // ------------------ Type declarations ----------------------
 
 // Module is exported so you can use enum type from outside this file.
 // It must be declared after the class because Typescript says so...
-// export module SceneUpdateData
-// {
-// }
+export module SystemMessage
+{
+  export type Type = "Client closed browser tab";
+
+  // export enum Type
+  // {
+  //   CLIENT_CLOSED_BROWSER_TAB
+  // }
+}

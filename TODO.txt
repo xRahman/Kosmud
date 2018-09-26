@@ -1,8 +1,12 @@
+TODO: Do switchů checkujících chybějící case přidat komentář, co znamená
+  příslušný intelisence error (že chybí case).
+
 TODO: Vrátit se k jednoduchému modelu shared-only a data-only packetů
   a processPacket() udělat jako externí kód se switchem na className packetu.
 - Zrušit Server/Protocol a Client/Protocol
 - Zrušit IncomingPacket a OutgoingPacket.
 - Classy XXXData přejmenovat na XXX.
+- Zavést union typ na data property v Packetu.
 - napsat processPacket() na serveru.
 - napsat processPacket() na klientu.
 
