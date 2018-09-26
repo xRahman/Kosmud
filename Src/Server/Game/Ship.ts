@@ -5,10 +5,19 @@
 */
 
 import {PhysicsBody} from "../../Server/Physics/PhysicsBody";
+import {SharedShip} from "../../Shared/Game/SharedShip";
 
-export class Ship
+export class Ship extends SharedShip
 {
-  constructor(private physicsBody: PhysicsBody) {}
+  constructor(private physicsBody: PhysicsBody)
+  {
+    super(physicsBody.getPosition());
+  }
+
+  public getPosition()
+  {
+    return this.physicsBody.getPosition();
+  }
 
   public getX()
   {

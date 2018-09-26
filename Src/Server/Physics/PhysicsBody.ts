@@ -4,11 +4,25 @@
   Matter.js physics engine wrapper.
 */
 
+import {GameEntity} from '../../Shared/Game/GameEntity';
+
 import * as Matter from 'matter-js';
 
 export class PhysicsBody
 {
   constructor(private body: Matter.Body) {}
+
+  public getPosition()
+  {
+    let position: GameEntity.Position =
+    {
+      x: this.getX(),
+      y: this.getY(),
+      angle: this.getAngle()
+    };
+
+    return position;
+  }
 
   public getX()
   {

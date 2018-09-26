@@ -7,13 +7,10 @@
 'use strict';
 
 import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
-import {SceneUpdateInterface} from '../../Shared/Protocol/SceneUpdateData';
 import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
 import {Classes} from '../../Shared/Class/Classes';
 
-export class SceneUpdate
-  extends OutgoingPacket
-  implements SceneUpdateInterface
+export class SceneUpdate extends OutgoingPacket
 {
   constructor(public data: SceneUpdateData)
   {

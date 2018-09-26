@@ -1,3 +1,25 @@
+Úvahy k dědičnosti Ship classy
+---------------------------------
+
+Na rozdíl od packetů to asi zatím nemusím komplikovat,
+  prostě můžu mít SharedShip (nebo ShipClass), v ní přímo property
+  .position a zdědit z ní Client/Ship a Server/Ship.
+- asi budu muset říct, které properties se nemají posílat.
+
+Ono je vůbec otázka, jestli posílat celé classy. Myšlenka, že sdílená data
+  jsou zabalená jako ShipData, je docela fajn. V tom případě by Ship
+  vůbec nemusela být Serializable (respektive možná na Serveru kvůli savování).
+    A taky bych nemusel řešit, aby /Server/Ship a Client/Ship měly stejného
+  předka.
+
+U packetů to ale jinak nepůjde, ty se posílají celé.
+
+Na druhou stranu výhoda posílání celých class je, že pak funguje dědičnost.
+
+No nic, kašlat na to, zatím dědičnost nepotřebuju.
+
+
+
 -----------------------------------------------------------------------
 
 Matter.js na serveru
@@ -129,6 +151,44 @@ Takže bych měl:
 
 Otázka je, jestli k něčemu vůbec potřebuju ty interfacy...
 - asi je tady používám k neintuitivnímu účelu.
+
+"Dědění" přes interfacy je naprd, protože v interfacu mohou být jen
+  public properties.
+- obejít to přes classu (zdědit z ní interface a ten pak implementovat) nejde,
+  protože výsledná classa pak není potomkem zdrojové classy, takže nemůže
+  mít z ní zdědění protected properties. Private by možná fungovaly, ale
+  to zas nedává smysl (private se nedědí, so to speak).
+Takže asi fakt jedině typescriptové mixiny, pokud chci nějakou formu
+  vícenásobné dědičnosti.
+
+IDEA: Můžu v zásadě říct, že všechny packety musí mít .data: PacketData.
+- tím sice nezajistím, že SceneUpdate na Clientu a na Serveru bude mít
+  stejné PacketData, ale aspoň něco...
+
+Ještě zpět k otázce, jestli packety mají být dynamické classy.
+- taky by mohla být prostě jen classa Packet a zpracování packetu by
+  mělo switch...
+    Pak by teda zas mělo být dynamické PacketData, protože to předhazuju
+  switchem na zpracování, takže bych si asi moc nepomohlo...
+
+Packety se komplikují tím, že je dělím na incoming a outgoing - přitom
+  samy o sobě obsahují jen nějaká data. Jasně, logicky sice dává smysl
+  metody na opracovávání těch dat dát do stejné classy, ale to stejně nedělám:
+  data jsou v .data a opracovává je .process(), čili je vlastně čte externě.
+
+IDEA: Packety by měly být čistě shared classy.
+- díky tomu odpadne problém s pojmenováváním potomků na klientu a na serveru.
+- a zjednoduší se práce.
+Musí být samozřejmě Serializable a zaregistrované v Classes.
+- ale jelikož budou jen shared, tak mohou být includnuté přímo z Classes.
+Obslužný kód bude čistě na serveru a klientu.
+- bude dostávat Packet jako parametr.
+- asi bude muset obsahovat switch...
+  - podle className?
+  Abych mohl typescriptem zajistit, že jsou všechny casy zpracované, tak bych
+  musel mít union stringový typ (nebo možná ne nutně stringový?)
+  - Jenže kdo zajistí, že jsou nové packety přidané do toho typu?
+    Asi nikdo, tudíž to nemá smysl a můžu rovnou udělat switch na class name.
 
 
 -----------------------------------------------------------------------

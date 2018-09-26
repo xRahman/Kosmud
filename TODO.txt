@@ -1,3 +1,10 @@
+TODO: Vrátit se k jednoduchému modelu shared-only a data-only packetů
+  a processPacket() udělat jako externí kód se switchem na className packetu.
+- Zrušit Server/Protocol a Client/Protocol
+- Zrušit IncomingPacket a OutgoingPacket.
+- Classy XXXData přejmenovat na XXX.
+- napsat processPacket() na serveru.
+- napsat processPacket() na klientu.
 
 -----------------------------------------------------------------------
 
@@ -17,6 +24,10 @@ Ok, seriózní TODO: Zprovoznit pohyb lodě tak, že na serveru to bude physics
 - posílat pozici a rotaci a zobrazovat to na klientu.
 - posílat keyboard eventy (nejspíš už přeložené na herní akce?)
 
+---
+
+Typescript mixins:
+https://blog.mariusschulz.com/2017/05/26/typescript-2-2-mixin-classes
 
 ---
 

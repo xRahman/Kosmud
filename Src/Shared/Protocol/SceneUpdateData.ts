@@ -10,15 +10,11 @@
 
 import {Classes} from '../../Shared/Class/Classes';
 import {Serializable} from '../../Shared/Class/Serializable';
-
-export interface SceneUpdateInterface
-{
-  data: SceneUpdateData;
-}
+import {GameEntity} from '../../Shared/Game/GameEntity';
 
 export class SceneUpdateData extends Serializable
 {
-  constructor()
+  constructor(public shipPosition: GameEntity.Position)
   {
     super();
 

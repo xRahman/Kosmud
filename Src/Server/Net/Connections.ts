@@ -9,40 +9,47 @@
 import {ERROR} from '../../Shared/ERROR';
 // import {Entity} from '../../Shared/Class/Entity';
 // import {Admins} from '../../../server/lib/admin/Admins';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 import {Connection} from '../../Server/Net/Connection';
-import {Message} from '../../Server/Net/Message';
-import {Server} from '../../Server/Application/Server';
+// import {Message} from '../../Server/Net/Message';
+// import {Server} from '../../Server/Application/Server';
 
 export class Connections
 {
   // ----------------- Private data ---------------------
 
-  private connectionList = new Set<Connection>();
+  private static connections = new Set<Connection>();
 
   // ------------- Public static methods ----------------
 
   public static add(connection: Connection)
   {
-    if (Server.connections.connectionList.has(connection))
+    if (this.connections.has(connection))
     {
       ERROR("Attempt to add connection which already "
         + " exists in Connections");
       return;
     }
 
-    Server.connections.connectionList.add(connection);
+    this.connections.add(connection);
   }
 
   public static release(connection: Connection)
   {
-    if (!Server.connections.connectionList.has(connection))
+    if (!this.connections.has(connection))
     {
       ERROR("Attempt to release connection which doesn't"
         + " exist in Connections");
       return;
     }
 
-    Server.connections.connectionList.delete(connection);
+    this.connections.delete(connection);
+  }
+
+  public static broadcast(packet: OutgoingPacket)
+  {
+    for (let connection of this.connections)
+      connection.send(packet);
   }
 
   /// Disabled for now.
