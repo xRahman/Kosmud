@@ -1,0 +1,7 @@
+^bak
+.vs
+.ntvs_analysis.dat
+Client/Js/client
+Client/Js/Shared
+Server/Js/Server
+Server/Js/Shared
