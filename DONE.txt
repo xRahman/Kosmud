@@ -1,3 +1,6 @@
+TODO: Vyhodit z gitu zkompilovaný kód.
+[done]
+
 TODO: Přejmenovat adresáře Client/js, Server/js, atd. (na CamelCase)
 [done]
 

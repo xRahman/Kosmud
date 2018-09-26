@@ -4,7 +4,7 @@
   TEST - a ship.
 */
 
-import {PhysicsBody} from "./PhysicsBody";
+import {PhysicsBody} from "../../Server/Physics/PhysicsBody";
 
 export class Ship
 {

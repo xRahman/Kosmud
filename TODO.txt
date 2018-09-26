@@ -1,5 +1,3 @@
-TODO: Vyhodit z gitu zkompilovaný kód.
-
 
 -----------------------------------------------------------------------
 
@@ -21,6 +19,8 @@ Ok, seriózní TODO: Zprovoznit pohyb lodě tak, že na serveru to bude physics
 
 
 ---
+
+TODO: Zvážit, jestli úplně nezrušit ERROR a nenechat jen syslog.
 
 TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.
 

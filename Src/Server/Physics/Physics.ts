@@ -4,7 +4,7 @@
   Matter.js physics engine wrapper.
 */
 
-import {PhysicsBody} from '../../Server/Game/PhysicsBody';
+import {PhysicsBody} from '../../Server/Physics/PhysicsBody';
 
 import * as Matter from 'matter-js';
 

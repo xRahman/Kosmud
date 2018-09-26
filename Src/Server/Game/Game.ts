@@ -1,5 +1,5 @@
-import {Physics} from "./Physics";
-import {Ship} from "./Ship";
+import {Physics} from "../../Server/Physics/Physics";
+import {Ship} from "../../Server/Game/Ship";
 
 /*
   Part of BrutusNEXT
