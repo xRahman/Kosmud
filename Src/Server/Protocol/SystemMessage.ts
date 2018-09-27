@@ -7,54 +7,27 @@
 'use strict';
 
 import {Syslog} from '../../Shared/Syslog';
-import {Utils} from '../../Shared/Utils';
-import {MessageType} from '../../Shared/MessageType';
-import {Connection} from '../../Server/Net/Connection';
-import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
-import {SystemMessageInterface} from '../../Shared/Protocol/SystemMessageData';
-import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
 import {Classes} from '../../Shared/Class/Classes';
+import {MessageType} from '../../Shared/MessageType';
+import * as Shared from '../../Shared/Protocol/SystemMessage';
+import {Connection} from '../../Server/Net/Connection';
 
-export class SystemMessage
-  extends IncomingPacket
-  implements SystemMessageInterface
+export class SystemMessage extends Shared.SystemMessage
 {
-  constructor(public data: SystemMessageData)
+  constructor(message: string, messageType: MessageType)
   {
-    super();
+    super(message, messageType);
 
     this.version = 0;
   }
 
   // ---------------- Public methods --------------------
 
-  // ~ Overrides IncomingPacket.process().
+  // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
     console.log('SystemMessage.process()');
 
-    switch (this.data.type)
-    {
-      case "Client closed browser tab":
-        reportClientClosedBrowserTab(connection);
-        break;
-
-      default:
-        Utils.reportMissingCase(this.data.type);
-    }
+    Syslog.log(this.message, this.messageType);
   }
-}
-
-Classes.registerSerializableClass(SystemMessage);
-
-// ----------------- Auxiliary Functions ---------------------
-
-function reportClientClosedBrowserTab(connection: Connection)
-{
-  Syslog.log
-  (
-    connection.getUserInfo() + " has disconnected by"
-      + " closing or reloading browser tab",
-    MessageType.CONNECTION_INFO
-  );
 }

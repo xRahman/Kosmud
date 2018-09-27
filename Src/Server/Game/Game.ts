@@ -1,7 +1,7 @@
 import {Physics} from '../../Server/Physics/Physics';
 import {Ship} from '../../Server/Game/Ship';
 import {Connections} from '../../Server/Net/Connections';
-import {SceneUpdate} from '../../Server/Protocol/SceneUpdate';
+import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
 
 /*
   Part of BrutusNEXT

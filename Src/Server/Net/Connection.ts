@@ -8,50 +8,27 @@
 
 import {ERROR} from '../../Shared/ERROR';
 import {REPORT} from '../../Shared/REPORT';
-import {Connection as SharedConnection} from '../../Shared/Net/Connection';
-import {Syslog} from '../../Shared/Syslog';
+import * as Shared from '../../Shared/Net/Connection';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Message} from '../../Server/Net/Message';
 import {MessageType} from '../../Shared/MessageType';
+import {Packet} from '../../Shared/Protocol/Packet';
 import {ServerSocket} from '../../Server/Net/ServerSocket';
-// import {Account} from '../../../server/lib/account/Account';
-// import {GameEntity} from '../../../server/game/GameEntity';
 import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
-import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
-import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 import {SystemMessage} from '../../Server/Protocol/SystemMessage';
-import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
-import {SceneUpdate} from '../../Server/Protocol/SceneUpdate';
-import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
+import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
 import {PlayerInput} from '../../Server/Protocol/PlayerInput';
-import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
-// import {MudMessage} from '../../../server/lib/protocol/MudMessage';
-SystemMessage;
-SystemMessageData;
-SceneUpdate;
-SceneUpdateData;
-PlayerInput;
-PlayerInputData;
 
 // 3rd party modules.
 import * as WebSocket from 'ws';
 
-/// TODO: Tohohle se zbavit
-/// - Tak v Connection bych tohle opravdu nehledal...
-/// (Navíc to očividně typescript nekontroluje...)
-// Force module import (so that the module code is assuredly executed
-// instead of typescript just registering a type). This ensures that
-// class constructor is added to Classes so it can be deserialized.
-// import '../../../server/lib/protocol/Command';
-// import '../../../server/lib/protocol/SystemMessage';
-// import '../../../server/lib/protocol/LoginRequest';
-// import '../../../server/lib/protocol/RegisterRequest';
-// import '../../../server/lib/protocol/ChargenRequest';
-// import '../../../server/lib/protocol/EnterGameRequest';
-SystemMessage;
+Classes.registerSerializableClass(SystemMessage);
+Classes.registerSerializableClass(SceneUpdate);
+Classes.registerSerializableClass(PlayerInput);
 
-export class Connection implements SharedConnection
+
+export class Connection implements Shared.Connection
 {
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
@@ -206,7 +183,7 @@ export class Connection implements SharedConnection
     if (!deserializedPacket)
       return;
 
-    let packet = deserializedPacket.dynamicCast(IncomingPacket);
+    let packet = deserializedPacket.dynamicCast(Packet);
 
     if (packet === null)
       return;
@@ -215,7 +192,7 @@ export class Connection implements SharedConnection
   }
 
   // Sends 'packet' to web socket.
-  public send(packet: OutgoingPacket)
+  public send(packet: Packet)
   {
     /// TODO: packet.serialize() sice zatím nevyhazuje výjimky,
     /// ale časem bude.

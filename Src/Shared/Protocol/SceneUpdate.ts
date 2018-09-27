@@ -8,11 +8,10 @@
 
 'use strict';
 
-import {Classes} from '../../Shared/Class/Classes';
-import {Serializable} from '../../Shared/Class/Serializable';
+import {Packet} from '../../Shared/Protocol/Packet';
 import {GameEntity} from '../../Shared/Game/GameEntity';
 
-export class SceneUpdateData extends Serializable
+export class SceneUpdate extends Packet
 {
   constructor(public shipPosition: GameEntity.Position)
   {
@@ -25,12 +24,10 @@ export class SceneUpdateData extends Serializable
 
 }
 
-Classes.registerSerializableClass(SceneUpdateData);
-
 // ------------------ Type declarations ----------------------
 
 // Module is exported so you can use enum type from outside this file.
 // It must be declared after the class because Typescript says so...
-// export module SceneUpdateData
+// export module SceneUpdate
 // {
 // }

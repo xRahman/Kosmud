@@ -8,17 +8,11 @@
 
 'use strict';
 
-import {Classes} from '../../Shared/Class/Classes';
-import {Serializable} from '../../Shared/Class/Serializable';
+import {Packet} from '../../Shared/Protocol/Packet';
 
-export interface PlayerInputInterface
+export class PlayerInput extends Packet
 {
-  data: PlayerInputData;
-}
-
-export class PlayerInputData extends Serializable
-{
-  constructor(public type = PlayerInputData.Type)
+  constructor(public type: PlayerInput.Type)
   {
     super();
 
@@ -26,13 +20,11 @@ export class PlayerInputData extends Serializable
   }
 }
 
-Classes.registerSerializableClass(PlayerInputData);
-
 // ------------------ Type declarations ----------------------
 
 // Module is exported so you can use enum type from outside this file.
 // It must be declared after the class because Typescript says so...
-export module PlayerInputData
+export module PlayerInput
 {
   /// TODO: Tohle zatím provizorně.
   export enum Type

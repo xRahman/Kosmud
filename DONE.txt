@@ -1,3 +1,12 @@
+TODO: Vrátit se k jednoduchému modelu shared-only a data-only packetů
+  a processPacket() udělat jako externí kód se switchem na className packetu.
+- Zrušit Server/Protocol a Client/Protocol
+- Zrušit IncomingPacket a OutgoingPacket.
+- Classy XXXData přejmenovat na XXX.
+- napsat processPacket() na serveru.
+- napsat processPacket() na klientu.
+[abandoned, reverted]
+
 TODO: Vyhodit z gitu zkompilovaný kód.
 [done]
 

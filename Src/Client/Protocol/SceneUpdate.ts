@@ -8,24 +8,24 @@
 
 import {Classes} from '../../Shared/Class/Classes';
 import {Connection} from '../../Client/Net/Connection';
-import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
-import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
+import {GameEntity} from '../../Shared/Game/GameEntity';
+import * as Shared from '../../Shared/Protocol/SceneUpdate';
 
-export class SceneUpdate extends IncomingPacket
+export class SceneUpdate extends Shared.SceneUpdate
 {
-  constructor(public data: SceneUpdateData)
+  constructor(shipPosition: GameEntity.Position)
   {
-    super();
+    super(shipPosition);
 
     this.version = 0;
   }
 
   // ---------------- Public methods --------------------
 
-  // ~ Overrides IncomingPacket.process().
+  // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    console.log('PlayerInput.process()');
+    console.log('SceneUpdate.process()');
 
     /// TODO
   }

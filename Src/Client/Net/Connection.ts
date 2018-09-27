@@ -7,7 +7,9 @@
 'use strict';
 
 import {ERROR} from '../../Shared/ERROR';
-import {Connection as SharedConnection} from '../../Shared/Net/Connection';
+import {Classes} from '../../Shared/Class/Classes';
+// import {Connection as SharedConnection} from '../../Shared/Net/Connection';
+import * as Shared from '../../Shared/Net/Connection';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Client} from '../../Client/Application/Client';
 import {ClientSocket} from '../../Client/Net/ClientSocket';
@@ -16,36 +18,20 @@ import {ClientSocket} from '../../Client/Net/ClientSocket';
 // import {Windows} from '../../../client/gui/window/Windows';
 // import {ScrollWindow} from '../../../client/gui/scroll/ScrollWindow';
 // import {Avatar} from '../../../client/lib/connection/Avatar';
-import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
-import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 // import {Command} from '../../../client/lib/protocol/Command';
-import {SystemMessage} from '../../Client/Protocol/SystemMessage';
-import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
-import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
-import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
-import {PlayerInput} from '../../Client/Protocol/PlayerInput';
-import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
 // import {Account} from '../../../client/lib/account/Account';
 // import {Character} from '../../../client/game/character/Character';
+import {MessageType} from '../../Shared/MessageType';
+import {Packet} from '../../Shared/Protocol/Packet';
+import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
+import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
+import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
 
-/// TODO: Tohohle se zbavit.
-// Force module import (so that the module code is assuredly executed
-// instead of typescript just registering a type). This ensures that
-// class constructor is added to Classes so it can be deserialized.
-// import '../../../shared/lib/protocol/Move';
-// import '../../../client/game/world/Room';
-// import '../../../client/lib/protocol/LoginResponse';
-// import '../../../client/lib/protocol/RegisterResponse';
-// import '../../../client/lib/protocol/ChargenResponse';
-// import '../../../client/lib/protocol/EnterGameResponse';
-SystemMessage;
-SystemMessageData;
-SceneUpdate;
-SceneUpdateData;
-PlayerInput;
-PlayerInputData;
+Classes.registerSerializableClass(SystemMessage);
+Classes.registerSerializableClass(SceneUpdate);
+Classes.registerSerializableClass(PlayerInput);
 
-export class Connection implements SharedConnection
+export class Connection implements Shared.Connection
 {
   private socket: (ClientSocket | null) = null;
 
@@ -82,7 +68,7 @@ export class Connection implements SharedConnection
 
   // ---------------- Static methods --------------------
 
-  public static send(packet: OutgoingPacket)
+  public static send(packet: Packet)
   {
     let connection = Client.connection;
 
@@ -118,6 +104,43 @@ export class Connection implements SharedConnection
   /// Disabled for now.
   // public getAccount() {  return this.account; }
 
+
+  /// TODO: Tohle by se asi hodilo, ale:
+  /// - je to stejný kód jako na Serveru, sloučit.
+  // // ! Throws exception on error.
+  // public getIpAddress()
+  // {
+  //   if (!this.socket)
+  //     throw new Error("Socket does not exist");
+  //
+  //   return this.socket.getIpAddress();
+  // }
+  //
+  // // Connection origin description in format "(url [ip])".
+  // // ! Throws exception on error.
+  // public getOrigin()
+  // {
+  //   if (!this.socket)
+  //     throw new Error("Socket does not exist");
+  //
+  //   return this.socket.getOrigin();
+  // }
+  //
+  // // ! Throws exception on error.
+  // public getUserInfo()
+  // {
+  //   let info = "";
+  //
+  //   /// Disabled for now.
+  //   // if (this.account)
+  //   //   info += this.account.getEmail() + " ";
+  //
+  //   // Add (url [ip]).
+  //   info += this.getOrigin();
+  //
+  //   return info;
+  // }
+
   // ---------------- Public methods --------------------
 
   /// TODO: Na serveru je prakticky stejná fce, asi by to chtělo sloučit
@@ -132,7 +155,7 @@ export class Connection implements SharedConnection
     if (!deserializedPacket)
       return;
     
-    let packet = deserializedPacket.dynamicCast(IncomingPacket);
+    let packet = deserializedPacket.dynamicCast(Packet);
 
     if (packet !== null)
       await packet.process(this);
@@ -187,12 +210,9 @@ export class Connection implements SharedConnection
   // }
 
   // Sends system message to the connection.
-  public sendSystemMessage(type: SystemMessageData.Type, message: string)
+  public sendSystemMessage(message: string, messageType: MessageType)
   {
-    let packet = new SystemMessage
-    (
-      new SystemMessageData(type, message)
-    );
+    let packet = new SystemMessage(message, messageType);
 
     this.send(packet);
   }
@@ -216,7 +236,21 @@ export class Connection implements SharedConnection
 
   public reportClosingBrowserTab()
   {
-    this.sendSystemMessage("Client closed browser tab", "");
+    /// TODO: Posílat userInfo, až ho budu uměr vyrobit.
+
+    // this.sendSystemMessage
+    // (
+    //   this.getUserInfo() + " has disconnected by"
+    //     + " closing or reloading browser tab",
+    //   MessageType.CONNECTION_INFO
+    // );
+
+    this.sendSystemMessage
+    (
+      " User has disconnected by"
+        + " closing or reloading browser tab",
+      MessageType.CONNECTION_INFO
+    );
   }
 
   public close(reason: (string | null) = null)
@@ -229,7 +263,7 @@ export class Connection implements SharedConnection
 
   // ---------------- Private methods -------------------
 
-  private send(packet: OutgoingPacket)
+  private send(packet: Packet)
   {
     if (!this.socket)
     {

@@ -81,6 +81,23 @@ export class ClientSocket
 
   // ---------------- Public methods --------------------
 
+  /// TODO: Tohle by se asi hodilo, ale:
+  /// - je to stejný kód jako na Serveru, sloučit.
+  /// - odněkud se musí brát ip, url a tak (ServerSocketu to někdo passne).
+  // // ! Throws exception on error.
+  // public getIpAddress()
+  // {
+  //   if (!this.socket)
+  //     throw new Error("Socket does not exist");
+  // }
+  //
+  // // ! Throws exception on error.
+  // public getOrigin()
+  // {
+  //   if (!this.socket)
+  //     throw new Error("Socket does not exist");
+  // }
+
   public isOpen()
   {
     if (this.socket === null)

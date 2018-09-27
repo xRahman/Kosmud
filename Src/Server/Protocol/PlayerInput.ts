@@ -7,25 +7,20 @@
 'use strict';
 
 import {Connection} from '../../Server/Net/Connection';
-import {Classes} from '../../Shared/Class/Classes';
-import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
-import {PlayerInputInterface} from '../../Shared/Protocol/PlayerInputData';
-import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
+import * as Shared from '../../Shared/Protocol/PlayerInput';
 
-export class PlayerInput
-  extends IncomingPacket
-  implements PlayerInputInterface
+export class PlayerInput extends Shared.PlayerInput
 {
-  constructor(public data: PlayerInputData)
+  constructor(type: Shared.PlayerInput.Type)
   {
-    super();
+    super(type);
 
     this.version = 0;
   }
 
   // ---------------- Public methods --------------------
 
-  // ~ Overrides IncomingPacket.process().
+  // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
     console.log('PlayerInput.process()');
@@ -35,5 +30,3 @@ export class PlayerInput
 
   // --------------- Private methods --------------------
 }
-
-Classes.registerSerializableClass(PlayerInput);
