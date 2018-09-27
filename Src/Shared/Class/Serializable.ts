@@ -462,7 +462,7 @@ export class Serializable extends Attributable
       return this.createSetSaver(property).saveToJsonObject(mode);
 
     if (Utils.isPlainObject(property))
-      return this.serializePlainObject(property);
+      return this.serializePlainObject(param);
 
     ERROR("Property '" + param.description + "' in class"
       + " '" + param.className + "' (or inherited from one of it's"

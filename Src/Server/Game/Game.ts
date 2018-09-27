@@ -41,19 +41,10 @@ export class Game
 
   private updateClients()
   {
-    /// TODO:
-    // console.log('Ship position:'
-    //   + ' ' + this.ship.getX() + ', ' + this.ship.getY() + ','
-    //   + ' angle: ' + this.ship.getAngle());
+    let shipPosition = this.ship.getPosition();
+    let sceneUpdate = new SceneUpdate(shipPosition);
 
-    /// TODO: Cycle over all connections
-    this.ship.getPosition();
-
-    // let packet = new SceneUpdate
-    // (
-    //   new SceneUpdateData();
-    // );
-
-    // Connections.broadcast(packet);
+    /// TODO: Sent all scene update data, not just one ship.
+    Connections.broadcast(sceneUpdate);
   }
 }

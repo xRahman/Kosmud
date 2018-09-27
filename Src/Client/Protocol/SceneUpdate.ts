@@ -28,6 +28,7 @@ export class SceneUpdate extends Shared.SceneUpdate
     console.log('SceneUpdate.process()');
 
     /// TODO
+    console.log(this);
   }
 }
 
