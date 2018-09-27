@@ -36,12 +36,12 @@ export class Ship extends Shared.Ship
 
   public startTurningLeft()
   {
-    this.physicsBody.setAngularVelocity(-Math.PI/12);
+    this.physicsBody.setAngularVelocity(-Math.PI/300);
   }
 
   public startTurningRight()
   {
-    this.physicsBody.setAngularVelocity(Math.PI/12);
+    this.physicsBody.setAngularVelocity(Math.PI/300);
   }
 
   public stopTurning()

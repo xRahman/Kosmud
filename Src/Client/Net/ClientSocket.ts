@@ -376,7 +376,7 @@ export class ClientSocket
 
   private async onReceiveMessage(event: MessageEvent)
   {
-    console.log('Received message: ' + event.data);
+    // console.log('Received message: ' + event.data);
 
     if (typeof event.data !== 'string')
     {

@@ -11,6 +11,8 @@ export class SceneContents
   {
   }
 
+  public getShip() { return this.ship; }
+
   // ----------------- Private data ---------------------
  
   private camera = new Camera(this.scene);

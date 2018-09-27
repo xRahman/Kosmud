@@ -1,3 +1,5 @@
+import {GameEntity} from '../../Shared/Game/GameEntity';
+
 
 const SHIP_SPRITE_ID = 'ship';
 
@@ -19,29 +21,36 @@ export class Ship
 
   public update(cursors: Phaser.Input.Keyboard.CursorKeys)
   {
-    if (cursors.left && cursors.left.isDown)
-    {
-      //this.sprite.x -= 1;
-      this.sprite.rotation -= 0.01;
+    // if (cursors.left && cursors.left.isDown)
+    // {
+    //   //this.sprite.x -= 1;
+    //   this.sprite.rotation -= 0.01;
 
-      //Phaser.Math.
-    }
+    //   //Phaser.Math.
+    // }
 
-    if (cursors.right && cursors.right.isDown)
-    {
-      //this.sprite.x += 1;
-      this.sprite.rotation += 0.01;
-    }
+    // if (cursors.right && cursors.right.isDown)
+    // {
+    //   //this.sprite.x += 1;
+    //   this.sprite.rotation += 0.01;
+    // }
 
-    if (cursors.up && cursors.up.isDown)
-    {
-      this.sprite.y -= 1;
-    }
+    // if (cursors.up && cursors.up.isDown)
+    // {
+    //   this.sprite.y -= 1;
+    // }
 
-    if (cursors.down && cursors.down.isDown)
-    {
-      this.sprite.y += 1;
-    }
+    // if (cursors.down && cursors.down.isDown)
+    // {
+    //   this.sprite.y += 1;
+    // }
+  }
+
+  public setPosition(position: GameEntity.Position)
+  {
+    this.sprite.x = position.x;
+    this.sprite.y = position.y;
+    this.sprite.rotation = position.angle;
   }
 }
 

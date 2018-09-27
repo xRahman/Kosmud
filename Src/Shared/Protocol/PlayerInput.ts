@@ -27,9 +27,9 @@ export class PlayerInput extends Packet
 export module PlayerInput
 {
   /// TODO: Tohle zatím provizorně.
-  export enum Type
-  {
-    KEY_DOWN,
-    KEY_UP
-  }
+  export type Type =
+    "Turn Left"
+  | "Turn Right"
+  | "Move Forward"
+  | "Move Backward";
 }

@@ -32,7 +32,18 @@ export class Physics
   /// Only squares atm.
   private createSquareBody(x: number, y: number, size: number)
   {
-    let squareBody = Matter.Bodies.rectangle(x, y, size, size);
+    let squareBody = Matter.Bodies.rectangle
+    (
+      x,
+      y,
+      size,
+      size,
+      {
+        // Nonzero friction would mean that object would slow down
+        // to stop after velocity is set to it.
+        frictionAir: 0
+      }
+    );
 
     // Add 'squareBody' to physics world.
     Matter.World.add(this.engine.world, [ squareBody ]);

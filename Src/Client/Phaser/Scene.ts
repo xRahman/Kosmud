@@ -11,6 +11,8 @@ export class Scene extends Phaser.Scene
     super(sceneName);
   }
 
+  public getSceneContents() { return this.contents; }
+
   // ----------------- Private data ---------------------
 
   private contents: SceneContents | null = null;
