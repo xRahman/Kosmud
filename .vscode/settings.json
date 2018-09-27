@@ -3,29 +3,30 @@
   // Configure glob patterns for excluding files and folders.
   "files.exclude":
   {
-    ".git/": true,
-    ".gitattributes": true,
-    ".gitignore": true,
-    "**/*.bat": true,
-    "**/build/client/fonts/**": true,
-    "**/build/client/icons/**": true,
-    "**/build/client/images/**": true,
-    "**/build/client/js/*/*": true,
-    "**/build/server/**": true,
-    "**/documentation/**/*.odt": true,
-    "**/documentation/design/^bak": true,
-    "deprecated/": true,
-    "node_modules/": true,
-    "resources/": true
+      ".git/": true,
+      "node_modules/": true,
+      //"**/*.js": { "when": "$(basename).ts"},
+      //"build/": true,
+      "**/build/client/icons/**": true,
+      "**/build/client/images/**": true,
+      "**/build/client/fonts/**": true,
+      // Tohle neni idealni, chtelo by to schovat i podadresare, ale co uz.
+      "**/build/client/js/*/*": true,
+      "**/build/server/**": true,
+      //"documentation/": true,
+      "**/documentation/design/^bak": true,
+      "**/documentation/**/*.odt": true,
+      "resources/": true,
+      "deprecated/": true,
+      ".gitattributes": true,
+      ".gitignore": true,
+      "**/*.bat": true
   },
   "search.exclude":
   {
     "_Resources": true,
     ".git/": true,
-    ".vscode/": true,
-    "*.txt": true,
     "**/*.bat": true,
-    "**/*.txt": true,
     "amend": true,
     "Client/": true,
     "commit": true,

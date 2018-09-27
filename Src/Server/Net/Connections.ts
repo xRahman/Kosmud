@@ -9,7 +9,7 @@
 import {ERROR} from '../../Shared/ERROR';
 // import {Entity} from '../../Shared/Class/Entity';
 // import {Admins} from '../../../server/lib/admin/Admins';
-import {Packet} from '../../Shared/Protocol/Packet';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 import {Connection} from '../../Server/Net/Connection';
 // import {Message} from '../../Server/Net/Message';
 // import {Server} from '../../Server/Application/Server';
@@ -46,7 +46,7 @@ export class Connections
     this.connections.delete(connection);
   }
 
-  public static broadcast(packet: Packet)
+  public static broadcast(packet: OutgoingPacket)
   {
     for (let connection of this.connections)
       connection.send(packet);

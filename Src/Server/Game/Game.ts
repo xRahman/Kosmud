@@ -1,8 +1,7 @@
 import {Physics} from '../../Server/Physics/Physics';
 import {Ship} from '../../Server/Game/Ship';
 import {Connections} from '../../Server/Net/Connections';
-import {Packet} from '../../Shared/Protocol/Packet';
-import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
+import {SceneUpdate} from '../../Server/Protocol/SceneUpdate';
 
 /*
   Part of BrutusNEXT
@@ -47,14 +46,14 @@ export class Game
     //   + ' ' + this.ship.getX() + ', ' + this.ship.getY() + ','
     //   + ' angle: ' + this.ship.getAngle());
 
-    let packet = new Packet
-    (
-      {
-        type: "SceneUpdate",
-        content: new SceneUpdate(this.ship.getPosition())
-      }
-    );
+    /// TODO: Cycle over all connections
+    this.ship.getPosition();
 
-    Connections.broadcast(packet);
+    // let packet = new SceneUpdate
+    // (
+    //   new SceneUpdateData();
+    // );
+
+    // Connections.broadcast(packet);
   }
 }

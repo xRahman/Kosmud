@@ -190,11 +190,6 @@ Obslužný kód bude čistě na serveru a klientu.
   - Jenže kdo zajistí, že jsou nové packety přidané do toho typu?
     Asi nikdo, tudíž to nemá smysl a můžu rovnou udělat switch na class name.
 
-Problém: Přetypovávání v Connection.process(packet);
-- možná bych to mohl vyřešit tak, že se packety nebudou dědit. Místo toho
-  v Packet bude stringový klíč a k tomu odpovídající PacketData.
-  - pak půjde switchnovat podle tohohle klíče (bude to union typ) a nebudu
-    muset přetypovávat, protože ke klíči se bude vázat typ.
 
 -----------------------------------------------------------------------
 

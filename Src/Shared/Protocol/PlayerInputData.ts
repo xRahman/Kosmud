@@ -3,34 +3,41 @@
 
   Part of client-server communication protocol.
 
-  Description of change of scene contents which is sent to client.
+  Information about player input activity (kepresses, mouse clicks etc.).
 */
 
 'use strict';
 
 import {Classes} from '../../Shared/Class/Classes';
 import {Serializable} from '../../Shared/Class/Serializable';
-import {GameEntity} from '../../Shared/Game/GameEntity';
 
-export class SceneUpdate extends Serializable
+export interface PlayerInputInterface
 {
-  constructor(public shipPosition: GameEntity.Position)
+  data: PlayerInputData;
+}
+
+export class PlayerInputData extends Serializable
+{
+  constructor(public type = PlayerInputData.Type)
   {
     super();
 
     this.version = 0;
   }
-
-  // ----------------- Public data ----------------------
-
 }
 
-Classes.registerSerializableClass(SceneUpdate);
+Classes.registerSerializableClass(PlayerInputData);
 
 // ------------------ Type declarations ----------------------
 
 // Module is exported so you can use enum type from outside this file.
 // It must be declared after the class because Typescript says so...
-// export module SceneUpdate
-// {
-// }
+export module PlayerInputData
+{
+  /// TODO: Tohle zatím provizorně.
+  export enum Type
+  {
+    KEY_DOWN,
+    KEY_UP
+  }
+}

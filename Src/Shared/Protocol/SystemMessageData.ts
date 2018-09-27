@@ -3,7 +3,7 @@
 
   Part of client-server communication protocol.
 
-  Information about player input activity (kepresses, mouse clicks etc.).
+  System message.
 */
 
 'use strict';
@@ -11,9 +11,18 @@
 import {Classes} from '../../Shared/Class/Classes';
 import {Serializable} from '../../Shared/Class/Serializable';
 
-export class PlayerInput extends Serializable
+export interface SystemMessageInterface
 {
-  constructor(public type = PlayerInput.Type)
+  data: SystemMessageData;
+}
+
+export class SystemMessageData extends Serializable
+{
+  constructor
+  (
+    public type: SystemMessageData.Type,
+    public message: string
+  )
   {
     super();
 
@@ -21,18 +30,18 @@ export class PlayerInput extends Serializable
   }
 }
 
-Classes.registerSerializableClass(PlayerInput);
+Classes.registerSerializableClass(SystemMessageData);
 
 // ------------------ Type declarations ----------------------
 
 // Module is exported so you can use enum type from outside this file.
 // It must be declared after the class because Typescript says so...
-export module PlayerInput
+export module SystemMessageData
 {
-  /// TODO: Tohle zatím provizorně.
-  export enum Type
-  {
-    KEY_DOWN,
-    KEY_UP
-  }
+  export type Type = "Client closed browser tab";
+
+  // export enum Type
+  // {
+  //   CLIENT_CLOSED_BROWSER_TAB
+  // }
 }

@@ -7,7 +7,6 @@
 'use strict';
 
 import {ERROR} from '../../Shared/ERROR';
-import {Utils} from '../../Shared/Utils';
 import {Connection as SharedConnection} from '../../Shared/Net/Connection';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Client} from '../../Client/Application/Client';
@@ -17,11 +16,15 @@ import {ClientSocket} from '../../Client/Net/ClientSocket';
 // import {Windows} from '../../../client/gui/window/Windows';
 // import {ScrollWindow} from '../../../client/gui/scroll/ScrollWindow';
 // import {Avatar} from '../../../client/lib/connection/Avatar';
-import {Packet} from '../../Shared/Protocol/Packet';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
 // import {Command} from '../../../client/lib/protocol/Command';
-import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
-import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
-import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
+import {SystemMessage} from '../../Client/Protocol/SystemMessage';
+import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
+import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
+import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
+import {PlayerInput} from '../../Client/Protocol/PlayerInput';
+import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
 // import {Account} from '../../../client/lib/account/Account';
 // import {Character} from '../../../client/game/character/Character';
 
@@ -35,12 +38,12 @@ import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
 // import '../../../client/lib/protocol/RegisterResponse';
 // import '../../../client/lib/protocol/ChargenResponse';
 // import '../../../client/lib/protocol/EnterGameResponse';
-// SystemMessage;
-// SystemMessageData;
-// SceneUpdate;
-// SceneUpdateData;
-// PlayerInput;
-// PlayerInputData;
+SystemMessage;
+SystemMessageData;
+SceneUpdate;
+SceneUpdateData;
+PlayerInput;
+PlayerInputData;
 
 export class Connection implements SharedConnection
 {
@@ -79,7 +82,7 @@ export class Connection implements SharedConnection
 
   // ---------------- Static methods --------------------
 
-  public static send(packet: Packet)
+  public static send(packet: OutgoingPacket)
   {
     let connection = Client.connection;
 
@@ -129,13 +132,10 @@ export class Connection implements SharedConnection
     if (!deserializedPacket)
       return;
     
-    let packet = deserializedPacket.dynamicCast(Packet);
+    let packet = deserializedPacket.dynamicCast(IncomingPacket);
 
-    // if (packet !== null)
-    //   await packet.process(this);
-
-    if (packet)
-      this.process(packet);
+    if (packet !== null)
+      await packet.process(this);
   }
 
   /// Disabled for now.
@@ -187,14 +187,11 @@ export class Connection implements SharedConnection
   // }
 
   // Sends system message to the connection.
-  public sendSystemMessage(type: SystemMessage.Type, message: string)
+  public sendSystemMessage(type: SystemMessageData.Type, message: string)
   {
-    let packet = new Packet
+    let packet = new SystemMessage
     (
-      {
-        type: "SystemMessage",
-        content: new SystemMessage(type, message)
-      }
+      new SystemMessageData(type, message)
     );
 
     this.send(packet);
@@ -232,7 +229,7 @@ export class Connection implements SharedConnection
 
   // ---------------- Private methods -------------------
 
-  private send(packet: Packet)
+  private send(packet: OutgoingPacket)
   {
     if (!this.socket)
     {
@@ -250,43 +247,5 @@ export class Connection implements SharedConnection
     (
       packet.serialize(Serializable.Mode.SEND_TO_SERVER)
     );
-  }
-
-  private process(packet: Packet)
-  {
-    // Note: You may be thinking that this should be handled by
-    // polymorphism rather than by switch. I've tried that and
-    // trust me - it's not worth it. If you wanted packet classes
-    // to process themselves, you would need client and server
-    // version of each packet class. You would also need multiple
-    // inheritance because one type of packet always share data
-    // that is transmited but is only processed at it's destination.
-    // The result is much more complicated than sticking to packets
-    // declared only in shared code and containing only data that
-    // is transmited and letting client and server to process
-    // these packets.
-    switch (packet.data.type)
-    {
-      case "SceneUpdate":
-        this.processSceneUpdate(packet.data.content);
-        break;
-
-      case "SystemMessage":
-      case "PlayerInput":
-        // These types of packets are not processed on the server.
-        break;
-
-      default:
-        // Compiler message "Argument of type '"xy"' is not assignable to
-        // parameter of type 'never'" means a case is missing in this switch.
-        Utils.reportMissingCase(packet.data);
-    }
-  }
-
-  /// TODO: Dát to někam jinam.
-  private processSceneUpdate(sceneUpdate: SceneUpdate)
-  {
-    /// TODO:
-    console.log(sceneUpdate.shipPosition);
   }
 }

@@ -8,7 +8,6 @@
 
 import {ERROR} from '../../Shared/ERROR';
 import {REPORT} from '../../Shared/REPORT';
-import {Utils} from '../../Shared/Utils';
 import {Connection as SharedConnection} from '../../Shared/Net/Connection';
 import {Syslog} from '../../Shared/Syslog';
 import {Serializable} from '../../Shared/Class/Serializable';
@@ -19,17 +18,21 @@ import {ServerSocket} from '../../Server/Net/ServerSocket';
 // import {GameEntity} from '../../../server/game/GameEntity';
 import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
-import {Packet} from '../../Shared/Protocol/Packet';
-import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
-import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
-import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
+import {IncomingPacket} from '../../Shared/Protocol/IncomingPacket';
+import {OutgoingPacket} from '../../Shared/Protocol/OutgoingPacket';
+import {SystemMessage} from '../../Server/Protocol/SystemMessage';
+import {SystemMessageData} from '../../Shared/Protocol/SystemMessageData';
+import {SceneUpdate} from '../../Server/Protocol/SceneUpdate';
+import {SceneUpdateData} from '../../Shared/Protocol/SceneUpdateData';
+import {PlayerInput} from '../../Server/Protocol/PlayerInput';
+import {PlayerInputData} from '../../Shared/Protocol/PlayerInputData';
 // import {MudMessage} from '../../../server/lib/protocol/MudMessage';
-// SystemMessage;
-// SystemMessageData;
-// SceneUpdate;
-// SceneUpdateData;
-// PlayerInput;
-// PlayerInputData;
+SystemMessage;
+SystemMessageData;
+SceneUpdate;
+SceneUpdateData;
+PlayerInput;
+PlayerInputData;
 
 // 3rd party modules.
 import * as WebSocket from 'ws';
@@ -203,17 +206,16 @@ export class Connection implements SharedConnection
     if (!deserializedPacket)
       return;
 
-    let packet = deserializedPacket.dynamicCast(Packet);
+    let packet = deserializedPacket.dynamicCast(IncomingPacket);
 
     if (packet === null)
       return;
 
-    // await packet.process(this);
-    await this.process(packet);
+    await packet.process(this);
   }
 
   // Sends 'packet' to web socket.
-  public send(packet: Packet)
+  public send(packet: OutgoingPacket)
   {
     /// TODO: packet.serialize() sice zatím nevyhazuje výjimky,
     /// ale časem bude.
@@ -244,71 +246,6 @@ export class Connection implements SharedConnection
   }
 
   // --------------- Private methods --------------------
-  
-  private process(packet: Packet)
-  {
-    // Note: You may be thinking that this should be handled by
-    // polymorphism rather than by switch. I've tried that and
-    // trust me - it's not worth it. If you wanted packet classes
-    // to process themselves, you would need client and server
-    // version of each packet class. You would also need multiple
-    // inheritance because one type of packet always share data
-    // that is transmited but is only processed at it's destination.
-    // The result is much more complicated than sticking to packets
-    // declared only in shared code and containing only data that
-    // is transmited and letting client and server to process
-    // these packets.
-    switch (packet.data.type)
-    {
-      case "SystemMessage":
-        this.processSystemMessage(packet.data.content);
-        break;
-
-      case "PlayerInput":
-        this.processPlayerInput(packet.data.content);
-        break;
-
-      case "SceneUpdate":
-        // These types of packets are not processed on the server.
-        break;
-
-      default:
-        // Compiler message "Argument of type '"xy"' is not assignable to
-        // parameter of type 'never'" means a case is missing in this switch.
-        Utils.reportMissingCase(packet.data);
-    }
-  }
-
-  /// Tohle by asi mělo bejt někde v System.processMessage() nebo tak nějak.
-  private processSystemMessage(systemMessage: SystemMessage)
-  {
-    switch (systemMessage.type)
-    {
-      case "Client closed browser tab":
-        this.reportClientClosedBrowserTab();
-        break;
-
-      default:
-        // Error message "Argument of type '"xy"' is not assignable to
-        // parameter of type 'never'" means a case is missing in this switch.
-        Utils.reportMissingCase(systemMessage.type);
-    }
-  }
-
-  private reportClientClosedBrowserTab()
-  {
-    Syslog.log
-    (
-      this.getUserInfo() + " has disconnected by"
-        + " closing or reloading browser tab",
-      MessageType.CONNECTION_INFO
-    );
-  }
-
-  /// TODO: Dát to někam jinam.
-  private processPlayerInput(packet: PlayerInput)
-  {
-  }
 
   // ---------------- Event handlers --------------------
 
