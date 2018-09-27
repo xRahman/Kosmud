@@ -41,7 +41,7 @@ export class PhysicsBody
 
   public setVelocity(velocity: number)
   {
-    this.body.angularVelocity = velocity;
+    Matter.Body.setVelocity(this.body, this.getVelocityVector(velocity));
   }
 
   public setAngularVelocity(velocityRadians: number)
@@ -55,5 +55,16 @@ export class PhysicsBody
     let force: Matter.Vector = { x: 0.01, y: 0.01 };
 
     this.body.force = force
+  }
+
+  private getVelocityVector(velocity: number): Matter.Vector
+  {
+    let velocityVector =
+    {
+      x: velocity * Math.cos(this.body.angle),
+      y: velocity * Math.sin(this.body.angle)
+    }
+
+    return velocityVector;
   }
 }

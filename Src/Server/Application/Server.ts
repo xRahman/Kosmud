@@ -13,7 +13,10 @@ import {Syslog} from '../../Shared/Syslog';
 import {ServerSyslog} from '../../Server/Application/ServerSyslog';
 import {MessageType} from '../../Shared/MessageType';
 import {HttpServer} from '../../Server/Net/HttpServer';
-import {Game} from '../../Server/Game/Game'
+import {Game} from '../../Server/Game/Game';
+
+// // Force module execution:
+// import '../../Server/Game/Game';  
 
 export class Server extends Application
 {
@@ -38,8 +41,6 @@ export class Server extends Application
 
   // ----------------- Private data ---------------------
 
-  private game = new Game();
-
   // ------------- Public static methods ----------------
 
   public static async start(appName: string, version: string)
@@ -54,7 +55,7 @@ export class Server extends Application
     await this.instance.startHttpServer();
 
     // Start the game loop.
-    this.instance.game.start();
+    Game.start();
   }
 
   // --------------- Protected methods ------------------

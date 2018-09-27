@@ -1,3 +1,8 @@
+Singletony (Game na serveru, Connection na clientu, etc.) by asi mohly
+být komplet static classy, ať nemusím chodit přes Server.game...
+
+-----------------------------------------------------------------------
+
 TODO: Na clientu nejspíš prohodit proces connectění
 - nejdřív se vytvoří web socket, pak new Connection(webSocket).
 Otázka ale je, jestli to půjde dohromady s reconnectama.

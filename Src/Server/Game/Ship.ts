@@ -51,12 +51,13 @@ export class Ship extends Shared.Ship
 
   public moveForward()
   {
-    this.physicsBody.setVelocity(10);
+    console.log('MoveForward');
+    this.physicsBody.setVelocity(2);
   }
 
   public moveBackward()
   {
-    this.physicsBody.setVelocity(-10);
+    this.physicsBody.setVelocity(-2);
   }
 
   public stopMoving()

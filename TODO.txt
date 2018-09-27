@@ -1,3 +1,10 @@
+TODO: Velocity vector se musí updatovat spolu s rotací lodě.
+- pamatovat si velocity (scalar value) starnou a velocity vector
+  z ní počítat každej update().
+
+TODO: Obecněji pořešit posílání packetů do closed connection.
+  (i když nejvíc to vadilo u "client closed browser tab" message,
+   páč tam problikla exception těsně před zavřením tabu)
 
 -----------------------------------------------------------------------
 

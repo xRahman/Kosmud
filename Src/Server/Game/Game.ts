@@ -14,12 +14,12 @@ const CLIENT_UPDATE_TICK_MILISECONDS = 1000 / 60;
 
 export class Game
 {
-  private physics = new Physics();
+  private static physics = new Physics();
 
   /// Test:
-  private ship = new Ship(this.physics.createBody(0, 0));
+  public static ship = new Ship(Game.physics.createBody(0, 0));
 
-  public start()
+  public static start()
   {
     // Run physics tick 60 times per second.
     setInterval
@@ -35,7 +35,7 @@ export class Game
     );
   }
 
-  private updateClients()
+  private static updateClients()
   {
     let shipPosition = this.ship.getPosition();
     let sceneUpdate = new SceneUpdate(shipPosition);

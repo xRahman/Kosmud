@@ -212,9 +212,12 @@ export class Connection implements Shared.Connection
   // Sends system message to the connection.
   public sendSystemMessage(message: string, messageType: MessageType)
   {
-    let packet = new SystemMessage(message, messageType);
+    if (this.socket && !this.socket.isClosed())
+    {
+      let packet = new SystemMessage(message, messageType);
 
-    this.send(packet);
+      this.send(packet);
+    }
   }
 
   /// Disabled for now.
@@ -273,7 +276,7 @@ export class Connection implements Shared.Connection
     
     if (!this.socket.isOpen())
     {
-      ERROR("Attempt to send packet to the closed connection");
+      ERROR("Attempt to send packet to closed connection");
       return;
     }
 
