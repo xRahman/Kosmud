@@ -1,4 +1,5 @@
 
+import {Keyboard} from '../../Client/Phaser/Keyboard';
 import {Scene} from '../../Client/Phaser/Scene';
 import {Canvas} from '../../Client/Phaser/Canvas';
 import {Camera} from '../../Client/Phaser/Camera';
@@ -16,19 +17,20 @@ export class SceneContents
   // ----------------- Private data ---------------------
  
   private camera = new Camera(this.scene);
-  private cursors = this.scene.input.keyboard.createCursorKeys();
+  // private cursors = this.scene.input.keyboard.createCursorKeys();
+  private keyboard = new Keyboard(this.scene.input.keyboard);
 
   private background = new Background(this.scene, this.canvas);
   private ship = new Ship(this.scene);
 
   // ---------------- Public methods --------------------
 
-  // This method is run periodically be Phaser.
+  // This method is run periodically by Phaser.
   public update()
   {
     this.camera.update();
 
-    this.ship.update(this.cursors);
+    // this.ship.update(this.cursors);
   }
 
   public onCanvasResize()

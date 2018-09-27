@@ -33,10 +33,6 @@ export class Game
       () => { this.updateClients(); },
       CLIENT_UPDATE_TICK_MILISECONDS
     );
-
-    /// Test:
-    this.ship.startTurningLeft();
-    this.ship.moveForward();
   }
 
   private updateClients()

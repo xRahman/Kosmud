@@ -19,32 +19,32 @@ export class Ship
 
   // ---------------- Public methods --------------------
 
-  public update(cursors: Phaser.Input.Keyboard.CursorKeys)
-  {
-    // if (cursors.left && cursors.left.isDown)
-    // {
-    //   //this.sprite.x -= 1;
-    //   this.sprite.rotation -= 0.01;
+  // public update(cursors: Phaser.Input.Keyboard.CursorKeys)
+  // {
+  //   if (cursors.left && cursors.left.isDown)
+  //   {
+  //     //this.sprite.x -= 1;
+  //     this.sprite.rotation -= 0.01;
 
-    //   //Phaser.Math.
-    // }
+  //     //Phaser.Math.
+  //   }
 
-    // if (cursors.right && cursors.right.isDown)
-    // {
-    //   //this.sprite.x += 1;
-    //   this.sprite.rotation += 0.01;
-    // }
+  //   if (cursors.right && cursors.right.isDown)
+  //   {
+  //     //this.sprite.x += 1;
+  //     this.sprite.rotation += 0.01;
+  //   }
 
-    // if (cursors.up && cursors.up.isDown)
-    // {
-    //   this.sprite.y -= 1;
-    // }
+  //   if (cursors.up && cursors.up.isDown)
+  //   {
+  //     this.sprite.y -= 1;
+  //   }
 
-    // if (cursors.down && cursors.down.isDown)
-    // {
-    //   this.sprite.y += 1;
-    // }
-  }
+  //   if (cursors.down && cursors.down.isDown)
+  //   {
+  //     this.sprite.y += 1;
+  //   }
+  // }
 
   public setPosition(position: GameEntity.Position)
   {

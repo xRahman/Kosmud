@@ -11,9 +11,13 @@ import * as Shared from '../../Shared/Protocol/PlayerInput';
 
 export class PlayerInput extends Shared.PlayerInput
 {
-  constructor(type: Shared.PlayerInput.Type)
+  constructor
+  (
+    protected action: Shared.PlayerInput.Action,
+    protected startOrStop: Shared.PlayerInput.StartOrStop
+  )
   {
-    super(type);
+    super(action, startOrStop);
 
     this.version = 0;
   }
@@ -26,6 +30,7 @@ export class PlayerInput extends Shared.PlayerInput
     console.log('PlayerInput.process()');
 
     /// TODO
+    console.log(this);
   }
 
   // --------------- Private methods --------------------

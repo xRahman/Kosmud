@@ -12,7 +12,11 @@ import {Packet} from '../../Shared/Protocol/Packet';
 
 export class PlayerInput extends Packet
 {
-  constructor(public type: PlayerInput.Type)
+  constructor
+  (
+    protected action: PlayerInput.Action,
+    protected startOrStop: PlayerInput.StartOrStop
+  )
   {
     super();
 
@@ -26,10 +30,12 @@ export class PlayerInput extends Packet
 // It must be declared after the class because Typescript says so...
 export module PlayerInput
 {
+  export type StartOrStop = "Start" | "Stop";
+
   /// TODO: Tohle zatím provizorně.
-  export type Type =
-    "Turn Left"
-  | "Turn Right"
-  | "Move Forward"
-  | "Move Backward";
+  export type Action =
+    "Left"
+  | "Right"
+  | "Forward"
+  | "Backward";
 }
