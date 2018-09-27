@@ -6,7 +6,7 @@
 
 import {GameEntity} from '../../Shared/Game/GameEntity';
 
-export class SharedShip
+export class Ship
 {
   constructor(protected position: GameEntity.Position) {}
 }

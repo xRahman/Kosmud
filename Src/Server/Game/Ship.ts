@@ -5,9 +5,9 @@
 */
 
 import {PhysicsBody} from "../../Server/Physics/PhysicsBody";
-import {SharedShip} from "../../Shared/Game/SharedShip";
+import * as Shared from "../../Shared/Game/Ship";
 
-export class Ship extends SharedShip
+export class Ship extends Shared.Ship
 {
   constructor(private physicsBody: PhysicsBody)
   {
