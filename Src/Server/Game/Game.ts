@@ -24,7 +24,7 @@ export class Game
     // Run physics tick 60 times per second.
     setInterval
     (
-      () => { this.physics.tick(PHYSICS_TICK_MILISECONDS); },
+      () => { this.updatePhysics(); },
       PHYSICS_TICK_MILISECONDS
     );
 
@@ -35,6 +35,12 @@ export class Game
     );
   }
 
+  private static updatePhysics()
+  {
+    this.updateVelocity();
+    this.physics.tick(PHYSICS_TICK_MILISECONDS);
+  }
+
   private static updateClients()
   {
     let shipPosition = this.ship.getPosition();
@@ -42,5 +48,10 @@ export class Game
 
     /// TODO: Sent all scene update data, not just one ship.
     Connections.broadcast(sceneUpdate);
+  }
+
+  private static updateVelocity()
+  {
+    this.ship.updateVelocityDirection();
   }
 }

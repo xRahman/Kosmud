@@ -12,6 +12,9 @@ export class PhysicsBody
 {
   constructor(private body: Matter.Body) {}
 
+  // Scalar value of velocity.
+  private velocity = 0;
+
   public getPosition()
   {
     let position: GameEntity.Position =
@@ -41,7 +44,9 @@ export class PhysicsBody
 
   public setVelocity(velocity: number)
   {
-    Matter.Body.setVelocity(this.body, this.getVelocityVector(velocity));
+    this.velocity = velocity;
+
+    this.updateVelocityDirection();
   }
 
   public setAngularVelocity(velocityRadians: number)
@@ -66,5 +71,10 @@ export class PhysicsBody
     }
 
     return velocityVector;
+  }
+
+  public updateVelocityDirection()
+  {
+    Matter.Body.setVelocity(this.body, this.getVelocityVector(this.velocity));
   }
 }

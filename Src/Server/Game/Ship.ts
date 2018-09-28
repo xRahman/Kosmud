@@ -64,4 +64,9 @@ export class Ship extends Shared.Ship
   {
     this.physicsBody.setVelocity(0);
   }
+
+  public updateVelocityDirection()
+  {
+    this.physicsBody.updateVelocityDirection();
+  }
 }
