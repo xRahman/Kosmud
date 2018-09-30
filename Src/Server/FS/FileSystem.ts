@@ -10,11 +10,11 @@ import {MessageType} from '../../Shared/MessageType';
 import {SavingQueue} from '../../Server/FS/SavingQueue';
 
 // Built-in node.js modules.
-import * as fs from 'fs';
+import * as FS from 'fs-extra';
 
 // 3rd party modules.
-let promisifiedFS = require('fs-promise');
-let extfs = require('extfs');
+// let promisifiedFS = require('fs-promise');
+// let extfs = require('extfs');
 
 export class FileSystem
 {
@@ -75,7 +75,7 @@ export class FileSystem
 
     try
     {
-      data = await promisifiedFS.readFile
+      data = await FS.readFile
       (
         path,
         encoding
@@ -115,7 +115,7 @@ export class FileSystem
 
     try
     {
-      data = fs.readFileSync
+      data = FS.readFileSync
       (
         path,
         FileSystem.TEXT_FILE_ENCODING
@@ -185,7 +185,7 @@ export class FileSystem
 
     try
     {
-      await promisifiedFS.unlink(path);
+      await FS.unlink(path);
     }
     catch (error)
     {
@@ -207,7 +207,7 @@ export class FileSystem
     if (!FileSystem.isPathRelative(path))
       return false;
 
-    return await promisifiedFS.exists(path);
+    return await FS.pathExists(path);
   }
 
   // -> Returns 'true' if file exists.
@@ -216,7 +216,7 @@ export class FileSystem
     if (!FileSystem.isPathRelative(path))
       return false;
 
-    return fs.existsSync(path);
+    return FS.existsSync(path);
   }
 
   // -> Returns 'true' if directory was succesfully created or if it already
@@ -229,7 +229,7 @@ export class FileSystem
 
     try
     {
-      await promisifiedFS.ensureDir(directory);
+      await FS.ensureDir(directory);
     }
     catch (error)
     {
@@ -246,27 +246,33 @@ export class FileSystem
     return true;
   }
 
-  // -> Returns 'true' if file or directory is empty.
-  //    Directory is empty if it doesn't exist or there are no files in it.
-  //    File is empty if it doesn't exist or it has zero size.
-  public static async isEmpty(path: string): Promise<boolean>
-  {
-    if (!FileSystem.isPathRelative(path))
-      return false;
+  /// This function used 'extfs' module which I removed as (almost)
+  /// unnecessary. If this function is needed, it needs to be implemented
+  /// differently or 'extfs' needs to be added again.
+  // // -> Returns 'true' if file or directory is empty.
+  // //    Directory is empty if it doesn't exist or there are no files in it.
+  // //    File is empty if it doesn't exist or it has zero size.
+  // public static async isEmpty(path: string): Promise<boolean>
+  // {
+  //   if (!FileSystem.isPathRelative(path))
+  //     return false;
 
-    return await promisifiedFS.isEmpty(path);
-  }
+  //   return await FS.isEmpty(path);
+  // }
 
-  // -> Returns 'true' if file or directory is empty.
-  //    Directory is empty if it doesn't exist or there no files in it.
-  //    File is empty if it doesn't exist or it has zero size.
-  public static isEmptySync(path: string): boolean
-  {
-    if (!FileSystem.isPathRelative(path))
-      return false;
+  /// This function used 'extfs' module which I removed as (almost)
+  /// unnecessary. If this function is needed, it needs to be implemented
+  /// differently or 'extfs' needs to be added again.
+  // // -> Returns 'true' if file or directory is empty.
+  // //    Directory is empty if it doesn't exist or there no files in it.
+  // //    File is empty if it doesn't exist or it has zero size.
+  // public static isEmptySync(path: string): boolean
+  // {
+  //   if (!FileSystem.isPathRelative(path))
+  //     return false;
 
-    return extfs.isEmptySync(path);
-  }
+  //   return FS.isEmptySync(path);
+  // }
 
   // -> Returns array of file names in directory, including
   //    subdirectories, excluding '.' and '..'.
@@ -281,7 +287,7 @@ export class FileSystem
 
     try
     {
-      fileNames = promisifiedFS.readdir(path);
+      fileNames = await FS.readdir(path);
     }
     catch (error)
     {
@@ -343,16 +349,16 @@ export class FileSystem
 
   // -> Returns 'fs.Stats' object describing specified file.
   //    Returns 'null' on error.
-  private static async statFile(path: string): Promise<fs.Stats | null>
+  private static async statFile(path: string): Promise<FS.Stats | null>
   {
     if (!FileSystem.isPathRelative(path))
       return null;
 
-    let fileStats: (fs.Stats | null) = null;
+    let fileStats: (FS.Stats | null) = null;
 
     try
     {
-      fileStats = promisifiedFS.stat(path);
+      fileStats = await FS.stat(path);
     }
     catch (error)
     {
@@ -387,7 +393,7 @@ export class FileSystem
 
     try
     {
-      await promisifiedFS.writeFile
+      await FS.writeFile
       (
         path,
         data,
