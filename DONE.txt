@@ -1,3 +1,7 @@
+TODO: Nahradit fs-promise něčím jiným
+  npm WARN deprecated fs-promise@2.0.3: Use mz or fs-extra^3.0 with Promise Support
+[done]
+
 TODO: Everything is brutally slow now. Need to investigate what has happened.
   (fs-extra probably causes this).
 - never mind, it works fine.
