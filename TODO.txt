@@ -1,3 +1,8 @@
+TODO: Everything is brutally slow now. Need to investigate what has happened.
+  (fs-extra probably causes this).
+
+-----------------------------------------------------------------------
+
 TODO: Try-catchnout volání serialize() a deserialize().
 
 TODO: Rozdělit Utils na víc souborů.
