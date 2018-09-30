@@ -7,7 +7,6 @@
 'use strict';
 
 import {ERROR} from '../../Shared/ERROR';
-import {Utils} from '../../Shared/Utils';
 import {Syslog} from '../../Shared/Syslog';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {Connection} from '../../Server/Net/Connection';

@@ -32,7 +32,8 @@ import {Serializable} from '../../Shared/Class/Serializable';
 
 export class Entity extends Serializable
 {
-  id: string;
+  /// Zatím provizorně.
+  id: string = "";
 
   // --------------- Public methods ---------------------
 

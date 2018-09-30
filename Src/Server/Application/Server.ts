@@ -11,6 +11,7 @@ import {Application} from '../../Shared/Application';
 import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
 import {ServerSyslog} from '../../Server/Application/ServerSyslog';
+import {Entities} from '../../Server/Class/Entities';
 import {MessageType} from '../../Shared/MessageType';
 import {HttpServer} from '../../Server/Net/HttpServer';
 import {Game} from '../../Server/Game/Game';
@@ -38,6 +39,8 @@ export class Server extends Application
   private httpServer = new HttpServer();
 
   // ---------------- Protected data --------------------
+
+  protected entities = new Entities();
 
   // ----------------- Private data ---------------------
 

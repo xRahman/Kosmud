@@ -12,6 +12,7 @@ import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
 import {Syslog} from '../../Shared/Syslog';
 import {ClientSyslog} from '../../Client/Application/ClientSyslog';
+import {Entities} from '../../Client/Class/Entities';
 import {Document} from '../../Client/Gui/Document';
 import {Connection} from '../../Client/Net/Connection';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
@@ -36,6 +37,8 @@ export class Client extends Application
   protected static instance = Application.instance = new Client();
 
   // ---------------- Protected data --------------------
+
+  protected entities = new Entities();
 
   // ----------------- Private data ---------------------
 

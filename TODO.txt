@@ -1,24 +1,11 @@
-TODO: Udělat základ Entities.
-
-TODO: Uklidit v Serializable public, protected atd.
-
-TODO: deserialize() musí mít try-catch blok a nesmí nic vracet v případě
-  exceptionu (protože to může být částečně loadnuté, což může vést ke
-  korupci dat).
-
-TODO: Updatnout úvodní pokec v Serializable.
+TODO: Try-catchnout volání serialize() a deserialize().
 
 TODO: Rozdělit Utils na víc souborů.
-- kam s Javascriptovými typy?
-  Javascript.ts?
-  JsTypes.ts?
+- stringové fce
+- souborové fce
+- ...
 
-TODO: Potenciální problém - 'entities' asi budou muset bej v Application
-  místo v Entities, protože se k nim musím dostat
-  v Serializable.readEntityReference a v Serializable nejdou importnout
-  Entities.
-- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
-  do Utils.
+TODO: Vyhodit z Utils ERROR a FATAL_ERROR (a vůbec ho celý projít).
 
 -----------------------------------------------------------------------
 
@@ -98,3 +85,16 @@ https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7
 - nefungují, protože browser vyžaduje v importech '.js' a typescript
   ho tam se zapnutým outputem "module": "es2015" nedává.
   viz https://github.com/Microsoft/TypeScript/issues/16577
+
+
+
+TODO: Potenciální problém - 'entities' asi budou muset bej v Application
+  místo v Entities, protože se k nim musím dostat
+  v Serializable.readEntityReference a v Serializable nejdou importnout
+  Entities.
+- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
+  do Utils.
+(zatím to přeložit jde. Nechám si to tu, až budu zprovoznovat Entities)
+
+TODO: Přidat comment k Serializable.deserialize(), jak se loadují
+  entity (nějak přes Entities)

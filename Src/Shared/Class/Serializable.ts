@@ -5,22 +5,24 @@
 */
 
 /*
-  Note:
-    Only saved properties are loaded. Properties that are not present in the
-    save will not get overwritten. It means that you can add new properties
-    to existing classes without converting existing save files (but you should
-    initialize them with default values of course).
+  Notes:
+    Only saved properties are loaded. Properties that are not
+    present in the save will not be deleted. It means that you
+    can add new properties to existing classes without converting
+    existing save files (but you should initialize them with
+    default values of course).
 
-  Note:
-    Only properties that exist on the class that is being loaded are loaded
-    from save. It means that you can remove properties from existing classes
-    without converting existing save files.
-      This does not apply to primitive Javascript Object properties (including
-    properties defined using a Typescript Interface) because we need to be able
-    to create properties in empty Javascript Objects when we are loading Array
-    items (which never exist prior to loading).
+    Properties are loaded even if they don't exist in class
+    into which we are loading. This allows saving of properties
+    created in runtime.
 
-    (See deserialize() and deserializePlainObject() methods for details.) 
+    Serializing of entities using just an 'id' is implemented
+    in Serializable rather than in Entity to allow serializable
+    entity references in non-entity Serializable classes.
+
+    Descendants can override methods customSerializeProperty()
+    and customDeserializeProperty() to change how are specific
+    properties serialized.
 */
 
 /*
@@ -36,31 +38,14 @@
     (A samozřejmě tuhle funkcionalitu přidat do Attributable class).
 */
 
-/*
-  Note:
-    Properties are loaded even if they don't exist in class into which
-    we are loading. This allows saving of properties created in runtime.
-*/
-
-/*
-  Note:
-    Serializing of entity properties as just an 'id' is in Serializable
-    rather than in Entity to allow saving of entity references this way
-    even from Serializable (non-entity) classes.
-*/
-
-/*
-//*
-  Note that descendants can override methods customSerializeProperty()
-  and customDeserializeProperty() to change how are specific properties
-  serialized.
-*/
-
+import {Types} from '../../Shared/Types';
 import {Utils} from '../../Shared/Utils';
 import {Classes} from '../../Shared/Class/Classes';
-import {AnyClass} from '../../Shared/Class/Classes';
+import {AnyClass} from '../../Shared/Types';
 import {JsonObject} from '../../Shared/Class/JsonObject';
 import {Attributable} from '../../Shared/Class/Attributable';
+import {Application} from '../../Shared/Application';
+import { workers } from 'cluster';
 
 // 3rd party modules.
 let FastBitSet = require('fastbitset');
@@ -89,8 +74,6 @@ export class Serializable extends Attributable
 {
   // ---------------- Protected data --------------------
 
-
-//*
   // 'version' is used to convert data from older formats.
   //   You have to initialize it in the constructor
   // (otherwise you get an exception while serializing).
@@ -98,9 +81,9 @@ export class Serializable extends Attributable
 
   // ------------- Public static methods ----------------
 
-//*
   // ! Throws exception on error.
-  // Use this only for plain Serializable objects, not entities.
+  // Use this only for Serializable objects not inherited from Entity.
+  // TODO: Přidat comment, jak se loadují entity (nějak přes Entities)
   public static deserialize(data: string): Serializable
   {
     let jsonObject = JsonObject.parse(data);
@@ -119,7 +102,6 @@ export class Serializable extends Attributable
 
   // ---------------- Public methods --------------------
 
-//*
   // ! Throws exception on error.
   public dynamicCast<T>(Class: AnyClass<T>): T
   {
@@ -135,7 +117,6 @@ export class Serializable extends Attributable
     return <any>this;
   }
 
-//*
   // Returns string describing this object for error logging.
   public getErrorIdString()
   {
@@ -143,7 +124,6 @@ export class Serializable extends Attributable
     return "{ className: " + this.getClassName() + " }";
   }
 
-//*
   public serialize(mode: Serializable.Mode): string
   {
     let jsonObject = this.saveToJsonObject(mode);
@@ -154,7 +134,6 @@ export class Serializable extends Attributable
     return JsonObject.stringify(jsonObject);
   }
 
-//*
   // ! Throws exception on error.
   // Extracts data from plain javascript Object to this instance.
   // -> Returns 'null' on failure.
@@ -197,7 +176,6 @@ export class Serializable extends Attributable
 
   // -------------- Protected methods -------------------
 
-//*
   // This method can be overriden to change how is a certain
   // property serialized.
   // -> Returns 'undefined' if property is not customly serialized.
@@ -206,7 +184,6 @@ export class Serializable extends Attributable
     return undefined;
   }
 
-//*
   // This method can be overriden to change how is a certain
   // property deserialized.
   // -> Returns 'undefined' if property is not customly deserialized.
@@ -217,11 +194,6 @@ export class Serializable extends Attributable
 
   // --------------- Private methods --------------------
 
-  ///////////////////////////////////////////////////////
-  ///////////////////// JsonSaver ///////////////////////
-  ///////////////////////////////////////////////////////
-
-//*
   private writeName(jsonObject: Object)
   {
     if (this.hasOwnProperty(NAME))
@@ -230,7 +202,6 @@ export class Serializable extends Attributable
     return jsonObject;
   }
 
-//*
   private writeVersion(jsonObject: Object)
   {
     if (!this.hasOwnProperty(VERSION))
@@ -242,7 +213,7 @@ export class Serializable extends Attributable
 
     let version = (this as any)[VERSION];
 
-    if (!Utils.isNumber(version))
+    if (!Types.isNumber(version))
     {
       throw new Error("Failed to serialize " + this.getErrorIdString()
         + " because " + VERSION + " property is not a number. Make"
@@ -250,17 +221,11 @@ export class Serializable extends Attributable
         + " to some number");
     }
 
-    // Always save 'version' even if it's not own property.
-    // ('version' property is used when loading from file
-    //  to enable custom loading code when data structure
-    //  chances. It is not loaded, only checked against
-    // current version.)
     (jsonObject as any)[VERSION] = version;
 
     return jsonObject;
   }
 
-//*
   private writeClassName(jsonObject: Object)
   {
     (jsonObject as any)[CLASS_NAME] = this.getClassName();
@@ -268,13 +233,12 @@ export class Serializable extends Attributable
     return jsonObject;
   }
 
-//*
   // ! Throws exception on error.
   // Creates primitive Javascript Object and fills it with properties
   // of 'this'. Data types that can't be directly serialized to JSON
-  // (like Set or Map) is converted to something serializable (Array,
+  // (like Set or Map) are converted to something serializable (Array,
   //  string, etc).
-  protected saveToJsonObject(mode: Serializable.Mode): Object
+  private saveToJsonObject(mode: Serializable.Mode): Object
   {
     let jsonObject = {};
 
@@ -320,7 +284,6 @@ export class Serializable extends Attributable
     return jsonObject;
   }
 
-//*
   // Determines if property 'propertyName' is to be serialized
   // in given serializable 'mode'.
   private isSerialized(propertyName: string, mode: Serializable.Mode)
@@ -332,8 +295,6 @@ export class Serializable extends Attributable
     if (attributes === undefined)
       return true;
 
-    // Default value is always 'true', so if for example attributs.saved
-    // isn't defined (it's not 'false'), we will return 'true'.
     switch (mode)
     {
       case 'Save to File':
@@ -357,13 +318,11 @@ export class Serializable extends Attributable
     throw new Error("Unreachable code is executed. WTF?");
   }
 
-//*
   // ! Throws exception on error.
   // Writes a single property to a corresponding JSON object.
   // -> Returns JSON Object representing 'param.sourceProperty'. 
   private serializeProperty(param: SerializeParam): any
   {
-    // Aliases to make code more readable.
     let property = param.property;
     let mode = param.mode;
 
@@ -372,11 +331,11 @@ export class Serializable extends Attributable
     if (customValue !== undefined)
       return customValue;
 
-    if (Utils.isPrimitiveType(property))
-      // Primitive values (number, string, null, etc.) are just assigned.
+    // Primitive values (number, string, null, etc.) are just assigned.
+    if (Types.isPrimitiveType(property))
       return property;
 
-    if (Utils.isArray(property))
+    if (Types.isArray(property))
       return this.serializeArray(param, property);
 
     // If there is an 'id' in the property, we treat it as Entity.
@@ -389,7 +348,7 @@ export class Serializable extends Attributable
     if (this.isSerializable(property))
       return property.saveToJsonObject(mode);
 
-    if (Utils.isDate(property))
+    if (Types.isDate(property))
     {
       throw new Error("Attempt to serialize property of type Date()."
         + " Date object should not be used because it can't be"
@@ -397,16 +356,16 @@ export class Serializable extends Attributable
         + " Use class Time instead. Property is not serialized");
     }
 
-    if (Utils.isMap(property))
+    if (Types.isMap(property))
       return this.createMapSaver(property).saveToJsonObject(mode);
 
-    if (Utils.isBitvector(property))
+    if (Types.isBitvector(property))
       return this.createBitvectorSaver(property).saveToJsonObject(mode);
 
-    if (Utils.isSet(property))
+    if (Types.isSet(property))
       return this.createSetSaver(property).saveToJsonObject(mode);
 
-    if (Utils.isPlainObject(property))
+    if (Types.isPlainObject(property))
       return this.serializePlainObject(param);
 
     throw new Error("Property '" + param.description + "' in class"
@@ -421,7 +380,6 @@ export class Serializable extends Attributable
       + " Serializable.ts. Property is not saved");
   }
 
-//*
   // Saves a property of type Array to a corresponding JSON Array object.
   private serializeArray(param: SerializeParam, sourceArray: Array<any>)
   {
@@ -446,15 +404,14 @@ export class Serializable extends Attributable
     return jsonArray;
   }
 
-//*
   // -> Returns 'true' if 'variable' has own (not just inherited) value.
   private hasOwnValue(variable: any): boolean
   {
     // Variables of primitive types are always serialized.
-    if (Utils.isPrimitiveType(variable))
+    if (Types.isPrimitiveType(variable))
       return true;
 
-    if (Utils.isMap(variable) || Utils.isSet(variable))
+    if (Types.isMap(variable) || Types.isSet(variable))
     {
       // Maps and Sets are always instantiated as 'new Map()'
       // or 'new Set()'. We only serialize them if they contain
@@ -477,11 +434,7 @@ export class Serializable extends Attributable
     return false;
   }
 
-//*
-// ! Throws exception on error.
-  // The purpose of manual saving of properties of primitive Objects
-  // is to determine if some of them are Serializables so they need
-  // to be saved using their saveToJsonObject() method.
+  // ! Throws exception on error.
   private serializePlainObject(param: SerializeParam): Object
   {
     let sourceObject = param.property;
@@ -517,13 +470,11 @@ export class Serializable extends Attributable
     return jsonObject;
   }
 
-//*
   private isSerializable(variable: any): boolean
   {
-    return ('saveToJsonObject' in variable);
+    return ('serialize' in variable);
   }
 
-//*
   // ! Throws exception on error.
   // Deserializes a single property from corresponding JSON object.
   // Converts from serializable format to original data type as needed
@@ -575,7 +526,6 @@ export class Serializable extends Attributable
     return param.sourceProperty;
   }
 
-//*
   // ! Throws exception on error.
   private classMatchCheck(jsonObject: Object, path?: string)
   {
@@ -598,9 +548,8 @@ export class Serializable extends Attributable
     }
   }
 
-//*
   // ! Throws exception on error.
-  protected versionMatchCheck(jsonObject: Object, path?: string)
+  private versionMatchCheck(jsonObject: Object, path?: string)
   {
     let version = (jsonObject as any)[VERSION];
 
@@ -623,7 +572,6 @@ export class Serializable extends Attributable
     }
   }
 
-//*
   // ! Throws exception on error.
   // Attempts to convert 'param.sourceProperty' to FastBitSet object.
   // -> Returns 'undefined' if 'param.sourceProperty' is not a bitvector.
@@ -635,7 +583,7 @@ export class Serializable extends Attributable
     let targetIsValid =
          param.targetProperty === null
       || param.targetProperty === undefined
-      || Utils.isBitvector(param.targetProperty);
+      || Types.isBitvector(param.targetProperty);
 
     if (!targetIsValid)
     {
@@ -649,7 +597,6 @@ export class Serializable extends Attributable
     return this.readBitvector(param);
   }
 
-//*
   // ! Throws exception on error.
   // Attempts to convert 'param.sourceProperty' to Set object.
   // -> Returns 'undefined' if 'param.sourceProperty' is not a Set.
@@ -661,7 +608,7 @@ export class Serializable extends Attributable
     let targetIsValid =
          param.targetProperty === null
       || param.targetProperty === undefined
-      || Utils.isSet(param.targetProperty);
+      || Types.isSet(param.targetProperty);
 
     if (!targetIsValid)
     {
@@ -675,7 +622,6 @@ export class Serializable extends Attributable
     return this.readSet(param);
   }
 
-//*
   // ! Throws exception on error.
   // Attempts to convert 'param.sourceProperty' to Map object.
   // -> Returns 'undefined' if 'param.sourceProperty' is not a Map.
@@ -687,7 +633,7 @@ export class Serializable extends Attributable
     let targetIsValid =
          param.targetProperty === null
       || param.targetProperty === undefined
-      || Utils.isMap(param.targetProperty);
+      || Types.isMap(param.targetProperty);
 
     if (!targetIsValid)
     {
@@ -701,7 +647,6 @@ export class Serializable extends Attributable
     return this.readMap(param);
   }
 
-//*
   // Attempts to convert 'param.sourceProperty' to reference to an Entity.
   // -> Returns 'undefined' if 'param.sourceProperty' is not an Entity
   //    reference.
@@ -713,7 +658,6 @@ export class Serializable extends Attributable
     return this.readEntityReference(param);
   }
 
-//*
   // ! Throws exception on error.
   // Attempts to convert 'param.sourceProperty' to Array.
   // -> Returns 'undefined' if 'param'.sourceProperty is not an Array.
@@ -728,7 +672,7 @@ export class Serializable extends Attributable
     let targetIsValid =
          param.targetProperty === null
       || param.targetProperty === undefined
-      || Utils.isArray(param.targetProperty);
+      || Types.isArray(param.targetProperty);
 
     if (!targetIsValid)
     {
@@ -742,20 +686,19 @@ export class Serializable extends Attributable
     return this.readArray(param);
   }
 
-//*
   // ! Throws exception on error.
   // Attempts to convert 'param.sourceProperty' to a respective object.
   // -> Returns 'undefined' if 'param'.sourceProperty is not an object
   //    or if loading failed.
   private deserializeAsObject(param: DeserializeParam)
   {
-    if (Utils.isPrimitiveType(param.sourceProperty))
+    if (Types.isPrimitiveType(param.sourceProperty))
       return undefined;
 
     let targetIsValid =
          param.targetProperty === null
       || param.targetProperty === undefined
-      || !Utils.isPrimitiveType(param.targetProperty);
+      || !Types.isPrimitiveType(param.targetProperty);
 
     if (!targetIsValid)
     {
@@ -769,7 +712,6 @@ export class Serializable extends Attributable
     return this.readObject(param);
   }
 
-//*
   // ! Throws exception on error.
   private readObject(param: DeserializeParam)
   {
@@ -793,7 +735,7 @@ export class Serializable extends Attributable
       return instance.deserialize(param.sourceProperty, param.path);
     }
 
-    if (!Utils.isPlainObject(instance))
+    if (!Types.isPlainObject(instance))
     {
       throw new Error("Attempt to deserialize a nonprimitive property which"
         + " is neither an instance of Serializable class nor a plain"
@@ -818,7 +760,6 @@ export class Serializable extends Attributable
     );
   }
 
-//*
   // ! Throws exception on error.
   // Reads 'className' from 'param.sourceProperty'
   // and creates an instance of that class.
@@ -869,7 +810,6 @@ export class Serializable extends Attributable
     }
   }
 
-//*
   // ! Throws exception on error.
   private deserializePlainObject(param: DeserializeParam)
   {
@@ -905,7 +845,6 @@ export class Serializable extends Attributable
     return param.targetProperty;
   }
 
-//*
   // Checks if 'param.sourceProperty' represents a saved FastBitSet object.
   private isBitvectorRecord(jsonObject: Object): boolean
   {
@@ -915,7 +854,6 @@ export class Serializable extends Attributable
     return (jsonObject as any)[CLASS_NAME] === BITVECTOR_CLASS_NAME;
   }
 
-//*
   // Checks if 'param.sourceProperty' represents a saved Set object.
   private isSetRecord(jsonObject: Object): boolean
   {
@@ -925,7 +863,6 @@ export class Serializable extends Attributable
     return (jsonObject as any)[CLASS_NAME] === SET_CLASS_NAME;
   }
 
-//*
   // Checks if 'param.sourceProperty' represents a saved Map object.
   private isMapRecord(jsonObject: Object): boolean
   {
@@ -935,7 +872,6 @@ export class Serializable extends Attributable
     return (jsonObject as any)[CLASS_NAME] === MAP_CLASS_NAME;
   }
 
-//*
   // Checks if 'param.sourceProperty' represents a saved reference to
   // an entity.
   private isReference(jsonObject: Object): boolean
@@ -946,14 +882,12 @@ export class Serializable extends Attributable
     return (jsonObject as any)[CLASS_NAME] === REFERENCE_CLASS_NAME;
   }
 
-//*
   // Converts 'param.sourceProperty' to a FastBitSet object.
   private readBitvector(param: DeserializeParam)
   {
     return new FastBitSet(this.getProperty(param, BITVECTOR));
   }
 
-//*
   // ! Throws exception on error.
   private readSet(param: DeserializeParam): Set<any> | null
   {
@@ -974,7 +908,6 @@ export class Serializable extends Attributable
     return new Set(deserializedArray);
   }
 
-//*
   // ! Throws exception on error.
   // Converts 'param.sourceProperty' to a Map object.
   private readMap(param: DeserializeParam): Map<any, any> | null
@@ -1002,24 +935,18 @@ export class Serializable extends Attributable
   // entity will be returned. Otherwise an 'invalid'
   // entity reference will be created and returned.
   // -> Retuns an existing entity or an invalid entity reference.
-  protected readEntityReference(param: DeserializeParam)
+  private readEntityReference(param: DeserializeParam)
   {
     let id = this.getProperty(param, ID);
 
-/// TODO
-    // if (!Application.entities)
-    // {
-    //   ERROR("Unexpected 'null' value");
-    //   return null;
-    // }
-
-    // // Note: We have to access entities using Application.entities rather
-    // //   than Etities because importing {Entities} to Serializable would
-    // //   lead to circular imports exception.
-    // return Application.entities.getReference(id);
+    // Note:
+    //   We need to use Application.entities instead of Entities because
+    //   importing Entities to Serializable would cause cyclical module
+    //   dependancy (Entities import Entity which imports Serializable).
+    //   Doing this using Application.entities for some reason works.
+    return Application.entities.getReference(id);
   }
 
-//*
   // ! Throws exception on error.
   // Converts 'param.sourceProperty' to Array.
   private readArray(param: DeserializeParam): Array<any> | null
@@ -1053,8 +980,6 @@ export class Serializable extends Attributable
     return newArray;
   }
 
-
-//*
   // ! Throws exception on error.
   // ('index' and 'path' are used only for error messages).
   private readArrayItem(item: any, index: number, path?: string)
@@ -1073,17 +998,11 @@ export class Serializable extends Attributable
     );
   }
 
-  // ------------------------------------------------- //
-  //                 Auxiliary methods                 //
-  // ------------------------------------------------- //
-
-//*
   private isDeserializable(instance: any): boolean
   {
     return ('deserialize' in instance);
   }  
 
-//*
   // ! Throws exception on error.
   private getProperty(param: DeserializeParam, propertyName: string)
   {
@@ -1106,23 +1025,6 @@ export class Serializable extends Attributable
     return property;
   }
 
-  // ------------ Protected static methods -------------- 
-
-  // ------------- Private static methods ---------------
-
-  /// Nevím, proč to bylo protected static. Uvidíme, jestli to bude
-  /// potřeba.
-  // protected static createSaver(className: string)
-  // {
-  //   let saver = new Serializable();
-
-  //   // Fake the 'className' getter.    
-  //   saver['getClassName'] = function() { return className; };
-
-  //   return saver;
-  // }
-
-//*
   private createSaver(className: string)
   {
     let saver = new Serializable();
@@ -1133,7 +1035,6 @@ export class Serializable extends Attributable
     return saver;
   }
 
-//*
   // ! Throws exception on error.
   private createSetSaver(set: Set<any>)
   {
@@ -1151,7 +1052,6 @@ export class Serializable extends Attributable
     return saver;
   }
 
-//*
   // ! Throws exception on error.
   private createMapSaver(map: Map<any, any>)
   {
@@ -1169,7 +1069,6 @@ export class Serializable extends Attributable
     return saver;
   }
 
-//*
   // ! Throws exception on error.
   private createBitvectorSaver(bitvector: any)
   {
@@ -1188,9 +1087,8 @@ export class Serializable extends Attributable
     return saver;
   }
 
-//*
   // ! Throws exception on error.
-  protected createEntitySaver(entity: Serializable): Serializable
+  private createEntitySaver(entity: Serializable): Serializable
   {
     if (entity === null)
     {
@@ -1214,7 +1112,6 @@ export class Serializable extends Attributable
     return saver;
   }
 
-//*
   // -> Returns an Array representation of Set object.
   private saveSetToArray(set: Set<any>): Array<any>
   {
@@ -1226,7 +1123,6 @@ export class Serializable extends Attributable
     return result;
   }
 
-//*
   // -> Returns an Array representation of Map object.
   private saveMapToArray(map: Map<any, any>): Array<any>
   {
@@ -1238,7 +1134,6 @@ export class Serializable extends Attributable
     return result;
   }
 
-//*
   // -> Returns string informing about file location or empty string
   //    if 'path' is not available.
   private composePathString(path?: string)

@@ -27,7 +27,7 @@
 import {ERROR} from '../Shared/ERROR';
 // import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 import {MessageType} from '../Shared/MessageType';
-// import {Entities} from '../../../shared/lib/entity/Entities';
+import {Entities} from '../Shared/Class/Entities';
 // import {Prototypes} from '../../../shared/lib/entity/Prototypes';
 
 export abstract class Application
@@ -42,12 +42,17 @@ export abstract class Application
 
   // protected isRunning = false;
 
-  // protected abstract entities: Entities;
+  // Note:
+  //   We need to have .entities in Application instead in Entities
+  //   because importing Entities to Serializable would cause cyclical
+  //   module dependancy (Entities import Entity which imports Serializable).
+  //   Doing it using Application.entities for some reason works.
+  protected abstract entities: Entities;
   // protected abstract prototypes: Prototypes;
 
   // --------------- Static accessors -------------------
 
-  // public static get entities() { return this.getInstance().entities; }
+  public static get entities() { return this.getInstance().entities; }
   // public static get prototypes() { return this.getInstance().prototypes; }
 
   private static getInstance(): Application

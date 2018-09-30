@@ -1,19 +1,12 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Various utility functions.
 */
 
-'use strict';
-
 import {ERROR} from '../Shared/ERROR';
 import {FATAL_ERROR} from '../Shared/FATAL_ERROR';
-import {Serializable} from '../Shared/Class/Serializable';
-
-// Types used for constructs like 'new Promise((resolve, reject) => { ... })'.
-export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
-export type RejectFunction = (reason?: any) => void;
-
+import {Types} from '../Shared/Types';
 
 export module Utils
 {
@@ -53,88 +46,6 @@ export module Utils
     }
 
     return false;
-  }
-
-  // -> Returns 'true' if 'variable' is of type string.
-  export function isString(variable: any): boolean
-  {
-    return typeof variable === 'string';
-  }
-
-  // -> Returns 'true' if 'variable' is of type 'FastBitSet'.
-  export function isBitvector(variable: any)
-  {
-    if (variable === null || variable === undefined || !variable.constructor)
-      return false;
-
-    return variable.constructor.name === 'FastBitSet';
-  }
-
-  // -> Returns 'true' if 'variable' is of type 'Date'.
-  export function isDate(variable: any)
-  {
-    if (variable === null || variable === undefined || !variable.constructor)
-      return false;
-
-    return variable.constructor.name === 'Date';
-  }
-
-  // -> Returns 'true' if 'variable' is of type 'Map',
-  export function isMap(variable: any)
-  {
-    if (variable === null || variable === undefined || !variable.constructor)
-      return false;
-
-    return variable.constructor.name === 'Map';
-  }
-
-  // Detects only native javascript Objects - not classes.
-  // -> Returns 'true' if 'variable' is of type 'Object',
-  export function isPlainObject(variable: any)
-  {
-    if (variable === null || variable === undefined || !variable.constructor)
-      return false;
-
-    return variable.constructor.name === 'Object';
-  }
-
-  // Detects native javascript Arrays.
-  // -> Returns 'true' if 'variable' is of type 'Array',
-  export function isArray(variable: any)
-  {
-    if (variable === null || variable === undefined || !variable.constructor)
-      return false;
-
-    return variable.constructor.name === 'Array';
-  }
-
-  // -> Returns 'true' if 'variable' is a primitive type
-  //    (boolean, null, undefined, number, string or symbol).
-  export function isPrimitiveType(variable: any)
-  {
-    // For some reason typeof 'null' is 'object' in javascript
-    // so we have check for it explicitely.
-    return variable === null || typeof variable !== 'object';
-  }
-
-  // -> Returns 'true' if 'variable' is of type 'Set'.
-  export function isSet(variable: any)
-  {
-    if (variable === null || variable === undefined || !variable.constructor)
-      return false;
-
-    return variable.constructor.name === 'Set';
-  }
-
-  export function isSerializable(variable: any)
-  {
-    return variable instanceof Serializable;
-  }
-
-  // -> Returns 'true' if 'variable' is a number.
-  export function isNumber(variable: any)
-  {
-    return typeof variable === 'number';
   }
 
   // Make sure that all newlines are representedy by '\n'.
@@ -259,8 +170,14 @@ export module Utils
 
       // If both properties are plain objects, call applyDefaults()
       // recursively on them.
-      if (isPlainObject(sourceProperty) && isPlainObject(targetProperty))
+      if
+      (
+        Types.isPlainObject(sourceProperty)
+        && Types.isPlainObject(targetProperty)
+      )
+      {
         applyDefaults(targetProperty, sourceProperty);
+      }
     }
 
     return target;

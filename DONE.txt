@@ -1,3 +1,12 @@
+TODO: Hodit funkce na práci s typy z Utils do Types.
+[done]
+
+TODO: Uklidit v Serializable public, protected atd.
+[done]
+
+TODO: Updatnout úvodní pokec v Serializable.
+[done]
+
 TODO: Vrátit se k jednoduchému modelu shared-only a data-only packetů
   a processPacket() udělat jako externí kód se switchem na className packetu.
 - Zrušit Server/Protocol a Client/Protocol
