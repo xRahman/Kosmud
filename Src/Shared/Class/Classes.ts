@@ -55,6 +55,29 @@ export class Classes
     this.serializables.set(Class.name, Class);
   }
 
+  // ! Throws exception on error.
+  public static instantiateSerializableClass(className: string)
+  {
+    let Class = Classes.serializables.get(className);
+
+    if (!Class)
+    {
+      throw new Error("Failed to instantiate class '" + className + "'"
+        + " because it is not registered in Classes as a serializable"
+        + " non-entity class");
+    }
+
+    let instance = new Class;
+
+    if (!(instance instanceof Serializable))
+    {
+      throw new Error("Failed to instantiate class '" + className + "'"
+        + " because it is not a Serializable class");
+    }
+
+    return instance;
+  }
+
   // public static registerEntityClass<T extends Entity>
   // (
   //   Class: NonabstractClass<T>

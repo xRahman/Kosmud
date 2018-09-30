@@ -131,6 +131,12 @@ export module Utils
     return variable instanceof Serializable;
   }
 
+  // -> Returns 'true' if 'variable' is a number.
+  export function isNumber(variable: any)
+  {
+    return typeof variable === 'number';
+  }
+
   // Make sure that all newlines are representedy by '\n'.
   export function normalizeCRLF(data: string)
   {
@@ -231,6 +237,9 @@ export module Utils
   // -> Returns modified 'target'.
   export function applyDefaults<T>(target: T, defaults: T)
   {
+    if (!defaults)
+      return target;
+
     for (let propertyName in defaults)
     {
       let sourceProperty = defaults[propertyName];

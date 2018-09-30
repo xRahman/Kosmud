@@ -198,10 +198,7 @@ export class Connection implements Shared.Connection
     /// ale časem bude.
     try
     {
-      this.socket.send
-      (
-        packet.serialize(Serializable.Mode.SEND_TO_CLIENT)
-      );
+      this.socket.send(packet.serialize('Send to Client'));
     }
     catch (error)
     {

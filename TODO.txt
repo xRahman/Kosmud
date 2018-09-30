@@ -1,6 +1,31 @@
+TODO: Udělat základ Entities.
+
+TODO: Uklidit v Serializable public, protected atd.
+
+TODO: deserialize() musí mít try-catch blok a nesmí nic vracet v případě
+  exceptionu (protože to může být částečně loadnuté, což může vést ke
+  korupci dat).
+
+TODO: Updatnout úvodní pokec v Serializable.
+
+TODO: Rozdělit Utils na víc souborů.
+- kam s Javascriptovými typy?
+  Javascript.ts?
+  JsTypes.ts?
+
+TODO: Potenciální problém - 'entities' asi budou muset bej v Application
+  místo v Entities, protože se k nim musím dostat
+  v Serializable.readEntityReference a v Serializable nejdou importnout
+  Entities.
+- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
+  do Utils.
+
+-----------------------------------------------------------------------
+
 TODO: Velocity vector se musí updatovat spolu s rotací lodě.
 - pamatovat si velocity (scalar value) starnou a velocity vector
   z ní počítat každej update().
+[done]
 
 TODO: Obecněji pořešit posílání packetů do closed connection.
   (i když nejvíc to vadilo u "client closed browser tab" message,

@@ -15,31 +15,24 @@
     // A variable we want to set attributes for.
     protected counter = 0;
       // Static attributes of variable 'counter'.
-      protected static counter: PropertyAttributes =
+      protected static counter: Attributes =
       {
         saved: false
       };
   }
 */
 
-'use strict';
-
+import {Utils} from '../../shared/Utils';
+import {DEFAULT_ATTRIBUTES} from '../../Shared/Class/Attributes';
 import {Attributes} from '../../Shared/Class/Attributes';
 
-///export class Attributable extends Nameable
+const DEFAULT_ATTRIBUTES_PROPERTY = 'defaultAttributes';
+
 export class Attributable
 {
-  // Default values of property attributes
-  // (this is are inherited by descendants and can be overriden).
-  protected static defaultAttributes: Attributes =
-  {
-    saved: true,
-    edited: true,
-    sentToClient: true,
-    sentToServer: true
-  };
+  protected static defaultAttributes: Attributes = DEFAULT_ATTRIBUTES;
 
-  // ---------------- Public methods --------------------
+  // --------------- Public methods ---------------------
 
   // In Javascript, 'name' of the constructor is the class name.
   public getClassName() { return this.constructor.name; }
@@ -48,51 +41,25 @@ export class Attributable
 
   // -> Returns object containing static attributes for a given class property,
   //    Returns 'undefined' if 'property' doesn't have static attributes.
-  // (Note that 'defaultAttributes' declare in the same class as the property
+  // (Note that 'defaultAttributes' declared in the same class as the property
   //  are taken in effect, not possible override in a descendant class.)
-  protected getAttributes(propertyName: string): Attributes
+  protected propertyAttributes(propertyName: string): Attributes
   {
-    // Traverse prototype tree to find 'thi's on which
-    // property 'propertyName' is 'own' property.
-    ///let propertyThis = this.getPropertyThis(propertyName);
-    let attributes: Attributes;
-    // Use default attributes declared at the same object as property.
-    ///let defaultAttributes = propertyThis.constructor['defaultAttributes'];
-    let defaultAttributes = (this.constructor as any)['defaultAttributes'];
-    // These are attributes declared as a static property with the same
-    // name as non-static property.
-    let propertyAttributes = (this.constructor as any)[propertyName];
+    // If an Attributable class has a static property 'defaultValues', it
+    // will serve as default values of attributes of all class properties.
+    let classDefaultAttributes =
+      (this.constructor as any)[DEFAULT_ATTRIBUTES_PROPERTY];
 
-    // This trick will 'copy' all properties from 'propertyAttributes'
-    // to a new object by creating a new {} and setting 'propertyAttributes'
-    // as it's prototype object.
-    if (propertyAttributes)
-      attributes = Object.create(propertyAttributes);
-    else
-      attributes = {};
+    // Any property of Attributable class can have specific attributes.
+    // They are declared as a static class property with the same name.
+    let propertySpecificAttributes = (this.constructor as any)[propertyName];
 
-    // Add default value for attributes that don't exist in
-    // 'propertyAttributes'.
-    for (let attribute in defaultAttributes)
-    {
-      if (!propertyAttributes || propertyAttributes[attribute] === undefined)
-        (attributes as any)[attribute] = defaultAttributes[attribute];
-    }
+    let attributes = {};
 
-    // Do one more defaulting - against 'defaltAttributes' declared
-    // here in Attributable class. This way 'defaultAttributes' on
-    // descendatns don't have to list all existing attributes.
-    for (let attribute in Attributable.defaultAttributes)
-    {
-      if (!attributes || (attributes as any)[attribute] === undefined)
-      {
-        (attributes as any)[attribute] =
-          (Attributable.defaultAttributes as any)[attribute];
-      }
-    }
+    Utils.applyDefaults(attributes, propertySpecificAttributes);
+    Utils.applyDefaults(attributes, classDefaultAttributes);
+    Utils.applyDefaults(attributes, Attributable.defaultAttributes);
 
     return attributes;
   }
-
-  // --------------- Private methods --------------------
 }

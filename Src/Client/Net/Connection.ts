@@ -280,9 +280,6 @@ export class Connection implements Shared.Connection
       return;
     }
 
-    this.socket.send
-    (
-      packet.serialize(Serializable.Mode.SEND_TO_SERVER)
-    );
+    this.socket.send(packet.serialize('Send to Server'));
   }
 }

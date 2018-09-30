@@ -29,19 +29,22 @@
    - tohle bych ovšem musel přidat do Attributable.
 */
 
-
 export interface Attributes
 {
   // Property is saved to disk.
-  //   Default: true
   saved?: boolean,
   // Property can be edited.
-  //   Default: false
   edited?: boolean,
-  // Property is included when object is sent from the server to the client.
-  //   Default: false
+  // Property is serialized when object is sent from the server to the client.
   sentToClient?: boolean,
-  // Property is included when object is send from the client to the server
-  //   Default: false
+  // Property is serialized when object is send from the client to the server
   sentToServer?: boolean
-}
+};
+
+export const DEFAULT_ATTRIBUTES: Attributes =
+{
+  saved: true,
+  edited: true,
+  sentToClient: true,
+  sentToServer: true
+};

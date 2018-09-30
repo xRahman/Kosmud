@@ -1,13 +1,9 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Auxiliary static class that serializes objects to and from JSON.
 */
 
-'use strict';
-
-import {ERROR} from '../../Shared/ERROR';
-import {FATAL_ERROR} from '../../Shared/FATAL_ERROR';
 
 let beautify = require('js-beautify').js_beautify;
 
@@ -36,41 +32,28 @@ export class JsonObject
     return jsonString;
   }
 
-  // Same as JSON.parse() but with exception handling.
-  public static parse
-  (
-    jsonString: string,
-    path: (string | null) = null
-  )
-  : Object | null
+  // ! Throws exception on error.
+  // Same as JSON.parse() but with more informative error message.
+  public static parse(jsonString: string, path?: string): Object
   {
-    let jsonObject = {};
-
     try
     {
-      jsonObject = JSON.parse(jsonString);
+      return JSON.parse(jsonString);
     }
     catch (e)
     {
-      let pathString = this.composePathString(path);
-
-      ERROR("Syntax error in JSON data: " + e.message + pathString);
-      return null;
+      throw new Error("Syntax error in JSON data:"
+        + " " + e.message + fileInfo(path));
     }
-
-    return jsonObject;
   }
+}
 
-  // ---------------- Private methods -------------------
+// ----------------- Auxiliary Functions ---------------------
 
-  // Auxiliary function used for error reporting.
-  // -> Returns string informing about file location or empty string
-  //    if 'path' is not available.
-  private static composePathString(path: string | null)
-  {
-    if (path === null)
-      return "";
+function fileInfo(path?: string)
+{
+  if (!path)
+    return "";
 
-    return " in file " + path;
-  }
+  return " in file " + path;
 }
