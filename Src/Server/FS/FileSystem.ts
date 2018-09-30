@@ -13,15 +13,13 @@ import {SavingQueue} from '../../Server/FS/SavingQueue';
 import * as FS from 'fs-extra';
 
 // 3rd party modules.
-// let promisifiedFS = require('fs-promise');
-// let extfs = require('extfs');
+/// let extfs = require('extfs');
 
 export class FileSystem
 {
-  public static get TEXT_FILE_ENCODING() { return 'utf8'; }
-  public static get BINARY_FILE_ENCODING() { return 'binary'; }
-
-  public static get JSON_EXTENSION() { return '.json'; }
+  public static readonly TEXT_FILE_ENCODING = 'utf8';
+  public static readonly BINARY_FILE_ENCODING = 'binary';
+  public static readonly JSON_EXTENSION = '.json';
 
   // ----------------- Private data ---------------------
 

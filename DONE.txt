@@ -1,3 +1,8 @@
+TODO: Everything is brutally slow now. Need to investigate what has happened.
+  (fs-extra probably causes this).
+- never mind, it works fine.
+[done]
+
 TODO: Serializable by nemělo nic vědět o entitách.
   - Entity by si měly přetížit metodu na serializaci/deserializaci properties.
 - Nakonec jsem deserializování referencí na entity nechal v Serializable,
