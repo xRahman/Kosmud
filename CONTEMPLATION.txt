@@ -1,3 +1,38 @@
+ERROR()
+--------
+
+Pokud nechám ERROR(), asi by se dalo použít tohle:
+https://www.bennadel.com/blog/2828-creating-custom-error-objects-in-node-js-with-error-capturestacktrace.htm
+
+  In the V8 engine, the stacktrace of an error is gathered using the
+  Error.captureStackTrace() method:
+
+    Error.captureStackTrace( errorObject, localContextFunction )
+
+  This method injects a "stack" property into the first argument and,
+  optionally, excludes the localContextFunction from the stacktrace.
+  So, for example, if we were to generate the stacktrace inside of an
+  error Factory function, we could tell V8 to exclude the factory function
+  when generating the stack. This would reduce the noise of the error
+  implementation and confine the stacktrace to meaningful information
+  about the error context.
+
+-----------------------------------------------------------------------
+
+Error handling u socketů
+-------------------------
+
+Když socket není open, vracet true/false, nebo prostě jen házet exceptiony?
+- true/false jde zapomenout ošetřit, neošetřená exception se o sebe přihlásí.
+- Testovat uvnitř connection.send(), nebo dokonce socket.send(), jestli je
+  socet open, už je pozdě - tu informaci potřebuje ten, kdo send() zavolal.
+    Zjistit ji přes návratovou hodnotu send() by sice šlo, ale lepší je,
+  zavolat před tím ručně isOpen() a podle toho se ošetřit.
+=> send() bude čistě házet exceptiony.
+
+
+-----------------------------------------------------------------------
+
 Singletony (Game na serveru, Connection na clientu, etc.) by asi mohly
 být komplet static classy, ať nemusím chodit přes Server.game...
 

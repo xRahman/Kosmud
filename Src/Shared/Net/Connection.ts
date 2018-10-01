@@ -8,7 +8,7 @@ import {REPORT} from '../../Shared/REPORT';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Packet} from '../../Shared/Protocol/Packet';
 
-export class Connection
+export abstract class Connection
 {
   public async receiveData(data: string)
   {

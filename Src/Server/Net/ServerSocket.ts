@@ -14,6 +14,7 @@ import {MessageType} from '../../Shared/MessageType';
 // import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 
 import * as WebSocket from 'ws';
+import { Message } from './Message';
 
 // Built-in node.js modules.
 // import * as net from 'net';  // Import namespace 'net' from node.js
@@ -65,6 +66,9 @@ export class ServerSocket
     }
     catch (error)
     {
+      /// TODO: Tady to asi chce rethrow. Nejspíš novej Message,
+      /// ať callstack vede sem.
+
       Syslog.log
       (
         "Client ERROR: Failed to send packet to websocket"

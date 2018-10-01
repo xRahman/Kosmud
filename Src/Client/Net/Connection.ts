@@ -26,6 +26,7 @@ import {Packet} from '../../Shared/Protocol/Packet';
 import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
 import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
+import { REPORT } from '../../Shared/REPORT';
 
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
@@ -68,14 +69,27 @@ export class Connection extends Shared.Connection
 
   // ---------------- Static methods --------------------
 
+  public static isOpen(): boolean
+  {
+    if (!Client.connection || !Client.connection.socket)
+      return false;
+
+    return Client.connection.socket.isOpen();
+  }
+
+  // ! Throws exception on error.
+  // Note:
+  //   Make sure that you call isOpen() and handle the result
+  //   before call send().
+  //   (You will get an exception if you try to send data to closed
+  //    connection but it's better to handle it beforehand.)
   public static send(packet: Packet)
   {
     let connection = Client.connection;
 
     if (!connection)
     {
-      ERROR("Missing or invalid connection. Packet is not sent");
-      return;
+      throw new Error("Missing or invalid connection. Packet is not sent");
     }
 
     connection.send(packet);
@@ -248,20 +262,17 @@ export class Connection extends Shared.Connection
 
   // ---------------- Private methods -------------------
 
+  // ! Throws exception on error.
   private send(packet: Packet)
   {
     if (!this.socket)
     {
-      ERROR("Unexpected 'null' value");
-      return
+      throw new Error("Failed to send data because socket doesn't exist yet");
     }
     
-    if (!this.socket.isOpen())
-    {
-      ERROR("Attempt to send packet to closed connection");
-      return;
-    }
-
-    this.socket.send(packet.serialize('Send to Server'));
+    this.socket.send
+    (
+      packet.serialize('Send to Server')
+    );
   }
 }

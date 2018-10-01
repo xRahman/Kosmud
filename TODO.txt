@@ -1,3 +1,6 @@
+
+
+
 Prozatímní řešení client-server predikce
 -----------------------------------------
 
@@ -30,7 +33,33 @@ TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
 
 -----------------------------------------------------------------------
 
+Refactoring Connectionů
+------------------------
+
+TODO: Asi bych to mohl udělat tak, že Connection zdědím z WebSocketu
+- díky tomu to pořád bude separated code, ale nebudu muset řešit
+  alokaci websocketu a budu mít protected přístup na receiveData().
+
+
 TODO: Try-catchnout volání serialize() a deserialize().
+
+TODO: Musí být connection.receiveData() public?
+- jestli se to volá ze socketu, tak sloučením Socketu a Connection
+  by callback vidě na private receiveData().
+
+TODO: Oštřit socket.isOpen() až v Socket (časem to nejspíš beztak předělám,
+  ale prozatím).
+
+TODO: send() a receiveData() by asi vůbec neměly catchovat exceptiony
+  (respektive receiveData() možná jo, ta se volá interně z callbacku,
+   ale send() volá někdo jinej a ten by asi měl exception dostat).
+- Jasně. A onReceiveMessage() už pak reportí jen uncaught exception
+  pro případ, že by ji někdo nezhandlil sám.
+
+TODO: Pořešit rethrow v ServerSocket.send()
+  (a asi i v ClientSocket)
+
+-----------------------------------------------------------------------
 
 TODO: Rozdělit Utils na víc souborů.
 - stringové fce

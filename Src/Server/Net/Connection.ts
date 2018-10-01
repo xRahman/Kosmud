@@ -32,7 +32,7 @@ export class Connection extends Shared.Connection
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
     super();
-    
+
     this.socket = new ServerSocket(this, webSocket, ip, url);
   }
 
@@ -176,19 +176,18 @@ export class Connection extends Shared.Connection
   //   this.send(packet);
   // }
 
-  // Sends 'packet' to web socket.
+  // ! Throws exception on error.
+  // Note:
+  //   Make sure that you call isOpen() and handle the result
+  //   before call send().
+  //   (You will get an exception if you try to send data to closed
+  //    connection but it's better to handle it beforehand.)
   public send(packet: Packet)
   {
-    /// TODO: packet.serialize() sice zatím nevyhazuje výjimky,
-    /// ale časem bude.
-    try
-    {
-      this.socket.send(packet.serialize('Send to Client'));
-    }
-    catch (error)
-    {
-      REPORT(error, "Packet is not sent");
-    }
+    this.socket.send
+    (
+      packet.serialize('Send to Client')
+    );
   }
 
   public announceReconnect()

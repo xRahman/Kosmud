@@ -122,6 +122,7 @@ export class ClientSocket
     return this.socket.readyState === WebSocket.CLOSING;
   }
 
+  /// TODO: Nestačilo by isOpen()?
   public isClosed()
   {
     // If we don't have a socket, it's considered closed.
@@ -131,14 +132,15 @@ export class ClientSocket
     return this.socket.readyState === WebSocket.CLOSED;
   }
 
-  // Sends a string to the user.
+  // ! Throws exception on error.
   public send(data: string)
   {
     console.log("Sending data: " + data);
 
-    // No point in sending data unless the socket is open.
     if (!this.isOpen())
-      return;
+    {
+      throw new Error("Failed to send data because the connection is closed");
+    }
 
     if (this.socket)
     {
@@ -148,7 +150,7 @@ export class ClientSocket
       }
       catch (error)
       {
-        ERROR("Websocket ERROR: Failed to send data to the socket."
+        throw new Error("Failed to send data to the socket (websocket error)."
           + " Reason: " + error.message);
       }
     }
