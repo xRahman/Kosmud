@@ -31,7 +31,7 @@ Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(PlayerInput);
 
-export class Connection implements Shared.Connection
+export class Connection extends Shared.Connection
 {
   private socket: (ClientSocket | null) = null;
 
@@ -142,24 +142,6 @@ export class Connection implements Shared.Connection
   // }
 
   // ---------------- Public methods --------------------
-
-  /// TODO: Na serveru je prakticky stejná fce, asi by to chtělo sloučit
-  /// do společného předka v /shared
-  public async receiveData(data: string)
-  {
-    /// TODO: deserialize() by mělo házet exception místo return null,
-    /// takže pak půjde zavolat:
-    ///   let packet = Serializable.deserialize(data).dynamicCast(Packet);
-    let deserializedPacket = Serializable.deserialize(data);
-    
-    if (!deserializedPacket)
-      return;
-    
-    let packet = deserializedPacket.dynamicCast(Packet);
-
-    if (packet !== null)
-      await packet.process(this);
-  }
 
   /// Disabled for now.
   // public createAvatar(character: Character): Avatar

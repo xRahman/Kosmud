@@ -4,10 +4,7 @@
   Incoming system message packet.
 */
 
-'use strict';
-
 import {Syslog} from '../../Shared/Syslog';
-import {Classes} from '../../Shared/Class/Classes';
 import {MessageType} from '../../Shared/MessageType';
 import * as Shared from '../../Shared/Protocol/SystemMessage';
 import {Connection} from '../../Server/Net/Connection';

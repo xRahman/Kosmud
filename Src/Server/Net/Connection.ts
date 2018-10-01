@@ -9,7 +9,6 @@
 import {ERROR} from '../../Shared/ERROR';
 import {REPORT} from '../../Shared/REPORT';
 import * as Shared from '../../Shared/Net/Connection';
-import {Serializable} from '../../Shared/Class/Serializable';
 import {Message} from '../../Server/Net/Message';
 import {MessageType} from '../../Shared/MessageType';
 import {Packet} from '../../Shared/Protocol/Packet';
@@ -28,10 +27,12 @@ Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(PlayerInput);
 
 
-export class Connection implements Shared.Connection
+export class Connection extends Shared.Connection
 {
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
+    super();
+    
     this.socket = new ServerSocket(this, webSocket, ip, url);
   }
 
@@ -174,22 +175,6 @@ export class Connection implements Shared.Connection
 
   //   this.send(packet);
   // }
-
-  // Processes data received from the client.
-  public async receiveData(data: string)
-  {
-    let deserializedPacket = Serializable.deserialize(data);
-    
-    if (!deserializedPacket)
-      return;
-
-    let packet = deserializedPacket.dynamicCast(Packet);
-
-    if (packet === null)
-      return;
-
-    await packet.process(this);
-  }
 
   // Sends 'packet' to web socket.
   public send(packet: Packet)
