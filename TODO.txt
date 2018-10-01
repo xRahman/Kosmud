@@ -1,3 +1,24 @@
+Prozatímní řešení client-server predikce
+-----------------------------------------
+
+TODO: Napsat "simulátor lagu"
+  (random setInterval() před posláním packetu).
+
+TODO: Fyziku přesunout do shared kódu (ve finálu tam bude muset bejt,
+  aby šlo dělat client-side simulaci, tak bych s tím rovnou mohli počítat.
+  (klient-side simulaci ale zatím dělat nebudu).
+
+TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
+  Klient bude pokračovat v pohybu, kterej se od serveru dozvěděl.
+  - resetne se to v okamžiku nového příchozího packetu
+    (možná postupná interpolace pozice?)
+  - predikce poběží jen určitej čas (třeba 100ms nebo tak nějak),
+    pak se pohyb utlumí do nuly (aby se mi nestávalo to co v AOčku, tj.
+    že při velkém lagu objekt ustřelí kamsi do dáli. Zastavit ho je mnohem
+    lepší).
+
+
+-----------------------------------------------------------------------
 
 TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
 - jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
