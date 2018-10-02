@@ -8,9 +8,7 @@
 
 import {ERROR} from '../../Shared/ERROR';
 import {Syslog} from '../../Shared/Syslog';
-import {Utils} from '../../Shared/Utils';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {JsonObject} from '../../Shared/Class/JsonObject';
 import {Connection} from '../../Client/Net/Connection';
 
 export class ClientSocket
@@ -376,12 +374,18 @@ export class ClientSocket
     /// To je asi zbytecny, server posle uvodni 'obrazovku'
   }
 
+  /// TODO: v ServerSocket je naprosto stejná fce (možná až na parametr).
+  ///       Nešlo by to sloučit?
   private async onReceiveMessage(event: MessageEvent)
   {
-    // console.log('Received message: ' + event.data);
+    /// DEBUG:
+    // console.log('(ws) received message: ' + event.data);
 
     if (typeof event.data !== 'string')
     {
+      // Note: There is no point in throwing an Error() here
+      //   because this is the entry point of our code. So
+      //   we just report the error.
       ERROR("Websocket received non-string data."
         + " Message will not be processed because"
         + " we can only process string data");
@@ -394,6 +398,10 @@ export class ClientSocket
     }
     catch (error)
     {
+      // Note:
+      //   This callback function is the entry point of our packet-handling
+      //   code so it's also the last place where we can catch any exception
+      //   and report it.
       Syslog.reportUncaughtException(error);
     }
   }

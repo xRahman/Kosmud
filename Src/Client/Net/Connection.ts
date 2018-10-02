@@ -26,7 +26,6 @@ import {Packet} from '../../Shared/Protocol/Packet';
 import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
 import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
-import { REPORT } from '../../Shared/REPORT';
 
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);

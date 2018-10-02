@@ -1,13 +1,10 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   A connection to the server.
 */
 
-'use strict';
-
 import {ERROR} from '../../Shared/ERROR';
-import {REPORT} from '../../Shared/REPORT';
 import * as Shared from '../../Shared/Net/Connection';
 import {Message} from '../../Server/Net/Message';
 import {MessageType} from '../../Shared/MessageType';

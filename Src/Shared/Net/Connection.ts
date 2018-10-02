@@ -12,6 +12,11 @@ export abstract class Connection
 {
   public async receiveData(data: string)
   {
+    // Note:
+    //   We use REPORT() here because this function is almost
+    //   entry-level so there is no point in throwing exceptions
+    //   from here (they would just get reported as uncaught).
+
     let packet: Packet;
 
     try

@@ -1,3 +1,4 @@
+
 /*
   Part of BrutusNEXT
 
@@ -12,6 +13,7 @@ import {Classes} from '../../Shared/Class/Classes';
 import {Connection} from '../../Client/Net/Connection';
 import {GameEntity} from '../../Shared/Game/GameEntity';
 import * as Shared from '../../Shared/Protocol/SceneUpdate';
+import { REPORT } from '../../Shared/REPORT';
 
 export class SceneUpdate extends Shared.SceneUpdate
 {
@@ -27,6 +29,8 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    REPORT(new Error("Test"));
+
     let sceneContents = PhaserEngine.getFlightScene().getSceneContents();
 
     /// Ship ještě nemusí existovat, pokud se Phaser scéna ještě neloadla.

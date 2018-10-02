@@ -66,15 +66,8 @@ export class ServerSocket
     }
     catch (error)
     {
-      /// TODO: Tady to asi chce rethrow. Nejspíš novej Message,
-      /// ať callstack vede sem.
-
-      Syslog.log
-      (
-        "Client ERROR: Failed to send packet to websocket"
-          + " " + this.getOrigin() + ". Reason: " + error.message,
-        MessageType.WEBSOCKET_SERVER
-      );
+      throw new Error("Failed to send packet to websocket"
+          + " " + this.getOrigin() + ". Reason: " + error.message);
     }
   }
 
@@ -166,28 +159,18 @@ export class ServerSocket
 
   // ---------------- Event handlers --------------------
 
+  /// TODO: v ClientSocket je naprosto stejná fce (možná až na parametr).
+  ///       Nešlo by to sloučit?
   private async onReceiveMessage
   (
     event: { data: WebSocket.Data, type: string, target: WebSocket }
   )
   {
-    // if (flags.binary === true)
-    // {
-    //   // Data is supposed to be sent in text mode.
-    //   // (This is a client error, we can't really do
-    //   //  anything about it - so we just log it.)
-    //   Syslog.log
-    //   (
-    //     "Client ERROR: Received binary data from connection"
-    //       + " " + this.getOrigin() + ". Data is not processed",
-    //     MessageType.WEBSOCKET_SERVER,
-    //     AdminLevel.IMMORTAL
-    //   );
-    //   return;
-    // }
-
     if (typeof event.data !== 'string')
     {
+      // Note: There is no point in throwing an Error() here
+      //   because this is the entry point of our code. So
+      //   we just report the error.
       ERROR("Websocket " + this.getOrigin() + " received"
         + " non-string data. Message will not be processed"
         + " because we can only process string data");
@@ -203,6 +186,10 @@ export class ServerSocket
     }
     catch (error)
     {
+      // Note:
+      //   This callback function is the entry point of our packet-handling
+      //   code so it's also the last place where we can catch any exception
+      //   and report it.
       Syslog.reportUncaughtException(error);
     }
   }

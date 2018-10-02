@@ -1,5 +1,32 @@
+TODO: Někde v kódu mám RERORT(new Error("test"));
+
+TODO: Reportování errorů a exceptionů je pořád divný.
+
+TODO: Asi jsem rozbil tikání physics enginu a posílání updatů.
+
+TODO: Packety asi nemusí mít version (nemusí se posílat).
+
+TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
+  a z něj pak volat všechno ostatní.
+  (60 tiků za vteřinu je blbý číslo btw, bude se s tím špatně počítat...
+   na druhou stranu je to rozumný strop fps).
+- Každopádně to jsou entry-level funkce a je tam potřeba reportovat uncaught
+  exceptiony [to je DONE].
 
 
+TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
+  callů. Zkontrolovat, jestli to nemají být exceptiony.
+
+Exception handling (obecně):
+-----------------------------
+
+- Když REPORT() rethrowne exception (to nejspíš na klientu udělám kvůli
+  stacku), tak by ji měl nějak marknout a Syslog.reportUncaughtException()
+  by ji měl ignorovat.
+
+TODO: Otestovat, jestli getTrimmedStackTrace() správně trimuje stack trace.
+
+TODO: Otestovat reportování errorů.
 
 Prozatímní řešení client-server predikce
 -----------------------------------------
@@ -59,6 +86,7 @@ TODO: send() a receiveData() by asi vůbec neměly catchovat exceptiony
 TODO: Pořešit rethrow v ServerSocket.send()
   (a asi i v ClientSocket)
 
+
 -----------------------------------------------------------------------
 
 TODO: Rozdělit Utils na víc souborů.
@@ -68,6 +96,7 @@ TODO: Rozdělit Utils na víc souborů.
 - ...
 
 TODO: Vyhodit z Utils ERROR a FATAL_ERROR (a vůbec ho celý projít).
+- nahradit je exceptionama.
 
 -----------------------------------------------------------------------
 
@@ -84,8 +113,6 @@ Typescript mixins:
 https://blog.mariusschulz.com/2017/05/26/typescript-2-2-mixin-classes
 
 ---
-
-TODO: Zvážit, jestli úplně nezrušit ERROR a nenechat jen syslog.
 
 TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.
 
