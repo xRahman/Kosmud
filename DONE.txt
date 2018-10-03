@@ -1,3 +1,8 @@
+TODO: Otestovat, jestli getTrimmedStackTrace() správně trimuje stack trace.
+- otestováno při hození erroru.
+- Klient to nepoužívá, hází místo toho exception.
+[done]
+
 TODO: Zvážit, jestli úplně nezrušit ERROR a nenechat jen syslog.
 - Nakonec ne, viz třeba ClientSocket. Entry point funkce rovnou reportují,
   nemá smysl, aby házely exception.

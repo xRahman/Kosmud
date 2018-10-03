@@ -1,3 +1,12 @@
+Logování
+---------
+
+Každej záznam v syslogu začíná tagem [MESSAGE_TYPE], kterej se bere
+  z enumu MESSAGE_TYPE.
+- Z toho plyne, že nikde jinde v kódu bych neměl mít explicitně [COSI], protože
+  to pak vede ke zdvojeným tagům.
+
+
 ERROR()
 --------
 

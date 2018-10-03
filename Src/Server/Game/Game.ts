@@ -4,6 +4,9 @@
   Server-side game simulation.
 */
 
+/// TEST
+import {REPORT} from '../../Shared/REPORT';
+
 import {Syslog} from '../../Shared/Syslog';
 import {Physics} from '../../Server/Physics/Physics';
 import {Ship} from '../../Server/Game/Ship';
@@ -22,6 +25,8 @@ export class Game
 
   public static start()
   {
+    REPORT(new Error("Test"), "Chyceno v Game.start()");
+
     // Run physics tick 60 times per second.
     setInterval
     (

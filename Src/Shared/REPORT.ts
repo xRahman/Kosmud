@@ -33,6 +33,7 @@
 //import {Utils} from '../../../shared/lib/utils/Utils';
 import {Application} from '../Shared/Application';
 import { Syslog } from './Syslog';
+import { ERROR } from './ERROR';
 
 // Note: 'error' parameter has type 'any' because when you catch
 // an error, typescript has no way of knowing it's type. You still
@@ -42,18 +43,19 @@ export function REPORT(error: any, catchMessage?: string)
 {
   if (!(error instanceof Error))
   {
-    error = new Error();
+    ERROR("'error' parameter passed to function REPORT() isn't"
+      + " an istance of 'Error' object. Someone probably"
+      + " incorrectly used 'throw " + '"message"' + " instead of"
+      + " 'throw new Error(\"message\")'. Fix it so the stack trace"
+      + " can show where the error occured rather than where it has"
+      + " been caught");
 
-    error.message = error + "\n(ADDITIONAL ERROR): 'error' parameter"
-    + " passed to function REPORT() isn't an istance of 'Error'"
-    + " object. Someone probably incorrectly used 'throw \"message\"'"
-    + " instead of 'throw new Error(\"message\")'. Please fix it to"
-    + " have stack trace show where the error occured rather than"
-    + " where it has been caught";
+    // Create a new Error object with 'error' parameter as it's message.
+    error = new Error(error);
   }
 
-  if (catchMessage)
-    error.message += "\n(CATCH MESSAGE):" + catchMessage;
+  // if (catchMessage)
+  //   error.message += "\n(CATCH MESSAGE): " + catchMessage;
 
   // Add a 'isReported' property to Error object.
   // (It will prevent Syslog.reportUncaughtException() to report
@@ -61,4 +63,5 @@ export function REPORT(error: any, catchMessage?: string)
   error[Syslog.IS_REPORTED] = true;
 
   Application.reportException(error);
+  Application.reportCaughtException(new Error(catchMessage));
 }

@@ -7,8 +7,10 @@
     Server.start(appName, version);
 */
 
+import {removeFirstLinesWithoutPrefix} from '../../Shared/StringUtils';
 import {Application} from '../../Shared/Application';
 import {ERROR} from '../../Shared/ERROR';
+import {REPORT} from '../../Shared/REPORT';
 import {Syslog} from '../../Shared/Syslog';
 import {ServerSyslog} from '../../Server/Application/ServerSyslog';
 import {Entities} from '../../Server/Class/Entities';
@@ -57,8 +59,18 @@ export class Server extends Application
     // Http server also starts a websocket server inside it.
     await this.instance.startHttpServer();
 
+    try
+    {
     // Start the game loop.
     Game.start();
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error);
+    }
+
+    // // Start the game loop.
+    // Game.start();
   }
 
   // --------------- Protected methods ------------------
@@ -66,25 +78,37 @@ export class Server extends Application
   // ~ Overrides App.reportException().
   protected reportException(error: Error): void
   {
-    let errorMsg = error.message + "\n";
+    let errorMsg = error.message;
 
     if (error.stack)
-      errorMsg += error.stack;
+    {
+      // Stack trace for some reason starts with error message
+      // prefixed with 'Error' which is confusing in the log.
+      //   To remove it, we trim lines not starting with '    at '.
+      // That's because error message can be multi-line so removing
+      // just 1 line would not always be enough.
+      errorMsg += "\n" + removeFirstLinesWithoutPrefix(error.stack, '    at ');
+    }
     else
-      errorMsg += Syslog.STACK_IS_NOT_AVAILABLE;
+    {
+      errorMsg += "\n" + Syslog.STACK_IS_NOT_AVAILABLE;
+    }
 
     Syslog.log(errorMsg, MessageType.RUNTIME_EXCEPTION);
+  }
+
+  // ~ Overrides App.reportCaughtException().
+  protected reportCaughtException(error: Error): void
+  {
+    let errorMsg = error.message + "\n" + Syslog.getTrimmedStackTrace(REPORT);
+
+    Syslog.log(errorMsg, MessageType.EXCEPTION_CAUGHT);
   }
 
   // ~ Overrides App.reportError().
   protected reportError(message: string): void
   {
-    let stackTrace = Syslog.getTrimmedStackTrace();
-
-    let errorMsg = message;
-    
-    if (stackTrace)
-      errorMsg += "\n" + Syslog.getTrimmedStackTrace();
+    let errorMsg = message + "\n" + Syslog.getTrimmedStackTrace(ERROR);
 
     Syslog.log(errorMsg, MessageType.RUNTIME_ERROR);
   }

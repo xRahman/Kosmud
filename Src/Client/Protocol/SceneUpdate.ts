@@ -29,8 +29,6 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    REPORT(new Error("Test"));
-
     let sceneContents = PhaserEngine.getFlightScene().getSceneContents();
 
     /// Ship ještě nemusí existovat, pokud se Phaser scéna ještě neloadla.

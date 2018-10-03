@@ -55,5 +55,5 @@ import {Application} from '../Shared/Application';
 
 export function FATAL_ERROR(message: string)
 {
-  Application.reportFatalError('[FATAL ERROR]: ' + message);
+  Application.reportFatalError(message);
 }

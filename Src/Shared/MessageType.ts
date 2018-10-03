@@ -22,8 +22,12 @@ export enum MessageType
 
   // --------------------- Syslog messages ---------------------
 
-  // Sent when REPORT(error) is called somewhere in code.
+  // Sent when REPORT(error) is called somewhere in code. Contains original
+  // exception.
   RUNTIME_EXCEPTION,
+  // Sent when REPORT(error) is called somewhere in code. Contains catch
+  // message and stack trace of function where the error was caught.
+  EXCEPTION_CAUGHT,
   // Sent when ERROR() is called somewhere in code.
   RUNTIME_ERROR,
   // Sent when FATAL_ERROR() is called somewhere in code.
