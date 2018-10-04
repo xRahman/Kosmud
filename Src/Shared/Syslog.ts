@@ -17,7 +17,7 @@
     );
 */
 
-import {removeFirstLinesWithoutPrefix} from '../Shared/StringUtils';
+import {StringUtils} from '../Shared/StringUtils';
 import {REPORT} from '../Shared/REPORT';
 import {Application} from '../Shared/Application';
 import {MessageType} from '../Shared/MessageType';
@@ -65,7 +65,7 @@ export class Syslog
     //   To remove it, we trim lines not starting with '    at '.
     // That's because error message can be multi-line so removing
     // just 1 line would not always be enough.
-    return removeFirstLinesWithoutPrefix(tmpErr.stack, '    at ');
+    return StringUtils.removeFirstLinesWithoutPrefix(tmpErr.stack, '    at ');
   }
 
   public static reportUncaughtException(error: any)

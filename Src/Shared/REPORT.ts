@@ -54,8 +54,8 @@ export function REPORT(error: any, catchMessage?: string)
     error = new Error(error);
   }
 
-  // if (catchMessage)
-  //   error.message += "\n(CATCH MESSAGE): " + catchMessage;
+  if (catchMessage)
+    error.message += " (" + catchMessage + ")";
 
   // Add a 'isReported' property to Error object.
   // (It will prevent Syslog.reportUncaughtException() to report
@@ -63,5 +63,4 @@ export function REPORT(error: any, catchMessage?: string)
   error[Syslog.IS_REPORTED] = true;
 
   Application.reportException(error);
-  Application.reportCaughtException(new Error(catchMessage));
 }

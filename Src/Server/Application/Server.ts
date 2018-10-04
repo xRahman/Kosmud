@@ -7,7 +7,7 @@
     Server.start(appName, version);
 */
 
-import {removeFirstLinesWithoutPrefix} from '../../Shared/StringUtils';
+import {StringUtils} from '../../Shared/StringUtils';
 import {Application} from '../../Shared/Application';
 import {ERROR} from '../../Shared/ERROR';
 import {REPORT} from '../../Shared/REPORT';
@@ -87,7 +87,13 @@ export class Server extends Application
       //   To remove it, we trim lines not starting with '    at '.
       // That's because error message can be multi-line so removing
       // just 1 line would not always be enough.
-      errorMsg += "\n" + removeFirstLinesWithoutPrefix(error.stack, '    at ');
+      let trimmedStack = StringUtils.removeFirstLinesWithoutPrefix
+      (
+        error.stack,
+        '    at '
+      );
+
+      errorMsg += "\n" + trimmedStack;
     }
     else
     {

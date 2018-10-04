@@ -9,8 +9,7 @@
 // import {Settings} from '../../../server/ServerSettings';
 import {ERROR} from '../../Shared/ERROR';
 import {Utils} from '../../Shared/Utils';
-import {trimRight} from '../../Shared/StringUtils';
-import {normalizeCRLF} from '../../Shared/StringUtils';
+import {StringUtils} from '../../Shared/StringUtils';
 import {Server} from '../../Server/Application/Server';
 import {Connection} from '../../Server/Net/Connection';
 import {Connections} from '../../Server/Net/Connections';
@@ -309,7 +308,7 @@ export class Message
 
     // Remove all white spaces (including tabs and newlines)
     // from the end of the string.
-    let data = trimRight(this.text);
+    let data = StringUtils.trimRight(this.text);
 
     // Add color code depending on MessageType to the beginning of the
     // string (only if there isn't already a color code there), replaces
@@ -318,7 +317,7 @@ export class Message
     data = this.addBaseColor(data);
     
     // Make sure that all newlines are representedy by '\r\n'.
-    data = normalizeCRLF(data);
+    data = StringUtils.normalizeCRLF(data);
 
     // Add ingame prompt if this type of message triggers it.
     if (this.triggersPrompt())
@@ -393,7 +392,7 @@ export class Message
   {
     // First we will remove all white space characters from
     // the end of the message, because they don't affect color.
-    let trimmedData = trimRight(data);
+    let trimmedData = StringUtils.trimRight(data);
     let lastTwoCharacters = trimmedData.substr(data.length - 2, 2);
 
     // If data (after trimming whitspace characters) already

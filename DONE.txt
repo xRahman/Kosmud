@@ -1,3 +1,7 @@
+TODO: Funkce ze StringUtils by se měly volat jak StringUtils.něco
+  (ať je jasný, že to je z externího modulu).
+[done]
+
 TODO: Otestovat, jestli getTrimmedStackTrace() správně trimuje stack trace.
 - otestováno při hození erroru.
 - Klient to nepoužívá, hází místo toho exception.

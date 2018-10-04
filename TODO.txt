@@ -1,5 +1,6 @@
 TODO: Extra házení EXCEPTION_CAUGHT možná není úplně dobrý, protože tam
-  není, jaká exception byla chycena. Asi by to fakt měl bejt jeden message.
+  není uvedeno, jaká exception byla chycena. Asi by to fakt měl bejt jeden
+  message.
 
 TODO: Mrknout ještě na REPORT() a logování catch message.
 
