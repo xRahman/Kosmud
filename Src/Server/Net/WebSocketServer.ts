@@ -25,9 +25,8 @@
 
 'use strict';
 
-import {ERROR} from '../../Shared/ERROR';
-import {FATAL_ERROR} from '../../Shared/FATAL_ERROR';
-import {Syslog} from '../../Shared/Syslog';
+import {ERROR} from '../../Shared/Log/ERROR';
+import {Syslog} from '../../Shared/Log/Syslog';
 import {MessageType} from '../../Shared/MessageType';
 import {Server} from '../../Server/Application/Server';
 import {Connection} from '../../Server/Net/Connection';

@@ -6,7 +6,7 @@
 
 'use strict';
 
-import {ERROR} from '../../Shared/ERROR';
+import {ERROR} from '../../Shared/Log/ERROR';
 import {Classes} from '../../Shared/Class/Classes';
 // import {Connection as SharedConnection} from '../../Shared/Net/Connection';
 import * as Shared from '../../Shared/Net/Connection';

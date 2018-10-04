@@ -7,17 +7,16 @@
     Client.start();
 */
 
+import {ERROR} from '../../Shared/Log/ERROR';
+import {Syslog} from '../../Shared/Log/Syslog';
 import {PhaserEngine} from '../Phaser/PhaserEngine';
 import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
-import {Syslog} from '../../Shared/Syslog';
-import {ClientSyslog} from '../../Client/Application/ClientSyslog';
+import {ClientSyslog} from '../Log/ClientSyslog';
 import {Entities} from '../../Client/Class/Entities';
 import {Document} from '../../Client/Gui/Document';
 import {Connection} from '../../Client/Net/Connection';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {ERROR} from '../../Shared/ERROR';
-import {REPORT} from '../../Shared/REPORT';
 
 PhaserEngine;   // Inits the class.
 

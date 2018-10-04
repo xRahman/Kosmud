@@ -4,7 +4,7 @@
   Shared ancestor of Connection classes.
 */
 
-import {REPORT} from '../../Shared/REPORT';
+import {REPORT} from '../../Shared/Log/REPORT';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Packet} from '../../Shared/Protocol/Packet';
 

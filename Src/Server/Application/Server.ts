@@ -9,9 +9,9 @@
 
 import {StringUtils} from '../../Shared/StringUtils';
 import {Application} from '../../Shared/Application';
-import {ERROR} from '../../Shared/ERROR';
-import {Syslog} from '../../Shared/Syslog';
-import {ServerSyslog} from '../../Server/Application/ServerSyslog';
+import {ERROR} from '../../Shared/Log/ERROR';
+import {Syslog} from '../../Shared/Log/Syslog';
+import {ServerSyslog} from '../Log/ServerSyslog';
 import {Entities} from '../../Server/Class/Entities';
 import {MessageType} from '../../Shared/MessageType';
 import {HttpServer} from '../../Server/Net/HttpServer';
@@ -98,24 +98,6 @@ export class Server extends Application
     let errorMsg = message + "\n" + Syslog.getTrimmedStackTrace(ERROR);
 
     Syslog.log(errorMsg, MessageType.RUNTIME_ERROR);
-  }
-
-  // ~ Overrides App.reportFatalError().
-  // Reports error message and stack trace and terminates the program.
-  // (Don't call this method directly, use FATAL_ERROR()
-  //  from /Shared/Error/ERROR).
-  protected reportFatalError(message: string): void
-  {
-    let errorMsg = message + "\n"
-      + Syslog.getTrimmedStackTrace();
-
-    Syslog.log(errorMsg, MessageType.FATAL_RUNTIME_ERROR);
-
-    // Because promises are eating exceptions, throwing an error won't stop
-    // the program if FATAL_ERROR() is called from within asynchronous method.
-    // So we rather print stack trace ourselves (using Syslog.log() above)
-    // and exit the program manually.
-    process.exit(1);
   }
 
   // ~ Overrides App.log().

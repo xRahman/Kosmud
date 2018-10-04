@@ -17,10 +17,10 @@
     );
 */
 
-import {StringUtils} from '../Shared/StringUtils';
-import {REPORT} from '../Shared/REPORT';
-import {Application} from '../Shared/Application';
-import {MessageType} from '../Shared/MessageType';
+import {StringUtils} from '../../Shared/StringUtils';
+import {REPORT} from '../../Shared/Log/REPORT';
+import {Application} from '../../Shared/Application';
+import {MessageType} from '../../Shared/MessageType';
 
 export class Syslog
 {

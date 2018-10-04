@@ -7,7 +7,7 @@
 'use strict';
 
 // import {Settings} from '../../../server/ServerSettings';
-import {ERROR} from '../../Shared/ERROR';
+import {ERROR} from '../../Shared/Log/ERROR';
 import {Utils} from '../../Shared/Utils';
 import {StringUtils} from '../../Shared/StringUtils';
 import {Server} from '../../Server/Application/Server';
@@ -483,8 +483,6 @@ export module Message
 
   //   // Sent when ERROR() triggered somewhere in code.
   //   RUNTIME_ERROR,
-  //   // Sent when FATAL_ERROR() triggers somewhere in code.
-  //   FATAL_RUNTIME_ERROR,
   //   // System reports that something is ok (game is successfuly loaded, etc.).
   //   SYSTEM_INFO,
   //   // System reports that something didn't go as expected

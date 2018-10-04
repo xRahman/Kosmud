@@ -28,12 +28,10 @@
    of the error.
 */
 
-'use strict';
-
 //import {Utils} from '../../../shared/lib/utils/Utils';
-import {Application} from '../Shared/Application';
-import { Syslog } from './Syslog';
-import { ERROR } from './ERROR';
+import {Application} from '../../Shared/Application';
+import {Syslog} from '../../Shared/Log/Syslog';
+import {ERROR} from './ERROR';
 
 // Note: 'error' parameter has type 'any' because when you catch
 // an error, typescript has no way of knowing it's type. You still

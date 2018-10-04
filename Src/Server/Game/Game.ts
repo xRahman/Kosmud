@@ -5,9 +5,9 @@
 */
 
 /// TEST
-import {REPORT} from '../../Shared/REPORT';
+import {REPORT} from '../../Shared/Log/REPORT';
 
-import {Syslog} from '../../Shared/Syslog';
+import {Syslog} from '../../Shared/Log/Syslog';
 import {Physics} from '../../Server/Physics/Physics';
 import {Ship} from '../../Server/Game/Ship';
 import {Connections} from '../../Server/Net/Connections';

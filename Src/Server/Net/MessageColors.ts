@@ -4,7 +4,7 @@
   Base color codes of messages.
 */
 
-import {ERROR} from '../../Shared/ERROR';
+import {ERROR} from '../../Shared/Log/ERROR';
 import {MessageType} from '../../Shared/MessageType';
 
 export class MessageColors

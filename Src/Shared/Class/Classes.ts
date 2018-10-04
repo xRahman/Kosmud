@@ -5,7 +5,7 @@
   in runtime.
 */
 
-import {ERROR} from '../../Shared/ERROR';
+import {ERROR} from '../../Shared/Log/ERROR';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {NonabstractClass} from '../../Shared/Types';
 // import {AnyClass} from '../../Shared/Types';

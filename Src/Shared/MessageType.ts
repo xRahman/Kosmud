@@ -1,10 +1,8 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Defines types of messages.
 */
-
-'use strict';
 
 export enum MessageType
 {
@@ -30,8 +28,6 @@ export enum MessageType
   EXCEPTION_CAUGHT,
   // Sent when ERROR() is called somewhere in code.
   RUNTIME_ERROR,
-  // Sent when FATAL_ERROR() is called somewhere in code.
-  FATAL_RUNTIME_ERROR,
   // System reports that something is ok (game is successfuly loaded, etc.).
   SYSTEM_INFO,
   // System reports that something didn't go as expected

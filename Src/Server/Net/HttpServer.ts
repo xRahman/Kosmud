@@ -4,8 +4,8 @@
   Implements http server.
 */
 
-import {ERROR} from '../../Shared/ERROR';
-import {Syslog} from '../../Shared/Syslog';
+import {ERROR} from '../../Shared/Log/ERROR';
+import {Syslog} from '../../Shared/Log/Syslog';
 import {FileSystem} from '../../Server/FS/FileSystem';
 import {MessageType} from '../../Shared/MessageType';
 import {WebSocketServer} from '../../Server/Net/WebSocketServer';

@@ -24,7 +24,7 @@
   automatically.
 */
 
-import {ERROR} from '../Shared/ERROR';
+import {ERROR} from '../Shared/Log/ERROR';
 // import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 import {MessageType} from '../Shared/MessageType';
 import {Entities} from '../Shared/Class/Entities';
@@ -103,25 +103,6 @@ export abstract class Application
     this.instance.reportError(message);
   }
 
-  // Don't call this directly, use ERROR() instead.
-  public static reportFatalError(message: string): void
-  {
-    // If someone tries to report error before
-    // an application instance is created (for example
-    // directly from a class inicialization), we can't
-    // use regular logging process.
-    if (!this.instance)
-    {
-      throw new Error
-      (
-        "FATAL_ERROR() occured before application was created:"
-        + ' "' + message + '"'
-      );
-    }
-
-    this.instance.reportFatalError(message);
-  }
-
   // Sends message to syslog.
   // (Don't call this directly, use Syslog.log() instead.)
   public static log(text: string, msgType: MessageType): void
@@ -142,7 +123,6 @@ export abstract class Application
 
   protected abstract reportException(error: Error): void;
   protected abstract reportError(message: string): void;
-  protected abstract reportFatalError(message: string): void;
 
   protected abstract log(message: string, msgType: MessageType): void;
 

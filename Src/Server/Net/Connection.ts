@@ -4,7 +4,7 @@
   A connection to the server.
 */
 
-import {ERROR} from '../../Shared/ERROR';
+import {ERROR} from '../../Shared/Log/ERROR';
 import * as Shared from '../../Shared/Net/Connection';
 import {Message} from '../../Server/Net/Message';
 import {MessageType} from '../../Shared/MessageType';

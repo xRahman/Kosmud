@@ -4,8 +4,7 @@
   Various utility functions.
 */
 
-import {ERROR} from '../Shared/ERROR';
-import {FATAL_ERROR} from '../Shared/FATAL_ERROR';
+import {ERROR} from '../Shared/Log/ERROR';
 import {Types} from '../Shared/Types';
 
 export module Utils
@@ -53,6 +52,7 @@ export module Utils
     return truncateByteLength(str, MAX_FILENAME_BYTE_LENGTH);
   }
 
+  // ! Throws exception on error.
   export function hasValidByteLengthAsFileName(str: string)
   {
     let encodedStr = encodeStringAsFileName(str);
@@ -103,6 +103,7 @@ export module Utils
     return target;
   }
 
+  // ! Throws exception on error.
   // This function is used to enforce that all switch cases are handled
   // when using compound type of switch argument.
   //
@@ -177,6 +178,7 @@ const RESERVED_FILENAMES = new Map
   ]
 );
 
+// ! Throws exception on error.
 function getByteLength(str: string)
 {
   // Note: I didn't manage to find an easy and simple way
@@ -195,10 +197,8 @@ function getByteLength(str: string)
   if (typeof Buffer !== 'undefined')
     return Buffer.byteLength(str, 'utf8');
 
-  FATAL_ERROR("Unable to compute byte length of a string because"
+  throw new Error("Unable to compute byte length of a string because"
     + " neither 'Blob' object nor 'Buffer' object is supported.");
-
-  return 0; // Never happens, FATAL_ERROR exits the app.
 }
 
 function reportTruncation
@@ -217,6 +217,7 @@ function reportTruncation
     + " length of " + maxByteLength);
 }
 
+// ! Throws exception on error.
 // -> Returns string encoded to be safely used as filename
 //    and truncated to 'maxByteLength' bytes of length.
 function truncateByteLength(str: string, maxByteLength: number)

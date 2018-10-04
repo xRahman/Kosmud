@@ -6,7 +6,7 @@
 
 'use strict';
 
-import {ERROR} from '../../Shared/ERROR';
+import {ERROR} from '../../Shared/Log/ERROR';
 // import {Entity} from '../../Shared/Class/Entity';
 // import {Admins} from '../../../server/lib/admin/Admins';
 import {Packet} from '../../Shared/Protocol/Packet';

@@ -1,4 +1,7 @@
-TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru.
+TODO: FATAL_ERROR() by neměl bejt v Shared kódu (na klientu nedává smysl).
+  A možná by šel vyhodit úplně.
+- zrušen kompletně
+[done]
 
 TODO: Extra házení EXCEPTION_CAUGHT možná není úplně dobrý, protože tam
   není uvedeno, jaká exception byla chycena. Asi by to fakt měl bejt jeden

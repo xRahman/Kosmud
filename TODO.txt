@@ -1,3 +1,5 @@
+TODO: Updatnout commenty v ERROR (a vůbec v celém reportovacím kódu).
+
 TODO: Uncaught error: Failed to send data because the connection is closed.
 
 TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
@@ -27,6 +29,8 @@ TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
 
 TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
   callů. Zkontrolovat, jestli to nemají být exceptiony.
+
+TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru a z klienta.
 
 Exception handling (obecně):
 -----------------------------
