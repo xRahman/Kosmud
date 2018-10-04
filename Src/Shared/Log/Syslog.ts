@@ -1,20 +1,7 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Implements logger.
-
-  Usage example:
-
-    import {MessageType} from '../shared/lib/message/MessageType';
-    import {AdminLevels} from '../shared/lib/admin/AdminLevels';
-    import {Syslog} from '../shared/lib/log/Syslog';
-
-    Syslog.log
-    (
-      "Loading mobile data...",
-      MessageType.SYSTEM,
-      AdminLevels.CREATOR
-    );
+  Abstract shared ancestor of loggers.
 */
 
 import {StringUtils} from '../Utils/StringUtils';
@@ -24,9 +11,6 @@ import {MessageType} from '../../Shared/MessageType';
 export abstract class Syslog
 {
   // -------------- Static class data -------------------
-
-  public static readonly STACK_IS_NOT_AVAILABLE =
-    "Stack trace is not available."
 
   // This property needs to be inicialized in descendants.
   protected static instance: Syslog | null = null;
@@ -123,8 +107,6 @@ export abstract class Syslog
   protected abstract reportException(error: Error): void;
   protected abstract reportError(message: string): void;
 
-  // Reads stack trace from Error() object.
-  // -> Returns string containing stack trace with first two lines trimmed.
   protected createTrimmedStackTrace(stackTop?: Function): string
   {
     // Create a temporary error object to construct stack trace for us.
@@ -146,7 +128,7 @@ export abstract class Syslog
   protected removeErrorMessage(stackTrace?: string)
   {
     if (!stackTrace)
-      return Syslog.STACK_IS_NOT_AVAILABLE;
+      return "Stack trace is not available.";
 
     // Stack trace for some reason starts with error message
     // prefixed with 'Error' which is confusing in the log.

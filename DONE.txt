@@ -1,3 +1,6 @@
+TODO: Updatnout commenty v ERROR (a vůbec v celém reportovacím kódu).
+[done]
+
 TODO: Z Utils oddělit ještě FileUtils.
 [done]
 

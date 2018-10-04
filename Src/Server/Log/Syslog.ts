@@ -5,7 +5,6 @@
 */
 
 import {ERROR} from '../../Shared/Log/ERROR';
-import {StringUtils} from '../../Shared/Utils/StringUtils';
 import {MessageType} from '../../Shared/MessageType';
 import * as Shared from '../../Shared/Log/Syslog';
 
@@ -25,7 +24,7 @@ export class Syslog extends Shared.Syslog
   protected log(message: string, msgType: MessageType)
   {
     let entry = this.createLogEntry(message, msgType);
-    
+
     // Output to stdout.
     console.log(entry);
 

@@ -1,31 +1,37 @@
 /*
   Part of Kosmud
 
-  Implements runtime error reporting. Use it a lot!
+  Function used for runtime error reporting.
 
        --------------------------------------------------------
                EVERY ERROR() NEEDS TO BE FIXED ASAP!
-               (Even if MUD doesn't crash right away)
+           (Even if application doesn't crash right away)
        --------------------------------------------------------
 */
 
 /*
-  ERROR() usage example:
+  Usage example:
 
-    import {ERROR} from '../shared/lib/error/ERROR';
+    import {ERROR} from '../Shared/Log/ERROR';
 
-    if (character === null)
+    if (damage > MAX_DAMAGE)
     {
-      ERROR("Invalid character");
+      ERROR("Damage (" + damage + ") exceeds allowed maximum");
+      damage = MAX_DAMAGE;
     }
 
-  Try to write error messages that explain what are the possible causes
-  and available solutions.
-  (At the time of writing of ERROR(), you know quite well what could go
-   wrong. 5 years later, you will pay gold for any such hint, trust me.)
+  Notes:
+    If you need to return from the function, throw an exception instead
+    of using ERROR(). ERROR() should only be used if you want to log
+    something that you can immediately recover from - 
 
-  Don't include name of the function where error occured. It will be added
-  automatically to the stack trace.
+    Try to write error messages that explain what are the possible causes
+    and available solutions.
+    (At the time of writing of ERROR(), you know quite well what could go
+    wrong. 5 years later, you will pay gold for any such hint, trust me.)
+
+    Don't include name of the function where error occured. Stack trace is
+    added automatically to the log message.
 */
 
 /*

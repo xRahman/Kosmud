@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Implements runtime exception reporting.
 */
@@ -7,9 +7,9 @@
 /*
   IMPORTANT: Parameter of RERPORT() must be an Error object.
 
-  Typical usage:
+  Usage example:
 
-    import {REPORT} from '../shared/lib/error/REPORT';
+    import { REPORT } from '../Shared/Log/REPORT';
 
     try
     {
@@ -19,13 +19,6 @@
     {
       REPORT(error, "Something went wrong. It's not going to happen");
     }
-
-  First parameter is of type 'any' because typescript doesn't know type of
-  'error' variable when the error is caught, but it should be an instance
-  of Error object. If it's not, you will get an additional error message.
-
-   Second parameter is optional. It can be used to describe consequences
-   of the error.
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';
@@ -46,7 +39,6 @@ export function REPORT(error: any, catchMessage?: string)
       + " can show where the error occured rather than where it has"
       + " been caught");
 
-    // Create a new Error object with 'error' parameter as it's message.
     error = new Error(error);
   }
 

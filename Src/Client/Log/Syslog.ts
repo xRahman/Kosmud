@@ -25,7 +25,6 @@ export class Syslog extends Shared.Syslog
   {
     let entry = this.createLogEntry(message, msgType);
 
-    // Output to debug console.
     console.log(entry);
   }
 
@@ -38,23 +37,28 @@ export class Syslog extends Shared.Syslog
       MessageType.RUNTIME_EXCEPTION
     );
 
-    // Use 'console.error()' instead of 'console.log()' because
-    // it better displays stack trace (at least in Chrome).
-    console.error(error);
+    logError(error);
   }
 
   // ~ Overrides Shared.Syslog.reportError().
   protected reportError(message: string): void
   {
-    let err = new Error
+    let error = new Error
     (
       this.createLogEntry(message, MessageType.RUNTIME_ERROR)
     );
 
-    this.trimStackTrace(err, ERROR);
+    this.trimStackTrace(error, ERROR);
 
-    // Use 'console.error()' instead of 'console.log()' because
-    // it better displays stack trace (at least in Chrome).
-    console.error(err);
+    logError(error);
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function logError(error: Error)
+{
+  // Use 'console.error()' instead of 'console.log()' because
+  // it better displays stack trace (at least in Chrome).
+  console.error(error);
 }
