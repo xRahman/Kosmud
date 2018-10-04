@@ -1,3 +1,6 @@
+TODO: Z Utils oddělit ještě FileUtils.
+[done]
+
 TODO: FATAL_ERROR() by neměl bejt v Shared kódu (na klientu nedává smysl).
   A možná by šel vyhodit úplně.
 - zrušen kompletně

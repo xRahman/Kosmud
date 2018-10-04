@@ -24,8 +24,6 @@ import {MessageType} from '../../Shared/MessageType';
 
 export class Syslog
 {
-  public static readonly IS_REPORTED = 'isReported';
-
   public static readonly STACK_IS_NOT_AVAILABLE =
     "Stack trace is not available."
 
@@ -70,15 +68,6 @@ export class Syslog
 
   public static reportUncaughtException(error: any)
   {
-    // Check if there is 'isReported = true' property set on
-    // error object. It means that this error has already been
-    // reported by REPORT(). Already reported exception can get
-    // here because on the client we throw a new exception
-    // instead of logging the error because it better shows
-    // stack trace to the user.
-    if (error && (error as any)[Syslog.IS_REPORTED] === true)
-      return;
-
     const uncaughtExceptionMessage = " (this exception has"
       + " propagated to top-level function. It needs to"
       + " be caught much deeper where the error can be"

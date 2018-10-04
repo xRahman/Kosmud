@@ -1,17 +1,16 @@
+TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
+  nebylo by lepší udělat polymorfní jen ten, místo Application?
+  - respektive neprovolávat ty reporting funkce přes Application.
+    (Tam to moc nepatří).
+
 TODO: Výhledově sjednotit formát improtů (asi import { ERROR } from './ERROR').
 
 TODO: Updatnout commenty v ERROR (a vůbec v celém reportovacím kódu).
 
 TODO: Uncaught error: Failed to send data because the connection is closed.
 
-TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
-  nebylo by lepší udělat polymorfní jen ten, místo Application?
-  - respektive neprovolávat ty reporting funkce přes Application.
-    (Tam to moc nepatří).
-
 TODO: Vyzkoušet ERROR() a REPORT() i na klientu.
 
-TODO: Z Utils oddělit ještě FileUtils.
 
 TODO: Někde v kódu mám RERORT(new Error("test"));
 
@@ -33,6 +32,9 @@ TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
   callů. Zkontrolovat, jestli to nemají být exceptiony.
 
 TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru a z klienta.
+
+TODO: Zamyslet se, co se zbytkem Utils
+  (mělo by to mít specifičtější pojmenování.)
 
 Exception handling (obecně):
 -----------------------------
