@@ -59,18 +59,8 @@ export class Server extends Application
     // Http server also starts a websocket server inside it.
     await this.instance.startHttpServer();
 
-    try
-    {
     // Start the game loop.
     Game.start();
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-
-    // // Start the game loop.
-    // Game.start();
   }
 
   // --------------- Protected methods ------------------

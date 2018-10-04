@@ -25,8 +25,6 @@ export class Game
 
   public static start()
   {
-    throw new Error ("Test");
-
     // Run physics tick 60 times per second.
     setInterval
     (
