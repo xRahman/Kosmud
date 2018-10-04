@@ -79,19 +79,19 @@ export class Syslog
     if (error && (error as any)[Syslog.IS_REPORTED] === true)
       return;
 
-    const uncaughtExceptionMessage = "An exception has"
+    const uncaughtExceptionMessage = " (this exception has"
       + " propagated to top-level function. It needs to"
       + " be caught much deeper where the error can be"
-      + " properly recovered from. The exception is:"
+      + " properly recovered from.)"
 
     if (error instanceof Error)
     {
-      error.message = uncaughtExceptionMessage + "\n" + error.message;
+      error.message = error.message + uncaughtExceptionMessage;
       REPORT(error);
     }
     else
     {
-      REPORT(uncaughtExceptionMessage + "\n" + error);
+      REPORT(error + uncaughtExceptionMessage);
     }
   }
 }

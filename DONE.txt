@@ -1,3 +1,14 @@
+TODO: Extra házení EXCEPTION_CAUGHT možná není úplně dobrý, protože tam
+  není uvedeno, jaká exception byla chycena. Asi by to fakt měl bejt jeden
+  message.
+[done]
+
+TODO: Mrknout ještě na REPORT() a logování catch message.
+[done]
+
+TODO: Testnout additional message u RERPORT().
+[done]
+
 TODO: Funkce ze StringUtils by se měly volat jak StringUtils.něco
   (ať je jasný, že to je z externího modulu).
 [done]

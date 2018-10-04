@@ -1,13 +1,4 @@
-TODO: Extra házení EXCEPTION_CAUGHT možná není úplně dobrý, protože tam
-  není uvedeno, jaká exception byla chycena. Asi by to fakt měl bejt jeden
-  message.
-
-TODO: Mrknout ještě na REPORT() a logování catch message.
-
-TODO: Exception catch message hodit jako nový záznam do logu
-  s novým stackem (ten povede na místo, kde byla exception chycena).
-
-TODO: Testnout additional message u RERPORT().
+TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru.
 
 TODO: Vyzkoušet ERROR() a REPORT() i na klientu.
 

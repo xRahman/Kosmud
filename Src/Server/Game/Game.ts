@@ -25,7 +25,7 @@ export class Game
 
   public static start()
   {
-    REPORT(new Error("Test"), "Chyceno v Game.start()");
+    throw new Error ("Test");
 
     // Run physics tick 60 times per second.
     setInterval
