@@ -59,7 +59,6 @@ export class Client extends Application
     Syslog.log("Starting Kosmud client...", MessageType.SYSTEM_INFO);
 
     /// TEST:
-
     try
     {
       Client.instance.initGUI();
@@ -111,19 +110,18 @@ export class Client extends Application
 
   // ---------------- Private methods -------------------
 
+  /// TODO: Tohle by fakt měl dělat syslog.
   protected report(error: Error): void
   {
-    // Throw an error instead of reporting to the console
-    // because this way Chrome prints out stack trace using
-    // source maps (so in .ts files) rathen than in .js files
-    // (which is not so useful).
-    throw error;
+    console.error(error);
   }
 
   private initGUI()
   {
-    ERROR("Test error");
-    REPORT(new Error("Test report"), "test catch message");
+    /// TEST:
+    // ERROR("Test error");
+    // REPORT(new Error("Test report"), "test catch message");
+    // throw new Error("Test exception");
 
     window.onbeforeunload =
       (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }

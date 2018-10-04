@@ -1,10 +1,8 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Client-side logger.
 */
-
-'use strict';
 
 import {MessageType} from '../../Shared/MessageType';
 

@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Server-side logger.
 */
