@@ -68,12 +68,6 @@ export class Client extends Application
     this.report(error);
   }
 
-  // ~ Overrides App.reportCaughtException().
-  protected reportCaughtException(error: Error): void
-  {
-    this.report(error);
-  }
-
   // ~ Overrides App.reportError().
   protected reportError(message: string): void
   {

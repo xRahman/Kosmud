@@ -85,19 +85,6 @@ export abstract class Application
   }
 
   // Don't call this directly, use ERROR() instead.
-  public static reportCaughtException(error: Error)
-  {
-    // If someone tries to report exception before
-    // an application instance is created (for example
-    // directly from a class inicialization), we can't
-    // use regular logging process.
-    if (!this.instance)
-      throw error;
-
-    this.instance.reportCaughtException(error);
-  }
-
-  // Don't call this directly, use ERROR() instead.
   public static reportError(message: string): void
   {
     // If someone tries to report error before
@@ -154,7 +141,6 @@ export abstract class Application
   // --------------- Protected methods ------------------
 
   protected abstract reportException(error: Error): void;
-  protected abstract reportCaughtException(error: Error): void;
   protected abstract reportError(message: string): void;
   protected abstract reportFatalError(message: string): void;
 

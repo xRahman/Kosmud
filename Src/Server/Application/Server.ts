@@ -103,14 +103,6 @@ export class Server extends Application
     Syslog.log(errorMsg, MessageType.RUNTIME_EXCEPTION);
   }
 
-  // ~ Overrides App.reportCaughtException().
-  protected reportCaughtException(error: Error): void
-  {
-    let errorMsg = error.message + "\n" + Syslog.getTrimmedStackTrace(REPORT);
-
-    Syslog.log(errorMsg, MessageType.EXCEPTION_CAUGHT);
-  }
-
   // ~ Overrides App.reportError().
   protected reportError(message: string): void
   {
