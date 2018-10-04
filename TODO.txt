@@ -1,7 +1,5 @@
-TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
-  nebylo by lepší udělat polymorfní jen ten, místo Application?
-  - respektive neprovolávat ty reporting funkce přes Application.
-    (Tam to moc nepatří).
+TODO: Connections.broadcast() musí testovat, jestli jsou
+  connectiony otevřené.
 
 TODO: Výhledově sjednotit formát improtů (asi import { ERROR } from './ERROR').
 
@@ -15,8 +13,6 @@ TODO: Vyzkoušet ERROR() a REPORT() i na klientu.
 TODO: Někde v kódu mám RERORT(new Error("test"));
 
 TODO: Reportování errorů a exceptionů je pořád divný.
-
-TODO: Asi jsem rozbil tikání physics enginu a posílání updatů.
 
 TODO: Packety asi nemusí mít version (nemusí se posílat).
 

@@ -4,8 +4,6 @@
   Implements http server.
 */
 
-console.log('Parsing HttpServer.ts');
-
 import {ERROR} from '../../Shared/Log/ERROR';
 // import {Syslog} from '../../Server/Log/Syslog';
 import {Syslog} from '../../Shared/Log/Syslog';

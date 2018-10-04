@@ -7,7 +7,11 @@
     Client.start();
 */
 
-import {Syslog} from '../../Shared/Log/Syslog';
+/// TEST
+import { REPORT } from '../../Shared/Log/REPORT';
+import {ERROR} from '../../Shared/Log/ERROR';
+
+import {Syslog} from '../../Client/Log/Syslog';
 import {PhaserEngine} from '../Phaser/PhaserEngine';
 import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
@@ -76,9 +80,9 @@ export class Client extends Application
   private initGUI()
   {
     /// TEST:
-    // ERROR("Test error");
-    // REPORT(new Error("Test report"), "test catch message");
-    // throw new Error("Test exception");
+    ERROR("Test error");
+    REPORT(new Error("Test report"), "test catch message");
+    throw new Error("Test exception");
 
     window.onbeforeunload =
       (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }

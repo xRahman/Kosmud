@@ -7,14 +7,13 @@
     Server.start(appName, version);
 */
 
-
-import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {Entities} from '../../Server/Class/Entities';
 import {MessageType} from '../../Shared/MessageType';
 import {HttpServer} from '../../Server/Net/HttpServer';
 import {Game} from '../../Server/Game/Game';
 import {Application} from '../../Shared/Application';
+import { REPORT } from '../../Shared/Log/REPORT';
 
 // // Force module execution:
 // import '../../Server/Game/Game';
@@ -54,8 +53,16 @@ export class Server extends Application
       MessageType.SYSTEM_INFO
     );
 
-    // Http server also starts a websocket server inside it.
-    await this.instance.startHttpServer();
+    try
+    {
+      // Http server also starts a websocket server inside it.
+      await this.instance.startHttpServer();
+    }
+    catch (error)
+    {
+      REPORT(error, "Failed to start http server");
+      return;
+    }
 
     // Start the game loop.
     Game.start();
@@ -66,12 +73,12 @@ export class Server extends Application
 
   // --------------- Private methods --------------------
 
+  // ! Throws an exception on error.
   private async startHttpServer()
   {
     if (this.httpServer.isOpen())
     {
-      ERROR("Http server is already running");
-      return;
+      throw new Error("Http server is already running");
     }
 
     await this.httpServer.start();

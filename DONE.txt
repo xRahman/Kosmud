@@ -1,3 +1,15 @@
+TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
+  nebylo by lepší udělat polymorfní jen ten, místo Application?
+  - respektive neprovolávat ty reporting funkce přes Application.
+    (Tam to moc nepatří).
+  - application je zatím taky singleton, možná to bude potřeba
+[done]
+
+TODO: Asi jsem rozbil tikání physics enginu a posílání updatů.
+- to bylo nejspíš tím, že mi utekla uncaught exception. Client
+  se tím zřejmě taky zastaví.
+[done]
+
 TODO: Updatnout commenty v ERROR (a vůbec v celém reportovacím kódu).
 [done]
 

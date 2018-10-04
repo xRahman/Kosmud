@@ -43,7 +43,7 @@ export function REPORT(error: any, catchMessage?: string)
   }
 
   if (catchMessage)
-    error.message += " (" + catchMessage + ")";
+    error.message = catchMessage + " (" + error.message + ")";
 
   Syslog.reportException(error);
 }
