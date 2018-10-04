@@ -6,7 +6,7 @@
 
 'use strict';
 
-import {Utils} from '../../Shared/Utils';
+import {Utils} from '../../Shared/Utils/Utils';
 import {Connection} from '../../Server/Net/Connection';
 import {Game} from '../../Server/Game/Game';
 import * as Shared from '../../Shared/Protocol/PlayerInput';

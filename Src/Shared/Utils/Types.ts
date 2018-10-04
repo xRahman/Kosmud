@@ -4,32 +4,32 @@
   Types and associated utility functions.
 */
 
-import {Serializable} from '../Shared/Class/Serializable';
-
-// Types used for constructs like 'new Promise((resolve, reject) => { ... })'.
-export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
-export type RejectFunction = (reason?: any) => void;
-
-// If you exclaim "WTF!" loudly after reading the next two lines of
-// code, I absolutely aggree with you.
-//   The point of this gibberish is to declare a type that describes
-// any class (like Serializable) so you can call something like
-// dynamicCast(Serializable). Regular classes in typescript are
-// considered to be a constructor function, hence the 'new(...args): T'
-// part on the right of '|' character. However, some classes can be
-// abstract and in that case they don't have a constructor function
-// because the whole point of abstract class is that it cannot be
-// instantiated. So the type of an abstract class is a Function with
-// a prototype with no constructor.
-//   TLDR: this type describes both abstract and nonabstract classes.
-export type AnyClass<T> =
-  (Function & { prototype: T }) | { new (...args: any[]): T };
-
-// Nonabstract class in javascript is it's constructor function.
-export type NonabstractClass<T> = { new (...args: any[]): T };
+import { Serializable } from '../../Shared/Class/Serializable';
 
 export module Types
 {
+  // Types used for constructs like 'new Promise((resolve, reject) => { ... })'.
+  export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
+  export type RejectFunction = (reason?: any) => void;
+
+  // If you exclaim "WTF!" loudly after reading the next two lines of
+  // code, I absolutely aggree with you.
+  //   The point of this gibberish is to declare a type that describes
+  // any class (like Serializable) so you can call something like
+  // dynamicCast(Serializable). Regular classes in typescript are
+  // considered to be a constructor function, hence the 'new(...args): T'
+  // part on the right of '|' character. However, some classes can be
+  // abstract and in that case they don't have a constructor function
+  // because the whole point of abstract class is that it cannot be
+  // instantiated. So the type of an abstract class is a Function with
+  // a prototype with no constructor.
+  //   TLDR: this type describes both abstract and nonabstract classes.
+  export type AnyClass<T> =
+    (Function & { prototype: T }) | { new (...args: any[]): T };
+
+  // Nonabstract class in javascript is it's constructor function.
+  export type NonabstractClass<T> = { new (...args: any[]): T };
+
   // -> Returns 'true' if 'variable' is of type string.
   export function isString(variable: any): boolean
   {

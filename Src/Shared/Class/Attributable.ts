@@ -22,7 +22,7 @@
   }
 */
 
-import {Utils} from '../../shared/Utils';
+import {Utils} from '../Utils/Utils';
 import {DEFAULT_ATTRIBUTES} from '../../Shared/Class/Attributes';
 import {Attributes} from '../../Shared/Class/Attributes';
 

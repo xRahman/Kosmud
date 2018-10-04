@@ -7,7 +7,7 @@
     Server.start(appName, version);
 */
 
-import {StringUtils} from '../../Shared/StringUtils';
+import {StringUtils} from '../../Shared/Utils/StringUtils';
 import {Application} from '../../Shared/Application';
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';

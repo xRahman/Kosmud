@@ -17,7 +17,7 @@
     );
 */
 
-import {StringUtils} from '../../Shared/StringUtils';
+import {StringUtils} from '../Utils/StringUtils';
 import {REPORT} from '../../Shared/Log/REPORT';
 import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';

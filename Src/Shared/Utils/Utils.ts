@@ -4,8 +4,8 @@
   Various utility functions.
 */
 
-import {ERROR} from '../Shared/Log/ERROR';
-import {Types} from '../Shared/Types';
+import { ERROR } from '../Log/ERROR';
+import { Types } from './Types';
 
 export module Utils
 {

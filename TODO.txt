@@ -1,3 +1,5 @@
+TODO: Výhledově sjednotit formát improtů (asi import { ERROR } from './ERROR').
+
 TODO: Updatnout commenty v ERROR (a vůbec v celém reportovacím kódu).
 
 TODO: Uncaught error: Failed to send data because the connection is closed.

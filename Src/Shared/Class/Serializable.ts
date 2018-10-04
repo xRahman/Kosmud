@@ -38,14 +38,12 @@
     (A samozřejmě tuhle funkcionalitu přidat do Attributable class).
 */
 
-import {Types} from '../../Shared/Types';
-import {Utils} from '../../Shared/Utils';
+import {Types} from '../../Shared/Utils/Types';
+import {Utils} from '../Utils/Utils';
 import {Classes} from '../../Shared/Class/Classes';
-import {AnyClass} from '../../Shared/Types';
 import {JsonObject} from '../../Shared/Class/JsonObject';
 import {Attributable} from '../../Shared/Class/Attributable';
 import {Application} from '../../Shared/Application';
-import { workers } from 'cluster';
 
 // 3rd party modules.
 let FastBitSet = require('fastbitset');
@@ -103,7 +101,7 @@ export class Serializable extends Attributable
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public dynamicCast<T>(Class: AnyClass<T>): T
+  public dynamicCast<T>(Class: Types.AnyClass<T>): T
   {
     // Dynamic type check - we make sure that entity is inherited
     // from requested class (or an instance of the class itself).

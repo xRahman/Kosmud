@@ -5,10 +5,8 @@
   in runtime.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
 import {Serializable} from '../../Shared/Class/Serializable';
-import {NonabstractClass} from '../../Shared/Types';
-// import {AnyClass} from '../../Shared/Types';
+import {Types} from '../../Shared/Utils/Types';
 
 //import {Entity} from '../../Shared/Class/Entity';
 //import {Entities} from '../../Shared/Class/Entities';
@@ -34,7 +32,7 @@ export class Classes
 
   public static registerSerializableClass<T extends Serializable>
   (
-    Class: NonabstractClass<T>
+    Class: Types.NonabstractClass<T>
   )
   {
     this.serializables.set(Class.name, Class);
