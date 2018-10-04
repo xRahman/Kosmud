@@ -19,24 +19,50 @@
 
 import {StringUtils} from '../Utils/StringUtils';
 import {REPORT} from '../../Shared/Log/REPORT';
-import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
 
-export class Syslog
+export abstract class Syslog
 {
+  // -------------- Static class data -------------------
+
   public static readonly STACK_IS_NOT_AVAILABLE =
     "Stack trace is not available."
 
-  public static log(text: string, msgType: MessageType)
+  // This property needs to be inicialized in descendants.
+  protected static instance: Syslog | null = null;
+
+  // --------------- Static accessors -------------------
+
+  // ! Throws exception on error.
+  private static getInstance(): Syslog
   {
-    Application.log(text, msgType);
+    if (!this.instance)
+    {
+      throw new Error
+      (
+        "Syslog.instance is not inicialized. It needs to be"
+        + " assigned in all descendant classes."
+      );
+    }
+
+    return this.instance;
   }
 
+  // ---------------- Static methods --------------------
+
+  // ! Throws exception on error.
+  public static log(text: string, msgType: MessageType)
+  {
+    this.getInstance().log(text, msgType);
+  }
+
+  // ! Throws exception on error.
   public static logConnectionInfo(message: string)
   {
     this.log(message, MessageType.CONNECTION_INFO);
   }
 
+  // ! Throws exception on error.
   public static logSystemInfo(message: string)
   {
     this.log(message, MessageType.SYSTEM_INFO);
@@ -83,4 +109,41 @@ export class Syslog
       REPORT(error + uncaughtExceptionMessage);
     }
   }
+
+  // Don't call this directly, use REPORT() instead.
+  public static reportException(error: Error)
+  {
+    // If someone tries to report exception before
+    // an application instance is created (for example
+    // directly from a class inicialization), we can't
+    // use regular logging process.
+    if (!this.instance)
+      throw error;
+
+    this.instance.reportException(error);
+  }
+
+  // Don't call this directly, use ERROR() instead.
+  public static reportError(message: string): void
+  {
+    // If someone tries to report error before a syslog instance is created
+    // (for example directly from a class inicialization), we can't use regular
+    // logging process so we throw exception instead.
+    if (!this.instance)
+    {
+      throw new Error
+      (
+        "ERROR() occured before application was created:"
+        + ' "' + message + '"'
+      );
+    }
+
+    this.instance.reportError(message);
+  }
+
+  // --------------- Protected methods ------------------
+
+  protected abstract log(message: string, msgType: MessageType): void;
+  protected abstract reportException(error: Error): void;
+  protected abstract reportError(message: string): void;
 }

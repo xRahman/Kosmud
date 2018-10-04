@@ -6,6 +6,7 @@ TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
 TODO: Výhledově sjednotit formát improtů (asi import { ERROR } from './ERROR').
 
 TODO: Updatnout commenty v ERROR (a vůbec v celém reportovacím kódu).
+TODO: Updatnout commenty v Application, Client a Server.
 
 TODO: Uncaught error: Failed to send data because the connection is closed.
 

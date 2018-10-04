@@ -36,9 +36,9 @@
   it from javascript Error object.
 */
 
-import {Application} from '../../Shared/Application';
+import {Syslog} from '../../Shared/Log/Syslog';
 
 export function ERROR(message: string)
 {
-  Application.reportError(message);
+  Syslog.reportError(message);
 }

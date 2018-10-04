@@ -28,8 +28,6 @@
    of the error.
 */
 
-//import {Utils} from '../../../shared/lib/utils/Utils';
-import {Application} from '../../Shared/Application';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {ERROR} from './ERROR';
 
@@ -55,5 +53,5 @@ export function REPORT(error: any, catchMessage?: string)
   if (catchMessage)
     error.message += " (" + catchMessage + ")";
 
-  Application.reportException(error);
+  Syslog.reportException(error);
 }

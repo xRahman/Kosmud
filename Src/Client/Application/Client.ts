@@ -7,12 +7,10 @@
     Client.start();
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {PhaserEngine} from '../Phaser/PhaserEngine';
 import {Application} from '../../Shared/Application';
 import {MessageType} from '../../Shared/MessageType';
-import {ClientSyslog} from '../Log/ClientSyslog';
 import {Entities} from '../../Client/Class/Entities';
 import {Document} from '../../Client/Gui/Document';
 import {Connection} from '../../Client/Net/Connection';
@@ -73,47 +71,7 @@ export class Client extends Application
 
   // --------------- Protected methods ------------------
 
-  // ~ Overrides App.reportException().
-  protected reportException(error: Error): void
-  {
-    this.report(error);
-  }
-
-  // ~ Overrides App.reportError().
-  protected reportError(message: string): void
-  {
-    let err = new Error(message);
-
-    // Trim lines from the top of stack trace up to and including
-    // function ERROR() to show where the error really happened.
-    Error.captureStackTrace(err, ERROR);
-
-    // Use 'console.error()' instead of 'console.log()' because it
-    // better displays stack trace (at least in Chrome).
-    console.error(err);
-  }
-
-  // ~ Overrides App.reportFatalError().
-  protected reportFatalError(message: string): void
-  {
-    // There is no point in 'crashing' the client, it's just
-    // a web page. So we just report the error.
-    this.report(new Error(message));
-  }
-
-  // ~ Overrides App.log().
-  protected log(message: string, msgType: MessageType): void
-  {
-    ClientSyslog.log(message, msgType);
-  }
-
   // ---------------- Private methods -------------------
-
-  /// TODO: Tohle by fakt měl dělat syslog.
-  protected report(error: Error): void
-  {
-    console.error(error);
-  }
 
   private initGUI()
   {

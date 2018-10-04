@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Implements websocket server.
 */
@@ -23,10 +23,8 @@
     correcly within lambda function body.
 */
 
-'use strict';
-
 import {ERROR} from '../../Shared/Log/ERROR';
-import {Syslog} from '../../Shared/Log/Syslog';
+import {Syslog} from '../../Server/Log/Syslog';
 import {MessageType} from '../../Shared/MessageType';
 import {Server} from '../../Server/Application/Server';
 import {Connection} from '../../Server/Net/Connection';
