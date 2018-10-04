@@ -59,15 +59,7 @@ export class Client extends Application
   {
     Syslog.log("Starting Kosmud client...", MessageType.SYSTEM_INFO);
 
-    /// TEST:
-    try
-    {
-      Client.instance.initGUI();
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
+    Client.instance.initGUI();
 
     // Client.instance.initGUI();
     Client.instance.connection.connect();
@@ -79,11 +71,6 @@ export class Client extends Application
 
   private initGUI()
   {
-    /// TEST:
-    ERROR("Test error");
-    REPORT(new Error("Test report"), "test catch message");
-    throw new Error("Test exception");
-
     window.onbeforeunload =
       (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
   }

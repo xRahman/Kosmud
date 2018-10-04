@@ -1,3 +1,20 @@
+TODO: Otestovat reportování errorů.
+[done]
+
+TODO: Vyzkoušet ERROR() a REPORT() i na klientu.
+[done]
+
+TODO: Někde v kódu mám RERORT(new Error("test"));
+- už snad ne
+[done]
+
+TODO: Reportování errorů a exceptionů je pořád divný.
+- snad fixed
+[done]
+
+TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru a z klienta.
+[done]
+
 TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
   nebylo by lepší udělat polymorfní jen ten, místo Application?
   - respektive neprovolávat ty reporting funkce přes Application.

@@ -29,13 +29,11 @@ export class Syslog extends Shared.Syslog
   }
 
   // ~ Overrides Shared.Syslog.reportException().
-  protected reportException(error: Error): void
+  protected reportException(error: Error, isCaught: boolean): void
   {
-    error.message = this.createLogEntry
-    (
-      error.message,
-      MessageType.RUNTIME_EXCEPTION
-    );
+    let messageType = this.exceptionMessageType(isCaught);
+
+    error.message = this.createLogEntry(error.message, messageType);
 
     logError(error);
   }

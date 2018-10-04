@@ -1,3 +1,28 @@
+[UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
+95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
+propagated to top-level function. It needs to be caught much deeper where the er
+ror can be properly recovered from.)
+    at ServerSocket.send (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\ServerS
+ocket.ts:69:13)
+    at Connection.send (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\Connectio
+n.ts:184:17)
+    at Function.broadcast (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\Connec
+tions.ts:52:18)
+    at Function.updateClients (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Game\G
+ame.ts:67:19)
+    at Timeout.start.setInterval [as _onTimeout] (D:\svetlym\tmp\00\Brutus\Kosmu
+d\Src\Server\Game\Game.ts:37:20)
+    at ontimeout (timers.js:425:11)
+    at tryOnTimeout (timers.js:289:5)
+    at listOnTimeout (timers.js:252:5)
+    at Timer.processTimers (timers.js:212:10)
+- zaprvé musím tyhle exceptiony někde odchytávat.
+- zadruhé musím testovat, jestli je connection CLOSING
+  (to nejspíš souvisí s testováním connection.isOpen()
+   v Connections.broadcast)))
+
+
+
 TODO: Connections.broadcast() musí testovat, jestli jsou
   connectiony otevřené.
 
@@ -6,13 +31,6 @@ TODO: Výhledově sjednotit formát improtů (asi import { ERROR } from './ERROR
 TODO: Updatnout commenty v Application, Client a Server.
 
 TODO: Uncaught error: Failed to send data because the connection is closed.
-
-TODO: Vyzkoušet ERROR() a REPORT() i na klientu.
-
-
-TODO: Někde v kódu mám RERORT(new Error("test"));
-
-TODO: Reportování errorů a exceptionů je pořád divný.
 
 TODO: Packety asi nemusí mít version (nemusí se posílat).
 
@@ -23,25 +41,12 @@ TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
 - Každopádně to jsou entry-level funkce a je tam potřeba reportovat uncaught
   exceptiony [to je DONE].
 
-
 TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
   callů. Zkontrolovat, jestli to nemají být exceptiony.
-
-TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru a z klienta.
 
 TODO: Zamyslet se, co se zbytkem Utils
   (mělo by to mít specifičtější pojmenování.)
 
-Exception handling (obecně):
------------------------------
-
-- Když REPORT() rethrowne exception (to nejspíš na klientu udělám kvůli
-  stacku), tak by ji měl nějak marknout a Syslog.reportUncaughtException()
-  by ji měl ignorovat.
-TODO: vyzkoušet.
-
-TODO: Otestovat reportování errorů.
-[done]
 
 Prozatímní řešení client-server predikce
 -----------------------------------------

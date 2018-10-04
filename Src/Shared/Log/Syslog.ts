@@ -62,16 +62,16 @@ export abstract class Syslog
     if (error instanceof Error)
     {
       error.message = error.message + uncaughtExceptionMessage;
-      REPORT(error);
+      this.reportException(error, false);
     }
     else
     {
-      REPORT(error + uncaughtExceptionMessage);
+      this.reportException(new Error(error + uncaughtExceptionMessage), false);
     }
   }
 
   // Don't call this directly, use REPORT() instead.
-  public static reportException(error: Error)
+  public static reportException(error: Error, isCaught = true)
   {
     // If someone tries to report exception before
     // an application instance is created (for example
@@ -80,7 +80,7 @@ export abstract class Syslog
     if (!this.instance)
       throw error;
 
-    this.instance.reportException(error);
+    this.instance.reportException(error, isCaught);
   }
 
   // Don't call this directly, use ERROR() instead.
@@ -104,7 +104,7 @@ export abstract class Syslog
   // --------------- Protected methods ------------------
 
   protected abstract log(message: string, msgType: MessageType): void;
-  protected abstract reportException(error: Error): void;
+  protected abstract reportException(error: Error, isCaught: boolean): void;
   protected abstract reportError(message: string): void;
 
   protected createTrimmedStackTrace(stackTop?: Function): string
@@ -141,5 +141,17 @@ export abstract class Syslog
   protected createLogEntry(message: string, msgType: MessageType)
   {
     return "[" + MessageType[msgType] + "] " + message;
+  }
+
+  protected exceptionMessageType(isCaught: boolean)
+  {
+    if (isCaught)
+    {
+      return MessageType.RUNTIME_EXCEPTION;
+    }
+    else
+    {
+      return MessageType.UNCAUGHT_EXCEPTION;
+    }
   }
 }

@@ -23,9 +23,9 @@ export enum MessageType
   // Sent when REPORT(error) is called somewhere in code. Contains original
   // exception.
   RUNTIME_EXCEPTION,
-  // Sent when REPORT(error) is called somewhere in code. Contains catch
-  // message and stack trace of function where the error was caught.
-  EXCEPTION_CAUGHT,
+  // Sent when exeption propagates to the top-level function (which shouldn't
+  // happen).
+  UNCAUGHT_EXCEPTION,
   // Sent when ERROR() is called somewhere in code.
   RUNTIME_ERROR,
   // System reports that something is ok (game is successfuly loaded, etc.).
