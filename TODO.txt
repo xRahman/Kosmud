@@ -1,4 +1,9 @@
-TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru.
+TODO: Uncaught error: Failed to send data because the connection is closed.
+
+TODO: Když se stejně nakonec na zobrazení errorů volá Syslog,
+  nebylo by lepší udělat polymorfní jen ten, místo Application?
+  - respektive neprovolávat ty reporting funkce přes Application.
+    (Tam to moc nepatří).
 
 TODO: Vyzkoušet ERROR() a REPORT() i na klientu.
 

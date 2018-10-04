@@ -10,7 +10,6 @@
 import {StringUtils} from '../../Shared/StringUtils';
 import {Application} from '../../Shared/Application';
 import {ERROR} from '../../Shared/ERROR';
-import {REPORT} from '../../Shared/REPORT';
 import {Syslog} from '../../Shared/Syslog';
 import {ServerSyslog} from '../../Server/Application/ServerSyslog';
 import {Entities} from '../../Server/Class/Entities';

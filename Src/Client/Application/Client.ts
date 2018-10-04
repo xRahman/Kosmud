@@ -16,6 +16,8 @@ import {Entities} from '../../Client/Class/Entities';
 import {Document} from '../../Client/Gui/Document';
 import {Connection} from '../../Client/Net/Connection';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
+import {ERROR} from '../../Shared/ERROR';
+import {REPORT} from '../../Shared/REPORT';
 
 PhaserEngine;   // Inits the class.
 
@@ -56,7 +58,18 @@ export class Client extends Application
   {
     Syslog.log("Starting Kosmud client...", MessageType.SYSTEM_INFO);
 
-    Client.instance.initGUI();
+    /// TEST:
+
+    try
+    {
+      Client.instance.initGUI();
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error);
+    }
+
+    // Client.instance.initGUI();
     Client.instance.connection.connect();
   }
 
@@ -71,7 +84,15 @@ export class Client extends Application
   // ~ Overrides App.reportError().
   protected reportError(message: string): void
   {
-    this.report(new Error(message));
+    let err = new Error(message);
+
+    // Trim lines from the top of stack trace up to and including
+    // function ERROR() to show where the error really happened.
+    Error.captureStackTrace(err, ERROR);
+
+    // Use 'console.error()' instead of 'console.log()' because it
+    // better displays stack trace (at least in Chrome).
+    console.error(err);
   }
 
   // ~ Overrides App.reportFatalError().
@@ -101,12 +122,16 @@ export class Client extends Application
 
   private initGUI()
   {
+    ERROR("Test error");
+    REPORT(new Error("Test report"), "test catch message");
+
     window.onbeforeunload =
       (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
   }
 
   // ---------------- Event handlers --------------------
 
+  /// Tohle by mělo bejt někde jinde (v Document asi?)
   private onBeforeUnload(event: BeforeUnloadEvent)
   {
     this.connection.reportClosingBrowserTab();

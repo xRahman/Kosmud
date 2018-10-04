@@ -1,3 +1,5 @@
+TODO: Odstranit testovací kód na ERROR() a REPORT() ze serveru.
+
 TODO: Extra házení EXCEPTION_CAUGHT možná není úplně dobrý, protože tam
   není uvedeno, jaká exception byla chycena. Asi by to fakt měl bejt jeden
   message.
