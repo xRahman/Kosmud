@@ -4,20 +4,13 @@
   Any text that is send to players.
 */
 
-'use strict';
-
-// import {Settings} from '../../../server/ServerSettings';
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Utils} from '../../Shared/Utils/Utils';
 import {StringUtils} from '../../Shared/Utils/StringUtils';
-import {Server} from '../../Server/Application/Server';
-import {Connection} from '../../Server/Net/Connection';
-import {Connections} from '../../Server/Net/Connections';
+
 import {MessageType} from '../../Shared/MessageType';
 import {MessageColors} from '../../Server/Net/MessageColors';
-import {ServerSocket} from '../../Server/Net/ServerSocket';
-// import {Entity} from '../../Shared/Class/Entity';
-// import {GameEntity} from '../../../server/game/GameEntity';
+
 
 export class Message
 {
