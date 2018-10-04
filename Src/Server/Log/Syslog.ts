@@ -22,10 +22,10 @@ export class Syslog extends Shared.Syslog
   // --------------- Protected methods ------------------
 
   // ~ Overrides Shared.Syslog.log().
-  protected log(text: string, msgType: MessageType)
+  protected log(message: string, msgType: MessageType)
   {
-    let entry = "[" + MessageType[msgType] + "] " + text;
-
+    let entry = this.createLogEntry(message, msgType);
+    
     // Output to stdout.
     console.log(entry);
 
@@ -38,34 +38,16 @@ export class Syslog extends Shared.Syslog
   {
     let errorMsg = error.message;
 
-    if (error.stack)
-    {
-      // Stack trace for some reason starts with error message
-      // prefixed with 'Error' which is confusing in the log.
-      //   To remove it, we trim lines not starting with '    at '.
-      // That's because error message can be multi-line so removing
-      // just 1 line would not always be enough.
-      let trimmedStack = StringUtils.removeFirstLinesWithoutPrefix
-      (
-        error.stack,
-        '    at '
-      );
+    errorMsg += "\n" + this.removeErrorMessage(error.stack);
 
-      errorMsg += "\n" + trimmedStack;
-    }
-    else
-    {
-      errorMsg += "\n" + Syslog.STACK_IS_NOT_AVAILABLE;
-    }
-
-    Syslog.log(errorMsg, MessageType.RUNTIME_EXCEPTION);
+    this.log(errorMsg, MessageType.RUNTIME_EXCEPTION);
   }
 
   // ~ Overrides Shared.Syslog.reportError().
   protected reportError(message: string): void
   {
-    let errorMsg = message + "\n" + Syslog.getTrimmedStackTrace(ERROR);
+    let errorMsg = message + "\n" + this.createTrimmedStackTrace(ERROR);
 
-    Syslog.log(errorMsg, MessageType.RUNTIME_ERROR);
+    this.log(errorMsg, MessageType.RUNTIME_ERROR);
   }
 }

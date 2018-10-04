@@ -68,30 +68,6 @@ export abstract class Syslog
     this.log(message, MessageType.SYSTEM_INFO);
   }
 
-  // Reads stack trace from Error() object.
-  // -> Returns string containing stack trace with first two lines trimmed.
-  public static getTrimmedStackTrace(stackTop?: Function): string
-  {
-    // Create a temporary error object to construct stack trace for us.
-    let tmpErr = new Error();
-
-    if (Error.captureStackTrace)
-      // Second parameter removes from stack trace everything
-      // above 'stackTop' function (so the user sees where the
-      // ERROR actualy originated).
-      Error.captureStackTrace(tmpErr, stackTop);
-
-    if (!tmpErr.stack)
-      return Syslog.STACK_IS_NOT_AVAILABLE;
-
-    // Stack trace for some reason starts with error message
-    // prefixed with 'Error' which is confusing in the log.
-    //   To remove it, we trim lines not starting with '    at '.
-    // That's because error message can be multi-line so removing
-    // just 1 line would not always be enough.
-    return StringUtils.removeFirstLinesWithoutPrefix(tmpErr.stack, '    at ');
-  }
-
   public static reportUncaughtException(error: any)
   {
     const uncaughtExceptionMessage = " (this exception has"
@@ -146,4 +122,42 @@ export abstract class Syslog
   protected abstract log(message: string, msgType: MessageType): void;
   protected abstract reportException(error: Error): void;
   protected abstract reportError(message: string): void;
+
+  // Reads stack trace from Error() object.
+  // -> Returns string containing stack trace with first two lines trimmed.
+  protected createTrimmedStackTrace(stackTop?: Function): string
+  {
+    // Create a temporary error object to construct stack trace for us.
+    let tmpErr = new Error();
+
+    tmpErr = this.trimStackTrace(tmpErr, stackTop);
+
+    return this.removeErrorMessage(tmpErr.stack);
+  }
+
+  protected trimStackTrace(error: Error, stackTop?: Function): Error
+  {
+     if (Error.captureStackTrace)
+      Error.captureStackTrace(error, stackTop);
+
+    return error;
+  }
+
+  protected removeErrorMessage(stackTrace?: string)
+  {
+    if (!stackTrace)
+      return Syslog.STACK_IS_NOT_AVAILABLE;
+
+    // Stack trace for some reason starts with error message
+    // prefixed with 'Error' which is confusing in the log.
+    //   To remove it, we trim lines not starting with '    at '.
+    // That's because error message can be multi-line so removing
+    // just 1 line would not always be enough.
+    return StringUtils.removeFirstLinesWithoutPrefix(stackTrace, '    at ');
+  }
+
+  protected createLogEntry(message: string, msgType: MessageType)
+  {
+    return "[" + MessageType[msgType] + "] " + message;
+  }
 }
