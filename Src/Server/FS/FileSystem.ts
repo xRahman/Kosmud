@@ -1,11 +1,12 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Wraps filesystem I/O operations.
+  Filesystem I/O operations.
 */
 
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
+import { Types } from '../../Shared/Utils/Types';
 import {MessageType} from '../../Shared/MessageType';
 import {SavingQueue} from '../../Server/FS/SavingQueue';
 
@@ -436,29 +437,27 @@ export class FileSystem
     return queue.addRequest();
   }
 
+//*
+  // ! Throws exception on error.
   private static finishSaving(path: string)
   {
     let queue = this.savingQueues.get(path);
 
     if (queue === undefined)
     {
-      ERROR("Attempt to report finished saving of file"
-        + " " + path + " which is not registered as"
-        + " being saved");
-      // We can't really do much if we don't have a saving record.
-      return;
+      throw new Error("Attempt to report finished saving of file"
+        + " " + path + " which is not registered as being saved");
     }
 
-    // Retrieve the first item from the queue.
-    let resolveCallback = queue.pollRequest();
+    let pollResult = queue.pollRequest();
 
-    if (!resolveCallback)
+    if (pollResult === "Queue is empty")
     {
-      // If there is nothing left in the queue for this 'path',
-      // we can delete it.
       this.savingQueues.delete(path);
       return;
     }
+
+    let resolveCallback: Types.ResolveFunction<{}> = pollResult;
 
     // By calling the resolve callback we finish savingAwaiter()
     // of whoever called us. That should lead to the next saving

@@ -6,9 +6,12 @@
 
 import { Serializable } from '../../Shared/Class/Serializable';
 
+// 3rd party modules.
+let FastPriorityQueue = require('fastpriorityqueue');
+
 export module Types
 {
-  // Types used for constructs like 'new Promise((resolve, reject) => { ... })'.
+  // Types used for example in 'new Promise((resolve, reject) => { ... })'.
   export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
   export type RejectFunction = (reason?: any) => void;
 
@@ -20,7 +23,7 @@ export module Types
   // considered to be a constructor function, hence the 'new(...args): T'
   // part on the right of '|' character. However, some classes can be
   // abstract and in that case they don't have a constructor function
-  // because the whole point of abstract class is that it cannot be
+  // because the whole point of an abstract class is that it cannot be
   // instantiated. So the type of an abstract class is a Function with
   // a prototype with no constructor.
   //   TLDR: this type describes both abstract and nonabstract classes.
@@ -30,13 +33,11 @@ export module Types
   // Nonabstract class in javascript is it's constructor function.
   export type NonabstractClass<T> = { new (...args: any[]): T };
 
-  // -> Returns 'true' if 'variable' is of type string.
   export function isString(variable: any): boolean
   {
     return typeof variable === 'string';
   }
 
-  // -> Returns 'true' if 'variable' is of type 'FastBitSet'.
   export function isBitvector(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -45,7 +46,6 @@ export module Types
     return variable.constructor.name === 'FastBitSet';
   }
 
-  // -> Returns 'true' if 'variable' is of type 'Date'.
   export function isDate(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -54,7 +54,6 @@ export module Types
     return variable.constructor.name === 'Date';
   }
 
-  // -> Returns 'true' if 'variable' is of type 'Map',
   export function isMap(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -64,7 +63,6 @@ export module Types
   }
 
   // Detects only native javascript Objects - not classes.
-  // -> Returns 'true' if 'variable' is of type 'Object',
   export function isPlainObject(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -73,8 +71,6 @@ export module Types
     return variable.constructor.name === 'Object';
   }
 
-  // Detects native javascript Arrays.
-  // -> Returns 'true' if 'variable' is of type 'Array',
   export function isArray(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -92,7 +88,6 @@ export module Types
     return variable === null || typeof variable !== 'object';
   }
 
-  // -> Returns 'true' if 'variable' is of type 'Set'.
   export function isSet(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -106,9 +101,44 @@ export module Types
     return variable instanceof Serializable;
   }
 
-  // -> Returns 'true' if 'variable' is a number.
   export function isNumber(variable: any)
   {
     return typeof variable === 'number';
+  }
+
+  export class PriorityQueue<T>
+  {
+    private queue = new FastPriorityQueue();
+
+    public get size() { return this.queue.size; }
+
+    public add(item: T) { this.queue.add(item); }
+
+    // Removes the item.
+    public poll(): T | "Queue is empty"
+    {
+      let item = this.queue.poll();
+
+      if (item === undefined)
+        return "Queue is empty";
+
+      return item;
+    }
+
+    // Does not remove the item.
+    public peek(): T | "Queue is empty"
+    {
+      let item = this.queue.peek();
+
+      if (item === undefined)
+        return "Queue is empty";
+
+      return item;
+    }
+
+    // Optimizes memory usage (optional).
+    public trim() { this.queue.trim(); }
+
+    public isEmpty() { return this.queue.isEmpty(); }
   }
 }
