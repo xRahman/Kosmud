@@ -20,7 +20,8 @@ requirejs.config
       // // Alias so that you can use 'import d3 = require('d3');'.
       // 'd3': '../js/d3/d3.min',
       'js-beautify': '../js/js-beautify/beautify',
-      'fastbitset': '../js/fastbitset/FastBitSet'
+      'fastbitset': '../js/fastbitset/FastBitSet',
+      'fastpriorityqueue': '../js/fastpriorityqueue/FastPriorityQueue'
       // 'phaser': '../js/phaser/phaser'
     }
   }
@@ -33,6 +34,7 @@ requirejs.config
 //   been loaded yet for context: _
 require(['js-beautify']);
 require(['fastbitset']);
+require(['fastpriorityqueue']);
 // require(['phaser']);
 
 // Launch the client.

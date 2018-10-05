@@ -1,4 +1,5 @@
-define(function (require, exports, module) {/**
+define(function (require, exports, module) {
+/**
  * FastBitSet.js : a fast bit set implementation in JavaScript.
  * (c) the authors
  * Licensed under the Apache License, Version 2.0.
