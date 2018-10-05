@@ -4,6 +4,8 @@ import {Background} from '../../Client/Phaser/Background';
 import {Ship} from '../../Client/Phaser/Ship';
 import {SceneContents} from '../../Client/Phaser/SceneContents';
 
+import * as Phaser from 'phaser';
+
 export class Scene extends Phaser.Scene
 {
   constructor(private canvas: Canvas, sceneName: string)

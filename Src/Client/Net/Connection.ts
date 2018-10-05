@@ -1,10 +1,8 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Connection to the server.
 */
-
-'use strict';
 
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Classes} from '../../Shared/Class/Classes';

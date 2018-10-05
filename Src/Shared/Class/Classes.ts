@@ -35,6 +35,8 @@ export class Classes
     Class: Types.NonabstractClass<T>
   )
   {
+    console.log("Registering class '" + Class.name + "'");
+
     this.serializables.set(Class.name, Class);
   }
 

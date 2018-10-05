@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   This standalone script launches two external tsc processes
   to build both client and server. It is used to circumvent
@@ -16,21 +16,31 @@ const fs = require('fs');
 
 console.log('Removing old build...');
 
-rmTree("./Client/js/Client");
-rmTree("./Client/js/Shared");
+// rmTree("./Client/js/Client");
+// rmTree("./Client/js/Shared");
 rmTree("./Server/js/Server");
 rmTree("./Server/js/Shared");
 
 console.log('Compiling typescript code...');
 
 // Compile client code.
+// const clientBuild = spawn
+// (
+//   'node',
+//   [
+//     "./node_modules/typescript/lib/tsc.js",
+//     "--watch",
+//     "--project", "./Src/Client"
+//   ],
+//   // Child process will use parent's stdios
+//   // (so they will be displayed in vs code).
+//   { stdio: 'inherit' }
+// );
 const clientBuild = spawn
 (
   'node',
   [
-    "./node_modules/typescript/lib/tsc.js",
-    "--watch",
-    "--project", "./Src/Client"
+    "./.vscode/BuildClient.js"
   ],
   // Child process will use parent's stdios
   // (so they will be displayed in vs code).

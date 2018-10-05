@@ -1,11 +1,9 @@
 
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Client-side version of system message packet.
+  Client-side packet with information about what changed in game scene.
 */
-
-'use strict';
 
 import {PhaserEngine} from '../../Client/Phaser/PhaserEngine';
 
@@ -36,4 +34,4 @@ export class SceneUpdate extends Shared.SceneUpdate
   }
 }
 
-Classes.registerSerializableClass(SceneUpdate);
+// Classes.registerSerializableClass(SceneUpdate);
