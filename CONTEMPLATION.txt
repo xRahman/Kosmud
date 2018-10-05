@@ -7,25 +7,6 @@ Každej záznam v syslogu začíná tagem [MESSAGE_TYPE], kterej se bere
   to pak vede ke zdvojeným tagům.
 
 
-ERROR()
---------
-
-Pokud nechám ERROR(), asi by se dalo použít tohle:
-https://www.bennadel.com/blog/2828-creating-custom-error-objects-in-node-js-with-error-capturestacktrace.htm
-
-  In the V8 engine, the stacktrace of an error is gathered using the
-  Error.captureStackTrace() method:
-
-    Error.captureStackTrace( errorObject, localContextFunction )
-
-  This method injects a "stack" property into the first argument and,
-  optionally, excludes the localContextFunction from the stacktrace.
-  So, for example, if we were to generate the stacktrace inside of an
-  error Factory function, we could tell V8 to exclude the factory function
-  when generating the stack. This would reduce the noise of the error
-  implementation and confine the stacktrace to meaningful information
-  about the error context.
-
 -----------------------------------------------------------------------
 
 Error handling u socketů
@@ -272,6 +253,7 @@ nebo
   (classy by se jmenují stejně, tudíž se vzájemně serializují/deserializují).
 - Navíc SharedCosi zní jako "sdílená část čehosi", což je intuitivní význam.
 
+RESULT: Zatím používám Class extends Shared.Class {}
 
 -----------------------------------------------------------------------
 
@@ -283,10 +265,14 @@ Vlastně jediné použití ERRORU() co mě napadá, je, když chci něco
   jen zalogovat a pokračovat dál ve fci (throw je jako return);
 ZÁVĚR: Zkusím co nejvíc používat throw Error().
 
+-----------------------------------------------------------------------
 
-Pozn.: Nehybnost backgroundu by šla kromě scrollFactoru 0 vyřešit
-  ještě tím, že by se renderoval do samostatné scény. Viz sceneManager.
-  (Pokud budu mít ui, tak na to asi stejně dojde).
+Renderování backgroundu
+------------------------
+
+Nehybnost backgroundu by šla kromě scrollFactoru 0 vyřešit
+ještě tím, že by se renderoval do samostatné scény. Viz sceneManager.
+(Pokud budu mít ui, tak na to asi stejně dojde).
 
 
 -----------------------------------------------------------------------
@@ -426,5 +412,7 @@ export class FooBar extends Mixin([FooMixin, BarMixin]) {
       c.apply(this);
     hodí exception.
 
+RESULT: Mixiny jsou clumsy, kód je pak složitej a nepřehlednej. Asi se raději
+zkusím obejít bez vícenásobné dědičnosti.
 
 -----------------------------------------------------------------------

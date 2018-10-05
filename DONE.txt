@@ -1,3 +1,26 @@
+
+
+ERROR()
+--------
+
+Pokud nechám ERROR(), asi by se dalo použít tohle:
+https://www.bennadel.com/blog/2828-creating-custom-error-objects-in-node-js-with-error-capturestacktrace.htm
+
+  In the V8 engine, the stacktrace of an error is gathered using the
+  Error.captureStackTrace() method:
+
+    Error.captureStackTrace( errorObject, localContextFunction )
+
+  This method injects a "stack" property into the first argument and,
+  optionally, excludes the localContextFunction from the stacktrace.
+  So, for example, if we were to generate the stacktrace inside of an
+  error Factory function, we could tell V8 to exclude the factory function
+  when generating the stack. This would reduce the noise of the error
+  implementation and confine the stacktrace to meaningful information
+  about the error context.
+
+[done]
+
 TODO: Otestovat reportování errorů.
 [done]
 
