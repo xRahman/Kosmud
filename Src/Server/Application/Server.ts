@@ -10,7 +10,7 @@
 import {Syslog} from '../../Shared/Log/Syslog';
 import {Entities} from '../../Server/Class/Entities';
 import {MessageType} from '../../Shared/MessageType';
-import {HttpServer} from '../../Server/Net/HttpServer';
+import {HttpsServer} from '../../Server/Net/HttpsServer';
 import {Game} from '../../Server/Game/Game';
 import {Application} from '../../Shared/Application';
 import { REPORT } from '../../Shared/Log/REPORT';
@@ -35,7 +35,7 @@ export class Server extends Application
   // ----------------- Private data ---------------------
 
   /// Http server also runs a websocket server inside it.
-  private httpServer = new HttpServer();
+  private httpsServer = new HttpsServer();
 
   // ---------------- Protected data --------------------
 
@@ -56,7 +56,7 @@ export class Server extends Application
     try
     {
       // Http server also starts a websocket server inside it.
-      await this.instance.startHttpServer();
+      await this.instance.startHttpsServer();
     }
     catch (error)
     {
@@ -74,13 +74,13 @@ export class Server extends Application
   // --------------- Private methods --------------------
 
   // ! Throws an exception on error.
-  private async startHttpServer()
+  private async startHttpsServer()
   {
-    if (this.httpServer.isOpen())
+    if (this.httpsServer.isOpen())
     {
       throw new Error("Http server is already running");
     }
 
-    await this.httpServer.start();
+    await this.httpsServer.start();
   }
 }

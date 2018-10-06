@@ -35,8 +35,8 @@ export enum MessageType
   SYSTEM_ERROR,
   // Messages from telnet server.
   TELNET_SERVER,
-  // Messages from http server.
-  HTTP_SERVER,
+  // Messages from https server.
+  HTTPS_SERVER,
   // Messages from websocket server.
   WEBSOCKET_SERVER,
   // Sent when ingame script fails to compile (because of syntax errors).

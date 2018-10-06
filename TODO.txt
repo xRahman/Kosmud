@@ -1,4 +1,19 @@
+TODO: Použít https://letsencrypt.org/
+
+TODO: Použít Express (kvůli security)
+
 TODO: HttpServer by se asi rovnou mohl jmenovat HttpsServer...
+[done]
+
+TODO: Refactorovat HttpServer
+
+TODO: Zkontrolovat, že http server neservuje soubory mimo www-root.
+
+TODO: Neservovat data, když je https server closed.
+
+TODO: Refactorovat WebSocketServer
+
+TODO: Refactorovat Connectiony a WebSockety.
 
 [UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
 95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
@@ -48,6 +63,9 @@ TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
 
 TODO: Zamyslet se, co se zbytkem Utils
   (mělo by to mít specifičtější pojmenování.)
+
+TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
+  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
 
 
 Prozatímní řešení client-server predikce
@@ -165,8 +183,6 @@ https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width
 
 
 TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
-
-TODO: Zkontrolovat, že http server neservuje soubory mimo www-root.
 
 TODO: Vyzkoušet ES6 moduly v browseru.
 https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7

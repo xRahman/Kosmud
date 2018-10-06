@@ -1,26 +1,29 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Implements http server.
+  Https server.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
-// import {Syslog} from '../../Server/Log/Syslog';
-import {Syslog} from '../../Shared/Log/Syslog';
-import {FileSystem} from '../../Server/FS/FileSystem';
-import {MessageType} from '../../Shared/MessageType';
-import {WebSocketServer} from '../../Server/Net/WebSocketServer';
+import { REPORT } from '../../Shared/Log/REPORT';
+import { ERROR } from '../../Shared/Log/ERROR';
+import { Syslog } from '../../Shared/Log/Syslog';
+import { FileSystem } from '../FS/FileSystem';
+import { MessageType } from '../../Shared/MessageType';
+import { WebSocketServer } from './WebSocketServer';
 
 // Built-in node.js modules.
-import * as http from 'http';  // Import namespace 'http' from node.js.
-import * as https from 'https';  // Import namespace 'https' from node.js.
-import * as url from 'url';  // Import namespace 'url' from node.js.
+import * as http from 'http';
+import * as https from 'https';
+import * as url from 'url';
 // 'nodePath' to prevent conflicts with variable 'path'.
-import * as nodePath from 'path';  // Import namespace 'path' from node.js.
-import { REPORT } from '../../Shared/Log/REPORT';
+import * as nodePath from 'path';
 
 const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
 const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
+
+const WWW_ROOT = './Client';
+
+const DEFAULT_HTTPS_PORT = 443;
 
 const MIME_TYPE: { [key: string]: string } =
 {
@@ -40,40 +43,37 @@ const MIME_TYPE: { [key: string]: string } =
   '.ttf' : 'aplication/font-sfnt'
 };
 
-export class HttpServer
+export class HttpsServer
 {
-  constructor() { }
-
-  public static get WWW_ROOT() { return './Client'; }
-
   // ----------------- Public data ----------------------
 
   // Do we accept http requests?
   private open = false;
 
-  public static get DEFAULT_HTTP_PORT() { return 80; }
-  public static get DEFAULT_HTTPS_PORT() { return 443; }
-
   // --------------- Public accessors -------------------
 
   public getPort() { return this.port; }
-
-  public getServer() { return this.httpsServer; }
-
   public isOpen() { return this.open; }
 
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public async start(port = HttpServer.DEFAULT_HTTPS_PORT)
+  public async start(port = DEFAULT_HTTPS_PORT)
   {
+    if (this.httpsServer !== "Doesn't exist")
+    {
+      throw new Error("Failed to start https server because it's"
+        + " already running");
+    }
+
     Syslog.log
     (
-      "Starting http server at port " + port, MessageType.SYSTEM_INFO
+      "Starting https server at port " + port, MessageType.SYSTEM_INFO
     );
 
     this.port = port;
     
+    // ! Throws exception on error.
     let certificate = await loadCertificate();
 
     this.httpsServer = https.createServer
@@ -97,12 +97,11 @@ export class HttpServer
 
   // ----------------- Private data ---------------------
 
-  private port = HttpServer.DEFAULT_HTTP_PORT;
+  private port = DEFAULT_HTTPS_PORT;
 
-  //private httpServer: (http.Server | null) = null;
-  private httpsServer: (https.Server | null) = null;
+  private httpsServer: (https.Server | "Doesn't exist") = "Doesn't exist";
 
-  // Websocket server runs inside a http server.
+  // Websocket server runs inside a https server.
   private webSocketServer = new WebSocketServer();
   
   // ---------------- Event handlers --------------------
@@ -110,21 +109,22 @@ export class HttpServer
   // Runs when server is ready and listening.
   private onStartListening()
   {
-    if (this.httpsServer === null)
+    if (this.httpsServer === "Doesn't exist")
     {
-      ERROR("Invalid 'httpsServer'");
+      ERROR("HttpsServer doesn't exist even though it"
+        + " has just started listening - Huh?!?");
       return;
     }
 
     Syslog.log
     (
       "Https server is up and listening",
-      MessageType.HTTP_SERVER
+      MessageType.HTTPS_SERVER
     );
 
     this.open = true;
 
-    // Start a websocket server inside the http server.
+    // Start a websocket server inside the https server.
     this.webSocketServer.start(this.httpsServer);
   }
 
@@ -141,46 +141,22 @@ export class HttpServer
       return;
     }
 
-    // Parse URL.
     const parsedUrl = url.parse(request.url);
-    // Extract URL path.
-    let path = HttpServer.WWW_ROOT + parsedUrl.pathname;
+    let path = WWW_ROOT + parsedUrl.pathname;
 
     // If root directory is accessed, serve 'index.html'.
     if (request.url === "/")
       path += 'index.html';
 
+    /// DEBUG:
     // console.log('- Incomming http request: ' + path);
 
-    let readResult: { data: string } | "File doesn't exist";
-
-    try
-    {
-      readResult = await FileSystem.readFile(path, true);
-    }
-    catch(error)
-    {
-      REPORT(error);
-      send500(response);
-      return;
-    }
-
-    if (readResult === "File doesn't exist")
-    {
-      send404(response);
-      return;
-    }
-
-    sendData(response, readResult.data, path);
+    await serveFile(path, response);
   }
 
   private onError(error: Error)
   {
-    Syslog.log
-    (
-      "Error: " + error.message,
-      MessageType.HTTP_SERVER
-    );
+    Syslog.log("Error: " + error.message, MessageType.HTTPS_SERVER);
   }
 }
 
@@ -255,4 +231,28 @@ async function readFile(path: string): Promise<string>
   }
 
   return readResult.data;
+}
+
+async function serveFile(path: string, response: http.ServerResponse)
+{
+  let readResult: { data: string } | "File doesn't exist";
+
+  try
+  {
+    readResult = await FileSystem.readFile(path, true);
+  }
+  catch(error)
+  {
+    REPORT(error);
+    send500(response);
+    return;
+  }
+
+  if (readResult === "File doesn't exist")
+  {
+    send404(response);
+    return;
+  }
+
+  sendData(response, readResult.data, path);
 }

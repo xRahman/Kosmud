@@ -29,7 +29,7 @@ import {MessageType} from '../../Shared/MessageType';
 import {Server} from '../../Server/Application/Server';
 import {Connection} from '../../Server/Net/Connection';
 import {Connections} from '../../Server/Net/Connections';
-import {HttpServer} from '../../Server/Net/HttpServer';
+import {HttpsServer} from './HttpsServer';
 import {ServerSocket} from '../../Server/Net/ServerSocket';
 
 // 3rd party modules.
