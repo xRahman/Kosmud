@@ -4,17 +4,16 @@
   Filesystem I/O operations.
 */
 
-import { ERROR } from '../../Shared/Log/ERROR';
-import { Syslog } from '../../Shared/Log/Syslog';
 import { Types } from '../../Shared/Utils/Types';
-import { MessageType } from '../../Shared/MessageType';
 import { SavingQueue } from '../../Server/FS/SavingQueue';
 
 // Built-in node.js modules.
 import * as FS from 'fs-extra';
 
 // 3rd party modules.
-/// let extfs = require('extfs');
+/// Module is removed for now but function isEmpty() used
+/// to use it so it might be needed again.
+// let extfs = require('extfs');
 
 export class FileSystem
 {
@@ -81,79 +80,58 @@ export class FileSystem
     return { data };
   }
 
-  // -> Returns data read from file, 'null' if file could not be read.
-  public static readFileSync(path: string): (string | null)
-  {
-    if (!checkPathValidity(path))
-      return null;
-
-    let data: (string | null) = null;
-
-    try
-    {
-      data = FS.readFileSync(path, FileSystem.UTF8);
-    }
-    catch (error)
-    {
-      Syslog.log
-      (
-        "Unable to load file '" + path + "': " + error.code,
-        MessageType.SYSTEM_ERROR
-      );
-
-      return null;
-    }
-
-    return data;
-  }
-
-  // -> Returns 'true' if file was succesfully written.
+  // ! Throws exception on error.
   public static async writeFile
   (
     directory: string,
     fileName: string,
     data: string
   )
-  : Promise<boolean>
   {
     let path = directory + fileName;
 
     if (!FileSystem.isValidFileName(fileName))
     {
-      ERROR("Attempt to write file " + path + " which is"
-        + " not a valid file name. File is not written");
-      return false;
+      throw new Error('Failed to write file because path "' + path + '"'
+        + " does not have a valid file name");
     }
 
     // Following code is addresing feature of node.js file saving
-    // functions, which says that we must not attempt saving the same
+    // functions which says that we must not attempt saving the same
     // file until any previous saving finishes (otherwise it is not
     // guaranteed that file will be saved correctly).
-    //   To ensure this, we use register all saving that is being done
-    // to each file and buffer saving requests if necessary.
-    let promise = this.requestSaving(path);
+    //   To ensure this, we register all saving to each file and queue
+    // saving requests if necessary.
+    let result = this.requestSaving(path);
 
-    // If requestSaving() returned 'null', it means that file 'path'
-    // is not being saved right now so we can start saving right away.
-    // Otherwise we have to wait untill previous saving finishes.
-    if (promise !== null)
-      await this.saveAwaiter(promise);
+    if (result !== "Saving is possible right now")
+    {
+      await saveAwaiter(result);
+    }
 
     // Now it's our turn so we can save ourselves.
-    let success = await FileSystem.write(path, data);
+    try
+    {
+      await writeFile(path, data);
+    }
+    catch (error)
+    {
+      // We must finish saving even if error occured
+      // to not to block the saving queue.
+      this.finishSaving(path);
+      throw error;
+    }
 
     // Remove the lock and resolve saveAwaiter()
     // of whoever is waiting after us.
     this.finishSaving(path);
-
-    return success;
   }
 
-  // -> Returns 'true' if file was succesfully deleted.
-  public static async deleteFile(path: string): Promise<boolean>
+  // ! Throws exception on error.
+  public static async deleteFile(path: string)
   {
-    if (!checkPathValidity(path))
-      return false;
+    // ! Throws exception on error.
+    checkPathValidity(path);
 
     try
     {
@@ -161,43 +139,24 @@ export class FileSystem
     }
     catch (error)
     {
-      Syslog.log
-      (
-        "Unable to delete file '" + path + "': " + error.code,
-        MessageType.SYSTEM_ERROR
-      );
-
-      return false;
+      throw new Error("Failed to delete file '" + path + "': " + error.code);
     }
-
-    return true;
   }
 
-  // -> Returns 'true' if file exists.
+  // ! Throws exception on error.
   public static async exists(path: string): Promise<boolean>
   {
-    if (!checkPathValidity(path))
-      return false;
+    // ! Throws exception on error.
+    checkPathValidity(path);
 
     return await FS.pathExists(path);
   }
 
-  // -> Returns 'true' if file exists.
-  public static existsSync(path: string): boolean
-  {
-    if (!checkPathValidity(path))
-      return false;
-
-    return FS.existsSync(path);
-  }
-
-  // -> Returns 'true' if directory was succesfully created or if it already
-  //    existed.
+  // ! Throws exception on error.
   public static async ensureDirectoryExists(directory: string)
-  : Promise<boolean>
   {
-    if (!checkPathValidity(directory))
-      return false;
+    // ! Throws exception on error.
+    checkPathValidity(directory);
 
     try
     {
@@ -205,178 +164,82 @@ export class FileSystem
     }
     catch (error)
     {
-      Syslog.log
-      (
-        "Unable to ensure existence of directory '" + directory + "':"
-        + " " + error.code,
-        MessageType.SYSTEM_ERROR
-      );
-
-      return false;
+      throw new Error('Unable to ensure existence of'
+        + ' directory "' + directory + '": ' + error.code);
     }
-
-    return true;
   }
 
   /// This function used 'extfs' module which I removed as (almost)
   /// unnecessary. If this function is needed, it needs to be implemented
   /// differently or 'extfs' needs to be added again.
-  // // -> Returns 'true' if file or directory is empty.
-  // //    Directory is empty if it doesn't exist or there are no files in it.
-  // //    File is empty if it doesn't exist or it has zero size.
+  // // ! Throws exception on error.
+  // //  Directory is empty if it doesn't exist or there are no files in it.
+  // //  File is empty if it doesn't exist or it has zero size.
   // public static async isEmpty(path: string): Promise<boolean>
   // {
-  //   if (!FileSystem.isPathRelative(path))
-  //     return false;
+  //   // ! Throws exception on error.
+  //   checkPathValidity(path);
 
   //   return await FS.isEmpty(path);
   // }
 
-  /// This function used 'extfs' module which I removed as (almost)
-  /// unnecessary. If this function is needed, it needs to be implemented
-  /// differently or 'extfs' needs to be added again.
-  // // -> Returns 'true' if file or directory is empty.
-  // //    Directory is empty if it doesn't exist or there no files in it.
-  // //    File is empty if it doesn't exist or it has zero size.
-  // public static isEmptySync(path: string): boolean
-  // {
-  //   if (!FileSystem.isPathRelative(path))
-  //     return false;
-
-  //   return FS.isEmptySync(path);
-  // }
-
+  // ! Throws exception on error.
   // -> Returns array of file names in directory, including
   //    subdirectories, excluding '.' and '..'.
-  //    Returns 'null' on error.
-  public static async readDirectoryContents(path: string)
-  : Promise<Array<string> | null>
+  public static async readDirectoryContents
+  (
+    path: string
+  )
+  : Promise<Array<string>>
   {
-    if (!checkPathValidity(path))
-      return null;
-
-    let fileNames: (Array<string> | null) = null;
+    // ! Throws exception on error.
+    checkPathValidity(path);
 
     try
     {
-      fileNames = await FS.readdir(path);
+      return await FS.readdir(path);
     }
     catch (error)
     {
-      Syslog.log
-      (
-        "Unable to read directory '" + path + "':"
-        + " " + error.code,
-        MessageType.SYSTEM_ERROR
-      );
-
-      return null;
+      throw new Error('Unable to read contents of directory'
+        + ' "' + path + '": ' + error.code);
     }
-
-    return fileNames;
   }
 
+  // ! Throws exception on error.
   // -> Returns 'false' if 'path' is not a directory or an error occured.
   public static async isDirectory(path: string): Promise<boolean>
   {
-    if (!checkPathValidity(path))
-      return false;
+    // ! Throws exception on error.
+    checkPathValidity(path);
 
-    let fileStats = await FileSystem.statFile(path);
-
-    if (fileStats === null)
-      return false;
-
-    return fileStats.isDirectory();
+    // ! Throws exception on error.
+    return (await statFile(path)).isDirectory();
   }
 
   // -> Returns 'false' if 'path' is not a file or an error occured.
   public static async isFile(path: string): Promise<boolean>
   {
-    if (!checkPathValidity(path))
-      return false;
+    // ! Throws exception on error.
+    checkPathValidity(path);
 
-    let fileStats = await FileSystem.statFile(path);
-
-    if (fileStats === null)
-      return false;
-
-    return fileStats.isFile();
+    // ! Throws exception on error.
+    return (await statFile(path)).isFile();
   }
 
   // ---------------- Private methods ------------------- 
 
-  // -> Returns 'fs.Stats' object describing specified file.
-  //    Returns 'null' on error.
-  private static async statFile(path: string): Promise<FS.Stats | null>
-  {
-    if (!checkPathValidity(path))
-      return null;
-
-    let fileStats: (FS.Stats | null) = null;
-
-    try
-    {
-      fileStats = await FS.stat(path);
-    }
-    catch (error)
-    {
-      Syslog.log
-      (
-        "Unable to stat file '" + path + "':"
-        + " " + error.code,
-        MessageType.SYSTEM_ERROR
-      );
-
-      return null;
-    }
-
-    return fileStats;
-  }
-
-  // This is just a generic async function that will finish
-  // when 'promise' parameter gets resolved.
-  // (This only makes sense if you also store 'resolve' callback
-  //  of the promise so you can call it to finish this awaiter.
-  //  See SavingQueue.addRequest() for example how is it done.)
-  private static saveAwaiter(promise: Promise<{}>)
-  {
-    return promise;
-  }
-
-  // -> Returns 'true' if file was succesfully written.
-  private static async write(path: string, data: string): Promise<boolean>
-  {
-    if (!checkPathValidity(path))
-      return false;
-
-    try
-    {
-      await FS.writeFile(path, data, FileSystem.UTF8);
-    }
-    catch (error)
-    {
-      Syslog.log
-      (
-        "Unable to save file '" + path + "': " + error.code,
-        MessageType.SYSTEM_ERROR
-      );
-
-      return false;
-    }
-
-    return true;
-  }
-
-  // -> Returns Promise if file is being saved right now so
-  //      the caller needs to wait (using the returned Promise).
-  // -> Returns null if this file isn't beeing saved right now
-  //      so it is possible to start saving right away.
-  private static requestSaving(path: string): Promise<{}> | null
+  // If promise is returned, whoever is requesting saving
+  // must wait using saveAwaiter(promise).
+  private static requestSaving
+  (
+    path: string
+  )
+  : Promise<{}> | "Saving is possible right now"
   {
     let queue = this.savingQueues.get(path);
 
-    if (queue === undefined)
+    if (!queue)
     {
       // Nobody is saving to the path yet.
       queue = new SavingQueue();
@@ -385,14 +248,13 @@ export class FileSystem
       // request, because it will be processed right away.
       this.savingQueues.set(path, queue);
 
-      return null;
+      return "Saving is possible right now";
     }
     
     // Someone is already saving to the path.
     return queue.addRequest();
   }
 
-//*
   // ! Throws exception on error.
   private static finishSaving(path: string)
   {
@@ -430,7 +292,6 @@ function checkPathValidity(path: string)
   {
     throw new Error("File path '" + path + "' is not relative."
     + " Ensure that it starts with './'");
-
   }
   
   if (containsDoubleDot(path))
@@ -451,4 +312,46 @@ function isRelative(path: string): boolean
 function containsDoubleDot(path: string): boolean
 {
   return path.indexOf('..') !== -1;
+}
+
+// ! Throws exception on error.
+async function writeFile(path: string, data: string)
+{
+  // ! Throws exception on error.
+  checkPathValidity(path);
+
+  try
+  {
+    await FS.writeFile(path, data, FileSystem.UTF8);
+  }
+  catch (error)
+  {
+    throw new Error ("Failed to save file '" + path + "': " + error.code);
+  }
+}
+
+// This is just a generic async function that will finish
+// when 'promise' parameter gets resolved.
+// (This only makes sense if you also store resolve callback
+//  of the promise so you can call it to finish this awaiter.
+//  See SavingQueue.addRequest() for example how is it done.)
+function saveAwaiter(promise: Promise<{}>)
+{
+  return promise;
+}
+
+// ! Throws exception on error.
+async function statFile(path: string): Promise<FS.Stats>
+{
+  // ! Throws exception on error.
+  checkPathValidity(path);
+
+  try
+  {
+    return await FS.stat(path);
+  }
+  catch (error)
+  {
+    throw new Error('Unable to stat file "' + path + '": ' + error.code);
+  }
 }
