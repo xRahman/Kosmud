@@ -4,11 +4,11 @@
   Filesystem I/O operations.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
-import {Syslog} from '../../Shared/Log/Syslog';
+import { ERROR } from '../../Shared/Log/ERROR';
+import { Syslog } from '../../Shared/Log/Syslog';
 import { Types } from '../../Shared/Utils/Types';
-import {MessageType} from '../../Shared/MessageType';
-import {SavingQueue} from '../../Server/FS/SavingQueue';
+import { MessageType } from '../../Shared/MessageType';
+import { SavingQueue } from '../../Server/FS/SavingQueue';
 
 // Built-in node.js modules.
 import * as FS from 'fs-extra';
@@ -18,15 +18,13 @@ import * as FS from 'fs-extra';
 
 export class FileSystem
 {
-  public static readonly TEXT_FILE_ENCODING = 'utf8';
-  public static readonly BINARY_FILE_ENCODING = 'binary';
-  public static readonly JSON_EXTENSION = '.json';
+  public static readonly UTF8 = 'utf8';
+  public static readonly BINARY = 'binary';
+  public static readonly JSON = 'json';
 
   // ----------------- Private data ---------------------
 
-  // Hashmap<[ string, SavingRecord ]>
-  //   Key: full save path
-  //   Value: SavingQueue
+  // Key: relative path of saved file.
   private static savingQueues = new Map<string, SavingQueue>();
 
   // ---------------- Public methods --------------------
@@ -53,72 +51,47 @@ export class FileSystem
     return true;
   }
 
-  // -> Returns data read from file, 'null' if file could not be read.
+  // ! Throws exception on error.
   public static async readFile
   (
     path: string,
-    param =
-    {
-      binary: false,
-      reportErrors: true
-    }
+    binary = false
   )
-  : Promise<string | null>
+  // Return value is {} because string would conflict with other value(s).
+  : Promise<{ data: string } | "File doesn't exist">
   {
-    if (!FileSystem.isPathRelative(path))
-      return null;
+    // ! Throws exception on error.
+    checkPathValidity(path);
 
-    let data: (string | null) = null;
-    let encoding = param.binary ?
-      FileSystem.BINARY_FILE_ENCODING : FileSystem.TEXT_FILE_ENCODING;
+    let data: string;
+    const encoding = binary ? FileSystem.BINARY : FileSystem.UTF8;
 
     try
     {
-      data = await FS.readFile
-      (
-        path,
-        encoding
-      );
+      data = await FS.readFile(path, encoding);
     }
     catch (error)
     {
-      if (param.reportErrors)
-      {
-        let reason = error.code;
+      if (error.code === 'ENOENT')
+        return "File doesn't exist";
 
-        // Let's be more specific - we are trying to load file so ENOENT
-        // means that file doesn't exist.
-        if (error.code === 'ENOENT')
-          reason = "File doesn't exist"
-
-        Syslog.log
-        (
-          "Unable to load file '" + path + "': " + reason,
-          MessageType.SYSTEM_ERROR
-        );
-      }
-
-      return null;
+      throw new Error("Unable to read file '" + path + "': " + error.code);
     }
 
-    return data;
+    return { data };
   }
 
   // -> Returns data read from file, 'null' if file could not be read.
   public static readFileSync(path: string): (string | null)
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return null;
 
     let data: (string | null) = null;
 
     try
     {
-      data = FS.readFileSync
-      (
-        path,
-        FileSystem.TEXT_FILE_ENCODING
-      );
+      data = FS.readFileSync(path, FileSystem.UTF8);
     }
     catch (error)
     {
@@ -179,7 +152,7 @@ export class FileSystem
   // -> Returns 'true' if file was succesfully deleted.
   public static async deleteFile(path: string): Promise<boolean>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return false;
 
     try
@@ -203,7 +176,7 @@ export class FileSystem
   // -> Returns 'true' if file exists.
   public static async exists(path: string): Promise<boolean>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return false;
 
     return await FS.pathExists(path);
@@ -212,7 +185,7 @@ export class FileSystem
   // -> Returns 'true' if file exists.
   public static existsSync(path: string): boolean
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return false;
 
     return FS.existsSync(path);
@@ -223,7 +196,7 @@ export class FileSystem
   public static async ensureDirectoryExists(directory: string)
   : Promise<boolean>
   {
-    if (!FileSystem.isPathRelative(directory))
+    if (!checkPathValidity(directory))
       return false;
 
     try
@@ -279,7 +252,7 @@ export class FileSystem
   public static async readDirectoryContents(path: string)
   : Promise<Array<string> | null>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return null;
 
     let fileNames: (Array<string> | null) = null;
@@ -306,7 +279,7 @@ export class FileSystem
   // -> Returns 'false' if 'path' is not a directory or an error occured.
   public static async isDirectory(path: string): Promise<boolean>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return false;
 
     let fileStats = await FileSystem.statFile(path);
@@ -320,7 +293,7 @@ export class FileSystem
   // -> Returns 'false' if 'path' is not a file or an error occured.
   public static async isFile(path: string): Promise<boolean>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return false;
 
     let fileStats = await FileSystem.statFile(path);
@@ -333,24 +306,11 @@ export class FileSystem
 
   // ---------------- Private methods ------------------- 
 
-  // -> Returns 'true' if 'path' begins with './'.
-  private static isPathRelative(path: string): boolean
-  {
-    if (path.substr(0, 2) !== './')
-    {
-      ERROR("File path '" + path + "' is not relative."
-        + " Ensure that it starts with './'");
-      return false;
-    }
-
-    return true;
-  }
-
   // -> Returns 'fs.Stats' object describing specified file.
   //    Returns 'null' on error.
   private static async statFile(path: string): Promise<FS.Stats | null>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return null;
 
     let fileStats: (FS.Stats | null) = null;
@@ -387,17 +347,12 @@ export class FileSystem
   // -> Returns 'true' if file was succesfully written.
   private static async write(path: string, data: string): Promise<boolean>
   {
-    if (!FileSystem.isPathRelative(path))
+    if (!checkPathValidity(path))
       return false;
 
     try
     {
-      await FS.writeFile
-      (
-        path,
-        data,
-        FileSystem.TEXT_FILE_ENCODING
-      );
+      await FS.writeFile(path, data, FileSystem.UTF8);
     }
     catch (error)
     {
@@ -464,4 +419,36 @@ export class FileSystem
     // to proceed.
     resolveCallback();
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+// ! Throws exception on error.
+function checkPathValidity(path: string)
+{
+  if (!isRelative(path))
+  {
+    throw new Error("File path '" + path + "' is not relative."
+    + " Ensure that it starts with './'");
+
+  }
+  
+  if (containsDoubleDot(path))
+  {
+    throw new Error("File path '" + path + "' is not valid."
+    + " Ensure that it doesn't contain '..'");
+  }
+}
+
+function isRelative(path: string): boolean
+{
+  if (path.substr(0, 2) !== './')
+    return false;
+
+  return true;
+}
+
+function containsDoubleDot(path: string): boolean
+{
+  return path.indexOf('..') !== -1;
 }

@@ -1,3 +1,5 @@
+TODO: HttpServer by se asi rovnou mohl jmenovat HttpsServer...
+
 [UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
 95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
 propagated to top-level function. It needs to be caught much deeper where the er
