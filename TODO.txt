@@ -1,15 +1,7 @@
 TODO: Použít https://letsencrypt.org/
 
-TODO: Použít Express (kvůli security)
-
-TODO: HttpServer by se asi rovnou mohl jmenovat HttpsServer...
-[done]
-
-TODO: Refactorovat HttpServer
-
-TODO: Zkontrolovat, že http server neservuje soubory mimo www-root.
-
-TODO: Neservovat data, když je https server closed.
+TODO: Mrknout, jestli by nebylo lepší navěsit handlery https serveru přes
+  express (jestli to vůbec jde).
 
 TODO: Refactorovat WebSocketServer
 

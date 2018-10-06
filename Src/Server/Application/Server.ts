@@ -76,11 +76,6 @@ export class Server extends Application
   // ! Throws an exception on error.
   private async startHttpsServer()
   {
-    if (this.httpsServer.isOpen())
-    {
-      throw new Error("Http server is already running");
-    }
-
     await this.httpsServer.start();
   }
 }

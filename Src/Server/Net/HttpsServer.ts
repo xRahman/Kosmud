@@ -18,11 +18,16 @@ import * as url from 'url';
 // 'nodePath' to prevent conflicts with variable 'path'.
 import * as nodePath from 'path';
 
+// 3rd party modules.
+import * as express from 'express';
+import { Express } from 'express';
+
 const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
 const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
 
 const WWW_ROOT = './Client';
 
+const DEFAULT_HTTP_PORT = 80;
 const DEFAULT_HTTPS_PORT = 443;
 
 const MIME_TYPE: { [key: string]: string } =
@@ -47,20 +52,47 @@ export class HttpsServer
 {
   // ----------------- Public data ----------------------
 
-  // Do we accept http requests?
-  private open = false;
-
   // --------------- Public accessors -------------------
 
-  public getPort() { return this.port; }
-  public isOpen() { return this.open; }
+  public getHttpPort() { return this.httpPort; }
+  public getHttpsPort() { return this.httpsPort; }
 
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public async start(port = DEFAULT_HTTPS_PORT)
+  public async start
+  (
+    { httpPort = DEFAULT_HTTP_PORT, httpsPort = DEFAULT_HTTPS_PORT } = {}
+  )
   {
-    if (this.httpsServer !== "Doesn't exist")
+    this.startHttpServer(httpPort, this.expressApp);
+    this.startHttpsServer(httpsPort, this.expressApp);
+
+    redirectHttpToHttps(this.expressApp);
+    serveStaticFiles(this.expressApp);
+  }
+
+  private async startHttpServer(port: number, expressApp: Express)
+  {
+    if (this.httpServer !== "Not running")
+    {
+      throw new Error("Failed to start http server because it's"
+        + " already running");
+    }
+
+    this.httpPort = port;
+
+    Syslog.log
+    (
+      "Starting http server at port " + port, MessageType.SYSTEM_INFO
+    );
+
+    this.httpServer = http.createServer(expressApp).listen(port);
+  }
+
+  private async startHttpsServer(port: number, expressApp: Express)
+  {
+    if (this.httpsServer !== "Not running")
     {
       throw new Error("Failed to start https server because it's"
         + " already running");
@@ -71,16 +103,13 @@ export class HttpsServer
       "Starting https server at port " + port, MessageType.SYSTEM_INFO
     );
 
-    this.port = port;
+    this.httpsPort = port;
     
     // ! Throws exception on error.
     let certificate = await loadCertificate();
 
-    this.httpsServer = https.createServer
-    (
-      certificate,
-      (request, response) => { this.onRequest(request, response); }
-    );
+
+    this.httpsServer = https.createServer(certificate, expressApp);
 
     this.httpsServer.on
     (
@@ -97,9 +126,14 @@ export class HttpsServer
 
   // ----------------- Private data ---------------------
 
-  private port = DEFAULT_HTTPS_PORT;
+  private httpPort = DEFAULT_HTTP_PORT;
+  private httpsPort = DEFAULT_HTTPS_PORT;
 
-  private httpsServer: (https.Server | "Doesn't exist") = "Doesn't exist";
+  // Use 'express' to handle security issues like directory traversing.
+  private expressApp = express();
+
+  private httpServer: (http.Server | "Not running") = "Not running";
+  private httpsServer: (https.Server | "Not running") = "Not running";
 
   // Websocket server runs inside a https server.
   private webSocketServer = new WebSocketServer();
@@ -109,9 +143,9 @@ export class HttpsServer
   // Runs when server is ready and listening.
   private onStartListening()
   {
-    if (this.httpsServer === "Doesn't exist")
+    if (this.httpsServer === "Not running")
     {
-      ERROR("HttpsServer doesn't exist even though it"
+      ERROR("HttpsServer isn't running even though it"
         + " has just started listening - Huh?!?");
       return;
     }
@@ -122,36 +156,8 @@ export class HttpsServer
       MessageType.HTTPS_SERVER
     );
 
-    this.open = true;
-
     // Start a websocket server inside the https server.
     this.webSocketServer.start(this.httpsServer);
-  }
-
-  // Handles http requests.
-  private async onRequest
-  (
-    request: http.IncomingMessage,
-    response: http.ServerResponse
-  )
-  {
-    if (!request.url)
-    {
-      ERROR("Missing 'url' on http request");
-      return;
-    }
-
-    const parsedUrl = url.parse(request.url);
-    let path = WWW_ROOT + parsedUrl.pathname;
-
-    // If root directory is accessed, serve 'index.html'.
-    if (request.url === "/")
-      path += 'index.html';
-
-    /// DEBUG:
-    // console.log('- Incomming http request: ' + path);
-
-    await serveFile(path, response);
   }
 
   private onError(error: Error)
@@ -161,29 +167,6 @@ export class HttpsServer
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-function send404(response: http.ServerResponse)
-{
-  response.statusCode = 404;
-  response.end('File not found!');
-}
-
-function send500(response: http.ServerResponse)
-{
-  response.statusCode = 500;
-  response.end('Internal server error.');
-}
-
-function sendData(response: http.ServerResponse, data: string, path: string)
-{
-  // Based on the URL path, extract the file extention.
-  const ext = nodePath.parse(path).ext;
-
-  // Set mime type to the response header.
-  response.setHeader('Content-type', MIME_TYPE[ext] || 'text/plain');
-  // Send 'data' as response.
-  response.end(data, FileSystem.BINARY);
-}
 
 // ! Throws exception on error.
 async function loadCertificate()
@@ -233,26 +216,25 @@ async function readFile(path: string): Promise<string>
   return readResult.data;
 }
 
-async function serveFile(path: string, response: http.ServerResponse)
+function redirectHttpToHttps(expressApp: Express)
 {
-  let readResult: { data: string } | "File doesn't exist";
+  expressApp.use
+  (
+    (request, response, next) =>
+    {
+      if (request.secure)
+      {
+        next();
+      }
+      else
+      {
+        response.redirect('https://' + request.headers.host + request.url);
+      }
+    }
+  );
+}
 
-  try
-  {
-    readResult = await FileSystem.readFile(path, true);
-  }
-  catch(error)
-  {
-    REPORT(error);
-    send500(response);
-    return;
-  }
-
-  if (readResult === "File doesn't exist")
-  {
-    send404(response);
-    return;
-  }
-
-  sendData(response, readResult.data, path);
+function serveStaticFiles(expressApp: Express)
+{
+  expressApp.use(express.static(WWW_ROOT));
 }
