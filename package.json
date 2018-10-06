@@ -23,6 +23,7 @@
     "@types/matter-js": "^0.10.1",
     "@types/node": "^10.9.4",
     "@types/ws": "^6.0.1",
+    "express": "^4.16.3",
     "fastbitset": "^0.2.7",
     "fastpriorityqueue": "^0.6.1",
     "fs-extra": "^7.0.0",
