@@ -1,11 +1,19 @@
 TODO: Použít https://letsencrypt.org/
 
-TODO: Mrknout, jestli by nebylo lepší navěsit handlery https serveru přes
-  express (jestli to vůbec jde).
-
 TODO: Refactorovat WebSocketServer
 
 TODO: Refactorovat Connectiony a WebSockety.
+
+TODO: Refactorovat Connections (a handlovat exeptiony)
+
+TODO: Client musí nějak ošetřit disconnect
+  (aby pak neházel errory jako
+   'Uncaught Error: Failed to send data because the connection is closed')
+
+TODO: Uncaught error: Failed to send data because the connection is closed.
+
+TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
+  callů. Zkontrolovat, jestli to nemají být exceptiony.
 
 [UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
 95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
@@ -35,62 +43,7 @@ d\Src\Server\Game\Game.ts:37:20)
 TODO: Connections.broadcast() musí testovat, jestli jsou
   connectiony otevřené.
 
-TODO: Výhledově sjednotit formát improtů (asi import { ERROR } from './ERROR').
-
-TODO: Updatnout commenty v Application, Client a Server.
-
-TODO: Uncaught error: Failed to send data because the connection is closed.
-
-TODO: Packety asi nemusí mít version (nemusí se posílat).
-
-TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
-  a z něj pak volat všechno ostatní.
-  (60 tiků za vteřinu je blbý číslo btw, bude se s tím špatně počítat...
-   na druhou stranu je to rozumný strop fps).
-- Každopádně to jsou entry-level funkce a je tam potřeba reportovat uncaught
-  exceptiony [to je DONE].
-
-TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
-  callů. Zkontrolovat, jestli to nemají být exceptiony.
-
-TODO: Zamyslet se, co se zbytkem Utils
-  (mělo by to mít specifičtější pojmenování.)
-
-TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
-  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
-
-
-Prozatímní řešení client-server predikce
------------------------------------------
-
-TODO: Napsat "simulátor lagu"
-  (random setInterval() před posláním packetu).
-
-TODO: Vyzkoušet webpack
-
-TODO: Fyziku přesunout do shared kódu (ve finálu tam bude muset bejt,
-  aby šlo dělat client-side simulaci, tak bych s tím rovnou mohli počítat.
-  (klient-side simulaci ale zatím dělat nebudu).
-
-TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
-  Klient bude pokračovat v pohybu, kterej se od serveru dozvěděl.
-  - resetne se to v okamžiku nového příchozího packetu
-    (možná postupná interpolace pozice?)
-  - predikce poběží jen určitej čas (třeba 100ms nebo tak nějak),
-    pak se pohyb utlumí do nuly (aby se mi nestávalo to co v AOčku, tj.
-    že při velkém lagu objekt ustřelí kamsi do dáli. Zastavit ho je mnohem
-    lepší).
-
-
------------------------------------------------------------------------
-
-TODO: Exceptiony ve FileSystem.
-
-
-TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
-- jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
-
------------------------------------------------------------------------
+  -----------------------------------------------------------------------
 
 Refactoring Connectionů
 ------------------------
@@ -117,6 +70,58 @@ TODO: send() a receiveData() by asi vůbec neměly catchovat exceptiony
 
 TODO: Pořešit rethrow v ServerSocket.send()
   (a asi i v ClientSocket)
+
+-----------------------------------------------------------------------
+
+
+TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
+
+TODO: Updatnout commenty v Application, Client a Server.
+
+TODO: Packety asi nemusí mít version (nemusí se posílat).
+
+TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
+  a z něj pak volat všechno ostatní.
+  (60 tiků za vteřinu je blbý číslo btw, bude se s tím špatně počítat...
+   na druhou stranu je to rozumný strop fps).
+- Každopádně to jsou entry-level funkce a je tam potřeba reportovat uncaught
+  exceptiony [to je DONE].
+
+
+TODO: Zamyslet se, co se zbytkem Utils
+  (mělo by to mít specifičtější pojmenování.)
+
+TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
+  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
+
+
+Prozatímní řešení client-server predikce
+-----------------------------------------
+
+TODO: Napsat "simulátor lagu"
+  (random setInterval() před posláním packetu).
+
+
+TODO: Fyziku přesunout do shared kódu (ve finálu tam bude muset bejt,
+  aby šlo dělat client-side simulaci, tak bych s tím rovnou mohli počítat.
+  (klient-side simulaci ale zatím dělat nebudu).
+
+TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
+  Klient bude pokračovat v pohybu, kterej se od serveru dozvěděl.
+  - resetne se to v okamžiku nového příchozího packetu
+    (možná postupná interpolace pozice?)
+  - predikce poběží jen určitej čas (třeba 100ms nebo tak nějak),
+    pak se pohyb utlumí do nuly (aby se mi nestávalo to co v AOčku, tj.
+    že při velkém lagu objekt ustřelí kamsi do dáli. Zastavit ho je mnohem
+    lepší).
+
+
+-----------------------------------------------------------------------
+
+
+TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
+- jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
+
 
 
 -----------------------------------------------------------------------

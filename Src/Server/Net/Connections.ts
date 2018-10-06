@@ -22,18 +22,6 @@ export class Connections
 
   // ------------- Public static methods ----------------
 
-  public static add(connection: Connection)
-  {
-    if (this.connections.has(connection))
-    {
-      ERROR("Attempt to add connection which already "
-        + " exists in Connections");
-      return;
-    }
-
-    this.connections.add(connection);
-  }
-
   public static release(connection: Connection)
   {
     if (!this.connections.has(connection))
@@ -46,11 +34,40 @@ export class Connections
     this.connections.delete(connection);
   }
 
+  /// TODO: Zatím public
+  public static add(connection: Connection)
+  {
+    if (this.connections.has(connection))
+    {
+      ERROR("Attempt to add connection which already "
+        + " exists in Connections");
+      return;
+    }
+
+    this.connections.add(connection);
+  }
+
   public static broadcast(packet: Packet)
   {
     for (let connection of this.connections)
       connection.send(packet);
   }
+
+  /// TODO (zatím odloženo)
+  // public static createConnection
+  // (
+  //   webSocket: WebSocket,
+  //   ip: string,
+  //   url: string
+  // )
+  // : Connection
+  // {
+  //   let connection = new Connection(webSocket, ip, url);
+
+  //   Connections.add(connection);
+
+  //   return connection;
+  // }
 
   /// Disabled for now.
   // // Sends a message to all connections.
@@ -84,6 +101,5 @@ export class Connections
   //   }
   // }
 
-  // ------------- Private static methods --------------- 
-
+  // ------------- Private static methods ---------------
 }

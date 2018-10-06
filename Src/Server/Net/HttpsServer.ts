@@ -4,23 +4,20 @@
   Https server.
 */
 
-import { REPORT } from '../../Shared/Log/REPORT';
 import { ERROR } from '../../Shared/Log/ERROR';
 import { Syslog } from '../../Shared/Log/Syslog';
 import { FileSystem } from '../FS/FileSystem';
 import { MessageType } from '../../Shared/MessageType';
-import { WebSocketServer } from './WebSocketServer';
+import { WebSocketServer } from '../../Server/Net/WebSocketServer';
 
 // Built-in node.js modules.
 import * as http from 'http';
 import * as https from 'https';
-import * as url from 'url';
-// 'nodePath' to prevent conflicts with variable 'path'.
-import * as nodePath from 'path';
 
 // 3rd party modules.
 import * as express from 'express';
 import { Express } from 'express';
+import { REPORT } from '../../Shared/Log/REPORT';
 
 const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
 const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
@@ -29,24 +26,6 @@ const WWW_ROOT = './Client';
 
 const DEFAULT_HTTP_PORT = 80;
 const DEFAULT_HTTPS_PORT = 443;
-
-const MIME_TYPE: { [key: string]: string } =
-{
-  '.ico' : 'image/x-icon',
-  '.html': 'text/html',
-  '.js'  : 'text/javascript',
-  '.json': 'application/json',
-  '.css' : 'text/css',
-  '.png' : 'image/png',
-  '.jpg' : 'image/jpeg',
-  '.wav' : 'audio/wav',
-  '.mp3' : 'audio/mpeg',
-  '.svg' : 'image/svg+xml',
-  '.pdf' : 'application/pdf',
-  '.doc' : 'application/msword',
-  '.eot' : 'appliaction/vnd.ms-fontobject',
-  '.ttf' : 'aplication/font-sfnt'
-};
 
 export class HttpsServer
 {
@@ -65,6 +44,8 @@ export class HttpsServer
     { httpPort = DEFAULT_HTTP_PORT, httpsPort = DEFAULT_HTTPS_PORT } = {}
   )
   {
+    // Start http server along with https server to redirect
+    // http requests to https.
     this.startHttpServer(httpPort, this.expressApp);
     this.startHttpsServer(httpsPort, this.expressApp);
 
@@ -156,8 +137,15 @@ export class HttpsServer
       MessageType.HTTPS_SERVER
     );
 
-    // Start a websocket server inside the https server.
-    this.webSocketServer.start(this.httpsServer);
+    try
+    {
+      // Start a websocket server inside the https server.
+      this.webSocketServer.start(this.httpsServer);
+    }
+    catch (error)
+    {
+      REPORT(error);
+    }
   }
 
   private onError(error: Error)

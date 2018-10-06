@@ -1,3 +1,10 @@
+TODO: Exceptiony ve FileSystem.
+[done]
+
+TODO: Vyzkoušet webpack
+- pomalé, žere class names. Zatím nebrat
+[done]
+
 TODO: Použít Express (kvůli security)
 [done]
 
