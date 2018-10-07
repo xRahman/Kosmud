@@ -1,3 +1,8 @@
+TODO: [WEBSOCKET] Socket to NaN closed. Code: 1006. Description: Reserved.
+  Used to indicate that a connection was closed abnormally (that is, with no
+  close frame being sent) when a status code is expected.
+- když sestřelím server.
+
 TODO: Rozdělit MessageType na Syslog.MessageType a zbytek.
   (mimo jiné se nebude muset všude se Syslogem importovat ještě MessageType).
 
