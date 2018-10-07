@@ -8,12 +8,45 @@ import { Serializable } from '../../Shared/Class/Serializable';
 
 // 3rd party modules.
 let FastPriorityQueue = require('fastpriorityqueue');
+// Use 'isomorphic-ws' to be able to use the same code
+// on both client and server.
+import * as WebSocket from 'isomorphic-ws';
 
 export module Types
 {
   // Types used for example in 'new Promise((resolve, reject) => { ... })'.
   export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
   export type RejectFunction = (reason?: any) => void;
+
+
+  export type OpenEvent =
+  {
+    target: WebSocket
+  };
+
+  export type MessageEvent =
+  {
+    data: WebSocket.Data;
+    type: string;
+    target: WebSocket
+  };
+
+  export type ErrorEvent =
+  {
+    error: any;
+    message: string;
+    type: string;
+    target: WebSocket
+  };
+
+  export type CloseEvent =
+  {
+    wasClean:
+    boolean;
+    code: number;
+    reason: string;
+    target: WebSocket
+  };
 
   // If you exclaim "WTF!" loudly after reading the next two lines of
   // code, I absolutely aggree with you.

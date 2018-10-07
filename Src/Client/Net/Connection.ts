@@ -12,7 +12,6 @@ import {Classes} from '../../Shared/Class/Classes';
 import * as Shared from '../../Shared/Net/Connection';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Client} from '../../Client/Application/Client';
-import {ClientSocket} from '../../Client/Net/ClientSocket';
 // import {Entity} from '../../../shared/lib/entity/Entity';
 // import {ClientEntities} from '../../../client/lib/entity/ClientEntities';
 // import {Windows} from '../../../client/gui/window/Windows';
@@ -22,19 +21,20 @@ import {ClientSocket} from '../../Client/Net/ClientSocket';
 // import {Account} from '../../../client/lib/account/Account';
 // import {Character} from '../../../client/game/character/Character';
 import {MessageType} from '../../Shared/MessageType';
+import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
+import {Types} from '../../Shared/Utils/Types';
 import {Packet} from '../../Shared/Protocol/Packet';
 import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
 import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
+import {Socket} from '../../Client/Net/Socket';
 
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(PlayerInput);
 
-export class Connection extends Shared.Connection
+export class Connection extends Socket
 {
-  private socket: (ClientSocket | null) = null;
-
   // -------------- Static class data -------------------
 
   // ----------------- Public data ----------------------
@@ -68,18 +68,88 @@ export class Connection extends Shared.Connection
 
   // ---------------- Static methods --------------------
 
-  public static isOpen(): boolean
+  public static checkWebSocketSupport(): boolean
   {
-    if (!Client.connection || !Client.connection.socket)
-      return false;
+    if (typeof WebSocket === 'undefined')
+    {
+      let MozWebSocket = (window as any)['MozWebSocket'];
 
-    return Client.connection.socket.isOpen();
+      // Use 'MozWebSocket' if it's available.
+      if (MozWebSocket)
+      {
+        WebSocket = MozWebSocket;
+        return true;
+      }
+
+      alert("Sorry, you browser doesn't support websockets.");
+      return false;
+    }
+
+    return true;
   }
+
+  public static connect()
+  {
+    // There is no point in error handling here, because opening
+    // a socket is asynchronnous. If an error occurs, 'error' event
+    // is fired and onSocketError() is executed.
+    //   We don't need to specify port because websocket server runs
+    // inside https server so it automaticaly uses htts port.
+    let webSocket = new WebSocket('wss://' + window.location.hostname);
+
+    /// TODO:
+    /// - vyrobit Connection
+    ///   - passnout jí 'webSocket' jako parametr (ta by ho měla passnout
+    ///      socketu).
+  }
+  // // Attempts to open the websocket connection.
+  // public connect()
+  // {
+  //   if (this.socket !== null)
+  //     ERROR("Socket already exists");
+
+  //   this.socket = new ClientSocket(this);
+  //   this.clientMessage('Opening websocket connection...');
+  //   this.socket.connect();
+  // }
+
+  /// TODO: Tohle by asi mělo bejt static a trochu jinak.
+  // // Attempts to reconnect.
+  // public reConnect()
+  // {
+  //   ///console.log('reConnect(). Status: ' + this.socket.readyState);
+
+  //   if (this.isOpen())
+  //     // There is no point in reconnecting an open socket.
+  //     /// TODO: Tohle by asi měl bejt error (exception).
+  //     return;
+
+  //   if (this.isConnecting())
+  //   /// TODO: Tohle by asi měl bejt error (exception).
+  //     // There is no point if the socket is already trying to connect.
+  //     return;
+    
+  //   if (this.isClosing())
+  //     // If the socket is still closing, old event handlers are not yet
+  //     // detached so we shouldn't create a new socket yet.
+  //     /// TODO: Asi by to chtelo dát message playerovi a ideálně
+  //     /// pustit auto-reconnect, pokud ještě neběží.
+  //     return;
+
+  //   this.clientMessage
+  //   (
+  //     'Attempting to reconnect...'
+  //   );
+
+  //   /// TODO: Hmm, tohle teď dělá Connection.connect().
+  //   /// Možná by se reconnect taky měl řešit taky tam.
+  //   this.connect();
+  // }
+
 
   // ! Throws exception on error.
   // Note:
-  //   Make sure that you call isOpen() and handle the result
-  //   before call send().
+  //   Make sure that you check isOpen() before you call send().
   //   (You will get an exception if you try to send data to closed
   //    connection but it's better to handle it beforehand.)
   public static send(packet: Packet)
@@ -171,17 +241,6 @@ export class Connection extends Shared.Connection
   //   return avatar;
   // }
 
-  // Attempts to open the websocket connection.
-  public connect()
-  {
-    if (this.socket !== null)
-      ERROR("Socket already exists");
-
-    this.socket = new ClientSocket(this);
-    this.clientMessage('Opening websocket connection...');
-    this.socket.connect();
-  }
-
   /// Disabled for now.
   // // Sends 'command' to the connection.
   // public sendCommand(command: string)
@@ -207,7 +266,8 @@ export class Connection extends Shared.Connection
   // Sends system message to the connection.
   public sendSystemMessage(message: string, messageType: MessageType)
   {
-    if (this.socket && !this.socket.isClosed())
+    /// TODO: Není to error?
+    if (this.isOpen())
     {
       let packet = new SystemMessage(message, messageType);
 
@@ -251,27 +311,101 @@ export class Connection extends Shared.Connection
     );
   }
 
-  public close(reason: (string | null) = null)
-  {
-    if (this.socket)
-      this.socket.close(reason);
-  }
-
   // ---------------- Event handlers --------------------
+
+  // ~ Overrides Socket.onClose().
+  protected onClose(event: Types.CloseEvent)
+  {
+    super.onClose(event);
+
+    if (!WebSocketEvent.isNormalClose(event.code))
+    {
+      this.logSocketClosingError(event);
+
+      if (!this.wasConnected)
+      {
+        this.reportConnectionFailure();
+      }
+      else
+      {
+        this.reportAbnormalDisconnect();
+      }
+      
+      return;
+    }
+
+    this.reportNormalDisconnect();
+
+    /// TODO: Auto reconnect:
+    /// (Vyhledove by to taky chtelo timer, aby to zkousel opakovane).
+  }
 
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
   private send(packet: Packet)
   {
-    if (!this.socket)
-    {
-      throw new Error("Failed to send data because socket doesn't exist yet");
-    }
-    
-    this.socket.send
+    /// TODO: Měl by se tady chytat error?
+    this.sendData
     (
+      // ! Throws exception on error.
       packet.serialize('Send to Server')
     );
   }
+
+  private reportConnectionFailure()
+  {
+    // Test is user device is online.
+    if (navigator.onLine)
+    {
+      this.clientMessage
+      (
+        'Failed to open websocket connection.'
+        + ' Server is down or unreachable.'
+      );
+    }
+    else
+    {
+      this.clientMessage
+      (
+        'Failed to open websocket connection. Your device reports'
+        + ' offline status. Please check your internet connection.'
+      );
+    }
+  }
+
+  private reportNormalDisconnect()
+  {
+    this.clientMessage
+    (
+      'Connection closed.'
+    );
+  }
+
+  private reportAbnormalDisconnect()
+  {
+    // Test if device is online.
+    if (isDeviceOnline())
+    {
+      this.clientMessage
+      (
+        'You have been disconnected from the server.'
+      );
+    }
+    else
+    {
+      this.clientMessage
+      (
+        'You have been disconnected. Your device reports'
+        + ' offline status, please check your internet connection.'
+      );
+    }
+  }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function isDeviceOnline()
+{
+  return navigator.onLine;
 }

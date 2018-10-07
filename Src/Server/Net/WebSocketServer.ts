@@ -4,25 +4,6 @@
   Websocket server.
 */
 
-/*
-  Implementation note:
-    Event handlers are registered using lambda expression '() => {}'.
-    For example:
-
-      this.webSocketServer.on
-      (
-        'error',
-        (error) => { this.onServerError(error); }
-      );
-
-    The reason is that it is not guaranteed in TypeScript that methods
-    will get called on an instance of their class. In other words 'this'
-    will be something else than you expect when you register an event
-    handler.
-      Lambda expression solves this by capturing 'this', so you may use it
-    correcly within lambda function body.
-*/
-
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Server/Log/Syslog';
 import {MessageType} from '../../Shared/MessageType';

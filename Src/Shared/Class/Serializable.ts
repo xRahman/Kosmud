@@ -122,6 +122,7 @@ export class Serializable extends Attributable
     return "{ className: " + this.getClassName() + " }";
   }
 
+  // ! Throws exception on error.
   public serialize(mode: Serializable.Mode): string
   {
     let jsonObject = this.saveToJsonObject(mode);

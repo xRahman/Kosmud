@@ -1,3 +1,6 @@
+TODO: Refactorovat WebSocketServer
+[done]
+
 TODO: Exceptiony ve FileSystem.
 [done]
 

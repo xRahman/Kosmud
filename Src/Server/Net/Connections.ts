@@ -1,10 +1,9 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Container storing id's of entities.
+  Stores client connections.
 */
 
-'use strict';
 
 import {ERROR} from '../../Shared/Log/ERROR';
 // import {Entity} from '../../Shared/Class/Entity';
@@ -22,13 +21,14 @@ export class Connections
 
   // ------------- Public static methods ----------------
 
+  // ! Throws exception on error.
   public static release(connection: Connection)
   {
     if (!this.connections.has(connection))
     {
-      ERROR("Attempt to release connection which doesn't"
-        + " exist in Connections");
-      return;
+      throw new Error("Attempt to release connection"
+        + " " + connection.getUserInfo + "which doesn't"
+        + " exist");
     }
 
     this.connections.delete(connection);
@@ -50,7 +50,10 @@ export class Connections
   public static broadcast(packet: Packet)
   {
     for (let connection of this.connections)
-      connection.send(packet);
+    {
+      if (connection.isOpen())
+        connection.send(packet);
+    }
   }
 
   /// TODO (zatím odloženo)

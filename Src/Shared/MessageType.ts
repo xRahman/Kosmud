@@ -39,6 +39,8 @@ export enum MessageType
   HTTP_SERVER,
   // Messages from https server.
   HTTPS_SERVER,
+  // Messages from websocket communication.
+  WEBSOCKET,
   // Messages from websocket server.
   WEBSOCKET_SERVER,
   // Sent when ingame script fails to compile (because of syntax errors).

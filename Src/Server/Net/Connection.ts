@@ -5,11 +5,13 @@
 */
 
 import {ERROR} from '../../Shared/Log/ERROR';
-import * as Shared from '../../Shared/Net/Connection';
+import {Syslog} from '../../Shared/Log/Syslog';
+import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {Message} from '../../Server/Net/Message';
 import {MessageType} from '../../Shared/MessageType';
+import {Types} from '../../Shared/Utils/Types';
 import {Packet} from '../../Shared/Protocol/Packet';
-import {ServerSocket} from '../../Server/Net/ServerSocket';
+import {Socket} from '../../Server/Net/Socket';
 import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
 import {SystemMessage} from '../../Server/Protocol/SystemMessage';
@@ -24,13 +26,11 @@ Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(PlayerInput);
 
 
-export class Connection extends Shared.Connection
+export class Connection extends Socket
 {
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
-    super();
-
-    this.socket = new ServerSocket(this, webSocket, ip, url);
+    super(webSocket, ip, url);
   }
 
   // ----------------- Public data ----------------------
@@ -39,8 +39,6 @@ export class Connection extends Shared.Connection
   // public ingameEntity: (GameEntity | null) = null;
 
   // ---------------- Protected data --------------------
-
-  protected socket: ServerSocket; /// (ServerSocket | null) = null;
 
   // ----------------- Private data ---------------------
 
@@ -65,11 +63,6 @@ export class Connection extends Shared.Connection
   //   return this.account;
   // }
 
-  public getIpAddress() { return this.socket.getIpAddress(); }
-
-  // Connection origin description in format "(url [ip])".
-  public getOrigin() { return this.socket.getOrigin() }
-
   public getUserInfo()
   {
     let info = "";
@@ -86,38 +79,38 @@ export class Connection extends Shared.Connection
 
   // ---------------- Public methods --------------------
 
-  // Closes the connection and removes it from memory
-  // (this is not possible if it is still linked to an
-  //  account).
-  public close()
-  {
-    /// Disabled for now.
-    // if (this.account !== null)
-    // {
-    //   ERROR("Attempt to close connection that is still linked"
-    //     + " to account (" + this.account.getErrorIdString() + ")."
-    //     + " Connection is not closed");
-    //   return;
-    // }
+  /// Tohle nejspíš nebude potřeba. Pokud jo, tak je potřeba
+  /// odchytit výjimku a zavolat Connections.release(this);
+  // // ! Throws exception on error.
+  // // Closes the connection and removes it from memory
+  // // (this is not possible if it is still linked to an
+  // //  account).
+  // public close(reason?: string)
+  // {
+  //   /// Disabled for now.
+  //   // if (this.account !== null)
+  //   // {
+  //   //   ERROR("Attempt to close connection that is still linked"
+  //   //     + " to account (" + this.account.getErrorIdString() + ")."
+  //   //     + " Connection is not closed");
+  //   //   return;
+  //   // }
 
-    if (!this.socket)
-    {
-      ERROR("Unable to close connection because it has no socket"
-        + " attached. Removing it from Connections");
-      Connections.release(this);
-      return;
-    }
-
-    if (!this.socket.close())
-    {
-      // If socket can't be closed (websocket is missing
-      // or it's already CLOSED), release the connection
-      // from memory. If it can be closed, 'onClose' event
-      // will be triggered and it's handler will release
-      // the connection.
-      Connections.release(this);
-    }
-  }
+  //   if (this.isClosingOrClosed())
+  //   {
+  //     // If socket can't be closed (websocket is missing
+  //     // or it's already CLOSED), release the connection
+  //     // from memory. If it can be closed, 'onClose' event
+  //     // will be triggered and it's handler will release
+  //     // the connection.
+  //     Connections.release(this);
+  //   }
+  //   else
+  //   {
+  //     // ! Throws exception on error.
+  //     this.socket.close();
+  //   }
+  // }
 
   /// Disabled for now.
   // public attachToGameEntity(gameEntity: GameEntity)
@@ -173,6 +166,7 @@ export class Connection extends Shared.Connection
   //   this.send(packet);
   // }
 
+/// TODO: Tohle už někde je.
   // ! Throws exception on error.
   // Note:
   //   Make sure that you call isOpen() and handle the result
@@ -181,7 +175,7 @@ export class Connection extends Shared.Connection
   //    connection but it's better to handle it beforehand.)
   public send(packet: Packet)
   {
-    this.socket.send
+    this.sendData
     (
       packet.serialize('Send to Client')
     );
@@ -202,15 +196,13 @@ export class Connection extends Shared.Connection
 
   // --------------- Private methods --------------------
 
-  // ---------------- Event handlers --------------------
-
   // Releases the connection from memory
   // (should be called from 'onClose' event on socket).
-  public release()
+  private release()
   {
     /// Disabled for now.
     // // It's ok if account doesn't exist here, it happens
-    // // when brower has opened connection but player hasn't
+    // // when browesr has opened connection but player hasn't
     // // logged in yet or when player reconnects from different
     // // location and the old connection is closed.
     // if (this.account)
@@ -221,5 +213,34 @@ export class Connection extends Shared.Connection
 
     // Release this connection from memory.
     Connections.release(this);
+  }
+
+  // ---------------- Event handlers --------------------
+
+  // ~ Overrides Shared.Socket.onClose().
+  protected onClose(event: Types.CloseEvent)
+  {
+    super.onClose(event);
+
+    // 'event.reason' is checked because for some reason Chrome sometimes
+    // closes webSocket with code 1006 when the tab is closed even though
+    // we close() the socket manually in onBeforeUnload() handler (see
+    // ClientApp.onBeforeUnload() for more details).
+    const tabHasBeenClosed = (event.reason === WebSocketEvent.TAB_CLOSED);
+    const isNormalClose = WebSocketEvent.isNormalClose(event.code);
+    
+    if (!(isNormalClose || tabHasBeenClosed))
+    {
+      this.logSocketClosingError(event);
+      return;
+    }
+
+    Syslog.log
+    (
+      "Connection " + this.getOrigin() + " has been closed",
+      MessageType.CONNECTION_INFO
+    );
+
+    this.release();
   }
 }

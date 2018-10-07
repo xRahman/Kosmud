@@ -1,12 +1,19 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Provides description for websocket close events.
+  Description for websocket close events.
 */
 
 export module WebSocketEvent
 {
+  export const NORMAL_CLOSE = 1000;
+
   export const TAB_CLOSED = "Browser tab has been closed.";
+
+  export function isNormalClose(code: number)
+  {
+    return code === NORMAL_CLOSE;
+  }
 
   export function description(code: number)
   {
@@ -15,7 +22,7 @@ export module WebSocketEvent
       return "Reserved and not used.";
     }
 
-    if (code === 1000)  // CLOSE_NORMAL;
+    if (code === NORMAL_CLOSE)
     {
       return "Normal closure; the connection successfully"
           + " completed whatever purpose for which it was"

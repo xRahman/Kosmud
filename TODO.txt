@@ -1,6 +1,8 @@
-TODO: Použít https://letsencrypt.org/
+TODO: Rozdělit MessageType na Syslog.MessageType a zbytek.
+  (mimo jiné se nebude muset všude se Syslogem importovat ještě MessageType).
 
-TODO: Refactorovat WebSocketServer
+TODO: Přesunout connection instance na Clientu do Connection.
+
 
 TODO: Refactorovat Connectiony a WebSockety.
 
@@ -33,15 +35,16 @@ d\Src\Server\Game\Game.ts:37:20)
     at tryOnTimeout (timers.js:289:5)
     at listOnTimeout (timers.js:252:5)
     at Timer.processTimers (timers.js:212:10)
-- zaprvé musím tyhle exceptiony někde odchytávat.
 - zadruhé musím testovat, jestli je connection CLOSING
   (to nejspíš souvisí s testováním connection.isOpen()
    v Connections.broadcast)))
-
+[done]
+- zaprvé musím tyhle exceptiony někde odchytávat.
 
 
 TODO: Connections.broadcast() musí testovat, jestli jsou
   connectiony otevřené.
+[done]
 
   -----------------------------------------------------------------------
 
@@ -122,7 +125,7 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
 - jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
 
-
+TODO: Použít https://letsencrypt.org/
 
 -----------------------------------------------------------------------
 

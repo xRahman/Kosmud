@@ -1,3 +1,29 @@
+Sockety a connectiony
+----------------------
+
+- getIpAddress(), getUrl() a getOrigin() na klientu nemá význam
+  (server je jen jeden).
+
+
+- Server.Connection (a tedy i Server.Socket) dostane webSocked
+  od WebSocketServeru.
+- Server.Connection (a tedy i Client.Socket) si ji vyrábí.
+Může ji klient taky dostávat?
+- V zásadě jo, .connect() by mohla bejt někde jinde
+  (třeba Connection.connect()).
+- potom ale zas bude connection žít jinak než socket (na klientu).
+- vlastně by se i na klientu dala celá connection vyrobit až při connectu
+  (byla by to static property Connection.connection);
+Prozatím závěr: webSocket bude vyrábět někdo zvenku a Socket ho dostane
+  jako parametr (to je fajn, nemusí se testovat, jestli existuje).
+
+Hmm, že by dědičnost byla:
+  Shared.Connection -> Shared.Socket -> Client.Socket -> Client.Connection
+                                     -> Server.Socket -> Server.Connection
+- je to poněkud nestandardní, ale možná to bude fungovat.
+
+-----------------------------------------------------------------------
+
 Logování
 ---------
 
