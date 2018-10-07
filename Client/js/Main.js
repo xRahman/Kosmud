@@ -21,7 +21,8 @@ requirejs.config
       // 'd3': '../js/d3/d3.min',
       'js-beautify': '../js/js-beautify/beautify',
       'fastbitset': '../js/fastbitset/FastBitSet',
-      'fastpriorityqueue': '../js/fastpriorityqueue/FastPriorityQueue'
+      'fastpriorityqueue': '../js/fastpriorityqueue/FastPriorityQueue',
+      'isomorphic-ws': '../js/isomorphic-ws/browser'
       // 'phaser': '../js/phaser/phaser'
     }
   }
@@ -35,6 +36,7 @@ requirejs.config
 require(['js-beautify']);
 require(['fastbitset']);
 require(['fastpriorityqueue']);
+require(['isomorphic-ws']);
 // require(['phaser']);
 
 // Launch the client.

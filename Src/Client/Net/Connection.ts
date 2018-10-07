@@ -1,10 +1,9 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Connection to the server.
 */
 
-'use strict';
 
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Classes} from '../../Shared/Class/Classes';
@@ -29,6 +28,11 @@ import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
 import {Socket} from '../../Client/Net/Socket';
 
+// 3rd party modules.
+// Use 'isomorphic-ws' to be able to use the same code
+// on both client and server.
+import * as WebSocket from 'isomorphic-ws';
+
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(PlayerInput);
@@ -43,6 +47,8 @@ export class Connection extends Socket
   // public activeAvatar: (Avatar | null) = null;
 
   // ----------------- Private data ---------------------
+
+  private static connection: Connection | "Not connected" = "Not connected";
 
   /// Disabled for now.
   // private account: (Account | null) = null;
@@ -72,14 +78,15 @@ export class Connection extends Socket
   {
     if (typeof WebSocket === 'undefined')
     {
-      let MozWebSocket = (window as any)['MozWebSocket'];
+      /// This is now done by 'isomorphic-ws'.
+      // let MozWebSocket = (window as any)['MozWebSocket'];
 
-      // Use 'MozWebSocket' if it's available.
-      if (MozWebSocket)
-      {
-        WebSocket = MozWebSocket;
-        return true;
-      }
+      // // Use 'MozWebSocket' if it's available.
+      // if (MozWebSocket)
+      // {
+      //   WebSocket = MozWebSocket;
+      //   return true;
+      // }
 
       alert("Sorry, you browser doesn't support websockets.");
       return false;
@@ -88,8 +95,20 @@ export class Connection extends Socket
     return true;
   }
 
+  public static registerBeforeUnloadEvent()
+  {
+    window.onbeforeunload =
+      (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
+  }
+
   public static connect()
   {
+    if (this.connection !== "Not connected")
+    {
+      /// TODO: To nemusí bejt pravda, connection nemusí bejt open.
+      ERROR("Already connected");
+    }
+
     // There is no point in error handling here, because opening
     // a socket is asynchronnous. If an error occurs, 'error' event
     // is fired and onSocketError() is executed.
@@ -97,21 +116,8 @@ export class Connection extends Socket
     // inside https server so it automaticaly uses htts port.
     let webSocket = new WebSocket('wss://' + window.location.hostname);
 
-    /// TODO:
-    /// - vyrobit Connection
-    ///   - passnout jí 'webSocket' jako parametr (ta by ho měla passnout
-    ///      socketu).
+    this.connection = new Connection(webSocket);
   }
-  // // Attempts to open the websocket connection.
-  // public connect()
-  // {
-  //   if (this.socket !== null)
-  //     ERROR("Socket already exists");
-
-  //   this.socket = new ClientSocket(this);
-  //   this.clientMessage('Opening websocket connection...');
-  //   this.socket.connect();
-  // }
 
   /// TODO: Tohle by asi mělo bejt static a trochu jinak.
   // // Attempts to reconnect.
@@ -154,14 +160,17 @@ export class Connection extends Socket
   //    connection but it's better to handle it beforehand.)
   public static send(packet: Packet)
   {
-    let connection = Client.connection;
-
-    if (!connection)
+    if (this.connection === "Not connected")
     {
-      throw new Error("Missing or invalid connection. Packet is not sent");
+      throw new Error("Connection doesn't exist yet. Packet is not sent");
     }
 
-    connection.send(packet);
+    /// TODO: Hmm, co s tím?
+    // if (this.connection.isOpen())
+    // {
+    // }
+
+    this.connection.send(packet);
   }
 
   /// Disabled for now.
@@ -312,6 +321,25 @@ export class Connection extends Socket
   }
 
   // ---------------- Event handlers --------------------
+
+  /// Tohle by mělo bejt někde jinde (v Document asi?)
+  private static onBeforeUnload(event: BeforeUnloadEvent)
+  {
+    if (this.connection !== "Not connected")
+    {
+      this.connection.reportClosingBrowserTab();
+
+      // Close the connection to prevent browser from closing it
+      // abnormally with event code 1006.
+      //   For some strange reson this doesn't alway work in Chrome.
+      // If we call socket.close(1000, "Tab closed"), onClose() event
+      // handler on respective server socket will receive the reason
+      // but sometimes code will be 1006 instead of 1000. To circumvent
+      // this, we send WebSocketEvent.REASON_CLOSE when socket is closed
+      // from onBeforeUnload() and we check for it in ServerSocket.onClose().
+      this.connection.close(WebSocketEvent.TAB_CLOSED);
+    }
+  }
 
   // ~ Overrides Socket.onClose().
   protected onClose(event: Types.CloseEvent)

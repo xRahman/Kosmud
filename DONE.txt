@@ -1,3 +1,8 @@
+TODO: Pořešit reconnect na clientu
+- nejspíš tak, že Connection.connect to zkusí a když to neprojde, tak
+  si hodí timer na další pokus.
+  + nějaké to info playerovi
+
 TODO: Refactorovat WebSocketServer
 [done]
 
