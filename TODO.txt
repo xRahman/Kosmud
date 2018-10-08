@@ -1,26 +1,26 @@
-TODO: [WEBSOCKET] Socket to NaN closed. Code: 1006. Description: Reserved.
-  Used to indicate that a connection was closed abnormally (that is, with no
-  close frame being sent) when a status code is expected.
-- když sestřelím server.
+TODO: Event handlery v Keyboard jsou top-level fce, měly by asi volat
+  Syslog.reportUncaughtException().
+
+TODO: REPORT() by měl možná mít prohozené parametry
+  (vypisuje se to v opačným pořadí).
+
+TODO: Projít všechny výskyty send() a zajistit, že se testuje isOpen().
+  A přidat taky exception handling. Connection.send() hází výjimky.
+- v Keyboard() je to done.
+
+TODO: Pořešit Client/Connection.reportClosingBrowserTab()
+- info je v commentu
 
 TODO: Rozdělit MessageType na Syslog.MessageType a zbytek.
   (mimo jiné se nebude muset všude se Syslogem importovat ještě MessageType).
 
-TODO: Přesunout connection instance na Clientu do Connection.
-
 
 TODO: Refactorovat Connectiony a WebSockety.
 
-TODO: Refactorovat Connections (a handlovat exeptiony)
-
 TODO: Client musí nějak ošetřit disconnect
   (aby pak neházel errory jako
-   'Uncaught Error: Failed to send data because the connection is closed')
-
-TODO: Uncaught error: Failed to send data because the connection is closed.
-
-TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
-  callů. Zkontrolovat, jestli to nemají být exceptiony.
+   'Uncaught Error: Failed to send data to the server because the connection
+    is closed')
 
 [UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
 95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
@@ -40,44 +40,19 @@ d\Src\Server\Game\Game.ts:37:20)
     at tryOnTimeout (timers.js:289:5)
     at listOnTimeout (timers.js:252:5)
     at Timer.processTimers (timers.js:212:10)
-- zadruhé musím testovat, jestli je connection CLOSING
+- zaprvé musím testovat, jestli je connection CLOSING
   (to nejspíš souvisí s testováním connection.isOpen()
    v Connections.broadcast)))
 [done]
-- zaprvé musím tyhle exceptiony někde odchytávat.
-
-
-TODO: Connections.broadcast() musí testovat, jestli jsou
-  connectiony otevřené.
-[done]
+- zadruhé musím tyhle exceptiony někde odchytávat.
 
   -----------------------------------------------------------------------
 
 Refactoring Connectionů
 ------------------------
 
-TODO: Asi bych to mohl udělat tak, že Connection zdědím z WebSocketu
-- díky tomu to pořád bude separated code, ale nebudu muset řešit
-  alokaci websocketu a budu mít protected přístup na receiveData().
-
-
-TODO: Try-catchnout volání serialize() a deserialize().
-
-TODO: Musí být connection.receiveData() public?
-- jestli se to volá ze socketu, tak sloučením Socketu a Connection
-  by callback vidě na private receiveData().
-
-TODO: Oštřit socket.isOpen() až v Socket (časem to nejspíš beztak předělám,
-  ale prozatím).
-
-TODO: send() a receiveData() by asi vůbec neměly catchovat exceptiony
-  (respektive receiveData() možná jo, ta se volá interně z callbacku,
-   ale send() volá někdo jinej a ten by asi měl exception dostat).
-- Jasně. A onReceiveMessage() už pak reportí jen uncaught exception
-  pro případ, že by ji někdo nezhandlil sám.
-
-TODO: Pořešit rethrow v ServerSocket.send()
-  (a asi i v ClientSocket)
+TODO: Try-catchnout všechna volání serialize() a deserialize().
+- ještě to zkontrolovat
 
 -----------------------------------------------------------------------
 

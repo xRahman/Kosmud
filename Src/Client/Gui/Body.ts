@@ -4,8 +4,6 @@
   <body> element.
 */
 
-'use strict';
-
 import {Component} from '../../Client/Gui/Component';
 import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
 
@@ -49,6 +47,11 @@ export class Body extends Component
   private static instance = new Body();
 
   // --------------- Static accessors -------------------
+
+  public static getCanvasDiv()
+  {
+    return Body.instance.canvasDiv;
+  }
 
   public static getCanvasDivElement()
   {

@@ -1,3 +1,32 @@
+-----------------------------------------------------------------------
+
+Disconnecty a reconnecty na klientu
+------------------------------------
+
+- zastavit simulaci
+  (asi není nutný hned dealokovat scénu a tak).
+  - momentálně se mi simulace zastaví prostě tím, že přestanou přicházet
+    SceneUpdaty ze serveru.
+    - takže to teď asi řešit nemusím.
+- ukázat userovi okno s informací o disconnectu a reconnectu.
+- zastavit keyboard eventy.
+  (to by v zásadě mohlo zařídit to, že okno se scénou přestane bejt aktivní)
+
+Problém je, že na tohle bych měl zresuscitovat okna a to je dost práce...
+(Windows, stavy, udělat okno pro hru, udělat okno pro výpis
+ disconnectu/reconnectu - asi ConsoleWindow).
+ - to všechno mě bude odvádět od práce na vizuálu.
+ - na druhou stranu teď to mám jakž takž v hlavě...
+
+=> Chtělo by to asi nějaké provizorní řešení uička. Reconnecty se dají
+   vypisovat do divu.
+
+Ehm... Nastavit display = "none" zjevně nevypne keyboard eventy zaregistrované
+  phaserem.
+Asi bude fakt nejlepší to prostě do vypnuté connectiony neposílat.
+
+-----------------------------------------------------------------------
+
 Sockety a connectiony
 ----------------------
 

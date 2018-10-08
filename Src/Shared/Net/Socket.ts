@@ -4,20 +4,19 @@
   Websocket wrapper.
 */
 
-
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {Types} from '../../Shared/Utils/Types';
 import {MessageType} from '../../Shared/MessageType';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {Connection} from '../../Shared/Net/Connection';
+import {PacketHandler} from '../../Shared/Net/PacketHandler';
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to be able to use the same code
 // on both client and server.
 import * as WebSocket from 'isomorphic-ws';
 
-export abstract class Socket extends Connection
+export abstract class Socket extends PacketHandler
 {
   constructor(private webSocket: WebSocket)
   {
@@ -26,31 +25,16 @@ export abstract class Socket extends Connection
     this.init();
   }
 
-  // ---------------- Static methods --------------------
-
-  // -------------- Static class data -------------------
-
   // ---------------- Protected data --------------------
 
-//*
-  // We still need this even though WebSocket keeps it's status
-  // in .readyState property. The reason is that events don't know
-  // what caused them. If for example the websocket server is down
-  // and we try to connect to it, an 'error' and a 'close' events
-  // are fired after the timeout. In both cases, socket.readyState
-  // is set to WebSocket.CLOSED so we have no way to determine
-  // if the connection couldn't even be estableshed or if it was
-  // opened and then something caused a disconnect.
-  //   To solve this, we set 'this.open' to 'true' only when 'open'
-  // event is fired. So when the 'error' or 'close' event comes
-  // and 'this.wasConnected' is still false, it means failure to
-  // connect, otherwise it means a disconnect.
+  // This is used to determine if a socket error means that
+  // we have been disconnected or that connection couldn't
+  // even be established.
   protected wasConnected = false;
 
   // ----------------- Private data ---------------------
 
-//*
-  // Here we remember event listeners so we can remove them
+  // We remember event listeners so we can remove them
   // when the socket closes.
   private listeners =
   {
@@ -60,26 +44,18 @@ export abstract class Socket extends Connection
     onclose: <((event: Types.CloseEvent) => void) | null>null
   }
 
-  // ----------------- Public data ----------------------
-
   // ---------------- Public methods --------------------
 
-//*
   public abstract getOrigin(): string;
 
-//*
   public isOpen()
   {
+    // Note that testing 'readyState === WebSocket.CLOSED' isn't
+    // the same as 'readyState !== WebSocket.OPEN'. There are also
+    // CONNECTING and CLOSING ready states.
     return this.webSocket.readyState === WebSocket.OPEN;
   }
 
-//*
-  public isClosingOrClosed()
-  {
-    return this.isClosing() || this.webSocket.readyState === WebSocket.CLOSED;
-  }
-
-//*
   // ! Throws exception on error.
   public close(reason?: string)
   {
@@ -94,13 +70,9 @@ export abstract class Socket extends Connection
 
   // --------------- Protected methods ------------------
 
-//*
   // ! Throws exception on error.
   protected sendData(data: string)
   {
-    /// DEBUG:
-    // console.log("Sending data: " + data);
-
     if (!this.isOpen())
     {
       throw new Error("Failed to send data to " + this.getOrigin()
@@ -121,21 +93,14 @@ export abstract class Socket extends Connection
     }
   }
 
-//*
-  protected isConnecting()
+  private isConnecting()
   {
     return this.webSocket.readyState === WebSocket.CONNECTING;
   }
 
-//*
-  protected isClosing()
-  {
-    return this.webSocket.readyState === WebSocket.CLOSING;
-  }
-  
   protected logSocketClosingError(event: Types.CloseEvent)
   {
-    let message = "Socket to " +  + this.getOrigin() + " closed";
+    let message = "Socket to " + this.getOrigin() + " closed";
 
     if (event.reason)
     {
@@ -143,7 +108,7 @@ export abstract class Socket extends Connection
     }
 
     message += ". Code: " + event.code + "."
-    message += " Description: " + WebSocketEvent.description(event.code);
+    message += ' Description: "' + WebSocketEvent.description(event.code) + '"';
 
     Syslog.log
     (
@@ -154,7 +119,6 @@ export abstract class Socket extends Connection
 
   // ---------------- Private methods -------------------
 
-//*
   private init()
   {
     // Remember event listeners so we can close them later.
@@ -170,7 +134,6 @@ export abstract class Socket extends Connection
     this.webSocket.onclose = this.listeners.onclose;
   }
 
-//*
   // Removes event handlers from this.socket.
   private cleanup()
   {    
@@ -187,18 +150,21 @@ export abstract class Socket extends Connection
       this.webSocket.removeEventListener('close', this.listeners.onclose);
   }
 
+    private isClosingOrClosed()
+  {
+    const isClosing = this.webSocket.readyState === WebSocket.CLOSING;
+    const isClosed = this.webSocket.readyState === WebSocket.CLOSED
+
+    return isClosing || isClosed;
+  }
+
   // ---------------- Event handlers --------------------
 
-//*
   protected onOpen(event: Types.OpenEvent)
   {
-    // 'open' event means that connection has been succesfully
-    // established. We remember it so we can later determine
-    // if an error means failure to connect or a disconnect.
     this.wasConnected = true;
   }
 
-//*
   private async onMessage(event: Types.MessageEvent)
   {
     if (typeof event.data !== 'string')
@@ -212,7 +178,7 @@ export abstract class Socket extends Connection
 
     try
     {
-      await this.receiveData(event.data);
+      await this.deserializeAndProcessPacket(event.data);
     }
     catch (error)
     {
@@ -220,35 +186,23 @@ export abstract class Socket extends Connection
     }
   }
 
-//*
   private onError(event: Types.ErrorEvent)
   {
-    // We don't need to close the connection here, because when
-    // 'error' event is fired 'close' event is fired as well.
-    // So we just log the error.
-    let errorOccured = "Socket error occured";
+    // We don't close the connection here, because when 'error'
+    // event is fired 'close' event is fired as well.
+
+    let message = "Socket error occured";
 
     if (event.message)
-    {
-      errorOccured += ": " + event.message + ".";
-    }
-    else
-    {
-      errorOccured += ".";
-    }
+      message += ": " + event.message;
 
-    Syslog.log
-    (
-      errorOccured + " Connection to " + this.getOrigin() + " will close",
-      MessageType.WEBSOCKET
-    );
+    message += ". Connection to " + this.getOrigin() + " will close";
+
+    Syslog.log(message, MessageType.WEBSOCKET);
   }
 
   protected onClose(event: Types.CloseEvent)
   {
     this.cleanup();
   }
-
-  // -------------- Protected methods -------------------
-
 }

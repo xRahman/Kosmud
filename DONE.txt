@@ -1,7 +1,49 @@
-TODO: Pořešit reconnect na clientu
-- nejspíš tak, že Connection.connect to zkusí a když to neprojde, tak
-  si hodí timer na další pokus.
-  + nějaké to info playerovi
+TODO: send() a receiveData() by asi vůbec neměly catchovat exceptiony
+  (respektive receiveData() možná jo, ta se volá interně z callbacku,
+   ale send() volá někdo jinej a ten by asi měl exception dostat).
+- Jasně. A onReceiveMessage() už pak reportí jen uncaught exception
+  pro případ, že by ji někdo nezhandlil sám.
+[done]
+
+TODO: Pořešit rethrow v ServerSocket.send()
+  (a asi i v ClientSocket)
+[done]
+
+TODO: Musí být connection.receiveData() public?
+- jestli se to volá ze socketu, tak sloučením Socketu a Connection
+  by callback vidě na private receiveData().
+[done]
+
+TODO: Asi bych to mohl udělat tak, že Connection zdědím z WebSocketu
+- díky tomu to pořád bude separated code, ale nebudu muset řešit
+  alokaci websocketu a budu mít protected přístup na receiveData().
+[done]
+
+TODO: Connections.broadcast() musí testovat, jestli jsou
+  connectiony otevřené.
+[done]
+
+TODO: V ClientSocket (a nejspíš i ServerSocket) je pořád spousta ERROR()
+  callů. Zkontrolovat, jestli to nemají být exceptiony.
+[done]
+
+TODO: ještě jednou mrknout na connection.send(packet), jestli by to nemělo
+  bejt v PacketHandleru (musí se tomu dát serialize mode, takže asi ani
+  nemůže, ale mohlo by to tam bejt aspoň abstract).
+[done]
+
+TODO: Přesunout connection instance na Clientu do Connection.
+[done]
+
+TODO: Posílání PlayerInputu prohnat fcí, která otestuje, jeslti je connection
+  open.
+[done]
+
+TODO: Alerty o disconnectech (momentálně je to nejjednodušší).
+[done]
+
+TODO: Shared.Connection by se asi mělo jmenovat jinak.
+[done]
 
 TODO: Refactorovat WebSocketServer
 [done]

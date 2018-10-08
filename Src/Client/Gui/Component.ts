@@ -10,19 +10,33 @@ export abstract class Component
 {
   // -------------- Static class data -------------------
 
-  // ----------------- Private data --------------------- 
+  // ----------------- Private data ---------------------
 
-  // ---------------- Protected data -------------------- 
+  private displayMode = "block";
+
+  // ---------------- Protected data --------------------
 
   protected abstract element: HTMLElement;
 
-  // ----------------- Public data ---------------------- 
+  // ----------------- Public data ----------------------
 
   // --------------- Public accessors -------------------
 
   public getElement() { return this.element; }
 
   // ---------------- Public methods --------------------
+
+  public hide()
+  {
+    this.rememberDisplayMode();
+    
+    this.element.style.display = "none";
+  }
+
+  public show()
+  {
+    this.restoreDisplayMode();
+  }
 
   // --------------- Protected methods ------------------
 
@@ -68,6 +82,17 @@ export abstract class Component
   }
 
   // ---------------- Private methods -------------------
+
+  private rememberDisplayMode()
+  {
+    if (this.element.style.display)
+      this.displayMode = this.element.style.display;
+  }
+
+  private restoreDisplayMode()
+  {
+    this.element.style.display = this.displayMode;
+  }
 }
 
 // ------------------ Type Declarations ----------------------
