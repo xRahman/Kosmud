@@ -1,9 +1,6 @@
 TODO: Event handlery v Keyboard jsou top-level fce, měly by asi volat
   Syslog.reportUncaughtException().
 
-TODO: REPORT() by měl možná mít prohozené parametry
-  (vypisuje se to v opačným pořadí).
-
 TODO: Projít všechny výskyty send() a zajistit, že se testuje isOpen().
   A přidat taky exception handling. Connection.send() hází výjimky.
 - v Keyboard() je to done.
