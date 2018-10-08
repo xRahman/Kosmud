@@ -51,7 +51,6 @@ export class Ship extends Shared.Ship
 
   public moveForward()
   {
-    console.log('MoveForward');
     this.physicsBody.setVelocity(2);
   }
 

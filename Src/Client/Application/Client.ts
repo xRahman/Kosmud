@@ -66,8 +66,6 @@ export class Client extends Application
     Connection.connect();
   }
 
-  // --------------- Protected methods ------------------
-
   // ---------------- Private methods -------------------
 
   private initGUI()

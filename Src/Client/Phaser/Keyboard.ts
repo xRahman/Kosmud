@@ -1,5 +1,6 @@
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
 import {Connection} from '../../Client/Net/Connection';
+import { REPORT } from '../../Shared/Log/REPORT';
 
 /// Návod:
 /// http://www.html5gamedevs.com/topic/36693-problems-with-keyboard-events/
@@ -90,41 +91,65 @@ export class Keyboard
 
   private onKeyupA()
   {
-    Connection.send(new PlayerInput('Left', 'Stop'));
+    sendPlayerInput('Left', 'Stop');
   }
 
   private onKeydownA()
   {
-    Connection.send(new PlayerInput('Left', 'Start'));
+    sendPlayerInput('Left', 'Start');
   }
 
   private onKeyupD()
   {
-    Connection.send(new PlayerInput('Right', 'Stop'));
+    sendPlayerInput('Right', 'Stop');
   }
 
   private onKeydownD()
   {
-    Connection.send(new PlayerInput('Right', 'Start'));
+    sendPlayerInput('Right', 'Start');
   }
 
   private onKeyupS()
   {
-    Connection.send(new PlayerInput('Backward', 'Stop'));
+    sendPlayerInput('Backward', 'Stop');
   }
 
   private onKeydownS()
   {
-    Connection.send(new PlayerInput('Backward', 'Start'));
+    sendPlayerInput('Backward', 'Start');
   }
 
   private onKeyupW()
   {
-    Connection.send(new PlayerInput('Forward', 'Stop'));
+    sendPlayerInput('Forward', 'Stop');
   }
 
   private onKeydownW()
   {
-    Connection.send(new PlayerInput('Forward', 'Start'));
+    sendPlayerInput('Forward', 'Start');
+  }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function sendPlayerInput
+(
+  action: PlayerInput.Action,
+  startOrStop: PlayerInput.StartOrStop
+)
+{
+  /// Prozatím po disconnectu prostě nebudu posílat packety.
+  ///   Správně by se asi po disconnectu měly disablovat keyboard
+  /// eventy, ale to není tak jednoduchý (hidnout PhaserDiv nestačí).
+  if (!Connection.isOpen())
+    return;
+
+  try
+  {
+    Connection.send(new PlayerInput(action, startOrStop));
+  }
+  catch (error)
+  {
+    REPORT(error, "Failed to send player input");
   }
 }

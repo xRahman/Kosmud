@@ -6,11 +6,11 @@
 */
 
 import {Serializable} from '../../Shared/Class/Serializable';
-import {Connection} from '../../Shared/Net/Connection';
+import {PacketHandler} from '../../Shared/Net/PacketHandler';
 
 export class Packet extends Serializable
 {
-  public async process(connection: Connection): Promise<void>
+  public async process(connection: PacketHandler): Promise<void>
   {
     // Packet.process isn't abstract, because than it would be necessary
     // to implement both server-side and client-side version of all packet

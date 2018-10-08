@@ -1,11 +1,10 @@
 
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
-  Client-side version of system message packet.
+  Description of change of scene contents.
 */
 
-'use strict';
 
 import {PhaserEngine} from '../../Client/Phaser/PhaserEngine';
 
@@ -30,7 +29,6 @@ export class SceneUpdate extends Shared.SceneUpdate
   {
     let sceneContents = PhaserEngine.getFlightScene().getSceneContents();
 
-    /// Ship ještě nemusí existovat, pokud se Phaser scéna ještě neloadla.
     if (sceneContents)
       sceneContents.getShip().setPosition(this.shipPosition);
   }

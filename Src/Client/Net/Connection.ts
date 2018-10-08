@@ -8,7 +8,6 @@
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Classes} from '../../Shared/Class/Classes';
 // import {Connection as SharedConnection} from '../../Shared/Net/Connection';
-import * as Shared from '../../Shared/Net/Connection';
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Client} from '../../Client/Application/Client';
 // import {Entity} from '../../../shared/lib/entity/Entity';
@@ -39,38 +38,9 @@ Classes.registerSerializableClass(PlayerInput);
 
 export class Connection extends Socket
 {
-  // -------------- Static class data -------------------
-
-  // ----------------- Public data ----------------------
-
-  /// Disabled for now.
-  // public activeAvatar: (Avatar | null) = null;
-
   // ----------------- Private data ---------------------
 
   private static connection: Connection | "Not connected" = "Not connected";
-
-  /// Disabled for now.
-  // private account: (Account | null) = null;
-
-  /// Disabled for now.
-  // private avatars = new Set<Avatar>();
-
-  // --------------- Static accessors -------------------
-
-  /// Disabled for now.
-  // public static get account()
-  // {
-  //   let connection = Client.connection;
-
-  //   if (!connection)
-  //   {
-  //     ERROR("Missing or invalid connection");
-  //     return;
-  //   }
-
-  //   return connection.account;
-  // }
 
   // ---------------- Static methods --------------------
 
@@ -78,16 +48,6 @@ export class Connection extends Socket
   {
     if (typeof WebSocket === 'undefined')
     {
-      /// This is now done by 'isomorphic-ws'.
-      // let MozWebSocket = (window as any)['MozWebSocket'];
-
-      // // Use 'MozWebSocket' if it's available.
-      // if (MozWebSocket)
-      // {
-      //   WebSocket = MozWebSocket;
-      //   return true;
-      // }
-
       alert("Sorry, you browser doesn't support websockets.");
       return false;
     }
@@ -117,6 +77,14 @@ export class Connection extends Socket
     let webSocket = new WebSocket('wss://' + window.location.hostname);
 
     this.connection = new Connection(webSocket);
+  }
+
+  public static isOpen()
+  {
+    if (this.connection ===  "Not connected")
+      return false;
+
+    return this.connection.isOpen();
   }
 
   /// TODO: Tohle by asi mělo bejt static a trochu jinak.
@@ -154,10 +122,9 @@ export class Connection extends Socket
 
 
   // ! Throws exception on error.
-  // Note:
-  //   Make sure that you check isOpen() before you call send().
-  //   (You will get an exception if you try to send data to closed
-  //    connection but it's better to handle it beforehand.)
+  // Make sure that you check isOpen() before you call send().
+  // (You will get an exception if you try to send data to closed
+  //  connection but it's better to handle it beforehand.)
   public static send(packet: Packet)
   {
     if (this.connection === "Not connected")
@@ -165,117 +132,14 @@ export class Connection extends Socket
       throw new Error("Connection doesn't exist yet. Packet is not sent");
     }
 
-    /// TODO: Hmm, co s tím?
-    // if (this.connection.isOpen())
-    // {
-    // }
-
     this.connection.send(packet);
   }
 
-  /// Disabled for now.
-  // public setAccount(account: Account)
-  // {
-  //   if (!account || !account.isValid())
-  //   {
-  //     ERROR("Attempt to set invalid account to the connection."
-  //       + " Account is not set.");
-  //     return;
-  //   }
-
-  //   if (this.account !== null)
-  //   {
-  //     ERROR("Attempt to set account " + account.getErrorIdString()
-  //       + " to the connection when there already is an account set."
-  //       + " Account can only be set to the connection once");
-  //   }
-
-  //   this.account = account;
-  // }
-
-  /// Disabled for now.
-  // public getAccount() {  return this.account; }
-
-
-  /// TODO: Tohle by se asi hodilo, ale:
-  /// - je to stejný kód jako na Serveru, sloučit.
-  // // ! Throws exception on error.
-  // public getIpAddress()
-  // {
-  //   if (!this.socket)
-  //     throw new Error("Socket does not exist");
-  //
-  //   return this.socket.getIpAddress();
-  // }
-  //
-  // // Connection origin description in format "(url [ip])".
-  // // ! Throws exception on error.
-  // public getOrigin()
-  // {
-  //   if (!this.socket)
-  //     throw new Error("Socket does not exist");
-  //
-  //   return this.socket.getOrigin();
-  // }
-  //
-  // // ! Throws exception on error.
-  // public getUserInfo()
-  // {
-  //   let info = "";
-  //
-  //   /// Disabled for now.
-  //   // if (this.account)
-  //   //   info += this.account.getEmail() + " ";
-  //
-  //   // Add (url [ip]).
-  //   info += this.getOrigin();
-  //
-  //   return info;
-  // }
-
   // ---------------- Public methods --------------------
-
-  /// Disabled for now.
-  // public createAvatar(character: Character): Avatar
-  // {
-  //   let avatar = new Avatar(character);
-
-  //   this.avatars.add(avatar);
-
-  //   // Newly created avatar is automaticaly set as active
-  //   // (this should only happen when player logs in with
-  //   //  a new character).
-  //   this.activeAvatar = avatar;
-
-  //   return avatar;
-  // }
-
-  /// Disabled for now.
-  // // Sends 'command' to the connection.
-  // public sendCommand(command: string)
-  // {
-  //   let packet = new Command();
-
-  //   packet.command = command;
-
-  //   if (!this.socket)
-  //   {
-  //     ERROR("Unexpected 'null' value");
-  //     return
-  //   }
-
-  //   // If the connection is closed, any user command
-  //   // (even an empty one) triggers reconnect attempt.
-  //   if (!this.socket.isOpen())
-  //     this.socket.reConnect();
-  //   else
-  //     this.send(packet);
-  // }
 
   // Sends system message to the connection.
   public sendSystemMessage(message: string, messageType: MessageType)
   {
-    /// TODO: Není to error?
     if (this.isOpen())
     {
       let packet = new SystemMessage(message, messageType);
@@ -284,25 +148,15 @@ export class Connection extends Socket
     }
   }
 
-  /// Disabled for now.
-  // // Receives 'message' from the connection
-  // // (appends it to the output of respective scrollwindow).
-  // public receiveMudMessage(message: string)
-  // {
-  //   if (this.activeAvatar)
-  //     this.activeAvatar.receiveMessage(message);
-  // }
-
-  // Outputs a client system message.
-  public clientMessage(message: string)
-  {
-    /// Disabled for now.
-    // if (this.activeAvatar)
-    //   this.activeAvatar.clientMessage(message);
-  }
-
   public reportClosingBrowserTab()
   {
+    /// Idea původně byla, že log message vyrobím rovnou na clientu
+    /// a pošlu ho na server. Klient ale neví, jaký má ipčko a url,
+    /// takže možná bude přece jen lepší ten log message konstruovat
+    /// až na serveru.
+    ///   Co by se mělo posílat?
+    ///   - možná spíš nějakej SystemEvent místo SystemMessage?
+
     /// TODO: Posílat userInfo, až ho budu uměr vyrobit.
 
     // this.sendSystemMessage
@@ -358,22 +212,20 @@ export class Connection extends Socket
       {
         this.reportAbnormalDisconnect();
       }
-      
-      return;
+    }
+    else
+    {
+      this.reportNormalDisconnect();
     }
 
-    this.reportNormalDisconnect();
-
-    /// TODO: Auto reconnect:
-    /// (Vyhledove by to taky chtelo timer, aby to zkousel opakovane).
+    /// TODO: Auto reconnect.
   }
 
-  // ---------------- Private methods -------------------
+  // --------------- Protected methods ------------------
 
   // ! Throws exception on error.
-  private send(packet: Packet)
+  protected send(packet: Packet)
   {
-    /// TODO: Měl by se tady chytat error?
     this.sendData
     (
       // ! Throws exception on error.
@@ -381,12 +233,14 @@ export class Connection extends Socket
     );
   }
 
+  // ---------------- Private methods -------------------
+
   private reportConnectionFailure()
   {
     // Test is user device is online.
     if (navigator.onLine)
     {
-      this.clientMessage
+      alert
       (
         'Failed to open websocket connection.'
         + ' Server is down or unreachable.'
@@ -394,7 +248,7 @@ export class Connection extends Socket
     }
     else
     {
-      this.clientMessage
+      alert
       (
         'Failed to open websocket connection. Your device reports'
         + ' offline status. Please check your internet connection.'
@@ -404,9 +258,9 @@ export class Connection extends Socket
 
   private reportNormalDisconnect()
   {
-    this.clientMessage
+    alert
     (
-      'Connection closed.'
+      'Server has closed the connection.'
     );
   }
 
@@ -415,14 +269,14 @@ export class Connection extends Socket
     // Test if device is online.
     if (isDeviceOnline())
     {
-      this.clientMessage
+      alert
       (
         'You have been disconnected from the server.'
       );
     }
     else
     {
-      this.clientMessage
+      alert
       (
         'You have been disconnected. Your device reports'
         + ' offline status, please check your internet connection.'

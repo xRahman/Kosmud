@@ -11,11 +11,14 @@ import {Connection} from '../../Server/Net/Connection';
 import {Connections} from '../../Server/Net/Connections';
 
 // 3rd party modules.
-import * as WebSocket from 'ws';
+// Use 'isomorphic-ws' to be able to use the same code
+// on both client and server.
+import * as WebSocket from 'isomorphic-ws';
 
 // Built-in node.js modules.
 import * as http from 'http';  // Import namespace 'http' from node.js.
 import * as https from 'https';  // Import namespace 'http' from node.js.
+import { REPORT } from '../../Shared/Log/REPORT';
 
 export class WebSocketServer
 {
@@ -33,8 +36,7 @@ export class WebSocketServer
   public isOpen() { return this.open; }
 
   // ! Throws exception on error.
-  // Starts the websocket server inside a http server.
-  public start(httpsServer: https.Server)
+  public startInsideHttpsServer(httpsServer: https.Server)
   {
     if (this.webSocketServer !== "Not running")
     {
@@ -44,8 +46,6 @@ export class WebSocketServer
 
     Syslog.log("Starting websocket server", MessageType.SYSTEM_INFO);
 
-    // Websocket server runs inside a http server so the same port can be used
-    // (it is possible because WebSocket protocol is an extension of http).
     this.webSocketServer = new WebSocket.Server({ server: httpsServer });
 
     this.webSocketServer.on
@@ -78,10 +78,11 @@ export class WebSocketServer
   )
   {
     let ip = parseAddress(request);
+    let url = request.url;
 
     // Request.url is only valid for requests obtained from http.Server
     // (which should be our case).
-    if (!request.url)
+    if (!url)
     {
       this.denyConnection(webSocket, "Invalid request.url", ip);
 
@@ -91,27 +92,37 @@ export class WebSocketServer
       return;
     }
 
-    let url = request.url;
-
     if (!this.isOpen())
     {
       this.denyConnection(webSocket, "Server is closed", ip, url);
       return;
     }
 
-    this.acceptConnection(webSocket, ip, url);
+    try
+    {
+      this.acceptConnection(webSocket, ip, url);
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error);
+    }
   }
 
   // ---------------- Private methods --------------------
 
   private acceptConnection(webSocket: WebSocket, ip: string, url: string)
   {
-    /// TODO: Connection by si asi mohly vyrobit Connections.
-    /// (Zatím to nechám tady, Connections zas neznají správný WebSocket.
-    ///  takže možná nakonec bude lepší nechat to tady).
-    let connection = new Connection(webSocket, ip, url);
+    let connection: Connection;
 
-    Connections.add(connection)
+    try
+    {
+      connection = Connections.addConnection(webSocket, ip, url);
+    }
+    catch (error)
+    {
+      REPORT(error, "Failed to accept connection");
+      return;
+    }
 
     Syslog.log
     (

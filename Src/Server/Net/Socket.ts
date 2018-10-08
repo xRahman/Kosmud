@@ -4,20 +4,12 @@
   Server-side websocket wrapper.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
-import {Syslog} from '../../Shared/Log/Syslog';
-import {Types} from '../../Shared/Utils/Types';
-import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {Connection} from '../../Server/Net/Connection';
-import {MessageType} from '../../Shared/MessageType';
 import * as Shared from '../../Shared/Net/Socket';
-// import {AdminLevel} from '../../../shared/lib/admin/AdminLevel';
 
+// 3rd party modules.
+// Use 'isomorphic-ws' to be able to use the same code
+// on both client and server.
 import * as WebSocket from 'isomorphic-ws';
-
-// Built-in node.js modules.
-// import * as net from 'net';  // Import namespace 'net' from node.js
-// import * as events from 'events';  // Import namespace 'events' from node.js
 
 export class Socket extends Shared.Socket
 {
@@ -30,16 +22,7 @@ export class Socket extends Shared.Socket
   {
     super(webSocket);
   }
-
-  // -------------- Static class data -------------------
-
-  // ----------------- Private data ---------------------
-
-  // ----------------- Public data ----------------------
-
-  ///public connection: (Connection | null) = null;
-
-  // --------------- Public accessors -------------------
+  // ---------------- Public methods --------------------
 
   public getIpAddress(): string
   {
@@ -50,12 +33,4 @@ export class Socket extends Shared.Socket
   {
     return "(" + this.url + " [" + this.ip + "])";
   }
-
-  // ---------------- Public methods --------------------
-
-  // -------------- Protected methods -------------------
-
-  // --------------- Private methods --------------------
-
-  // ---------------- Event handlers --------------------
 }

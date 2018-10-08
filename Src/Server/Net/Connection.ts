@@ -4,7 +4,6 @@
   A connection to the server.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {Message} from '../../Server/Net/Message';
@@ -33,35 +32,7 @@ export class Connection extends Socket
     super(webSocket, ip, url);
   }
 
-  // ----------------- Public data ----------------------
-
-  /// Disabled for now.
-  // public ingameEntity: (GameEntity | null) = null;
-
-  // ---------------- Protected data --------------------
-
-  // ----------------- Private data ---------------------
-
-  /// Disabled for now.
-  // private account: (Account | null) = null;
-
-  // --------------- Public accessors -------------------
-
-  /// Disabled for now.
-  // public setAccount(account: Account | null)
-  // {
-  //   this.account = account;
-  // }
-
-  /// Disabled for now.
-  // ! Throws an exception on error.
-  // public getAccount(): Account
-  // {
-  //   if (!this.account || !this.account.isValid())
-  //     throw new Error("Attempt to access invalid account on connection");
-
-  //   return this.account;
-  // }
+  // ---------------- Public methods --------------------
 
   public getUserInfo()
   {
@@ -76,95 +47,6 @@ export class Connection extends Socket
 
     return info;
   }
-
-  // ---------------- Public methods --------------------
-
-  /// Tohle nejspíš nebude potřeba. Pokud jo, tak je potřeba
-  /// odchytit výjimku a zavolat Connections.release(this);
-  // // ! Throws exception on error.
-  // // Closes the connection and removes it from memory
-  // // (this is not possible if it is still linked to an
-  // //  account).
-  // public close(reason?: string)
-  // {
-  //   /// Disabled for now.
-  //   // if (this.account !== null)
-  //   // {
-  //   //   ERROR("Attempt to close connection that is still linked"
-  //   //     + " to account (" + this.account.getErrorIdString() + ")."
-  //   //     + " Connection is not closed");
-  //   //   return;
-  //   // }
-
-  //   if (this.isClosingOrClosed())
-  //   {
-  //     // If socket can't be closed (websocket is missing
-  //     // or it's already CLOSED), release the connection
-  //     // from memory. If it can be closed, 'onClose' event
-  //     // will be triggered and it's handler will release
-  //     // the connection.
-  //     Connections.release(this);
-  //   }
-  //   else
-  //   {
-  //     // ! Throws exception on error.
-  //     this.socket.close();
-  //   }
-  // }
-
-  /// Disabled for now.
-  // public attachToGameEntity(gameEntity: GameEntity)
-  // {
-  //   this.ingameEntity = gameEntity;
-  //   gameEntity.connection = this;
-  // }
-
-  /// Disabled for now.
-  // public detachFromGameEntity()
-  // {
-  //   if (this.account === null)
-  //   {
-  //     ERROR("Unexpected 'null' value");
-  //     return;
-  //   }
-
-  //   if (this.ingameEntity === null)
-  //   {
-  //     ERROR("Attempt to detach ingame entity"
-  //       + " from " + this.account.getName() + "'s"
-  //       + " player connection when there is"
-  //       + " no ingame entity attached to it");
-  //   }
-
-  //   if (this.ingameEntity === null)
-  //   {
-  //     ERROR("Unexpected 'null' value");
-  //     return;
-  //   }
-
-  //   this.ingameEntity.detachConnection();
-  // }
-
-  /// Disabled for now.
-  // public sendMudMessage(message: Message)
-  // {
-  //   if (message === null || message === undefined)
-  //   {
-  //     ERROR("Invalid message");
-  //     return;
-  //   }
-
-  //   let packet = new MudMessage();
-
-  //   let composedMessage = message.compose()
-
-  //   if (composedMessage === null)
-  //     return;
-
-  //   packet.message = composedMessage;
-
-  //   this.send(packet);
-  // }
 
 /// TODO: Tohle už někde je.
   // ! Throws exception on error.
@@ -202,7 +84,7 @@ export class Connection extends Socket
   {
     /// Disabled for now.
     // // It's ok if account doesn't exist here, it happens
-    // // when browesr has opened connection but player hasn't
+    // // when browser has opened connection but player hasn't
     // // logged in yet or when player reconnects from different
     // // location and the old connection is closed.
     // if (this.account)
@@ -212,7 +94,7 @@ export class Connection extends Socket
     // }
 
     // Release this connection from memory.
-    Connections.release(this);
+    Connections.remove(this);
   }
 
   // ---------------- Event handlers --------------------

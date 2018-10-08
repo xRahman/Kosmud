@@ -68,7 +68,19 @@ export class HttpsServer
       "Starting http server at port " + port, MessageType.SYSTEM_INFO
     );
 
-    this.httpServer = http.createServer(expressApp).listen(port);
+    this.httpServer = http.createServer(expressApp);
+
+    this.httpServer.on
+    (
+      'error',
+      (error) => { this.onHttpError(error); }
+    );
+
+    this.httpServer.listen
+    (
+      port,
+      () => { this.onHttpStartListening(); }
+    );
   }
 
   private async startHttpsServer(port: number, expressApp: Express)
@@ -95,13 +107,13 @@ export class HttpsServer
     this.httpsServer.on
     (
       'error',
-      (error) => { this.onError(error); }
+      (error) => { this.onHttpsError(error); }
     );
 
     this.httpsServer.listen
     (
       port,
-      () => { this.onStartListening(); }
+      () => { this.onHttpsStartListening(); }
     );
   }
 
@@ -121,8 +133,25 @@ export class HttpsServer
   
   // ---------------- Event handlers --------------------
 
-  // Runs when server is ready and listening.
-  private onStartListening()
+  // Executes when http server is ready and listening.
+  private onHttpStartListening()
+  {
+    if (this.httpServer === "Not running")
+    {
+      ERROR("HttpServer isn't running even though it"
+        + " has just started listening - Huh?!?");
+      return;
+    }
+
+    Syslog.log
+    (
+      "Http server is up and listening",
+      MessageType.HTTP_SERVER
+    );
+  }
+
+  // Executes when https server is ready and listening.
+  private onHttpsStartListening()
   {
     if (this.httpsServer === "Not running")
     {
@@ -139,8 +168,7 @@ export class HttpsServer
 
     try
     {
-      // Start a websocket server inside the https server.
-      this.webSocketServer.start(this.httpsServer);
+      this.webSocketServer.startInsideHttpsServer(this.httpsServer);
     }
     catch (error)
     {
@@ -148,7 +176,12 @@ export class HttpsServer
     }
   }
 
-  private onError(error: Error)
+  private onHttpError(error: Error)
+  {
+    Syslog.log("Error: " + error.message, MessageType.HTTP_SERVER);
+  }
+
+  private onHttpsError(error: Error)
   {
     Syslog.log("Error: " + error.message, MessageType.HTTPS_SERVER);
   }
