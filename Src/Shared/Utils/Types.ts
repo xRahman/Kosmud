@@ -8,8 +8,7 @@ import { Serializable } from '../../Shared/Class/Serializable';
 
 // 3rd party modules.
 let FastPriorityQueue = require('fastpriorityqueue');
-// Use 'isomorphic-ws' to be able to use the same code
-// on both client and server.
+// Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from 'isomorphic-ws';
 
 export module Types

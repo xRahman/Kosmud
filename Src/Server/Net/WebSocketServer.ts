@@ -11,8 +11,7 @@ import {Connection} from '../../Server/Net/Connection';
 import {Connections} from '../../Server/Net/Connections';
 
 // 3rd party modules.
-// Use 'isomorphic-ws' to be able to use the same code
-// on both client and server.
+// Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from 'isomorphic-ws';
 
 // Built-in node.js modules.

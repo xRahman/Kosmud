@@ -7,10 +7,6 @@
     Client.start();
 */
 
-/// TEST
-import { REPORT } from '../../Shared/Log/REPORT';
-import {ERROR} from '../../Shared/Log/ERROR';
-
 import {Syslog} from '../../Client/Log/Syslog';
 import {PhaserEngine} from '../Phaser/PhaserEngine';
 import {Application} from '../../Shared/Application';
@@ -19,6 +15,7 @@ import {Entities} from '../../Client/Class/Entities';
 import {Document} from '../../Client/Gui/Document';
 import {Connection} from '../../Client/Net/Connection';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
+import { REPORT } from '../../Shared/Log/REPORT';
 
 PhaserEngine;   // Inits the class.
 
@@ -59,11 +56,20 @@ export class Client extends Application
   {
     Syslog.log("Starting Kosmud client...", MessageType.SYSTEM_INFO);
 
-    Client.instance.initGUI();
+    if (!Connection.checkWebSocketSupport())
+      return;
 
-    // Client.instance.initGUI();
-    // Client.instance.connection.connect();
-    Connection.connect();
+    this.instance.initGUI();
+
+    try
+    {
+      Connection.connect();
+    }
+    catch (error)
+    {
+      REPORT(error, "Failed to connect to the server");
+      alert("Failed to connect to the server");
+    }
   }
 
   // ---------------- Private methods -------------------

@@ -7,11 +7,10 @@
 import * as Shared from '../../Shared/Net/Socket';
 
 // 3rd party modules.
-// Use 'isomorphic-ws' to be able to use the same code
-// on both client and server.
+// Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from 'isomorphic-ws';
 
-export class Socket extends Shared.Socket
+export abstract class Socket extends Shared.Socket
 {
   constructor
   (

@@ -96,3 +96,5 @@ export class PlayerInput extends Shared.PlayerInput
     }
   }
 }
+
+// This class is registered in Connection.

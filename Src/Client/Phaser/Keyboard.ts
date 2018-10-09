@@ -1,3 +1,4 @@
+import {Syslog} from '../../Shared/Log/Syslog';
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
 import {Connection} from '../../Client/Net/Connection';
 import { REPORT } from '../../Shared/Log/REPORT';
@@ -91,42 +92,98 @@ export class Keyboard
 
   private onKeyupA()
   {
-    sendPlayerInput('Left', 'Stop');
+    try
+    {
+      sendPlayerInput('Left', 'Stop');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeydownA()
   {
-    sendPlayerInput('Left', 'Start');
+    try
+    {
+      sendPlayerInput('Left', 'Start');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeyupD()
   {
-    sendPlayerInput('Right', 'Stop');
+    try
+    {
+      sendPlayerInput('Right', 'Stop');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeydownD()
   {
-    sendPlayerInput('Right', 'Start');
+    try
+    {
+      sendPlayerInput('Right', 'Start');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeyupS()
   {
-    sendPlayerInput('Backward', 'Stop');
+    try
+    {
+      sendPlayerInput('Backward', 'Stop');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeydownS()
   {
-    sendPlayerInput('Backward', 'Start');
+    try
+    {
+      sendPlayerInput('Backward', 'Start');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeyupW()
   {
-    sendPlayerInput('Forward', 'Stop');
+    try
+    {
+      sendPlayerInput('Forward', 'Stop');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 
   private onKeydownW()
   {
-    sendPlayerInput('Forward', 'Start');
+    try
+    {
+      sendPlayerInput('Forward', 'Start');
+    }
+    catch (error)
+    {
+      Syslog.reportUncaughtException(error)
+    }
   }
 }
 
@@ -138,9 +195,10 @@ function sendPlayerInput
   startOrStop: PlayerInput.StartOrStop
 )
 {
-  /// Prozatím po disconnectu prostě nebudu posílat packety.
-  ///   Správně by se asi po disconnectu měly disablovat keyboard
-  /// eventy, ale to není tak jednoduchý (hidnout PhaserDiv nestačí).
+  /// TODO: All keyboard event handling should be disabled when
+  /// the player gets disconnected (reconnect window should be
+  /// shown instead).
+  ///   For now, we just avoid sending packets to closed connection.
   if (!Connection.isOpen())
     return;
 

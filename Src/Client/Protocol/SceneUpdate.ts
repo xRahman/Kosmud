@@ -34,4 +34,4 @@ export class SceneUpdate extends Shared.SceneUpdate
   }
 }
 
-Classes.registerSerializableClass(SceneUpdate);
+// This class is registered in Connection.

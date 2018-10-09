@@ -11,8 +11,7 @@ import {Packet} from '../../Shared/Protocol/Packet';
 import {Connection} from '../../Server/Net/Connection';
 
 // 3rd party modules.
-// Use 'isomorphic-ws' to be able to use the same code
-// on both client and server.
+// Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from 'isomorphic-ws';
 import { REPORT } from '../../Shared/Log/REPORT';
 

@@ -1,49 +1,25 @@
-TODO: Event handlery v Keyboard jsou top-level fce, měly by asi volat
-  Syslog.reportUncaughtException().
-
-TODO: Projít všechny výskyty send() a zajistit, že se testuje isOpen().
-  A přidat taky exception handling. Connection.send() hází výjimky.
-- v Keyboard() je to done.
-
-TODO: Pořešit Client/Connection.reportClosingBrowserTab()
-- info je v commentu
 
 TODO: Rozdělit MessageType na Syslog.MessageType a zbytek.
   (mimo jiné se nebude muset všude se Syslogem importovat ještě MessageType).
 
 
 TODO: Refactorovat Connectiony a WebSockety.
++/Shared/Net/PacketHandler.ts
++/Shared/Net/Socket.ts
++/Shared/Net/WebSocketEvent.ts
+/Server/Net/Connection.ts
+/Server/Net/Connections.ts
+/Server/Net/HttpsServer.ts
+/Server/Net/Message.ts
+/Server/Net/MessageColors.ts
+/Server/Net/Socket.ts
+/Server/Net/WebSocketServer.ts
++/Client/Net/Connection.ts
++/Client/Net/Socket.ts
 
-TODO: Client musí nějak ošetřit disconnect
-  (aby pak neházel errory jako
-   'Uncaught Error: Failed to send data to the server because the connection
-    is closed')
 
-[UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
-95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
-propagated to top-level function. It needs to be caught much deeper where the er
-ror can be properly recovered from.)
-    at ServerSocket.send (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\ServerS
-ocket.ts:69:13)
-    at Connection.send (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\Connectio
-n.ts:184:17)
-    at Function.broadcast (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\Connec
-tions.ts:52:18)
-    at Function.updateClients (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Game\G
-ame.ts:67:19)
-    at Timeout.start.setInterval [as _onTimeout] (D:\svetlym\tmp\00\Brutus\Kosmu
-d\Src\Server\Game\Game.ts:37:20)
-    at ontimeout (timers.js:425:11)
-    at tryOnTimeout (timers.js:289:5)
-    at listOnTimeout (timers.js:252:5)
-    at Timer.processTimers (timers.js:212:10)
-- zaprvé musím testovat, jestli je connection CLOSING
-  (to nejspíš souvisí s testováním connection.isOpen()
-   v Connections.broadcast)))
-[done]
-- zadruhé musím tyhle exceptiony někde odchytávat.
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Refactoring Connectionů
 ------------------------
@@ -53,6 +29,14 @@ TODO: Try-catchnout všechna volání serialize() a deserialize().
 
 -----------------------------------------------------------------------
 
+TODO: Výhledově místo neposílání paketů do closed connection
+  při disconnectu disablovat komplet herní keyboard processing.
+  (viz Keyboard.sendPlayerInput())
+  - component.hide() nestačí, to je vypne zobrazování.
+
+TODO: Výhledově líp pořešit keyboard handling. Psát extra handler na každou
+  klávesu je dost overkill, navíc by se blbě psalo mapování keybindů.
+  - asi to můžu udělat přes DOM eventy místo přes Phaser.
 
 TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
 
@@ -67,9 +51,6 @@ TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
 - Každopádně to jsou entry-level funkce a je tam potřeba reportovat uncaught
   exceptiony [to je DONE].
 
-
-TODO: Zamyslet se, co se zbytkem Utils
-  (mělo by to mít specifičtější pojmenování.)
 
 TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
   by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
@@ -110,21 +91,16 @@ TODO: Rozdělit Utils na víc souborů.
 - stringové fce
 - souborové fce
   - ty by asi mohly jít do FS (už je tam isValidFileName()).
+TODO: Zamyslet se, co se zbytkem Utils
+  (mělo by to mít specifičtější pojmenování.)
+- zatím to vypadá, že 'Utils' bude asi nejlepší...
 - ...
 
 TODO: Vyhodit z Utils ERROR a FATAL_ERROR (a vůbec ho celý projít).
 - nahradit je exceptionama.
 
------------------------------------------------------------------------
-
-
-TODO: Obecněji pořešit posílání packetů do closed connection.
-  (i když nejvíc to vadilo u "client closed browser tab" message,
-   páč tam problikla exception těsně před zavřením tabu)
 
 -----------------------------------------------------------------------
-
----
 
 Typescript mixins:
 https://blog.mariusschulz.com/2017/05/26/typescript-2-2-mixin-classes
@@ -176,7 +152,8 @@ TODO: Potenciální problém - 'entities' asi budou muset bej v Application
   Entities.
 - Možná si metodu GetEntities() { return Entities.entities; } hodit někam
   do Utils.
-(zatím to přeložit jde. Nechám si to tu, až budu zprovoznovat Entities)
+(zatím to přeložit jde. Nechám si to tu, až budu zprovozňovat Entities)
+
 
 TODO: Přidat comment k Serializable.deserialize(), jak se loadují
   entity (nějak přes Entities)

@@ -18,8 +18,11 @@ import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
 import {PlayerInput} from '../../Server/Protocol/PlayerInput';
 
 // 3rd party modules.
-import * as WebSocket from 'ws';
+// Use 'isomorphic-ws' to use the same code on both client and server.
+import * as WebSocket from 'isomorphic-ws';
 
+// We need to registr packet classes here because when a module is
+// imported and not used, typescript doesn't execute it's code.
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(PlayerInput);
@@ -48,33 +51,27 @@ export class Connection extends Socket
     return info;
   }
 
-/// TODO: Tohle už někde je.
   // ! Throws exception on error.
-  // Note:
-  //   Make sure that you call isOpen() and handle the result
-  //   before call send().
-  //   (You will get an exception if you try to send data to closed
-  //    connection but it's better to handle it beforehand.)
   public send(packet: Packet)
   {
+    // ! Throws exception on error.
     this.sendData
     (
+      // ! Throws exception on error.
       packet.serialize('Send to Client')
     );
   }
 
-  public announceReconnect()
-  {
-    let message = new Message
-    (
-      "Someone (hopefully you) has just logged into this account"
-        + " from different location. Closing this connection.",
-      MessageType.CONNECTION_INFO
-    );
-
-    /// Disabled for now.
-    // this.sendMudMessage(message);
-  }
+  /// Disabled for now.
+  // public announceReconnect()
+  // {
+  //   let message = new Message
+  //   (
+  //     "Someone (hopefully you) has just logged into this account"
+  //       + " from different location. Closing this connection.",
+  //     MessageType.CONNECTION_INFO
+  //   );
+  // }
 
   // --------------- Private methods --------------------
 
@@ -110,19 +107,38 @@ export class Connection extends Socket
     // ClientApp.onBeforeUnload() for more details).
     const tabHasBeenClosed = (event.reason === WebSocketEvent.TAB_CLOSED);
     const isNormalClose = WebSocketEvent.isNormalClose(event.code);
+    const normalDisconnect = isNormalClose || tabHasBeenClosed;
     
-    if (!(isNormalClose || tabHasBeenClosed))
+    if (!normalDisconnect)
     {
       this.logSocketClosingError(event);
       return;
     }
 
-    Syslog.log
-    (
-      "Connection " + this.getOrigin() + " has been closed",
-      MessageType.CONNECTION_INFO
-    );
+    logNormalDisconnect(this.getUserInfo(), tabHasBeenClosed);
 
     this.release();
+  }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function logNormalDisconnect(user: string, tabHasBeenClosed: boolean)
+{
+  if (tabHasBeenClosed)
+  {
+    Syslog.log
+    (
+      "User " + user + " has disconnected by closing or reloading browser tab",
+      MessageType.CONNECTION_INFO
+    );
+  }
+  else
+  {
+    Syslog.log
+    (
+      "User " + user + " has disconnected",
+      MessageType.CONNECTION_INFO
+    );
   }
 }

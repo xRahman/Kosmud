@@ -245,7 +245,9 @@ export class Message
   // )
   // {
   //   this.sender = sender;
-
+  
+  //   /// TODO: Check if connections are open
+  //   /// (it is done in Connections.broadcast)
   //   ///ServerApp.sendToAllIngameConnections(this, visibility);
   //   Connections.send(this, visibility);
   // }
@@ -257,6 +259,8 @@ export class Message
   // {
   //   this.sender = sender;
 
+  //   /// TODO: Check if connections are open
+  //   /// (it is done in Connections.broadcast)
   //   Connections.send(this);
   // }
 

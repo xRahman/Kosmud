@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Description of websocket close events and messages.
+  Description of websocket close event codes.
 */
 
 export module WebSocketEvent

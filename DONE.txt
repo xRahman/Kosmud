@@ -1,3 +1,55 @@
+TODO: Obecněji pořešit posílání packetů do closed connection.
+  (i když nejvíc to vadilo u "client closed browser tab" message,
+   páč tam problikla exception těsně před zavřením tabu)
+[done]
+
+TODO: Pořešit Client/Connection.reportClosingBrowserTab()
+- info je v commentu
+[done]
+
+[UNCAUGHT_EXCEPTION] Failed to send packet to websocket (/ [::ffff:195.113.180.1
+95]). Reason: WebSocket is not open: readyState 2 (CLOSING) (this exception has
+propagated to top-level function. It needs to be caught much deeper where the er
+ror can be properly recovered from.)
+    at ServerSocket.send (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\ServerS
+ocket.ts:69:13)
+    at Connection.send (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\Connectio
+n.ts:184:17)
+    at Function.broadcast (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Net\Connec
+tions.ts:52:18)
+    at Function.updateClients (D:\svetlym\tmp\00\Brutus\Kosmud\Src\Server\Game\G
+ame.ts:67:19)
+    at Timeout.start.setInterval [as _onTimeout] (D:\svetlym\tmp\00\Brutus\Kosmu
+d\Src\Server\Game\Game.ts:37:20)
+    at ontimeout (timers.js:425:11)
+    at tryOnTimeout (timers.js:289:5)
+    at listOnTimeout (timers.js:252:5)
+    at Timer.processTimers (timers.js:212:10)
+- zaprvé musím testovat, jestli je connection CLOSING
+  (to nejspíš souvisí s testováním connection.isOpen()
+   v Connections.broadcast)))
+[done]
+- zadruhé musím tyhle exceptiony někde odchytávat.
+[done]
+
+TODO: Client musí nějak ošetřit disconnect
+  (aby pak neházel errory jako
+   'Uncaught Error: Failed to send data to the server because the connection
+    is closed')
+- jsou tam alerty a exeptiony by mělo pořešit neposílání paketů do closed
+  connection.
+[done]
+
+TODO: Event handlery v Keyboard jsou top-level fce, měly by asi volat
+  Syslog.reportUncaughtException().
+- done, ale výhledově to chce keyboard handling komplet přepsat.
+[done]
+
+TODO: Projít všechny výskyty send() a zajistit, že se testuje isOpen().
+  A přidat taky exception handling. Connection.send() hází výjimky.
+- v Keyboard() je to done.
+[done]
+
 TODO: send() a receiveData() by asi vůbec neměly catchovat exceptiony
   (respektive receiveData() možná jo, ta se volá interně z callbacku,
    ale send() volá někdo jinej a ten by asi měl exception dostat).

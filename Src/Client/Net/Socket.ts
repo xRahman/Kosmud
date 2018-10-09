@@ -9,8 +9,21 @@ import {MessageType} from '../../Shared/MessageType';
 import {Types} from '../../Shared/Utils/Types';
 import * as Shared from '../../Shared/Net/Socket';
 
-export class Socket extends Shared.Socket
+export abstract class Socket extends Shared.Socket
 {
+  // ---------------- Static methods --------------------
+  
+  public static checkWebSocketSupport(): boolean
+  {
+    if (typeof WebSocket === 'undefined')
+    {
+      alert("Sorry, you browser doesn't support websockets.");
+      return false;
+    }
+
+    return true;
+  }
+
   // ---------------- Public methods --------------------
 
   public getOrigin() { return "the server"; }

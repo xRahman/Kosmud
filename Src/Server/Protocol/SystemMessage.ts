@@ -23,8 +23,21 @@ export class SystemMessage extends Shared.SystemMessage
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    console.log('SystemMessage.process()');
+    switch (this.messageType)
+    {
+      case MessageType.CONNECTION_INFO:
+        Syslog.log
+        (
+          "User " + connection.getUserInfo() + " " + this.message,
+          this.messageType
+        );
+        break;
 
-    Syslog.log(this.message, this.messageType);
+      default:
+        Syslog.log(this.message, this.messageType);
+        break;
+    }
   }
 }
+
+// This class is registered in Connection.

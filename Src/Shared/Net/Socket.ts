@@ -12,8 +12,7 @@ import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {PacketHandler} from '../../Shared/Net/PacketHandler';
 
 // 3rd party modules.
-// Use 'isomorphic-ws' to be able to use the same code
-// on both client and server.
+// Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from 'isomorphic-ws';
 
 export abstract class Socket extends PacketHandler
@@ -93,11 +92,6 @@ export abstract class Socket extends PacketHandler
     }
   }
 
-  private isConnecting()
-  {
-    return this.webSocket.readyState === WebSocket.CONNECTING;
-  }
-
   protected logSocketClosingError(event: Types.CloseEvent)
   {
     let message = "Socket to " + this.getOrigin() + " closed";
@@ -121,20 +115,32 @@ export abstract class Socket extends PacketHandler
 
   private init()
   {
-    // Remember event listeners so we can close them later.
-    this.listeners.onopen = (event) => { this.onOpen(event); };
-    this.listeners.onmessage = (event) => { this.onMessage(event); };
-    this.listeners.onerror = (event) => { this.onError(event); };
-    this.listeners.onclose = (event) => { this.onClose(event); };
-
-    // Assign them to the socket.
-    this.webSocket.onopen = this.listeners.onopen;
-    this.webSocket.onmessage = this.listeners.onmessage;
-    this.webSocket.onerror = this.listeners.onerror;
-    this.webSocket.onclose = this.listeners.onclose;
+    this.listeners.onopen = this.registerOpenEvent();
+    this.listeners.onmessage = this.registerMessageEvent();
+    this.listeners.onerror = this.registerErrorEvent();
+    this.listeners.onclose = this.registerCloseEvent();
   }
 
-  // Removes event handlers from this.socket.
+  private registerOpenEvent()
+  {
+     return this.webSocket.onopen = (event) => { this.onOpen(event); };
+  }
+
+  private registerMessageEvent()
+  {
+     return this.webSocket.onmessage = (event) => { this.onMessage(event); };
+  }
+
+  private registerErrorEvent()
+  {
+     return this.webSocket.onerror = (event) => { this.onError(event); };
+  }
+
+  private registerCloseEvent()
+  {
+     return this.webSocket.onclose = (event) => { this.onClose(event); };
+  }
+
   private cleanup()
   {    
     if (this.listeners.onopen)
@@ -150,7 +156,7 @@ export abstract class Socket extends PacketHandler
       this.webSocket.removeEventListener('close', this.listeners.onclose);
   }
 
-    private isClosingOrClosed()
+  private isClosingOrClosed()
   {
     const isClosing = this.webSocket.readyState === WebSocket.CLOSING;
     const isClosed = this.webSocket.readyState === WebSocket.CLOSED
