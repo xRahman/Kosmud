@@ -4,9 +4,6 @@
   Player connections.
 */
 
-
-// import {Entity} from '../../Shared/Class/Entity';
-// import {Admins} from '../../../server/lib/admin/Admins';
 import {Packet} from '../../Shared/Protocol/Packet';
 import {Connection} from '../../Server/Net/Connection';
 
@@ -17,14 +14,14 @@ import { REPORT } from '../../Shared/Log/REPORT';
 
 export class Connections
 {
-  // ----------------- Private data ---------------------
+  // -------------- Private static data -----------------
 
   private static connections = new Set<Connection>();
 
   // ------------- Public static methods ----------------
 
   // ! Throws exception on error.
-  public static remove(connection: Connection)
+  public static removeConnection(connection: Connection)
   {
     if (!this.connections.has(connection))
     {
@@ -41,8 +38,13 @@ export class Connections
   {
     let connection = new Connection(webSocket, ip, url);
 
-  // ! Throws exception on error.
-    this.add(connection);
+    if (this.connections.has(connection))
+    {
+      throw new Error("Attempt to add connection which already"
+        + " exists in Connections");
+    }
+
+    this.connections.add(connection);
 
     return connection;
   }
@@ -64,19 +66,5 @@ export class Connections
           + " " + connection.getUserInfo());
       }
     }
-  }
-
-  // ------------- Private static methods ---------------
-
-  // ! Throws exception on error.
-  private static add(connection: Connection)
-  {
-    if (this.connections.has(connection))
-    {
-      throw new Error("Attempt to add connection which already"
-        + " exists in Connections");
-    }
-
-    this.connections.add(connection);
   }
 }

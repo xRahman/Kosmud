@@ -4,11 +4,12 @@
   Https server.
 */
 
-import { ERROR } from '../../Shared/Log/ERROR';
-import { Syslog } from '../../Shared/Log/Syslog';
-import { FileSystem } from '../FS/FileSystem';
-import { MessageType } from '../../Shared/MessageType';
-import { WebSocketServer } from '../../Server/Net/WebSocketServer';
+import {REPORT} from '../../Shared/Log/REPORT';
+import {ERROR} from '../../Shared/Log/ERROR';
+import {Syslog} from '../../Shared/Log/Syslog';
+import {FileSystem} from '../../Server/FS/FileSystem';
+import {MessageType} from '../../Shared/MessageType';
+import {WebSocketServer} from '../../Server/Net/WebSocketServer';
 
 // Built-in node.js modules.
 import * as http from 'http';
@@ -16,8 +17,7 @@ import * as https from 'https';
 
 // 3rd party modules.
 import * as express from 'express';
-import { Express } from 'express';
-import { REPORT } from '../../Shared/Log/REPORT';
+import {Express} from 'express';
 
 const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
 const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
@@ -29,12 +29,16 @@ const DEFAULT_HTTPS_PORT = 443;
 
 export class HttpsServer
 {
-  // ----------------- Public data ----------------------
+  // ----------------- Private data ---------------------
 
-  // --------------- Public accessors -------------------
+  // Use 'express' to handle security issues like directory traversing.
+  private expressApp = express();
 
-  public getHttpPort() { return this.httpPort; }
-  public getHttpsPort() { return this.httpsPort; }
+  private httpServer: (http.Server | "Not running") = "Not running";
+  private httpsServer: (https.Server | "Not running") = "Not running";
+
+  // Websocket server runs inside a https server.
+  private webSocketServer = new WebSocketServer();
 
   // ---------------- Public methods --------------------
 
@@ -44,15 +48,18 @@ export class HttpsServer
     { httpPort = DEFAULT_HTTP_PORT, httpsPort = DEFAULT_HTTPS_PORT } = {}
   )
   {
-    // Start http server along with https server to redirect
-    // http requests to https.
+    // ! Throws exception on error.
     this.startHttpServer(httpPort, this.expressApp);
-    this.startHttpsServer(httpsPort, this.expressApp);
 
     redirectHttpToHttps(this.expressApp);
+
+    // ! Throws exception on error.
+    this.startHttpsServer(httpsPort, this.expressApp);
+
     serveStaticFiles(this.expressApp);
   }
 
+  // ! Throws exception on error.
   private async startHttpServer(port: number, expressApp: Express)
   {
     if (this.httpServer !== "Not running")
@@ -60,8 +67,6 @@ export class HttpsServer
       throw new Error("Failed to start http server because it's"
         + " already running");
     }
-
-    this.httpPort = port;
 
     Syslog.log
     (
@@ -83,6 +88,7 @@ export class HttpsServer
     );
   }
 
+  // ! Throws exception on error.
   private async startHttpsServer(port: number, expressApp: Express)
   {
     if (this.httpsServer !== "Not running")
@@ -95,12 +101,9 @@ export class HttpsServer
     (
       "Starting https server at port " + port, MessageType.SYSTEM_INFO
     );
-
-    this.httpsPort = port;
     
     // ! Throws exception on error.
     let certificate = await loadCertificate();
-
 
     this.httpsServer = https.createServer(certificate, expressApp);
 
@@ -116,24 +119,9 @@ export class HttpsServer
       () => { this.onHttpsStartListening(); }
     );
   }
-
-  // ----------------- Private data ---------------------
-
-  private httpPort = DEFAULT_HTTP_PORT;
-  private httpsPort = DEFAULT_HTTPS_PORT;
-
-  // Use 'express' to handle security issues like directory traversing.
-  private expressApp = express();
-
-  private httpServer: (http.Server | "Not running") = "Not running";
-  private httpsServer: (https.Server | "Not running") = "Not running";
-
-  // Websocket server runs inside a https server.
-  private webSocketServer = new WebSocketServer();
   
   // ---------------- Event handlers --------------------
 
-  // Executes when http server is ready and listening.
   private onHttpStartListening()
   {
     if (this.httpServer === "Not running")
@@ -178,12 +166,12 @@ export class HttpsServer
 
   private onHttpError(error: Error)
   {
-    Syslog.log("Error: " + error.message, MessageType.HTTP_SERVER);
+    Syslog.log("Http error: " + error.message, MessageType.HTTP_SERVER);
   }
 
   private onHttpsError(error: Error)
   {
-    Syslog.log("Error: " + error.message, MessageType.HTTPS_SERVER);
+    Syslog.log("Https error: " + error.message, MessageType.HTTPS_SERVER);
   }
 }
 
@@ -202,7 +190,7 @@ async function readPrivateKey(): Promise<string>
   {
     return await readFile(PRIVATE_KEY_FILE);
   }
-  catch(error)
+  catch (error)
   {
     error.message = "Failed to read ssl private key: " + error.message;
     throw error;
@@ -216,7 +204,7 @@ async function readCertificate(): Promise<string>
   {
     return await readFile(CERTIFICATE_FILE);
   }
-  catch(error)
+  catch (error)
   {
     error.message = "Failed to read ssl certificate: " + error.message;
     throw error;

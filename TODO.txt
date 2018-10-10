@@ -8,12 +8,12 @@ TODO: Refactorovat Connectiony a WebSockety.
 +/Shared/Net/Socket.ts
 +/Shared/Net/WebSocketEvent.ts
 /Server/Net/Connection.ts
-/Server/Net/Connections.ts
-/Server/Net/HttpsServer.ts
++/Server/Net/Connections.ts
++/Server/Net/HttpsServer.ts
 /Server/Net/Message.ts
 /Server/Net/MessageColors.ts
 /Server/Net/Socket.ts
-/Server/Net/WebSocketServer.ts
++/Server/Net/WebSocketServer.ts
 +/Client/Net/Connection.ts
 +/Client/Net/Socket.ts
 

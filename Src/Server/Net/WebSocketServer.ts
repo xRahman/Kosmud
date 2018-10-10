@@ -4,6 +4,7 @@
   Websocket server.
 */
 
+import {REPORT} from '../../Shared/Log/REPORT';
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Server/Log/Syslog';
 import {MessageType} from '../../Shared/MessageType';
@@ -17,12 +18,9 @@ import * as WebSocket from 'isomorphic-ws';
 // Built-in node.js modules.
 import * as http from 'http';  // Import namespace 'http' from node.js.
 import * as https from 'https';  // Import namespace 'http' from node.js.
-import { REPORT } from '../../Shared/Log/REPORT';
 
 export class WebSocketServer
 {
-  // ----------------- Public data ----------------------
-
   // ----------------- Private data ---------------------
 
   // Do we accept new connections?
@@ -83,75 +81,28 @@ export class WebSocketServer
     // (which should be our case).
     if (!url)
     {
-      this.denyConnection(webSocket, "Invalid request.url", ip);
-
       ERROR("Invalid 'request.url'. This probably means that"
         + " websocket server is used outside of http server."
         + " Connection is denied");
+
+      denyConnection(webSocket, "Invalid request.url", ip);
       return;
     }
 
     if (!this.isOpen())
     {
-      this.denyConnection(webSocket, "Server is closed", ip, url);
+      denyConnection(webSocket, "Server is closed", ip, url);
       return;
     }
 
     try
     {
-      this.acceptConnection(webSocket, ip, url);
+      acceptConnection(webSocket, ip, url);
     }
     catch (error)
     {
       Syslog.reportUncaughtException(error);
     }
-  }
-
-  // ---------------- Private methods --------------------
-
-  private acceptConnection(webSocket: WebSocket, ip: string, url: string)
-  {
-    let connection: Connection;
-
-    try
-    {
-      connection = Connections.addConnection(webSocket, ip, url);
-    }
-    catch (error)
-    {
-      REPORT(error, "Failed to accept connection");
-      return;
-    }
-
-    Syslog.log
-    (
-      "Accepting connection " + connection.getOrigin(),
-      MessageType.WEBSOCKET_SERVER
-    );
-  }
-
-  private denyConnection
-  (
-    socket: WebSocket,
-    reason: string,
-    ip: string,
-    url?: string
-  )
-  {
-    let address: string;
-    
-    if (url)
-      address = "(" + url + "[" + ip + "])";
-    else
-      address = "[" + ip + "]";
-
-    Syslog.log
-    (
-      "Denying connection " + address + ": " + reason,
-      MessageType.WEBSOCKET_SERVER
-    );
-
-    socket.close();
   }
 }
 
@@ -163,4 +114,49 @@ function parseAddress(request: http.IncomingMessage)
     return "Unknown ip address";
 
   return request.connection.remoteAddress;
+}
+
+function acceptConnection(webSocket: WebSocket, ip: string, url: string)
+{
+  let connection: Connection;
+
+  try
+  {
+    connection = Connections.addConnection(webSocket, ip, url);
+  }
+  catch (error)
+  {
+    REPORT(error, "Failed to accept connection");
+    return;
+  }
+
+  Syslog.log
+  (
+    "Accepting connection " + connection.getOrigin(),
+    MessageType.WEBSOCKET_SERVER
+  );
+}
+
+function denyConnection
+(
+  socket: WebSocket,
+  reason: string,
+  ip: string,
+  url?: string
+)
+{
+  let address: string;
+  
+  if (url)
+    address = "(" + url + "[" + ip + "])";
+  else
+    address = "[" + ip + "]";
+
+  Syslog.log
+  (
+    "Denying connection " + address + ": " + reason,
+    MessageType.WEBSOCKET_SERVER
+  );
+
+  socket.close();
 }

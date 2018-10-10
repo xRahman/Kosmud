@@ -91,7 +91,7 @@ export class Connection extends Socket
     // }
 
     // Release this connection from memory.
-    Connections.remove(this);
+    Connections.removeConnection(this);
   }
 
   // ---------------- Event handlers --------------------
