@@ -6,7 +6,6 @@
 
 
 import {Classes} from '../../Shared/Class/Classes';
-import {MessageType} from '../../Shared/MessageType';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {Types} from '../../Shared/Utils/Types';
 import {Packet} from '../../Shared/Protocol/Packet';
@@ -118,11 +117,11 @@ export class Connection extends Socket
 
   // Disabled for now
   // // Sends system message to the connection.
-  // public sendSystemMessage(message: string, messageType: MessageType)
+  // public sendSystemMessage(message: string, type: Syslog.Type)
   // {
   //   if (this.isOpen())
   //   {
-  //     let packet = new SystemMessage(message, messageType);
+  //     let packet = new SystemMessage(message, type);
 
   //     this.send(packet);
   //   }

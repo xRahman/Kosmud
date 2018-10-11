@@ -9,7 +9,6 @@
 
 import {Syslog} from '../../Shared/Log/Syslog';
 import {Entities} from '../../Server/Class/Entities';
-import {MessageType} from '../../Shared/MessageType';
 import {HttpsServer} from '../../Server/Net/HttpsServer';
 import {Game} from '../../Server/Game/Game';
 import {Application} from '../../Shared/Application';
@@ -47,11 +46,8 @@ export class Server extends Application
 
   public static async start(appName: string, version: string)
   {
-    Syslog.log
-    (
-      "Starting " + appName + " server (v" + version + ")...",
-      MessageType.SYSTEM_INFO
-    );
+    Syslog.log("[INFO]", "Starting " + appName
+      + " server (v" + version + ")...");
 
     try
     {

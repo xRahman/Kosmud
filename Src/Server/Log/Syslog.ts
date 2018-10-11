@@ -5,7 +5,6 @@
 */
 
 import {ERROR} from '../../Shared/Log/ERROR';
-import {MessageType} from '../../Shared/MessageType';
 import * as Shared from '../../Shared/Log/Syslog';
 
 export class Syslog extends Shared.Syslog
@@ -21,9 +20,9 @@ export class Syslog extends Shared.Syslog
   // --------------- Protected methods ------------------
 
   // ~ Overrides Shared.Syslog.log().
-  protected log(message: string, msgType: MessageType)
+  protected log(messageType: Shared.Syslog.MessageType, message: string)
   {
-    let entry = this.createLogEntry(message, msgType);
+    let entry = this.createLogEntry(messageType, message);
 
     // Output to stdout.
     console.log(entry);
@@ -35,11 +34,11 @@ export class Syslog extends Shared.Syslog
   // ~ Overrides Shared.Syslog.reportException().
   protected reportException(error: Error, isCaught: boolean): void
   {
-    let errorMsg = error.message;
+    let message = error.message;
 
-    errorMsg += "\n" + this.removeErrorMessage(error.stack);  
+    message += "\n" + this.removeErrorMessage(error.stack);  
 
-    this.log(errorMsg, this.exceptionMessageType(isCaught));
+    this.log(this.exceptionMessageType(isCaught), message);
   }
 
   // ~ Overrides Shared.Syslog.reportError().
@@ -47,6 +46,6 @@ export class Syslog extends Shared.Syslog
   {
     let errorMsg = message + "\n" + this.createTrimmedStackTrace(ERROR);
 
-    this.log(errorMsg, MessageType.RUNTIME_ERROR);
+    this.log("[ERROR]", errorMsg);
   }
 }

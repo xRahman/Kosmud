@@ -5,8 +5,6 @@
 */
 
 import {StringUtils} from '../Utils/StringUtils';
-import {REPORT} from '../../Shared/Log/REPORT';
-import {MessageType} from '../../Shared/MessageType';
 
 export abstract class Syslog
 {
@@ -35,21 +33,21 @@ export abstract class Syslog
   // ---------------- Static methods --------------------
 
   // ! Throws exception on error.
-  public static log(text: string, msgType: MessageType)
+  public static log(messageType: Syslog.MessageType, message: string)
   {
-    this.getInstance().log(text, msgType);
+    this.getInstance().log(messageType, message);
   }
 
   // ! Throws exception on error.
   public static logConnectionInfo(message: string)
   {
-    this.log(message, MessageType.CONNECTION_INFO);
+    this.log("[CONNECTION_INFO]", message);
   }
 
   // ! Throws exception on error.
   public static logSystemInfo(message: string)
   {
-    this.log(message, MessageType.SYSTEM_INFO);
+    this.log("[INFO]", message);
   }
 
   public static reportUncaughtException(error: any)
@@ -103,7 +101,12 @@ export abstract class Syslog
 
   // --------------- Protected methods ------------------
 
-  protected abstract log(message: string, msgType: MessageType): void;
+  protected abstract log
+  (
+    messageType: Syslog.MessageType,
+    message: string
+  )
+  : void;
   protected abstract reportException(error: Error, isCaught: boolean): void;
   protected abstract reportError(message: string): void;
 
@@ -138,20 +141,39 @@ export abstract class Syslog
     return StringUtils.removeFirstLinesWithoutPrefix(stackTrace, '    at ');
   }
 
-  protected createLogEntry(message: string, msgType: MessageType)
+  protected createLogEntry(messageType: Syslog.MessageType, message: string)
   {
-    return "[" + MessageType[msgType] + "] " + message;
+    return messageType + " " + message;
   }
 
-  protected exceptionMessageType(isCaught: boolean)
+  protected exceptionMessageType(isCaught: boolean): Syslog.MessageType
   {
-    if (isCaught)
-    {
-      return MessageType.RUNTIME_EXCEPTION;
-    }
-    else
-    {
-      return MessageType.UNCAUGHT_EXCEPTION;
-    }
+    return isCaught ? "[EXCEPTION]" : "[UNCAUGHT_EXCEPTION]";
   }
+}
+
+// ------------------ Type Declarations ----------------------
+
+export module Syslog
+{
+  export type MessageType =
+    // Sent when REPORT(error) is called. Contains original exception.
+    "[EXCEPTION]"
+    // Sent when exeption propagates to the top-level function
+    // (which shouldn't happen).
+  | "[UNCAUGHT_EXCEPTION]"
+    // Sent when ERROR() is called.
+  | "[ERROR]"
+    // Something is ok (game is successfuly loaded]" | etc.).
+  | "[INFO]"
+    // Messages from http server.
+  | "[HTTP_SERVER]"
+    // Messages from https server.
+  | "[HTTPS_SERVER]"
+    // Messages from websocket communication.
+  | "[WEBSOCKET]"
+    // Messages from websocket server.
+  | "[WEBSOCKET_SERVER]"
+    // Player has connected etc.
+  | "[CONNECTION_INFO]";
 }

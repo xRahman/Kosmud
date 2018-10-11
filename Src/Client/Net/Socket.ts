@@ -5,7 +5,6 @@
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';
-import {MessageType} from '../../Shared/MessageType';
 import {Types} from '../../Shared/Utils/Types';
 import * as Shared from '../../Shared/Net/Socket';
 
@@ -35,6 +34,6 @@ export abstract class Socket extends Shared.Socket
   {
     super.onOpen(event);
 
-    Syslog.log("Websocket opened", MessageType.WEBSOCKET);
+    Syslog.log("[WEBSOCKET]", "Websocket opened");
   }
 }

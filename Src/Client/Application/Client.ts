@@ -7,15 +7,13 @@
     Client.start();
 */
 
+import {REPORT} from '../../Shared/Log/REPORT';
 import {Syslog} from '../../Client/Log/Syslog';
-import {PhaserEngine} from '../Phaser/PhaserEngine';
+import {PhaserEngine} from '../../Client/Phaser/PhaserEngine';
 import {Application} from '../../Shared/Application';
-import {MessageType} from '../../Shared/MessageType';
 import {Entities} from '../../Client/Class/Entities';
 import {Document} from '../../Client/Gui/Document';
 import {Connection} from '../../Client/Net/Connection';
-import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import { REPORT } from '../../Shared/Log/REPORT';
 
 PhaserEngine;   // Inits the class.
 
@@ -54,7 +52,7 @@ export class Client extends Application
 
   public static async start()
   {
-    Syslog.log("Starting Kosmud client...", MessageType.SYSTEM_INFO);
+    Syslog.log("[INFO]", "Starting Kosmud client...");
 
     if (!Connection.checkWebSocketSupport())
       return;
@@ -81,5 +79,3 @@ export class Client extends Application
 
   // ---------------- Event handlers --------------------
 }
-
-// ------------------ Type declarations ----------------------

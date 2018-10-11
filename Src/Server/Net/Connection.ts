@@ -6,7 +6,6 @@
 
 import {Syslog} from '../../Shared/Log/Syslog';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {MessageType} from '../../Shared/MessageType';
 import {Types} from '../../Shared/Utils/Types';
 import {Packet} from '../../Shared/Protocol/Packet';
 import {Socket} from '../../Server/Net/Socket';
@@ -108,19 +107,12 @@ function logNormalDisconnect(user: string, event: Types.CloseEvent)
 {
   if (isCausedByClosingTab(event))
   {
-    Syslog.log
-    (
-      "User " + user + " has disconnected by closing or reloading browser tab",
-      MessageType.CONNECTION_INFO
-    );
+    Syslog.log("[CONNECTION_INFO]", "User " + user + " has"
+      + " disconnected by closing or reloading browser tab");
   }
   else
   {
-    Syslog.log
-    (
-      "User " + user + " has disconnected",
-      MessageType.CONNECTION_INFO
-    );
+    Syslog.log("[CONNECTION_INFO]", "User " + user + " has disconnected");
   }
 }
 

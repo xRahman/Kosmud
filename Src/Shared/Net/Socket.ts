@@ -7,7 +7,6 @@
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {Types} from '../../Shared/Utils/Types';
-import {MessageType} from '../../Shared/MessageType';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
 import {PacketHandler} from '../../Shared/Net/PacketHandler';
 
@@ -104,11 +103,7 @@ export abstract class Socket extends PacketHandler
     message += ". Code: " + event.code + "."
     message += ' Description: "' + WebSocketEvent.description(event.code) + '"';
 
-    Syslog.log
-    (
-      message,
-      MessageType.WEBSOCKET
-    );
+    Syslog.log("[WEBSOCKET]", message);
   }
 
   // ---------------- Private methods -------------------
@@ -204,7 +199,7 @@ export abstract class Socket extends PacketHandler
 
     message += ". Connection to " + this.getOrigin() + " will close";
 
-    Syslog.log(message, MessageType.WEBSOCKET);
+    Syslog.log("[WEBSOCKET]", message);
   }
 
   protected onClose(event: Types.CloseEvent)

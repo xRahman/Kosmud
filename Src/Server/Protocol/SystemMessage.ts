@@ -5,13 +5,12 @@
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';
-import {MessageType} from '../../Shared/MessageType';
 import * as Shared from '../../Shared/Protocol/SystemMessage';
 import {Connection} from '../../Server/Net/Connection';
 
 export class SystemMessage extends Shared.SystemMessage
 {
-  constructor(message: string, messageType: MessageType)
+  constructor(message: string, messageType: Syslog.MessageType)
   {
     super(message, messageType);
 
@@ -25,16 +24,16 @@ export class SystemMessage extends Shared.SystemMessage
   {
     switch (this.messageType)
     {
-      case MessageType.CONNECTION_INFO:
+      case "[CONNECTION_INFO]":
         Syslog.log
         (
-          "User " + connection.getUserInfo() + " " + this.message,
-          this.messageType
+          this.messageType,
+          "User " + connection.getUserInfo() + " " + this.message
         );
         break;
 
       default:
-        Syslog.log(this.message, this.messageType);
+        Syslog.log(this.messageType, this.message);
         break;
     }
   }

@@ -1,31 +1,4 @@
 
-TODO: Rozdělit MessageType na Syslog.MessageType a zbytek.
-  (mimo jiné se nebude muset všude se Syslogem importovat ještě MessageType).
-
-
-TODO: Refactorovat Connectiony a WebSockety.
-+/Shared/Net/PacketHandler.ts
-+/Shared/Net/Socket.ts
-+/Shared/Net/WebSocketEvent.ts
-+/Server/Net/Connection.ts
-+/Server/Net/Connections.ts
-+/Server/Net/HttpsServer.ts
-/Server/Net/Message.ts
-/Server/Net/MessageColors.ts
-+/Server/Net/Socket.ts
-+/Server/Net/WebSocketServer.ts
-+/Client/Net/Connection.ts
-+/Client/Net/Socket.ts
-
-
-
------------------------------------------------------------------------
-
-Refactoring Connectionů
-------------------------
-
-TODO: Try-catchnout všechna volání serialize() a deserialize().
-- ještě to zkontrolovat
 
 -----------------------------------------------------------------------
 
@@ -39,6 +12,8 @@ TODO: Výhledově líp pořešit keyboard handling. Psát extra handler na každ
   - asi to můžu udělat přes DOM eventy místo přes Phaser.
 
 TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
+- spíš to nechám postaru. Vidět v importu, jestli je to ze /Shared, /Client
+  nebo /Server je docela důležitý.
 
 TODO: Updatnout commenty v Application, Client a Server.
 

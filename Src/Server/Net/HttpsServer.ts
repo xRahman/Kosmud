@@ -8,7 +8,6 @@ import {REPORT} from '../../Shared/Log/REPORT';
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
 import {FileSystem} from '../../Server/FS/FileSystem';
-import {MessageType} from '../../Shared/MessageType';
 import {WebSocketServer} from '../../Server/Net/WebSocketServer';
 
 // Built-in node.js modules.
@@ -68,10 +67,7 @@ export class HttpsServer
         + " already running");
     }
 
-    Syslog.log
-    (
-      "Starting http server at port " + port, MessageType.SYSTEM_INFO
-    );
+    Syslog.log("[INFO]", "Starting http server at port " + port);
 
     this.httpServer = http.createServer(expressApp);
 
@@ -97,10 +93,7 @@ export class HttpsServer
         + " already running");
     }
 
-    Syslog.log
-    (
-      "Starting https server at port " + port, MessageType.SYSTEM_INFO
-    );
+    Syslog.log("[INFO]", "Starting https server at port " + port);
     
     // ! Throws exception on error.
     let certificate = await loadCertificate();
@@ -131,11 +124,7 @@ export class HttpsServer
       return;
     }
 
-    Syslog.log
-    (
-      "Http server is up and listening",
-      MessageType.HTTP_SERVER
-    );
+    Syslog.log("[HTTP_SERVER]", "Http server is up and listening");
   }
 
   // Executes when https server is ready and listening.
@@ -148,11 +137,7 @@ export class HttpsServer
       return;
     }
 
-    Syslog.log
-    (
-      "Https server is up and listening",
-      MessageType.HTTPS_SERVER
-    );
+    Syslog.log("[HTTPS_SERVER]", "Https server is up and listening");
 
     try
     {
@@ -166,12 +151,12 @@ export class HttpsServer
 
   private onHttpError(error: Error)
   {
-    Syslog.log("Http error: " + error.message, MessageType.HTTP_SERVER);
+    Syslog.log("[HTTP_SERVER]","Http error: " + error.message);
   }
 
   private onHttpsError(error: Error)
   {
-    Syslog.log("Https error: " + error.message, MessageType.HTTPS_SERVER);
+    Syslog.log("[HTTPS_SERVER]", "Https error: " + error.message);
   }
 }
 
