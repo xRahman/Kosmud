@@ -45,6 +45,7 @@ import {JsonObject} from '../../Shared/Class/JsonObject';
 import {Attributable} from '../../Shared/Class/Attributable';
 import {Application} from '../../Shared/Application';
 
+
 // 3rd party modules.
 let FastBitSet = require('fastbitset');
 
@@ -776,7 +777,7 @@ export class Serializable extends Attributable
     // there is an instance of some Serializable class saved directly
     // in JSON, it can't be an entity class.
 
-    let Class = Classes.serializables.get(className);
+    let Class = Classes.serializableClasses.get(className);
 
     if (!Class)
     {
@@ -943,7 +944,8 @@ export class Serializable extends Attributable
     //   importing Entities to Serializable would cause cyclical module
     //   dependancy (Entities import Entity which imports Serializable).
     //   Doing this using Application.entities for some reason works.
-    return Application.entities.getReference(id);
+    // return Application.entities.getReference(id);
+    return Classes.entities.getReference(id);
   }
 
   // ! Throws exception on error.

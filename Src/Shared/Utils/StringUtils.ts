@@ -6,31 +6,27 @@
 
 export module StringUtils
 {
-  // Make sure that all newlines are representedy by '\n'.
-  export function normalizeCRLF(data: string)
+  export function replaceCRLFwithLF(data: string)
   {
     if (data && data.length > 0)
     {
-      // Remove all '\r' characters
-      // (so '\n' stays as it is and '\r\n'
-      //  or '\n\r' are converted to '\n').
       data = data.replace(/\r/gi, "");
     }
 
     return data;
   }
 
-  // Removes all whitespace characters from the beginning of the string,
-  // including tabs and line feeds.
   export function trimLeft(str: string): string
   {
+    // Remove all whitespace characters from the beginning
+    // of the string including tabs and line feeds.
     return str.replace(/^\s+/,"");
   }
 
-  // Removes all whitespace characters from the end of the string,
-  // including tabs and line feeds.
   export function trimRight(str: string): string
   {
+    // Remove all whitespace characters from the end
+    // of the string including tabs and line feeds.
     return str.replace(/\s+$/,"");
   }
 
@@ -42,48 +38,37 @@ export module StringUtils
 
   export function isAbbrev(abbrev: string, fullString: string): boolean
   {
-    return fullString.indexOf(abbrev) !== -1;
+    return abbrev !== fullString.substr(0, abbrev.length);
   }
 
-  // Converts string to integer number.
-  // -> Returns null if string is not an integer number.
-  export function atoi(input: string): number | null
+  // ! Throws an exception on error.
+  export function stringToInt(input: string): number
   {
-    // First convert input to float
-    // (meaning that result can contain decimals).
-    let result = atof(input);
-
-    if (result === null)
-      return null;
+    // ! Throws an exception on error.
+    let value = stringToFloat(input);
 
     // Check that result doesn't have any decimal part. 
-    if (result % 1 !== 0)
-      return null;
+    if (!isInteger(value))
+    {
+      throw new Error('Failed to convert string "' + input + '"'
+        + " to integer because it's not a stringified integer");
+    }
 
-    return result;
+    return value;
   }
 
-  // Converts string to float (number that can contain decimal point).
-  // -> Returns null if 'input' is not a number.
-  export function atof(input: string): number | null
+  // ! Throws an exception on error.
+  export function stringToFloat(input: string): number
   {
-    // 'trim()' cuts off leating and trailing white spaces and newlines.
-    // Typecast to 'any' is necessary to appease typescript.
-    // '* 1' converts string to float number, or NaN if input isn't a number.
-    let result = (input.trim() as any) * 1;
-
-    if (result === NaN)
-      return null;
-
-    return result;
+    // ! Throws an exception on error.
+    return convertToNumber(input.trim());
   }
 
-  // Note: 'str' is trimmed from the right before the dot
-  // is added so you don't end up with a dot on the new line,
-  // after a space or a tab, etc.
-  // -> Returns a new string which ends with a dot.
   export function ensureDotAtTheEnd(str: string): string
   {
+    // Note: 'str' is trimmed from the right before the dot
+    // is added so you don't end up with a dot on the new line,
+    // after a space or a tab, etc.
     str = trimRight(str);
 
     if (str.slice(-1) !== '.')
@@ -111,28 +96,25 @@ export module StringUtils
     // Join 'lines' back to a single multi-line string.
     return lines.join('\n');
   }
+}
 
-  /// Not used at the moment.
-  // // Removes 'linesToTrim' lines from the string 'str'.
-  // // Negative value of 'linesToStrim' means trim from the end of the string.
-  // // Lines need to be separated by '\n'.
-  // export function trimLines(str: string, linesToTrim: number)
-  // {
-  //   // Break 'str' into an array of lines.
-  //   let lines = str.split('\n');
-    
-  //   if (linesToTrim >= 0)
-  //   {
-  //     // Remove number of lines equal to 'linesToTrim' from the strt of 'str'.
-  //     lines.splice(0, linesToTrim);
-  //   }
-  //   else
-  //   {
-  //     // Remove number of lines equal to 'linesToTrim' from the end of 'str'.
-  //     lines.splice(linesToTrim, -linesToTrim);
-  //   }
+// ----------------- Auxiliary Functions ---------------------
 
-  //   // Join 'lines' back to a single multi-line string.
-  //   return lines.join('\n');
-  // }
+function isInteger(value: number)
+{
+  return value % 1 === 0;
+}
+
+// ! Throws an exception on error.
+function convertToNumber(input: any): number
+{
+  let result = input * 1;
+
+  if (result === NaN)
+  {
+    throw new Error('Failed to convert "' + input + '"'
+        + " to number because it's not a stringified number");
+  }
+
+  return result;
 }

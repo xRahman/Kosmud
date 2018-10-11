@@ -4,45 +4,10 @@
   Various utility functions.
 */
 
-import { Types } from './Types';
+import {Types} from '../../Shared/Utils/Types';
 
 export module Utils
 {
-  export function isColorCode(code: string): boolean
-  {
-    switch (code)
-    {
-      case '&n':
-      case '&d':
-      case '&i':
-      case '&u':
-      case '&l':
-      case '&k':
-      case '&Ki':
-      case '&K':
-      case '&r':
-      case '&Ri':
-      case '&R':
-      case '&g':
-      case '&Gi':
-      case '&G':
-      case '&y':
-      case '&Y':
-      case '&b':
-      case '&Bi':
-      case '&B':
-      case '&m':
-      case '&M':
-      case '&c':
-      case '&C':
-      case '&w':
-      case '&W':
-        return true;        
-    }
-
-    return false;
-  }
-
   // Copies properties of 'defaults' object to 'target' object
   // if they are not present in it. This is even done recursively
   // so you can default only some sub-properties.
@@ -87,30 +52,20 @@ export module Utils
   }
 
   // ! Throws exception on error.
-  // This function is used to enforce that all switch cases are handled
-  // when using compound type of switch argument.
+  // Example:
+  //   switch (type)
+  //   {
+  //     case "Blue":
+  //       doSomething();
+  //       break;
   //
-  //   Example:
-  //     iport {Utils} from '../Shared/Utils';
-  //
-  //     type Type = "Blue" | "Red";
-  //
-  //     function something(type: Type)
-  //     {
-  //       switch (type)
-  //       {
-  //         case "Blue":
-  //           doSomething();
-  //           break;
-  //
-  //         default:
-  //           // Typescript will show intelisense error here saying:
-  //           //   "Argument of type '"Red"' is not
-  //           //    assignable to parameter of type 'never'" because
-  //           //  you forgot to handle "Red" case.
-  //           Utils.reportMissingCase(type);
-  //       }
-  //     }
+  //     default:
+  //       // Typescript will show intelisense error here saying:
+  //       //   "Argument of type '"Red"' is not
+  //       //    assignable to parameter of type 'never'" because
+  //       //  you forgot to handle "Red" case.
+  //       Utils.reportMissingCase(type);
+  //   }
   export function reportMissingCase(variable: never)
   {
     throw new Error("Unhandled switch case");

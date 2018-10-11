@@ -4,7 +4,7 @@
   Types and associated utility functions.
 */
 
-import { Serializable } from '../../Shared/Class/Serializable';
+import {Serializable} from '../../Shared/Class/Serializable';
 
 // 3rd party modules.
 let FastPriorityQueue = require('fastpriorityqueue');
@@ -13,10 +13,11 @@ import * as WebSocket from 'isomorphic-ws';
 
 export module Types
 {
-  // Types used for example in 'new Promise((resolve, reject) => { ... })'.
+  // Used for example in 'new Promise((resolve, reject) => { ... })'.
   export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
-  export type RejectFunction = (reason?: any) => void;
 
+  // Used for example in 'new Promise((resolve, reject) => { ... })'.
+  export type RejectFunction = (reason?: any) => void;
 
   export type OpenEvent =
   {

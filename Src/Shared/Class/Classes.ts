@@ -9,7 +9,7 @@ import {Serializable} from '../../Shared/Class/Serializable';
 import {Types} from '../../Shared/Utils/Types';
 
 //import {Entity} from '../../Shared/Class/Entity';
-//import {Entities} from '../../Shared/Class/Entities';
+import {Entities} from '../../Shared/Class/Entities';
 
 /// This doesn't work in Typescript 2.4.1 anymore :\.
 // // Type describing constructor of a Serializable class.
@@ -19,14 +19,16 @@ import {Types} from '../../Shared/Utils/Types';
 
 export class Classes
 {
-  // Classes extended from Serializable but not from Entity.
-  public static serializables = new Map<string, new() => any>();
+  public static entities: Entities;
 
-  // Classes extended from Entity.
-  // (we keep Entity classes aside from other Serializable classes
-  //  even though Entity is extended from Serializable because they
-  //  are instantiated differently).
-  public static entities = new Map<string, new() => any>();
+  // Classes extended from Serializable but not from Entity.
+  public static serializableClasses = new Map<string, new() => any>();
+
+  // // Classes extended from Entity.
+  // // (we keep Entity classes aside from other Serializable classes
+  // //  even though Entity is extended from Serializable because they
+  // //  are instantiated differently).
+  // public static entityClasses = new Map<string, new() => any>();
 
   // ------------- Public static methods ----------------
 
@@ -35,13 +37,13 @@ export class Classes
     Class: Types.NonabstractClass<T>
   )
   {
-    this.serializables.set(Class.name, Class);
+    this.serializableClasses.set(Class.name, Class);
   }
 
   // ! Throws exception on error.
   public static instantiateSerializableClass(className: string)
   {
-    let Class = Classes.serializables.get(className);
+    let Class = Classes.serializableClasses.get(className);
 
     if (!Class)
     {

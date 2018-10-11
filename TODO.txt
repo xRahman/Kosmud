@@ -1,23 +1,47 @@
+TODO: Dodělat cleanup a refactoring:
+
+Client root (KosmudClient.ts)
+Client/Application
+Client/Class
+Client/Gui
+Client/Log
++Client/Net
+Client/Phaser
+Client/Protocol
+
+Server root (KosmudServer.ts)
+Server/Application
+Server/Class
+Server/FS
+Server/Game
+Server/Log
++Server/Net
+Server/Physics
+Server/Protocol
+
+Shared root (Application.ts)
+Shared/Utils
+Shared/Class
+Shared/Game
+Shared/Log
++Shared/Net
+Shared/Protocol
++Shared/Utils
+
+TODO: Přesunout FileUtils na Server (Client je nepotřebuje).
+- mergnul jsem to do FileSystem.
+[done]
+
+TODO: Return values ve StringUtils
+[done]
 
 
 -----------------------------------------------------------------------
 
-TODO: Výhledově místo neposílání paketů do closed connection
-  při disconnectu disablovat komplet herní keyboard processing.
-  (viz Keyboard.sendPlayerInput())
-  - component.hide() nestačí, to je vypne zobrazování.
 
-TODO: Výhledově líp pořešit keyboard handling. Psát extra handler na každou
-  klávesu je dost overkill, navíc by se blbě psalo mapování keybindů.
-  - asi to můžu udělat přes DOM eventy místo přes Phaser.
-
-TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
-- spíš to nechám postaru. Vidět v importu, jestli je to ze /Shared, /Client
-  nebo /Server je docela důležitý.
-
-TODO: Updatnout commenty v Application, Client a Server.
 
 TODO: Packety asi nemusí mít version (nemusí se posílat).
+
 
 TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
   a z něj pak volat všechno ostatní.
@@ -27,8 +51,6 @@ TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
   exceptiony [to je DONE].
 
 
-TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
-  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
 
 
 Prozatímní řešení client-server predikce
@@ -54,14 +76,6 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 
 -----------------------------------------------------------------------
 
-
-TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
-- jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
-
-TODO: Použít https://letsencrypt.org/
-
------------------------------------------------------------------------
-
 TODO: Rozdělit Utils na víc souborů.
 - stringové fce
 - souborové fce
@@ -75,20 +89,76 @@ TODO: Vyhodit z Utils ERROR a FATAL_ERROR (a vůbec ho celý projít).
 - nahradit je exceptionama.
 
 
------------------------------------------------------------------------
+TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
 
-Typescript mixins:
-https://blog.mariusschulz.com/2017/05/26/typescript-2-2-mixin-classes
-
----
 
 TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.
+
+TODO: Potenciální problém - 'entities' asi budou muset bej v Application
+  místo v Entities, protože se k nim musím dostat
+  v Serializable.readEntityReference a v Serializable nejdou importnout
+  Entities.
+- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
+  do Utils.
+(zatím to přeložit jde. Nechám si to tu, až budu zprovozňovat Entities)
+
+TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
+  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
+
+TODO: Updatnout commenty v Application, Client a Server.
+
+
+-----------------------------------------------------------------------
+
+Odložené TODO:
+---------------
+
+TODO: Výhledově líp pořešit keyboard handling. Psát extra handler na každou
+  klávesu je dost overkill, navíc by se blbě psalo mapování keybindů.
+  - asi to můžu udělat přes DOM eventy místo přes Phaser.
 
 
 TODO: Klikání na objekty ve hře:
   You could do this using Query.point giving a mouse position and
   Composite.allBodies(engine.world). This will give you a list of
   bodies under the mouse.
+
+
+TODO: Mrknout na:
+  var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'parent');
+  ...
+  game.scale.scaleMode = Phaser.ScaleManager.RESIZE
+https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width-instead-of-content-width
+
+
+-----------------------------------------------------------------------
+
+Výhledové TODO:
+-----------------
+
+TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
+- jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
+
+
+TODO: Použít https://letsencrypt.org/
+
+
+TODO: Přidat comment k Serializable.deserialize(), jak se loadují
+  entity (nějak přes Entities)
+
+
+TODO: (Znovu) vyzkoušet ES6 moduly v browseru.
+https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7
+   <script type="module" src="module.js"></script>
+- nefungují, protože browser vyžaduje v importech '.js' a typescript
+  ho tam se zapnutým outputem "module": "es2015" nedává.
+  viz https://github.com/Microsoft/TypeScript/issues/16577
+
+
+TODO: Prostudovat avanced Typescript typy:
+  https://levelup.gitconnected.com/advanced-typescript-types-with-examples-1d144e4eda9e
+- nebo si to možná hodit do nějakého typescriptového howtu či manuálu.
+
 
 TODO: Rozhodnout dilema s pojmeováváním class
 - vidím to na SharedClass, Client/Class, Server/Class
@@ -99,36 +169,12 @@ Je to teda pořád otázka. ClientEntities a ServerEntities jsou asi názorněj�
 než když se tři classy jmenují stejně.
 
 
-TODO: Prostudovat avanced Typescript typy:
-  https://levelup.gitconnected.com/advanced-typescript-types-with-examples-1d144e4eda9e
-- nebo si to možná hodit do nějakého typescriptového howtu či manuálu.
-
-TODO: Mrknout na:
-  var game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'parent');
-  ...
-  game.scale.scaleMode = Phaser.ScaleManager.RESIZE
-https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width-instead-of-content-width
+TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
+- spíš to nechám postaru. Vidět v importu, jestli je to ze /Shared, /Client
+  nebo /Server je docela důležitý.
 
 
-TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
-
-TODO: Vyzkoušet ES6 moduly v browseru.
-https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7
-   <script type="module" src="module.js"></script>
-- nefungují, protože browser vyžaduje v importech '.js' a typescript
-  ho tam se zapnutým outputem "module": "es2015" nedává.
-  viz https://github.com/Microsoft/TypeScript/issues/16577
-
-
-
-TODO: Potenciální problém - 'entities' asi budou muset bej v Application
-  místo v Entities, protože se k nim musím dostat
-  v Serializable.readEntityReference a v Serializable nejdou importnout
-  Entities.
-- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
-  do Utils.
-(zatím to přeložit jde. Nechám si to tu, až budu zprovozňovat Entities)
-
-
-TODO: Přidat comment k Serializable.deserialize(), jak se loadují
-  entity (nějak přes Entities)
+TODO: Výhledově místo neposílání paketů do closed connection
+  při disconnectu disablovat komplet herní keyboard processing.
+  (viz Keyboard.sendPlayerInput())
+  - component.hide() nestačí, to je vypne zobrazování.
