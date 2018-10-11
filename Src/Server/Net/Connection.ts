@@ -6,7 +6,6 @@
 
 import {Syslog} from '../../Shared/Log/Syslog';
 import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {Message} from '../../Server/Net/Message';
 import {MessageType} from '../../Shared/MessageType';
 import {Types} from '../../Shared/Utils/Types';
 import {Packet} from '../../Shared/Protocol/Packet';
@@ -42,7 +41,7 @@ export class Connection extends Socket
     let info = "";
 
     /// Disabled for now.
-    // if (this.account)
+    // if (this.account !== "Not attached")
     //   info += this.account.getEmail() + " ";
     
     // Add (url [ip]).
@@ -62,17 +61,6 @@ export class Connection extends Socket
     );
   }
 
-  /// Disabled for now.
-  // public announceReconnect()
-  // {
-  //   let message = new Message
-  //   (
-  //     "Someone (hopefully you) has just logged into this account"
-  //       + " from different location. Closing this connection.",
-  //     MessageType.CONNECTION_INFO
-  //   );
-  // }
-
   // --------------- Private methods --------------------
 
   // Releases the connection from memory
@@ -84,7 +72,7 @@ export class Connection extends Socket
     // // when browser has opened connection but player hasn't
     // // logged in yet or when player reconnects from different
     // // location and the old connection is closed.
-    // if (this.account)
+    // if (this.account !== "Not attached")
     // {
     //   this.account.logout();
     //   this.account = null;
@@ -100,22 +88,15 @@ export class Connection extends Socket
   protected onClose(event: Types.CloseEvent)
   {
     super.onClose(event);
-
-    // 'event.reason' is checked because for some reason Chrome sometimes
-    // closes webSocket with code 1006 when the tab is closed even though
-    // we close() the socket manually in onBeforeUnload() handler (see
-    // ClientApp.onBeforeUnload() for more details).
-    const tabHasBeenClosed = (event.reason === WebSocketEvent.TAB_CLOSED);
-    const isNormalClose = WebSocketEvent.isNormalClose(event.code);
-    const normalDisconnect = isNormalClose || tabHasBeenClosed;
     
-    if (!normalDisconnect)
+    if (isNormalDisconnect(event))
+    {
+      logNormalDisconnect(this.getUserInfo(), event);
+    }
+    else
     {
       this.logSocketClosingError(event);
-      return;
     }
-
-    logNormalDisconnect(this.getUserInfo(), tabHasBeenClosed);
 
     this.release();
   }
@@ -123,9 +104,9 @@ export class Connection extends Socket
 
 // ----------------- Auxiliary Functions ---------------------
 
-function logNormalDisconnect(user: string, tabHasBeenClosed: boolean)
+function logNormalDisconnect(user: string, event: Types.CloseEvent)
 {
-  if (tabHasBeenClosed)
+  if (isCausedByClosingTab(event))
   {
     Syslog.log
     (
@@ -141,4 +122,20 @@ function logNormalDisconnect(user: string, tabHasBeenClosed: boolean)
       MessageType.CONNECTION_INFO
     );
   }
+}
+
+function isCausedByClosingTab(event: Types.CloseEvent)
+{
+  // 'event.reason' is checked because for some reason Chrome sometimes
+  // closes webSocket with code 1006 when the tab is closed even though
+  // we close() the socket manually in onBeforeUnload() handler (see
+  // ClientApp.onBeforeUnload() for more details).
+  return event.reason === WebSocketEvent.TAB_CLOSED;
+}
+
+function isNormalDisconnect(event: Types.CloseEvent)
+{
+  const isNormalClose = WebSocketEvent.isNormalClose(event.code);
+  
+  return isNormalClose || isCausedByClosingTab(event);
 }

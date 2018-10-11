@@ -21,6 +21,7 @@ export abstract class Socket extends Shared.Socket
   {
     super(webSocket);
   }
+  
   // ---------------- Public methods --------------------
 
   public getIpAddress(): string
