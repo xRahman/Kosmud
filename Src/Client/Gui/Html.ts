@@ -14,35 +14,12 @@ export class Html extends Component
     super();
 
     this.element = htmlElement;
-
     this.setCss(Html.css);
-  }
-
-  // -------------- Private static data -----------------
-
-  private static htmlElement: Html | "Doesn't exist" = "Doesn't exist";
-
-  // ------------- Public static methods ----------------
-
-  // ! Throws exception on error.
-  public static init()
-  {
-    if (this.htmlElement !== "Doesn't exist")
-    {
-      throw new Error("Failed to init html element because it already exists");
-    }
-
-    // 'document.documentElement' is a direct reference to <html> element.
-    if (!document.documentElement)
-    {
-      throw new Error("Failed to init html element because"
-        + " it doesn't exist in the DOM");
-    }
-
-    this.htmlElement = new Html(document.documentElement);
 
     window.addEventListener('resize', () => { this.onDocumentResize(); });
   }
+
+  // ------------- Protected static data ----------------
 
   protected static css: Partial<CSSStyleDeclaration> =
   {
@@ -58,7 +35,7 @@ export class Html extends Component
 
   // ---------------- Event handlers --------------------
 
-  private static onDocumentResize()
+  private onDocumentResize()
   {
     // Windows.onDocumentResize();
   }

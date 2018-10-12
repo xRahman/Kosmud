@@ -1,12 +1,11 @@
 
-import {Canvas} from '../../Client/Phaser/Canvas';
 import {Background} from '../../Client/Phaser/Background';
 import {Ship} from '../../Client/Phaser/Ship';
 import {SceneContents} from '../../Client/Phaser/SceneContents';
 
 export class Scene extends Phaser.Scene
 {
-  constructor(private canvas: Canvas, sceneName: string)
+  constructor(sceneName: string)
   {
     super(sceneName);
   }
@@ -28,12 +27,12 @@ export class Scene extends Phaser.Scene
 
   // ! Throws exception on error.
   // This method is run by Phaser.
-  public create()
+  public create(canvasWidth: number, canvasHeight: number)
   {
     if (this.contents)
       throw new Error('Scene contents already exists');
 
-    this.contents = new SceneContents(this.canvas, this);
+    this.contents = new SceneContents(this, canvasWidth, canvasHeight);
   }
 
   // This method is run periodically by Phaser.
@@ -45,12 +44,12 @@ export class Scene extends Phaser.Scene
     this.contents.update();
   }
 
-  public onCanvasResize()
+  public resize(width: number, height: number)
   {
     if (!this.contents)
       throw new Error("Scene contents doesn't exist");
 
-    this.contents.onCanvasResize();
+    this.contents.resize(width, height);
   }
 
   // ---------------- Private methods -------------------

@@ -1,15 +1,23 @@
-import {Canvas} from '../../Client/Phaser/Canvas';
-
 const BACKGROUND_SPRITE_ID = 'background';
 
 export class Background
 {
-  constructor(private scene: Phaser.Scene, private canvas: Canvas)
+  constructor
+  (
+    private scene: Phaser.Scene,
+    canvasWidth: number,
+    canvasHeight: number
+  )
   {
-    this.sprite = createBackgroundSprite(this.scene, this.canvas);
+    this.sprite = createBackgroundSprite
+    (
+      this.scene,
+      canvasWidth,
+      canvasHeight
+    );
 
     // Update size and position to cover whole canvas.
-    this.resize();
+    this.resize(canvasWidth, canvasHeight);
   }
 
   private sprite: Phaser.GameObjects.Sprite;
@@ -26,7 +34,7 @@ export class Background
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public resize()
+  public resize(canvasWidth: number, canvasHeight: number)
   {
     if (!this.sprite)
     {
@@ -34,8 +42,6 @@ export class Background
         + " background sprite doesn't exist");
     }
 
-    const canvasWidth = this.canvas.getWidth();
-    const canvasHeight = this.canvas.getHeight();
     const imageWidth = this.sprite.width;
     const imageHeight = this.sprite.height;
 
@@ -104,14 +110,19 @@ export class Background
     // Position of background needs to be in the middle of
     // canvas so it depends on cavas size too and we need to
     // update it.
-    this.sprite.setX(this.canvas.getWidth() / 2);
-    this.sprite.setY(this.canvas.getHeight() / 2);
+    this.sprite.setX(canvasWidth / 2);
+    this.sprite.setY(canvasHeight / 2);
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createBackgroundSprite(scene: Phaser.Scene, canvas: Canvas)
+function createBackgroundSprite
+(
+  scene: Phaser.Scene,
+  canvasWidth: number,
+  canvasHeight: number
+)
 {
   // Display origin of the sprite is in the middle but origin
   // of canvas coords is at the top left. We want to center
@@ -119,8 +130,8 @@ function createBackgroundSprite(scene: Phaser.Scene, canvas: Canvas)
   // to [canvasWidth / 2, canvasHeight / 2] coordinates.
   let backgroundSprite = scene.add.sprite
   (
-    canvas.getWidth() / 2,
-    canvas.getHeight() / 2,
+    canvasWidth / 2,
+    canvasHeight / 2,
     BACKGROUND_SPRITE_ID
   );
 

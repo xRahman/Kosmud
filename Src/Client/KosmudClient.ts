@@ -12,12 +12,9 @@
 
 import {REPORT} from '../Shared/Log/REPORT';
 import {Syslog} from '../Client/Log/Syslog';
-import {PhaserEngine} from '../Client/Phaser/PhaserEngine';
-import {Html} from '../Client/Gui/Html';
+import {Gui} from '../Client/Gui/Gui';
+import {Renderer} from '../Client/Phaser/Renderer';
 import {Connection} from '../Client/Net/Connection';
-
-/// TODO: Přesunout tohle do nějaké init() metody.
-PhaserEngine;   // Inits the class.
 
 function start()
 {
@@ -25,24 +22,14 @@ function start()
 
   try
   {
-    Html.init();
+    Gui.init();
+    Renderer.init();
+    Connection.connect(); 
   }
   catch (error)
   {
-    REPORT(error, "Failed to init GUI");
-    alert("Failed to init GUI");
-    return;
-  }
-
-  try
-  {
-    Connection.connect();
-  }
-  catch (error)
-  {
-    REPORT(error, "Failed to connect to the server");
-    alert("Failed to connect to the server: " + error.message);
-    return;
+    REPORT(error, "Failed to start the client");
+    alert("Failed to start (" + error.message + ")");
   }
 }
 

@@ -1,5 +1,4 @@
 import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
-import {Canvas} from '../../Client/Phaser/Canvas';
 import {Scene} from '../../Client/Phaser/Scene';
 
 /// Phaser is listed in html direcly for now (should be imported though).
@@ -7,33 +6,34 @@ import {Scene} from '../../Client/Phaser/Scene';
 
 export class PhaserEngine
 {
-  private static instance = new PhaserEngine();
-
-  private canvas = new Canvas();
-  private flightScene = new Scene(this.canvas, 'FlightScene');
-
-  private config: GameConfig =
+  constructor(canvasWidth: number, canvasHeight: number)
   {
-    type: Phaser.AUTO,
-    width: this.canvas.getWidth(),
-    height: this.canvas.getHeight(),
-    parent: CanvasDiv.ELEMENT_ID,
-    scene: this.flightScene
-  };
-
-  private game = new Phaser.Game(this.config);
-
-  public static getFlightScene()
-  {
-    return PhaserEngine.instance.flightScene;
+    this.phaserGame = new Phaser.Game
+    (
+      {
+        type: Phaser.AUTO,
+        width: canvasWidth,
+        height: canvasHeight,
+        parent: CanvasDiv.ELEMENT_ID,
+        scene: this.flightScene
+      }
+    );
   }
 
-  public static onCanvasDivResize()
-  {
-    let canvas = this.instance.canvas;
+  private flightScene = new Scene('FlightScene');
 
-    canvas.updateSize();
-    this.instance.game.resize(canvas.getWidth(), canvas.getHeight());
-    this.instance.flightScene.onCanvasResize();
+  private phaserGame: Phaser.Game;
+
+  // public static getFlightScene()
+  // {
+  //   return PhaserEngine.instance.flightScene;
+  // }
+
+  public resize(width: number, height: number)
+  {
+    this.phaserGame.resize(width, height);
+    this.flightScene.resize(width, height);
   }
+
+  public getFlightScene() { return this.flightScene; }
 }

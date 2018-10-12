@@ -5,7 +5,7 @@
 */
 
 import {Component} from '../../Client/Gui/Component';
-import {PhaserEngine} from '../../Client/Phaser/PhaserEngine';
+import {Renderer} from '../../Client/Phaser/Renderer';
 
 export class CanvasDiv extends Component
 {
@@ -60,11 +60,23 @@ export class CanvasDiv extends Component
 
   // ----------------- Private data ---------------------
 
+  // ---------------- Public methods --------------------
+
+  public getWidth()
+  {
+    return this.element.clientWidth;
+  }
+
+  public getHeight()
+  {
+    return this.element.clientHeight;
+  }
+
   // ---------------- Event handlers --------------------
 
   private onResize()
   {
-    PhaserEngine.onCanvasDivResize();
+    Renderer.resize(this.getWidth(), this.getHeight());
   }
 
   // ---------------- Private methods -------------------

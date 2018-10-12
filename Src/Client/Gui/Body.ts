@@ -5,23 +5,23 @@
 */
 
 import {Component} from '../../Client/Gui/Component';
+import {Gui} from '../../Client/Gui/Gui';
 import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
-
-const BODY_ELEMENT_ID = 'body';
 
 export class Body extends Component
 {
   // ! Throws an exception on error.
-  constructor()
+  constructor(bodyElement: HTMLElement)
   {
     super();
 
-    // ! Throws an exception on error.
-    this.element = getBodyElement();
+    this.element = bodyElement;
     this.setCss(Body.css);
 
     this.canvasDiv = new CanvasDiv(this.element);
   }
+
+  // ------------- Protected static data ----------------
 
   protected static css: Partial<CSSStyleDeclaration> =
   {
@@ -44,18 +44,18 @@ export class Body extends Component
     cursor: 'default'
   }
 
-  private static instance = new Body();
-
   // --------------- Static accessors -------------------
 
+  /// TEMPORARY (CanvasDiv should be a window).
   public static getCanvasDiv()
   {
-    return Body.instance.canvasDiv;
+    return Gui.getBody().canvasDiv;
   }
 
+  /// TEMPORARY (CanvasDiv should be a window).
   public static getCanvasDivElement()
   {
-    return Body.instance.canvasDiv.getElement();
+    return Gui.getBody().getElement();
   }
 
   // ---------------- Protected data -------------------- 
@@ -64,28 +64,11 @@ export class Body extends Component
 
   // ----------------- Private data ---------------------
 
+  /// TEMPORARY (CanvasDiv should be a window).
   private canvasDiv: CanvasDiv;
 
   // ---------------- Event handlers --------------------
 
   // ---------------- Private methods -------------------
 
-}
-
-// ----------------- Auxiliary Functions ---------------------
-
-// ! Throws an exception on error.
-function getBodyElement()
-{
-  let body = document.getElementById(BODY_ELEMENT_ID);
-
-  if (!body)
-  {
-    throw new Error
-    (
-      "Unable to find <body> element by id '" + BODY_ELEMENT_ID + "'"
-    );
-  }
-
-  return body;
 }

@@ -1,15 +1,15 @@
 
 import {Keyboard} from '../../Client/Phaser/Keyboard';
 import {Scene} from '../../Client/Phaser/Scene';
-import {Canvas} from '../../Client/Phaser/Canvas';
 import {Camera} from '../../Client/Phaser/Camera';
 import {Background} from '../../Client/Phaser/Background';
 import {Ship} from '../../Client/Phaser/Ship';
 
 export class SceneContents
 {
-  constructor(private canvas: Canvas, private scene: Scene)
+  constructor(private scene: Scene, canvasWidth: number, canvasHeight: number)
   {
+    this.background = new Background(this.scene, canvasWidth, canvasHeight);
   }
 
   public getShip() { return this.ship; }
@@ -20,7 +20,7 @@ export class SceneContents
   // private cursors = this.scene.input.keyboard.createCursorKeys();
   private keyboard = new Keyboard(this.scene.input.keyboard);
 
-  private background = new Background(this.scene, this.canvas);
+  private background: Background;
   private ship = new Ship(this.scene);
 
   // ---------------- Public methods --------------------
@@ -33,9 +33,9 @@ export class SceneContents
     // this.ship.update(this.cursors);
   }
 
-  public onCanvasResize()
+  public resize(width: number, height: number)
   {
-    this.background.resize();
+    this.background.resize(width, height);
 
 
     // if (!this.cameras)

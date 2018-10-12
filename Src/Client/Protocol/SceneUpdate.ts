@@ -6,8 +6,7 @@
 */
 
 
-import {PhaserEngine} from '../../Client/Phaser/PhaserEngine';
-
+import {Renderer} from '../../Client/Phaser/Renderer';
 import {Classes} from '../../Shared/Class/Classes';
 import {Connection} from '../../Client/Net/Connection';
 import {GameEntity} from '../../Shared/Game/GameEntity';
@@ -27,7 +26,7 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    let sceneContents = PhaserEngine.getFlightScene().getSceneContents();
+    let sceneContents = Renderer.getFlightSceneContents();
 
     if (sceneContents)
       sceneContents.getShip().setPosition(this.shipPosition);

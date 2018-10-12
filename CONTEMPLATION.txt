@@ -1,5 +1,37 @@
 -----------------------------------------------------------------------
 
+GUI
+-----
+
+- class Gui by mohla v sobě mít instance (a vyrábět je, když už dělá init()).
+
+- když to budou dělat přímo classy, tak to může v importu classy házet
+  exceptiony. Což asi úplně nechci, protože ty není jak odchytit...
+  
+Canvas nemůže bejt komplet static, protože bude uvnitř CanvasWindow,
+  které se bude vyrábět dynamicky v initu.
+
+- classu Canvas nejspíš vůbec nepotřebuju.
+
+- problém je, že když vyrábím PhaserEngine, tak mu dávám velikost canvasDivu.
+  A ten v té době ještě nemusí existovat (určitě nebude, až to bude okno).
+  => DisplayEngine (Renderer) se musí vyrábět až když mám příslušné okno.
+
+Základní otázka tudíž je, kdo bude vlastnit Renderer a kdy se bude vyrábět.
+- vyrábět se logicky bude poté, co se vyrobí okno.
+- momentálně je to singleton. Což nemůže být, protože nemůže existovat
+  od začátku.
+- není to očividně Gui komponenta, takže by ho nemělo vlastnit Gui.
+- možná by fakt měl vlastnit sám sebe (nebo to případně může bejt class
+  Renderer, která bude obsahovat PhaserEngine.
+
+Čili:
+- zavolat Gui.init()
+- zavolat Renderer.init()
+  - ten si vyrobí PhaserEngine a passne mu údaje z CanvasWindow.
+
+-----------------------------------------------------------------------
+
 Disconnecty a reconnecty na klientu
 ------------------------------------
 

@@ -1,3 +1,11 @@
+TODO: Opravit poslední commit.
+
+TODO: PhaserEngine přejmenovat na DisplayEngine
+  (nebo RenderEngine, nebo tak něco)
+  - možná prostě Renderer?
+
+
+
 TODO: Dodělat cleanup a refactoring:
 
 Client root (KosmudClient.ts)
