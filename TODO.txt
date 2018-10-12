@@ -19,7 +19,6 @@ Server/Log
 Server/Physics
 Server/Protocol
 
-Shared root (Application.ts)
 Shared/Utils
 Shared/Class
 Shared/Game
@@ -27,13 +26,6 @@ Shared/Log
 +Shared/Net
 Shared/Protocol
 +Shared/Utils
-
-TODO: Přesunout FileUtils na Server (Client je nepotřebuje).
-- mergnul jsem to do FileSystem.
-[done]
-
-TODO: Return values ve StringUtils
-[done]
 
 
 -----------------------------------------------------------------------
@@ -76,36 +68,8 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 
 -----------------------------------------------------------------------
 
-TODO: Rozdělit Utils na víc souborů.
-- stringové fce
-- souborové fce
-  - ty by asi mohly jít do FS (už je tam isValidFileName()).
-TODO: Zamyslet se, co se zbytkem Utils
-  (mělo by to mít specifičtější pojmenování.)
-- zatím to vypadá, že 'Utils' bude asi nejlepší...
-- ...
-
-TODO: Vyhodit z Utils ERROR a FATAL_ERROR (a vůbec ho celý projít).
-- nahradit je exceptionama.
-
 
 TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
-
-
-TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.
-
-TODO: Potenciální problém - 'entities' asi budou muset bej v Application
-  místo v Entities, protože se k nim musím dostat
-  v Serializable.readEntityReference a v Serializable nejdou importnout
-  Entities.
-- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
-  do Utils.
-(zatím to přeložit jde. Nechám si to tu, až budu zprovozňovat Entities)
-
-TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
-  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
-
-TODO: Updatnout commenty v Application, Client a Server.
 
 
 -----------------------------------------------------------------------

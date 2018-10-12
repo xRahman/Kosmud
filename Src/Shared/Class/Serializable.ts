@@ -43,8 +43,6 @@ import {Utils} from '../Utils/Utils';
 import {Classes} from '../../Shared/Class/Classes';
 import {JsonObject} from '../../Shared/Class/JsonObject';
 import {Attributable} from '../../Shared/Class/Attributable';
-import {Application} from '../../Shared/Application';
-
 
 // 3rd party modules.
 let FastBitSet = require('fastbitset');

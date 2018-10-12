@@ -30,13 +30,7 @@ export class Connection extends Socket
 
   private static connection: Connection | "Not connected" = "Not connected";
 
-  // ---------------- Static methods --------------------
-
-  public static registerBeforeUnloadEvent()
-  {
-    window.onbeforeunload =
-      (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
-  }
+  // ------------- Public static methods ----------------
 
   // ! Throws exception on error.
   public static connect()
@@ -45,6 +39,13 @@ export class Connection extends Socket
     {
       throw new Error("Already connected");
     }
+
+    if (!this.browserSupportsWebSockets())
+    {
+      throw new Error("Your browser doesn't support websockets.");
+    }
+
+    this.registerBeforeUnloadEvent();
 
     // There is no point in error handling here, because opening
     // a socket is asynchronnous. If an error occurs, 'error' event
@@ -113,6 +114,14 @@ export class Connection extends Socket
     this.connection.send(packet);
   }
 
+  // ------------- Private static methods ---------------
+
+  private static registerBeforeUnloadEvent()
+  {
+    window.onbeforeunload =
+      (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
+  }
+
   // ---------------- Public methods --------------------
 
   // Disabled for now
@@ -129,7 +138,6 @@ export class Connection extends Socket
 
   // ---------------- Event handlers --------------------
 
-  /// Tohle by mělo bejt někde jinde (v Document asi?)
   private static onBeforeUnload(event: BeforeUnloadEvent)
   {
     if (this.connection !== "Not connected")

@@ -4,9 +4,6 @@
   Server-side game simulation.
 */
 
-/// TEST
-import {REPORT} from '../../Shared/Log/REPORT';
-
 import {Syslog} from '../../Shared/Log/Syslog';
 import {Physics} from '../../Server/Physics/Physics';
 import {Ship} from '../../Server/Game/Ship';
@@ -23,7 +20,7 @@ export class Game
   /// Test:
   public static ship = new Ship(Game.physics.createBody(0, 0));
 
-  public static start()
+  public static startLoop()
   {
     // Run physics tick 60 times per second.
     setInterval

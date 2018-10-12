@@ -31,18 +31,18 @@ export class HttpsServer
   // ----------------- Private data ---------------------
 
   // Use 'express' to handle security issues like directory traversing.
-  private expressApp = express();
+  private static expressApp = express();
 
-  private httpServer: (http.Server | "Not running") = "Not running";
-  private httpsServer: (https.Server | "Not running") = "Not running";
+  private static httpServer: (http.Server | "Not running") = "Not running";
+  private static httpsServer: (https.Server | "Not running") = "Not running";
 
   // Websocket server runs inside a https server.
-  private webSocketServer = new WebSocketServer();
+  private static webSocketServer = new WebSocketServer();
 
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public async start
+  public static async startServers
   (
     { httpPort = DEFAULT_HTTP_PORT, httpsPort = DEFAULT_HTTPS_PORT } = {}
   )
@@ -59,7 +59,7 @@ export class HttpsServer
   }
 
   // ! Throws exception on error.
-  private async startHttpServer(port: number, expressApp: Express)
+  private static async startHttpServer(port: number, expressApp: Express)
   {
     if (this.httpServer !== "Not running")
     {
@@ -85,7 +85,7 @@ export class HttpsServer
   }
 
   // ! Throws exception on error.
-  private async startHttpsServer(port: number, expressApp: Express)
+  private static async startHttpsServer(port: number, expressApp: Express)
   {
     if (this.httpsServer !== "Not running")
     {
@@ -115,7 +115,7 @@ export class HttpsServer
   
   // ---------------- Event handlers --------------------
 
-  private onHttpStartListening()
+  private static onHttpStartListening()
   {
     if (this.httpServer === "Not running")
     {
@@ -128,7 +128,7 @@ export class HttpsServer
   }
 
   // Executes when https server is ready and listening.
-  private onHttpsStartListening()
+  private static onHttpsStartListening()
   {
     if (this.httpsServer === "Not running")
     {
@@ -149,12 +149,12 @@ export class HttpsServer
     }
   }
 
-  private onHttpError(error: Error)
+  private static onHttpError(error: Error)
   {
     Syslog.log("[HTTP_SERVER]","Http error: " + error.message);
   }
 
-  private onHttpsError(error: Error)
+  private static onHttpsError(error: Error)
   {
     Syslog.log("[HTTPS_SERVER]", "Https error: " + error.message);
   }

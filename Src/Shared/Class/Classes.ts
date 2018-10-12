@@ -19,6 +19,11 @@ import {Entities} from '../../Shared/Class/Entities';
 
 export class Classes
 {
+  // This reference is here just to circumvent cyclic module dependancy
+  // resulting from importing Entities to Serializable (it happens because
+  // Entitites import Entity, which imports Serializable because it is
+  // inherited from it).
+  //   this variable is inicialized from Entities.ts.
   public static entities: Entities;
 
   // Classes extended from Serializable but not from Entity.
@@ -70,7 +75,4 @@ export class Classes
   // {
   //   this.entities.set(Class.name, Class);
   // }
-
-
-  // ------------- Private static methods ---------------
 }

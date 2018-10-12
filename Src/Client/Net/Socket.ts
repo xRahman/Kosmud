@@ -12,15 +12,9 @@ export abstract class Socket extends Shared.Socket
 {
   // ---------------- Static methods --------------------
   
-  public static checkWebSocketSupport(): boolean
+  protected static browserSupportsWebSockets(): boolean
   {
-    if (typeof WebSocket === 'undefined')
-    {
-      alert("Sorry, you browser doesn't support websockets.");
-      return false;
-    }
-
-    return true;
+    return typeof WebSocket !== 'undefined';
   }
 
   // ---------------- Public methods --------------------

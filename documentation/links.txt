@@ -92,6 +92,10 @@ http://box2d-js.sourceforge.net/index2.html
 https://www.codeproject.com/Articles/492883/Box-D-and-JavaScript-Part
 
 
+Box2d and tiled editor:
+https://gamedev.stackexchange.com/questions/66924/how-can-i-convert-a-tilemap-to-a-box2d-world
+https://wizardfu.com/book/cocos2d-x/tilemaps-box2d/
+
 ==============================================================
 
 Linux server hosting:

@@ -1,3 +1,42 @@
+TODO: Updatnout commenty v Application, Client a Server.
+- všechno smazáno, takže asi done :-)
+[done]
+
+TODO: Přesunout FileUtils na Server (Client je nepotřebuje).
+- mergnul jsem to do FileSystem.
+[done]
+
+TODO: Return values ve StringUtils
+[done]
+
+TODO: Rozdělit Utils na víc souborů.
+- stringové fce
+- souborové fce
+  - ty by asi mohly jít do FS (už je tam isValidFileName()).
+TODO: Zamyslet se, co se zbytkem Utils
+  (mělo by to mít specifičtější pojmenování.)
+- zatím to vypadá, že 'Utils' bude asi nejlepší...
+- ...
+[done]
+
+TODO: Vyhodit z Utils ERROR a FATAL_ERROR (a vůbec ho celý projít).
+- nahradit je exceptionama.
+[done]
+
+TODO: Asi sloučit classy Client a KosmudClient, Server a KosmudServer.
+[done]
+
+TODO: Potenciální problém - 'entities' asi budou muset bej v Application
+  místo v Entities, protože se k nim musím dostat
+  v Serializable.readEntityReference a v Serializable nejdou importnout
+  Entities.
+- Možná si metodu GetEntities() { return Entities.entities; } hodit někam
+  do Utils.
+(zatím to přeložit jde. Nechám si to tu, až budu zprovozňovat Entities)
+TODO: Ještě jednou se zkusit obejít bez .entities v Application. Šlo
+  by pak zrušit instancování klientu a serveru (dělá to Syslog, to stačí).
+[done]
+
 TODO: Rozdělit MessageType na Syslog.MessageType a zbytek.
   (mimo jiné se nebude muset všude se Syslogem importovat ještě MessageType).
 - ten "zbytek" navíc zatím nejspíš nebudu potřebovat, takže prostě
