@@ -10,8 +10,7 @@ import {Ship} from '../../Server/Game/Ship';
 import {Connections} from '../../Server/Net/Connections';
 import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
 
-const PHYSICS_TICK_MILISECONDS = 1000 / 60;
-const CLIENT_UPDATE_TICK_MILISECONDS = 1000 / 60;
+const GAME_TICK_MILISECONDS = 1000 / 60;
 
 export class Game
 {
@@ -22,55 +21,39 @@ export class Game
 
   public static startLoop()
   {
-    // Run physics tick 60 times per second.
     setInterval
     (
-      () => { this.updatePhysics(); },
-      PHYSICS_TICK_MILISECONDS
-    );
-
-    setInterval
-    (
-      () => { this.updateClients(); },
-      CLIENT_UPDATE_TICK_MILISECONDS
+      () => { this.tick(GAME_TICK_MILISECONDS); },
+      GAME_TICK_MILISECONDS
     );
   }
 
-  private static updatePhysics()
+  private static tick(tickDuration: number)
   {
     try
     {
-      this.updateVelocity();
-      this.physics.tick(PHYSICS_TICK_MILISECONDS);
+      this.updatePhysics(tickDuration);
+      this.updateClients();
     }
     catch (error)
     {
-      // Note:
-      //   This callback function is the entry point of our packet-handling
-      //   code so it's also the last place where we can catch any exception
-      //   and report it.
       Syslog.reportUncaughtException(error);
     }
+  }
+
+  private static updatePhysics(tickDuration: number)
+  {
+    this.updateVelocity();
+    this.physics.tick(tickDuration);
   }
 
   private static updateClients()
   {
-    try
-    {
-      let shipPosition = this.ship.getPosition();
-      let sceneUpdate = new SceneUpdate(shipPosition);
+    let shipPosition = this.ship.getPosition();
+    let sceneUpdate = new SceneUpdate(shipPosition);
 
-      /// TODO: Sent all scene update data, not just one ship.
-      Connections.broadcast(sceneUpdate);
-    }
-    catch (error)
-    {
-      // Note:
-      //   This callback function is the entry point of our packet-handling
-      //   code so it's also the last place where we can catch any exception
-      //   and report it.
-      Syslog.reportUncaughtException(error);
-    }
+    /// TODO: Sent all scene update data, not just one ship.
+    Connections.broadcast(sceneUpdate);
   }
 
   private static updateVelocity()

@@ -1,3 +1,12 @@
+
+TODO: Zvážit, jestli v Game.start() spíš nepustit jen jeden timer
+  a z něj pak volat všechno ostatní.
+  (60 tiků za vteřinu je blbý číslo btw, bude se s tím špatně počítat...
+   na druhou stranu je to rozumný strop fps).
+- Každopádně to jsou entry-level funkce a je tam potřeba reportovat uncaught
+  exceptiony [to je DONE].
+[done]
+
 TODO: Updatnout commenty v Application, Client a Server.
 - všechno smazáno, takže asi done :-)
 [done]

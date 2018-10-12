@@ -6,8 +6,6 @@
   Description of change of scene contents which is sent to client.
 */
 
-'use strict';
-
 import {Packet} from '../../Shared/Protocol/Packet';
 import {GameEntity} from '../../Shared/Game/GameEntity';
 

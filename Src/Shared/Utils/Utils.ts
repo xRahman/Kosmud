@@ -36,13 +36,10 @@ export module Utils
         continue;
       }
 
-      // If both properties are plain objects, call applyDefaults()
-      // recursively on them.
-      if
-      (
-        Types.isPlainObject(sourceProperty)
-        && Types.isPlainObject(targetProperty)
-      )
+      const sourceIsPlainObject = Types.isPlainObject(sourceProperty);
+      const targetIsPlainObject = Types.isPlainObject(targetProperty);
+
+      if(sourceIsPlainObject && targetIsPlainObject)
       {
         applyDefaults(targetProperty, sourceProperty);
       }
