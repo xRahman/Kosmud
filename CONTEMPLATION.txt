@@ -1,5 +1,14 @@
 -----------------------------------------------------------------------
 
+Kolize a zásahy
+----------------
+
+IDEA: Nemusím řešit rozdělení lodi na víc physics bodies, stačí spočítat
+  úhel zásahu (zepředu, z boku, zezadu).
+- Otázka je, co s ničením zbraní
+
+-----------------------------------------------------------------------
+
 GUI
 -----
 
