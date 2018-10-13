@@ -1,4 +1,3 @@
-
 import {Keyboard} from '../../Client/Phaser/Keyboard';
 import {Scene} from '../../Client/Phaser/Scene';
 import {Camera} from '../../Client/Phaser/Camera';
@@ -10,6 +9,7 @@ export class SceneContents
   constructor(private scene: Scene, canvasWidth: number, canvasHeight: number)
   {
     this.background = new Background(this.scene, canvasWidth, canvasHeight);
+    this.ship = new Ship(this.scene);
   }
 
   public getShip() { return this.ship; }
@@ -21,7 +21,7 @@ export class SceneContents
   private keyboard = new Keyboard(this.scene.input.keyboard);
 
   private background: Background;
-  private ship = new Ship(this.scene);
+  private ship: Ship;
 
   // ---------------- Public methods --------------------
 
@@ -29,8 +29,6 @@ export class SceneContents
   public update()
   {
     this.camera.update();
-
-    // this.ship.update(this.cursors);
   }
 
   public resize(width: number, height: number)

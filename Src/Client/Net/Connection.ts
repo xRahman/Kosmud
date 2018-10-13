@@ -195,7 +195,8 @@ function isDeviceOnline()
 
 function reportNormalDisconnect()
 {
-  alert('Server has closed the connection.');
+  /// Nothing for now, alerts are not fun when testing changes.
+  // alert('Server has closed the connection.');
 }
 
 function reportAbnormalDisconnect(wasConnected: boolean)

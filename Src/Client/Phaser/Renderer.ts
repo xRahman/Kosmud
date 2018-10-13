@@ -17,7 +17,6 @@ export class Renderer
     const canvasWidth = Body.getCanvasDiv().getWidth();
     const canvasHeight = Body.getCanvasDiv().getHeight();
 
-
     this.phaserEngine = new PhaserEngine(canvasWidth, canvasHeight)
   }
 

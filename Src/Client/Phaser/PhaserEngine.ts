@@ -6,28 +6,24 @@ import {Scene} from '../../Client/Phaser/Scene';
 
 export class PhaserEngine
 {
-  constructor(canvasWidth: number, canvasHeight: number)
+  constructor(width: number, height: number)
   {
+    this.flightScene = new Scene('FlightScene', width, height)
     this.phaserGame = new Phaser.Game
     (
       {
         type: Phaser.AUTO,
-        width: canvasWidth,
-        height: canvasHeight,
+        width,
+        height,
         parent: CanvasDiv.ELEMENT_ID,
         scene: this.flightScene
       }
     );
   }
 
-  private flightScene = new Scene('FlightScene');
+  private flightScene: Scene;
 
   private phaserGame: Phaser.Game;
-
-  // public static getFlightScene()
-  // {
-  //   return PhaserEngine.instance.flightScene;
-  // }
 
   public resize(width: number, height: number)
   {
