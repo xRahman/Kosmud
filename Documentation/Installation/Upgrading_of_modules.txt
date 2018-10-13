@@ -1,0 +1,21 @@
+﻿Shared modules
+---------------
+
+Right now shared modules need to be manually copied from node_modules
+to /Client/js.
+
+Some modules also need to be fixed to work on the client:
+
+  Add 'define(function (require, exports, module) {' at the start of the
+    file and '});' at the end.
+
+==============================================================
+
+Planck.js
+----------
+
+Add 'export = planck;' at the start of file:
+  node_modules\planck-js\lib\index.d.ts
+
+
+==============================================================
