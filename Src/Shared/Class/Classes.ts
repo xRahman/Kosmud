@@ -7,15 +7,8 @@
 
 import {Serializable} from '../../Shared/Class/Serializable';
 import {Types} from '../../Shared/Utils/Types';
-
-//import {Entity} from '../../Shared/Class/Entity';
+import {Entity} from '../../Shared/Class/Entity';
 import {Entities} from '../../Shared/Class/Entities';
-
-/// This doesn't work in Typescript 2.4.1 anymore :\.
-// // Type describing constructor of a Serializable class.
-// type SerializableClass = new <T extends Serializable>(...args: any[]) => T;
-// // Type describing constructor of an Entity class.
-// type EntityClass = new <T extends Entity>(...args: any[]) => T;
 
 export class Classes
 {
@@ -29,11 +22,11 @@ export class Classes
   // Classes extended from Serializable but not from Entity.
   public static serializableClasses = new Map<string, new() => any>();
 
-  // // Classes extended from Entity.
-  // // (we keep Entity classes aside from other Serializable classes
-  // //  even though Entity is extended from Serializable because they
-  // //  are instantiated differently).
-  // public static entityClasses = new Map<string, new() => any>();
+  // Classes extended from Entity.
+  // (we keep Entity classes aside from other Serializable classes
+  //  even though Entity is extended from Serializable because they
+  //  are instantiated differently).
+  public static entityClasses = new Map<string, new() => any>();
 
   // ------------- Public static methods ----------------
 
@@ -68,11 +61,11 @@ export class Classes
     return instance;
   }
 
-  // public static registerEntityClass<T extends Entity>
-  // (
-  //   Class: NonabstractClass<T>
-  // )
-  // {
-  //   this.entities.set(Class.name, Class);
-  // }
+  public static registerEntityClass<T extends Entity>
+  (
+    Class: Types.NonabstractClass<T>
+  )
+  {
+    this.entityClasses.set(Class.name, Class);
+  }
 }

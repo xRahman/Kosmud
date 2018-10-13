@@ -13,7 +13,7 @@
     extremely rare scenario anyways.
 */
 
-import { Types } from '../../Shared/Utils/Types';
+import {Types} from '../../Shared/Utils/Types';
 
 export class SavingQueue
 {

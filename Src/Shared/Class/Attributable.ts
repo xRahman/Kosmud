@@ -1,12 +1,12 @@
 /*
   Part of Kosmud
 
-  Enables using static attributes of class methods and data variables.
+  Enables using static attributes of class methods and variables.
 */
 
 /*
   Static property attributes are created by declaring static property of the
-  same name and assigning an object containing required attributes to it.
+  same name and assigning an 'Attributes' object to it.
 
   Example:
 

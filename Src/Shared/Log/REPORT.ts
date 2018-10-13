@@ -1,15 +1,17 @@
 /*
   Part of Kosmud
 
-  Implements runtime exception reporting.
+  Runtime exception reporting.
 */
 
 /*
-  IMPORTANT: Parameter of RERPORT() must be an Error object.
+  IMPORTANT: Parameter of REPORT() must be an Error object.
+*/
 
+/*
   Usage example:
 
-    import { REPORT } from '../Shared/Log/REPORT';
+    import {REPORT} from '../../Shared/Log/REPORT';
 
     try
     {
@@ -25,9 +27,9 @@ import {Syslog} from '../../Shared/Log/Syslog';
 import {ERROR} from './ERROR';
 
 // Note: 'error' parameter has type 'any' because when you catch
-// an error, typescript has no way of knowing it's type. You still
-// need to throw instances of Error object, however - you will get
-// an error message if you don't.
+//   an error, typescript has no way of knowing it's type. You still
+//   need to throw instances of Error object, however - you will get
+//   an error message if you don't.
 export function REPORT(error: any, catchMessage?: string)
 {
   if (!(error instanceof Error))

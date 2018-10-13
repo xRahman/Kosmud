@@ -1,9 +1,9 @@
 /*
   Part of Kosmud
 
-  Part of client-server communication protocol.
-
   System message sent by client.
+
+  (Part of client-server communication protocol.)
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';

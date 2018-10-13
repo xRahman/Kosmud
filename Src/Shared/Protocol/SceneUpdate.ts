@@ -1,9 +1,9 @@
 /*
   Part of Kosmud
 
-  Part of client-server communication protocol.
+  Description of change of scene contents.
 
-  Description of change of scene contents which is sent to client.
+  (Part of client-server communication protocol.)
 */
 
 import {Packet} from '../../Shared/Protocol/Packet';
@@ -17,15 +17,4 @@ export class SceneUpdate extends Packet
 
     this.version = 0;
   }
-
-  // ----------------- Public data ----------------------
-
 }
-
-// ------------------ Type declarations ----------------------
-
-// Module is exported so you can use enum type from outside this file.
-// It must be declared after the class because Typescript says so...
-// export module SceneUpdate
-// {
-// }

@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Function used for runtime error reporting.
+  Runtime error reporting.
 
        --------------------------------------------------------
                EVERY ERROR() NEEDS TO BE FIXED ASAP!
@@ -12,7 +12,7 @@
 /*
   Usage example:
 
-    import {ERROR} from '../Shared/Log/ERROR';
+    import {ERROR} from '../../Shared/Log/ERROR';
 
     if (damage > MAX_DAMAGE)
     {
@@ -21,9 +21,10 @@
     }
 
   Notes:
-    If you need to return from the function, throw an exception instead
-    of using ERROR(). ERROR() should only be used if you want to log
-    something that you can immediately recover from - 
+    If you need to return from the function after reporting an error,
+    throw an exception instead of using ERROR(). ERROR() should only
+    be used if you want to log something that you can immediately
+    recover from.
 
     Try to write error messages that explain what are the possible causes
     and available solutions.
@@ -32,14 +33,6 @@
 
     Don't include name of the function where error occured. Stack trace is
     added automatically to the log message.
-*/
-
-/*
-  Implementation notes:
-    Function ERROR() is exported directly (without encapsulating class)
-  so it can be imported and called directly without the need to type
-  something like ERROR.ERROR(). It is named with CAPS to diferentiate
-  it from javascript Error object.
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';

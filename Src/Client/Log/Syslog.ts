@@ -40,10 +40,8 @@ export class Syslog extends Shared.Syslog
   // ~ Overrides Shared.Syslog.reportError().
   protected reportError(message: string): void
   {
-    let error = new Error
-    (
-      this.createLogEntry("[ERROR]", message)
-    );
+    const logEntry = this.createLogEntry("[ERROR]", message);
+    let error = new Error(logEntry);
 
     this.trimStackTrace(error, ERROR);
 

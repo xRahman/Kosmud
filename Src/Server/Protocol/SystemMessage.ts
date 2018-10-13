@@ -2,11 +2,13 @@
   Part of Kosmud
 
   Incoming system message packet.
+
+  (Part of client-server communication protocol.)
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';
-import * as Shared from '../../Shared/Protocol/SystemMessage';
 import {Connection} from '../../Server/Net/Connection';
+import * as Shared from '../../Shared/Protocol/SystemMessage';
 
 export class SystemMessage extends Shared.SystemMessage
 {
@@ -39,4 +41,4 @@ export class SystemMessage extends Shared.SystemMessage
   }
 }
 
-// This class is registered in Connection.
+// This class is registered in Server/Net/Connection.

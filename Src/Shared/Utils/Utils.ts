@@ -49,20 +49,9 @@ export module Utils
   }
 
   // ! Throws exception on error.
-  // Example:
-  //   switch (type)
-  //   {
-  //     case "Blue":
-  //       doSomething();
-  //       break;
-  //
-  //     default:
-  //       // Typescript will show intelisense error here saying:
-  //       //   "Argument of type '"Red"' is not
-  //       //    assignable to parameter of type 'never'" because
-  //       //  you forgot to handle "Red" case.
-  //       Utils.reportMissingCase(type);
-  //   }
+  // Note: If you get a compiler error "Argument of type '"xy"'
+  //   is not assignable to parameter of type 'never'",
+  //   it means that there is a case missing in the switch.
   export function reportMissingCase(variable: never)
   {
     throw new Error("Unhandled switch case");

@@ -1,5 +1,5 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   This standalone script launches two external tsc processes
   to build both client and server. It is used to circumvent

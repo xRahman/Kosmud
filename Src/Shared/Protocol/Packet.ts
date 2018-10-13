@@ -1,8 +1,9 @@
 /*
   Part of Kosmud
 
-  Part of client-server communication protocol.
   Abstract ancestor of incoming data packet classes.
+
+  (Part of client-server communication protocol.)
 */
 
 import {Serializable} from '../../Shared/Class/Serializable';
@@ -15,8 +16,8 @@ export class Packet extends Serializable
     // Packet.process isn't abstract, because than it would be necessary
     // to implement both server-side and client-side version of all packet
     // classes even though they are only processed on one side.
-    //   Clean solution without process() method on classes that don't need
-    // it would require multiple inheritance.
+    //  (Perfectly clean solution would require multiple inheritance so we
+    // don't use it.)
     throw new Error("This method needs to be overriden in descendant class");
   }
 }

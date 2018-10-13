@@ -7,7 +7,7 @@
 import {REPORT} from '../../Shared/Log/REPORT';
 import {ERROR} from '../../Shared/Log/ERROR';
 import {Syslog} from '../../Shared/Log/Syslog';
-import {FileSystem} from '../../Server/FS/FileSystem';
+import {FileSystem} from '../../Server/FileSystem/FileSystem';
 import {WebSocketServer} from '../../Server/Net/WebSocketServer';
 
 // Built-in node.js modules.

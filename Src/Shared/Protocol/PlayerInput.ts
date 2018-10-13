@@ -1,12 +1,10 @@
 /*
   Part of Kosmud
 
-  Part of client-server communication protocol.
-
   Information about player input activity (kepresses, mouse clicks etc.).
-*/
 
-'use strict';
+  (Part of client-server communication protocol.)
+*/
 
 import {Packet} from '../../Shared/Protocol/Packet';
 

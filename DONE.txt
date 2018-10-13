@@ -1,3 +1,38 @@
+
+
+TODO: Dodělat cleanup a refactoring:
+.
++Client root (KosmudClient.ts)
++Client/Class
++Client/Gui
++Client/Log
++Client/Net
+Client/Phaser
++Client/Protocol
+.
++Server root (KosmudServer.ts)
++Server/Class
++Server/FS
++Server/Game
++Server/Log
++Server/Net
+Server/Physics
++Server/Protocol
+.
++Shared/Utils
++Shared/Class
++Shared/Game
++Shared/Log
++Shared/Net
++Shared/Protocol
++Shared/Utils
+.
+(ve zbytku se vrtám)
+[done]
+
+TODO: Zavést classu GUI a v ní metodu init().
+[done]
+
 TODO: Opravit poslední commit.
 [done]
 

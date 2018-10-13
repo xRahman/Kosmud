@@ -308,8 +308,6 @@ export class Serializable extends Attributable
         return attributes.edited !== false;
 
       default:
-        // Compiler error "Argument of type '"xy"' is not assignable to para-
-        // meter of type 'never'" means there is a case missing in this switch.
         Utils.reportMissingCase(mode);
     }
 

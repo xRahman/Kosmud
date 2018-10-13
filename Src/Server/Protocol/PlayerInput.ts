@@ -2,9 +2,9 @@
   Part of Kosmud
 
   Incoming player input packet.
-*/
 
-'use strict';
+  (Part of client-server communication protocol.)
+*/
 
 import {Utils} from '../../Shared/Utils/Utils';
 import {Connection} from '../../Server/Net/Connection';
@@ -40,8 +40,6 @@ export class PlayerInput extends Shared.PlayerInput
         break;
 
       default:
-        // Compiler error "Argument of type '"xy"' is not assignable to para-
-        // meter of type 'never'" means there is a case missing in this switch.
         Utils.reportMissingCase(this.startOrStop);
     }
   }
@@ -69,8 +67,6 @@ export class PlayerInput extends Shared.PlayerInput
         break;
 
       default:
-        // Compiler error "Argument of type '"xy"' is not assignable to para-
-        // meter of type 'never'" means there is a case missing in this switch.
         Utils.reportMissingCase(this.action);
     }
   }
@@ -90,11 +86,9 @@ export class PlayerInput extends Shared.PlayerInput
         break;
 
       default:
-        // Compiler error "Argument of type '"xy"' is not assignable to para-
-        // meter of type 'never'" means there is a case missing in this switch.
         Utils.reportMissingCase(this.action);
     }
   }
 }
 
-// This class is registered in Connection.
+// This class is registered in Server/Net/Connection.

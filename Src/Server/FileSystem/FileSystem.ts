@@ -4,8 +4,8 @@
   Filesystem I/O operations.
 */
 
-import { Types } from '../../Shared/Utils/Types';
-import { SavingQueue } from '../../Server/FS/SavingQueue';
+import {Types} from '../../Shared/Utils/Types';
+import {SavingQueue} from '../../Server/FileSystem/SavingQueue';
 
 // Built-in node.js modules.
 import * as FS from 'fs-extra';
@@ -56,7 +56,7 @@ export class FileSystem
     path: string,
     binary = false
   )
-  // Return value is {} because string would conflict with other value(s).
+  // Return value is {} because 'string' would conflict with other value(s).
   : Promise<{ data: string } | "File doesn't exist">
   {
     // ! Throws exception on error.

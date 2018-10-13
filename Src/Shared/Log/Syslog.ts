@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Abstract shared ancestor of loggers.
+  Logger abstract ancestor.
 */
 
 import {StringUtils} from '../Utils/StringUtils';
@@ -36,18 +36,6 @@ export abstract class Syslog
   public static log(messageType: Syslog.MessageType, message: string)
   {
     this.getInstance().log(messageType, message);
-  }
-
-  // ! Throws exception on error.
-  public static logConnectionInfo(message: string)
-  {
-    this.log("[CONNECTION_INFO]", message);
-  }
-
-  // ! Throws exception on error.
-  public static logSystemInfo(message: string)
-  {
-    this.log("[INFO]", message);
   }
 
   public static reportUncaughtException(error: any)
@@ -115,17 +103,16 @@ export abstract class Syslog
     // Create a temporary error object to construct stack trace for us.
     let tmpErr = new Error();
 
-    tmpErr = this.trimStackTrace(tmpErr, stackTop);
+    this.trimStackTrace(tmpErr, stackTop);
 
     return this.removeErrorMessage(tmpErr.stack);
   }
 
-  protected trimStackTrace(error: Error, stackTop?: Function): Error
+  // Modifies 'stack' property of 'error' parameter.
+  protected trimStackTrace(error: Error, stackTop?: Function)
   {
      if (Error.captureStackTrace)
       Error.captureStackTrace(error, stackTop);
-
-    return error;
   }
 
   protected removeErrorMessage(stackTrace?: string)
