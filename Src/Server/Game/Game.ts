@@ -5,7 +5,8 @@
 */
 
 import {Syslog} from '../../Shared/Log/Syslog';
-import {Physics} from '../../Server/Physics/Physics';
+//import {Physics} from '../../Server/Physics/Physics';
+import {Physics} from '../../Shared/Physics/Physics';
 import {Ship} from '../../Server/Game/Ship';
 import {Connections} from '../../Server/Net/Connections';
 import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
@@ -17,7 +18,7 @@ export class Game
   private static physics = new Physics();
 
   /// Test:
-  public static ship = new Ship(Game.physics.createBody(0, 0));
+  // public static ship = new Ship(Game.physics.createBody(0, 0));
 
   public static startLoop()
   {
@@ -49,15 +50,15 @@ export class Game
 
   private static updateClients()
   {
-    let shipPosition = this.ship.getPosition();
-    let sceneUpdate = new SceneUpdate(shipPosition);
+    // let shipPosition = this.ship.getPosition();
+    // let sceneUpdate = new SceneUpdate(shipPosition);
 
     /// TODO: Sent all scene update data, not just one ship.
-    Connections.broadcast(sceneUpdate);
+    // Connections.broadcast(sceneUpdate);
   }
 
   private static updateVelocity()
   {
-    this.ship.updateVelocityDirection();
+    // this.ship.updateVelocityDirection();
   }
 }

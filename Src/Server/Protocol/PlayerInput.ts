@@ -48,46 +48,46 @@ export class PlayerInput extends Shared.PlayerInput
 
   private startMovingShip()
   {
-    switch (this.action)
-    {
-      case "Left":
-        Game.ship.startTurningLeft();
-        break;
+    // switch (this.action)
+    // {
+    //   case "Left":
+    //     Game.ship.startTurningLeft();
+    //     break;
 
-      case "Right":
-        Game.ship.startTurningRight();
-        break;
+    //   case "Right":
+    //     Game.ship.startTurningRight();
+    //     break;
 
-      case "Forward":
-        Game.ship.moveForward();
-        break;
+    //   case "Forward":
+    //     Game.ship.moveForward();
+    //     break;
         
-      case "Backward":
-        Game.ship.moveBackward();
-        break;
+    //   case "Backward":
+    //     Game.ship.moveBackward();
+    //     break;
 
-      default:
-        Utils.reportMissingCase(this.action);
-    }
+    //   default:
+    //     Utils.reportMissingCase(this.action);
+    // }
   }
 
   private stopMovingShip()
   {
-    switch (this.action)
-    {
-      case "Left":
-      case "Right":
-        Game.ship.stopTurning();
-        break;
+    // switch (this.action)
+    // {
+    //   case "Left":
+    //   case "Right":
+    //     Game.ship.stopTurning();
+    //     break;
 
-      case "Forward":
-      case "Backward":
-        Game.ship.stopMoving();
-        break;
+    //   case "Forward":
+    //   case "Backward":
+    //     Game.ship.stopMoving();
+    //     break;
 
-      default:
-        Utils.reportMissingCase(this.action);
-    }
+    //   default:
+    //     Utils.reportMissingCase(this.action);
+    // }
   }
 }
 

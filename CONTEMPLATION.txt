@@ -1,5 +1,40 @@
 -----------------------------------------------------------------------
 
+Coordinates and measures
+-------------------------
+
+Vzdálenosti
+
+Na klientu jsou měřítkem pixely, a to proto, že lodě a jiné objekty mají
+  délku danou počtem pixelů (defaultní zobrazení je 1:1 vůči pixelům na
+  obrazovce).
+
+- i když teda je otázka, jestli by viewport (aspoň jeho delší rozměn) neměl
+  zobrazovat všude stejně "prostoru" ve hře. Pak bych asi musel scénu
+  scalovat tak, aby tohle vyšlo.
+  - pořád je ale dálka lodě daná počtem pixelů a když se má na obrazovku vejít
+    dejme tomu 10 100 pixelových lodí, tak šířka obrazovky je 1000 pixelů
+    (které se pak mohou přescalovat třeba na 640 pixelů - nebo taky ne,
+     na desktopu asi nechci, aby se mi okno scalovalo, když ho resiznu.
+     Každopádně to zařídí nějaké scalování na klientu, základ jsou prostě
+     pixely.)
+TODO: Takže musím říct, kolik pixelů je jeden metr (nebo kolik metrů je pixel).
+  A taky jestli 1 jednotka v Box2D je opravdu metr (nebo třeba kilák).
+
+IDEA: 1 pixel = 1 metr,
+  ale 1 Box2d unit = 1 kilometr
+  (takže scale je 0.001).
+Hmm. Ono nakonec 1:1 bude asi docela fajn.
+- přinejhorším to můžu kdykoliv změnit.
+
+
+Koordináty
+- chci mít [0, 0] vlevo nahoře? Asi jo, bude lepší přemýšlet v normální
+  souřadné soustavě a na klientu to flipnout až před vykreslením...
+Transformaci zobrazení bude dělat až Phaser.
+
+-----------------------------------------------------------------------
+
 Kolize a zásahy
 ----------------
 

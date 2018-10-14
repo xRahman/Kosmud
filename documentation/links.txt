@@ -103,6 +103,22 @@ Box2d javascript implementation:
 http://piqnt.com/planck.js/
 https://github.com/shakiba/planck.js
 
+Example
+https://impactjs.com/documentation/physics-with-box2d
+
+
+Video tutorials (asi Cčko):
+https://kerp.net/box2d/
+
+Text tutorials (Cčko):
+http://www.iforce2d.net/b2dtut/
+
+box2d.ts
+----------
+https://github.com/flyover/box2d.ts
+Examples:
+https://github.com/inno-tecth/box2d-ts/tree/master/examples/Box2D%20for%20Flash%20Games/src
+
 ==============================================================
 
 Linux server hosting:

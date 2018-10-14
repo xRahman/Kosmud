@@ -1,26 +1,30 @@
 /*
   Part of Kosmud
 
-  Planck.js physics engine wrapper.
+  Physics engine wrapper.
 */
 
-import {PhysicsBody} from '../../Server/Physics/PhysicsBody';
+import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
 
 // 3rd party modules.
-import * as Planck from 'planck-js';
-
+import
+{
+  b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType, b2FixtureDef
+}
+from '../../Shared/Box2D/Box2D';
 
 export class Physics
 {
-  constructor()
-  {
-    let world = new Planck.World
-    (
-      {
-        gravity: Vec2(0, 0)
-      }
-    );
-  }
+  private static gravity = new b2Vec2(0, 0);
+  private static world = new b2World(Physics.gravity);
+
+  // constructor()
+  // {
+  //   /// Test.
+  //   const gravity = new b2Vec2(0, 0);
+
+  //   let world = new b2World(gravity);
+  // }
 
   // constructor()
   // {
@@ -30,15 +34,17 @@ export class Physics
 
   // private engine: Matter.Engine;
 
-  // public tick(miliseconds: number)
-  // {
-  //   Matter.Engine.update(this.engine, miliseconds);
-  // }
+  public tick(miliseconds: number)
+  {
+    // Matter.Engine.update(this.engine, miliseconds);
+  }
 
+  /// Tohle má dělat world.
   // public createBody(x: number, y: number): PhysicsBody
   // {
-  //   /// Prozatím natvrdo čtverec.
-  //   return new PhysicsBody(this.createSquareBody(x, y, 100));
+  //   // /// Prozatím natvrdo čtverec.
+  //   // return new PhysicsBody(this.createSquareBody(x, y, 100));
+  //   return new PhysicsBody();
   // }
 
   // /// Only squares atm.

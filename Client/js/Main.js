@@ -23,7 +23,6 @@ requirejs.config
       'fastbitset': '../js/fastbitset/FastBitSet',
       'fastpriorityqueue': '../js/fastpriorityqueue/FastPriorityQueue',
       'isomorphic-ws': '../js/isomorphic-ws/browser',
-      'planck-js': '../js/planck-js/planck'
       // 'phaser': '../js/phaser/phaser'
     }
   }
@@ -38,7 +37,6 @@ require(['js-beautify']);
 require(['fastbitset']);
 require(['fastpriorityqueue']);
 require(['isomorphic-ws']);
-require(['planck-js']);
 // require(['phaser']);
 
 // Launch the client.
