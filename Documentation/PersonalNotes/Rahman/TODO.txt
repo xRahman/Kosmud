@@ -1,8 +1,3 @@
-TODO: Zatrhnout prohledávání TODO, DONE a CONTEMPLATION
-- možná to rovnou přehodit někam do Users/Rahman
-
-TODO: Jo a zatrhnout prohledávání Shared/Box2D
-
 
 Testování Box2D
 ----------------

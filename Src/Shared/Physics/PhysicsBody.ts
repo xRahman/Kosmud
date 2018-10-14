@@ -5,6 +5,7 @@
 */
 
 // import {PhysicsWorld} from '../../Shared/Physics/PhysicsWorld';
+import {GameEntity} from '../../Shared/Game/GameEntity';
 
 import
 {
@@ -33,29 +34,29 @@ export class PhysicsBody
 
   public getPosition()
   {
-    // let position: GameEntity.Position =
-    // {
-    //   x: this.getX(),
-    //   y: this.getY(),
-    //   angle: this.getAngle()
-    // };
+    let position: GameEntity.Position =
+    {
+      x: this.getX(),
+      y: this.getY(),
+      angle: this.getAngle()
+    };
 
-    // return position;
+    return position;
   }
 
   public getX()
   {
-    // return this.body.position.x;
+    return this.body.GetPosition().x;
   }
 
   public getY()
   {
-    // return this.body.position.y;
+    return this.body.GetPosition().y;
   }
 
   public getAngle()
   {
-    // return this.body.angle
+    return this.body.GetAngle();
   }
 
   public setVelocity(velocity: number)

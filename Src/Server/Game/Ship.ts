@@ -4,7 +4,7 @@
   TEST - a ship.
 */
 
-import {PhysicsBody} from "../../Server/Physics/PhysicsBody";
+import {PhysicsBody} from "../../Shared/Physics/PhysicsBody";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship

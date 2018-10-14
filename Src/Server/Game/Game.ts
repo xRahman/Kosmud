@@ -18,7 +18,7 @@ export class Game
   private static physics = new Physics();
 
   /// Test:
-  // public static ship = new Ship(Game.physics.createBody(0, 0));
+  public static ship = new Ship(Game.physics.world.createBody());
 
   public static startLoop()
   {

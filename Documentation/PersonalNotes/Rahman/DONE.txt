@@ -1,3 +1,9 @@
+TODO: Zatrhnout prohledávání TODO, DONE a CONTEMPLATION
+- možná to rovnou přehodit někam do Users/Rahman
+[done]
+
+TODO: Jo a zatrhnout prohledávání Shared/Box2D
+[done]
 
 
 TODO: Dodělat cleanup a refactoring:

@@ -4,7 +4,8 @@
   Physics engine wrapper.
 */
 
-import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
+// import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
+import {PhysicsWorld} from '../../Shared/Physics/PhysicsWorld';
 
 // 3rd party modules.
 import
@@ -15,8 +16,9 @@ from '../../Shared/Box2D/Box2D';
 
 export class Physics
 {
-  private static gravity = new b2Vec2(0, 0);
-  private static world = new b2World(Physics.gravity);
+  /// Výhledově bude světů víc (pro různé zóny/scény)
+  public world = new PhysicsWorld();
+
 
   // constructor()
   // {
