@@ -7,6 +7,31 @@ Potřebuju vyzkoušet steering behaviours (obecně si ujasnit, jak se bude
   - follow by asi mohlo stačit.
   - a close nejspíš (zastavování).
 
+TODO: Debugové zobrazení fyziky na klientu
+  - target position
+  - desired velocity
+  - steering force
+  - physics body (obrys)
+
+TODO: Je blbost posílat geometrii v každém tiku, takže:
+- vyrobit packet "Přidávám playera na scénu"
+  - ShipToScene (přejmenovat to můžu vždycky)
+- ten bude obsahovat:
+  - geometrii.
+  - startovní pozici
+  - co vlastně přidávám
+TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
+  packet s přidáním shipy do scény.
+- player se teda asi bude na scénu přidávat rovnou při loginu
+  (respektive spíš při EnterGame), ale přidávat se budou i jiný
+  entity v průběhu, takže se to neztratí.
+(Technicky vzato je to update scény, ale asi je lepší udělat novej typ
+ packetu, než dělat komplikovaný vnitřní typy).
+
+
+TODO: Rozdělit PlayerInput na MouseInput a KeyboardInput
+(nemusel bych dělat komplikovanej vnitřní typ).
+
 
 
 

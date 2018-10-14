@@ -9,7 +9,7 @@ import {GameEntity} from '../../Shared/Game/GameEntity';
 
 import
 {
-  b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType, b2FixtureDef
+  b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType, b2FixtureDef, b2Shape, b2ShapeType
 }
 from '../../Shared/Box2D/Box2D';
 
@@ -98,6 +98,32 @@ export class PhysicsBody
     //this.body.SetLinearVelocity(this.getVelocityVector(this.velocity));
     this.body.SetLinearVelocity(this.getVelocity());
   }
+
+  public getGeometry()
+  {
+    let geometry: PhysicsBody.Geometry = [];
+
+    for (let fixture = this.body.GetFixtureList(); fixture !== null; fixture = fixture.GetNext())
+    {
+      const shapeType = fixture.GetType();
+
+      if (shapeType === b2ShapeType.e_polygonShape)
+      {
+        const vertices = (fixture.GetShape() as b2PolygonShape).m_vertices;
+
+        let polygon: PhysicsBody.Polygon = [];
+
+        for (let vertex of vertices)
+        {
+          polygon.push({ x: vertex.x, y: vertex.y });
+        }
+
+        geometry.push(polygon);
+      }
+    }
+
+    return geometry;
+  }
 }
 
 // ------------------ Type Declarations ----------------------
@@ -109,4 +135,8 @@ export module PhysicsBody
     /// Zatím to dám natvrdo, stejně se to bude nejspíš muset
     /// načítat z exportu z Tiled editoru.
   }
+
+  export type Polygon = Array<{x: number, y: number}>;
+
+  export type Geometry = Array<Polygon>;
 }

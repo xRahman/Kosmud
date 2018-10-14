@@ -51,9 +51,11 @@ export class Game
   private static updateClients()
   {
     let shipPosition = this.ship.getPosition();
+    let shipGeometry = this.ship.getGeometry();
     let sceneUpdate = new SceneUpdate(shipPosition);
 
-    console.log(sceneUpdate);
+    /// DEBUG:
+    // console.log(sceneUpdate);
 
     // TODO: Sent all scene update data, not just one ship.
     Connections.broadcast(sceneUpdate);

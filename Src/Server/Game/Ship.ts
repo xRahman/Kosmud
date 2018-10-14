@@ -99,4 +99,9 @@ export class Ship extends Shared.Ship
 
     this.physicsBody.applyForce(steeringForce);
   }
+
+  public getGeometry()
+  {
+    return this.physicsBody.getGeometry();
+  }
 }
