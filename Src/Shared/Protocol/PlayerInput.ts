@@ -12,8 +12,7 @@ export class PlayerInput extends Packet
 {
   constructor
   (
-    protected action: PlayerInput.Action,
-    protected startOrStop: PlayerInput.StartOrStop
+    protected input: PlayerInput.Action | PlayerInput.MouseMove
   )
   {
     super();
@@ -28,12 +27,21 @@ export class PlayerInput extends Packet
 // It must be declared after the class because Typescript says so...
 export module PlayerInput
 {
+  export type MouseMove =
+  {
+    inputType: "Mouse move"
+    x: number,
+    y: number
+  };
+
   export type StartOrStop = "Start" | "Stop";
+  export type ActionType = "Left" | "Right" | "Forward"| "Backward";
 
   /// TODO: Tohle zatím provizorně.
   export type Action =
-    "Left"
-  | "Right"
-  | "Forward"
-  | "Backward";
+  {
+    inputType: "Action",
+    actionType: ActionType,
+    startOrStop: StartOrStop;
+  };
 }

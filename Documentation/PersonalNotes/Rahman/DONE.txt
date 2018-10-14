@@ -1,3 +1,11 @@
+TODO: Implementovat "Follow mouse position"
+- posílat mouse_position na server
+  [done]
+- implementovat Steering.seek()
+  [done]
+- aplikovat steering force na ship
+  [done]
+
 Zatím mi ale stačí natvrdo jedno body pro ship, takže to prostě hacknu
   a uvidíme.
 [done]

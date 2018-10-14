@@ -13,13 +13,9 @@ import * as Shared from '../../Shared/Protocol/PlayerInput';
 
 export class PlayerInput extends Shared.PlayerInput
 {
-  constructor
-  (
-    protected action: Shared.PlayerInput.Action,
-    protected startOrStop: Shared.PlayerInput.StartOrStop
-  )
+  constructor(input: Shared.PlayerInput.Action | Shared.PlayerInput.MouseMove)
   {
-    super(action, startOrStop);
+    super(input);
 
     this.version = 0;
   }
@@ -29,26 +25,48 @@ export class PlayerInput extends Shared.PlayerInput
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    switch (this.startOrStop)
+    switch (this.input.inputType)
     {
-      case "Start":
-        this.startMovingShip();
+      case "Action":
+        this.processPlayerAction(this.input)
         break;
 
-      case "Stop":
-        this.stopMovingShip();
+      case "Mouse move":
+        this.processMouseMove(this.input)
         break;
 
       default:
-        Utils.reportMissingCase(this.startOrStop);
+        Utils.reportMissingCase(this.input);
     }
   }
 
   // --------------- Private methods --------------------
 
-  private startMovingShip()
+  private processMouseMove(mouseMove: Shared.PlayerInput.MouseMove)
   {
-    switch (this.action)
+    Game.ship.seekPosition(mouseMove);
+  }
+
+  private processPlayerAction(action: Shared.PlayerInput.Action)
+  {
+    switch (action.startOrStop)
+    {
+      case "Start":
+        this.startMovingShip(action.actionType);
+        break;
+
+      case "Stop":
+        this.stopMovingShip(action.actionType);
+        break;
+
+      default:
+        Utils.reportMissingCase(action.startOrStop);
+    }
+  }
+
+  private startMovingShip(actionType: Shared.PlayerInput.ActionType)
+  {
+    switch (actionType)
     {
       case "Left":
         Game.ship.startTurningLeft();
@@ -67,13 +85,13 @@ export class PlayerInput extends Shared.PlayerInput
         break;
 
       default:
-        Utils.reportMissingCase(this.action);
+        Utils.reportMissingCase(actionType);
     }
   }
 
-  private stopMovingShip()
+  private stopMovingShip(actionType: Shared.PlayerInput.ActionType)
   {
-    switch (this.action)
+    switch (actionType)
     {
       case "Left":
       case "Right":
@@ -86,7 +104,7 @@ export class PlayerInput extends Shared.PlayerInput
         break;
 
       default:
-        Utils.reportMissingCase(this.action);
+        Utils.reportMissingCase(actionType);
     }
   }
 }

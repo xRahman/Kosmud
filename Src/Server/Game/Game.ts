@@ -53,12 +53,15 @@ export class Game
     let shipPosition = this.ship.getPosition();
     let sceneUpdate = new SceneUpdate(shipPosition);
 
+    console.log(sceneUpdate);
+
     // TODO: Sent all scene update data, not just one ship.
     Connections.broadcast(sceneUpdate);
   }
 
   private static updateVelocity()
   {
-    this.ship.updateVelocityDirection();
+    //this.ship.updateVelocityDirection();
+    this.ship.steer();
   }
 }

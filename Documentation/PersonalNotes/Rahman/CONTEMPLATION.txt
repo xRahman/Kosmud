@@ -1,5 +1,17 @@
 -----------------------------------------------------------------------
 
+Ovládání lodi (ship handling)
+------------------------------
+
+- ovládat loď čistě myší (asi follow při stisknutém myšítku, close při
+  button-up) by mělo výhodu v tom, že by byla klávesnice volná na
+  mačkání abilit.
+- blbě by se ale strafovalo (leda si k tomu něco přimačknout).
+  - třeba LMB = follow, RMB = strafe? (nebo jakkoliv si to user nabinduje)
+
+
+-----------------------------------------------------------------------
+
 Coordinates and measures
 -------------------------
 

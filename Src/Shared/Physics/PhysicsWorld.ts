@@ -31,13 +31,13 @@ export class PhysicsWorld
     let shape = new b2PolygonShape();
 
     /// Zatím natvrdo.
-    shape.SetAsBox(250, 250);
+    shape.SetAsBox(100, 100);
 
     const fixtureDefinition = new b2FixtureDef();
 
     fixtureDefinition.shape = shape;
     // density * area = mass
-    fixtureDefinition.density = 1; 
+    fixtureDefinition.density = 0.00001;
     // 0 - no friction, 1 - maximum friction
     fixtureDefinition.friction = 0.5;
     // 0 - almost no bouncing, 1 - maximum bouncing.

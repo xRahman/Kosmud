@@ -1,7 +1,7 @@
 import {Syslog} from '../../Shared/Log/Syslog';
 import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
 import {Connection} from '../../Client/Net/Connection';
-import { REPORT } from '../../Shared/Log/REPORT';
+import {REPORT} from '../../Shared/Log/REPORT';
 
 /// Návod:
 /// http://www.html5gamedevs.com/topic/36693-problems-with-keyboard-events/
@@ -94,7 +94,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Left', 'Stop');
+      sendKeyboardInput('Left', 'Stop');
     }
     catch (error)
     {
@@ -106,7 +106,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Left', 'Start');
+      sendKeyboardInput('Left', 'Start');
     }
     catch (error)
     {
@@ -118,7 +118,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Right', 'Stop');
+      sendKeyboardInput('Right', 'Stop');
     }
     catch (error)
     {
@@ -130,7 +130,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Right', 'Start');
+      sendKeyboardInput('Right', 'Start');
     }
     catch (error)
     {
@@ -142,7 +142,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Backward', 'Stop');
+      sendKeyboardInput('Backward', 'Stop');
     }
     catch (error)
     {
@@ -154,7 +154,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Backward', 'Start');
+      sendKeyboardInput('Backward', 'Start');
     }
     catch (error)
     {
@@ -166,7 +166,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Forward', 'Stop');
+      sendKeyboardInput('Forward', 'Stop');
     }
     catch (error)
     {
@@ -178,7 +178,7 @@ export class Keyboard
   {
     try
     {
-      sendPlayerInput('Forward', 'Start');
+      sendKeyboardInput('Forward', 'Start');
     }
     catch (error)
     {
@@ -189,9 +189,9 @@ export class Keyboard
 
 // ----------------- Auxiliary Functions ---------------------
 
-function sendPlayerInput
+function sendKeyboardInput
 (
-  action: PlayerInput.Action,
+  actionType: PlayerInput.ActionType,
   startOrStop: PlayerInput.StartOrStop
 )
 {
@@ -202,12 +202,19 @@ function sendPlayerInput
   if (!Connection.isOpen())
     return;
 
+  const input: PlayerInput.Action =
+  {
+    inputType: "Action",
+    actionType,
+    startOrStop
+  };
+
   try
   {
-    Connection.send(new PlayerInput(action, startOrStop));
+    Connection.send(new PlayerInput(input));
   }
   catch (error)
   {
-    REPORT(error, "Failed to send player input");
+    REPORT(error, "Failed to send keyboard input");
   }
 }

@@ -71,28 +71,32 @@ export class PhysicsBody
     this.body.SetAngularVelocity(velocityRadians);
   }
 
-  /// TEST.
-  public applyForce()
+  public applyForce(force: { x: number, y: number })
   {
     // let force: Matter.Vector = { x: 0.01, y: 0.01 };
-
-    // this.body.force = force
+    this.body.ApplyForceToCenter(force);
   }
 
-  private getVelocityVector(velocity: number)
+  public getVelocity()
   {
-    let velocityVector =
-    {
-      x: velocity * Math.cos(this.getAngle()),
-      y: velocity * Math.sin(this.getAngle())
-    }
-
-    return velocityVector;
+    return this.body.GetLinearVelocity();
   }
+
+  // private getVelocityVector(velocity: number)
+  // {
+  //   let velocityVector =
+  //   {
+  //     x: velocity * Math.cos(this.getAngle()),
+  //     y: velocity * Math.sin(this.getAngle())
+  //   }
+
+  //   return velocityVector;
+  // }
 
   public updateVelocityDirection()
   {
-    this.body.SetLinearVelocity(this.getVelocityVector(this.velocity));
+    //this.body.SetLinearVelocity(this.getVelocityVector(this.velocity));
+    this.body.SetLinearVelocity(this.getVelocity());
   }
 }
 

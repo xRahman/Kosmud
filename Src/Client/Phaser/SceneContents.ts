@@ -3,6 +3,7 @@ import {Scene} from '../../Client/Phaser/Scene';
 import {Camera} from '../../Client/Phaser/Camera';
 import {Background} from '../../Client/Phaser/Background';
 import {Ship} from '../../Client/Phaser/Ship';
+import {Mouse} from '../../Client/Phaser/Mouse';
 
 export class SceneContents
 {
@@ -10,6 +11,8 @@ export class SceneContents
   {
     this.background = new Background(this.scene, canvasWidth, canvasHeight);
     this.ship = new Ship(this.scene);
+
+    
   }
 
   public getShip() { return this.ship; }
@@ -19,6 +22,11 @@ export class SceneContents
   private camera = new Camera(this.scene);
   // private cursors = this.scene.input.keyboard.createCursorKeys();
   private keyboard = new Keyboard(this.scene.input.keyboard);
+  private mouse = new Mouse
+  (
+    this.scene.input.activePointer,
+    this.scene.input.mouse
+  );
 
   private background: Background;
   private ship: Ship;
@@ -29,6 +37,7 @@ export class SceneContents
   public update()
   {
     this.camera.update();
+    this.mouse.update();
   }
 
   public resize(width: number, height: number)

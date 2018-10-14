@@ -4,15 +4,21 @@
   TEST - a ship.
 */
 
+import {Steering} from "../../Shared/Physics/Steering";
 import {PhysicsBody} from "../../Shared/Physics/PhysicsBody";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
+
   constructor(private physicsBody: PhysicsBody)
   {
     super(physicsBody.getPosition());
+
+    this.targetPosition = physicsBody.getPosition();
   }
+
+  private targetPosition: { x: number, y: number };
 
   public getPosition()
   {
@@ -32,6 +38,11 @@ export class Ship extends Shared.Ship
   public getAngle()
   {
     return this.physicsBody.getAngle();
+  }
+
+  public seekPosition(position: { x: number, y: number })
+  {
+    this.targetPosition = position;
   }
 
   public startTurningLeft()
@@ -67,5 +78,25 @@ export class Ship extends Shared.Ship
   public updateVelocityDirection()
   {
     this.physicsBody.updateVelocityDirection();
+  }
+
+  public steer()
+  {
+    /// DEBUG:
+    // console.log("Steering to position"
+    //   + " [" + this.targetPosition.x + ", " + this.targetPosition.y + "]");
+
+    const steeringForce = Steering.seek
+    (
+      this.getPosition(),
+      this.physicsBody.getVelocity(),
+      this.targetPosition
+    );
+
+    /// DEBUG:
+    // console.log("Applying steering force"
+    //   + " [" + steeringForce.x + ", " + steeringForce.y + "]");
+
+    this.physicsBody.applyForce(steeringForce);
   }
 }

@@ -85,6 +85,14 @@ tilemapy a matter.js: https://www.mikewesthad.com/blog.html
 
 ==============================================================
 
+2D vector math:
+----------------
+https://www.npmjs.com/package/vectors
+
+Typescript 2d vector:
+https://github.com/evanshortiss/vector2d
+==============================================================
+
 box2d physics engine
 ----------------------
 

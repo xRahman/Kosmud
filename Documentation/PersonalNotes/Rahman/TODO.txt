@@ -1,6 +1,14 @@
+Ok, co dál:
+- načítat data z Tiles editoru nepotřebuju, dokud nebudu řešit kolize,
+  vyhýbání se překážkám a tak.
 
-Testování Box2D
-----------------
+Potřebuju vyzkoušet steering behaviours (obecně si ujasnit, jak se bude
+  ovládat loď).
+  - follow by asi mohlo stačit.
+  - a close nejspíš (zastavování).
+
+
+
 
 Výhledově budu potřebovat načíst výstup z Tiled editoru.
 
