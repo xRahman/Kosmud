@@ -3,34 +3,32 @@
   // Configure glob patterns for excluding files and folders.
   "files.exclude":
   {
-      ".git/": true,
-      "node_modules/": true,
-      //"**/*.js": { "when": "$(basename).ts"},
-      //"build/": true,
-      "**/build/client/icons/**": true,
-      "**/build/client/images/**": true,
-      "**/build/client/fonts/**": true,
-      // Tohle neni idealni, chtelo by to schovat i podadresare, ale co uz.
-      "**/build/client/js/*/*": true,
-      "**/build/server/**": true,
-      //"documentation/": true,
-      "**/documentation/design/^bak": true,
-      "**/documentation/**/*.odt": true,
-      "resources/": true,
-      "deprecated/": true,
-      ".gitattributes": true,
-      ".gitignore": true,
-      "**/*.bat": true
+    ".git/": true,
+    ".vscode/": true,
+    "_Resources/": true,
+    "**/*.bat": true,
+    "**/documentation/**/*.odt": true,
+    "**/documentation/design/^bak": true,
+    ".gitattributes": true,
+    ".gitignore": true,
+    "amend": true,
+    "commit": true,
+    "node_modules/": true
   },
   "search.exclude":
   {
     "_Resources": true,
     ".git/": true,
+    ".gitattributes": true,
+    ".gitignore": true,
+    ".vscode/": true,
     "**/*.bat": true,
+    "**/*.d.ts": true,
+    "**/*.json": true,
+    "**/Src/Shared/Box2D/**": true,
     "amend": true,
     "Client/": true,
     "commit": true,
-    "deprecated/": true,
     "Documentation/": true,
     "node_modules/": true,
     "Server/": true
