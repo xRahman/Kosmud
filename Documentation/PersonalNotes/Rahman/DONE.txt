@@ -1,3 +1,23 @@
+Zatím mi ale stačí natvrdo jedno body pro ship, takže to prostě hacknu
+  a uvidíme.
+[done]
+
+Aktuální TODO:
+- umím vyrobit Box2D body (respektive PhysicsBody).
+- někde vyrobit world
+[done]
+- v něm vyrobit body pro ship
+[done]
+- posílat na klienta pozici a rotaci shipy
+[done]
+- na klientovi to vykreslovat
+  - transformovat souřadnice a rotace
+    - tohle nějak záhadně není potřeba
+      (nebo to možná dělám a ani o tom nevím. Asi správně zvolená znaménka
+        u zatáčení na serveru).
+  - setovat pozici a rotaci
+[done]
+
 TODO: Zatrhnout prohledávání TODO, DONE a CONTEMPLATION
 - možná to rovnou přehodit někam do Users/Rahman
 [done]

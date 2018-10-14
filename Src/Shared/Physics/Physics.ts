@@ -38,6 +38,7 @@ export class Physics
 
   public tick(miliseconds: number)
   {
+    this.world.tick(miliseconds);
     // Matter.Engine.update(this.engine, miliseconds);
   }
 

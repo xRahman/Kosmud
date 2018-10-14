@@ -50,15 +50,15 @@ export class Game
 
   private static updateClients()
   {
-    // let shipPosition = this.ship.getPosition();
-    // let sceneUpdate = new SceneUpdate(shipPosition);
+    let shipPosition = this.ship.getPosition();
+    let sceneUpdate = new SceneUpdate(shipPosition);
 
-    /// TODO: Sent all scene update data, not just one ship.
-    // Connections.broadcast(sceneUpdate);
+    // TODO: Sent all scene update data, not just one ship.
+    Connections.broadcast(sceneUpdate);
   }
 
   private static updateVelocity()
   {
-    // this.ship.updateVelocityDirection();
+    this.ship.updateVelocityDirection();
   }
 }

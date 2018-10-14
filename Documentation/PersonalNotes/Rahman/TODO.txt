@@ -4,18 +4,6 @@ Testování Box2D
 
 Výhledově budu potřebovat načíst výstup z Tiled editoru.
 
-Zatím mi ale stačí natvrdo jedno body pro ship, takže to prostě hacknu
-  a uvidíme.
-
-Aktuální TODO:
-- umím vyrobit Box2D body (respektive PhysicsBody).
-- někde vyrobit world
-- v něm vyrobit body pro ship
-- posílat na klienta pozici a rotaci shipy
-- na klientovi to vykreslovat
-  - transformovat souřadnice a rotace
-  - setovat pozici a rotaci
-
 
 -----------------------------------------------------------------------
 

@@ -48,4 +48,9 @@ export class PhysicsWorld
 
     return new PhysicsBody(body);
   }
+
+  public tick(miliseconds: number)
+  {
+    this.world.Step(miliseconds / 1000, 6, 2);
+  }
 }
