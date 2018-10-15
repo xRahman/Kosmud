@@ -1,3 +1,8 @@
+TODO: metoda Vector.setLength();
+- normalize
+- scale
+[done]
+
 TODO: Použít classu Vector všude kde jsou koordináty
 - místo GameEntity.Position
   [done]

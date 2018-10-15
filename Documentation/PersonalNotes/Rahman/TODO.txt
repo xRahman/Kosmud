@@ -30,9 +30,12 @@ TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
  packetu, než dělat komplikovaný vnitřní typy).
 
 
-TODO: metoda Vector.setLength();
-- normalize
-- scale
+TODO:
+  7. update vehicle rotation according to the angle of the vehicle velocity
+  (Vůbec jsem na pár kroků seek() zapomněl).
+
+TODO: Možná by v Packetech přece jen nemusel bejt Vector, ale pouze
+  {x, y}. Posílalo by se míň dat (a fungovat to asi bude taky)
 
 
 TODO: Omezit ve Steering.seek() rotaci a vracet ji jako další return value.

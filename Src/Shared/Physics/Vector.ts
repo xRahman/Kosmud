@@ -139,7 +139,7 @@ export class Vector
   }
 
   // Note that zero-length vector stays unchanged after Normalize().
-  public normalizeAndRerurnLength(): number
+  public normalizeAndReturnLength(): number
   {
     const length = this.length();
 
@@ -162,6 +162,14 @@ export class Vector
       this.x /= length;
       this.y /= length;
     }
+
+    return this;
+  }
+
+  public setLength(length: number): this
+  {
+    this.normalize();
+    this.scale(length);
 
     return this;
   }
