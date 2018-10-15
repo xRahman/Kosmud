@@ -50,7 +50,27 @@ export class Classes
         + " non-entity class");
     }
 
-    let instance = new Class;
+    let instance: new() => any;
+
+    try
+    {
+      instance = new Class;
+    }
+    catch (error)
+    {
+      error.message += ')\n(Note: If you see something like "Cannot'
+        + " read property 'xy' " + 'of undefined" in the error message,'
+        + " it probably means that you are accessing a parameter in"
+        + " constructor of class '" + className + "'. That's not possible"
+        + " in Serializable classes, unfortunately, because when they"
+        + " are deserialized, an empty instance is created first"
+        + " (and constructor is called without parameters at that time"
+        + " and the properties are set later in deserialize(). Basicaly"
+        + " it means that parameters in constructors of Serializable"
+        + " classes are undefined when deserializing and you need to"
+        + " handle it.";
+      throw error;
+    }
 
     if (!(instance instanceof Serializable))
     {
