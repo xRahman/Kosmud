@@ -142,18 +142,21 @@ export class Connection extends Socket
 
   private static onBeforeUnload(event: BeforeUnloadEvent)
   {
-    if (this.connection !== "Not connected")
-    {
-      // Close the connection to prevent browser from closing it
-      // abnormally with event code 1006.
-      //   For some strange reson this doesn't always work in Chrome.
-      // If we call socket.close(1000, "Tab closed"), onClose() event
-      // handler on respective server socket will receive the reason
-      // but sometimes code will be 1006 instead of 1000. To circumvent
-      // this, we send WebSocketEvent.REASON_CLOSE when socket is closed
-      // from onBeforeUnload() and we check for it in ServerSocket.onClose().
-      this.connection.close(WebSocketEvent.TAB_CLOSED);
-    }
+    if (this.connection === "Not connected")
+      return;
+
+    if (this.connection.isClosingOrClosed())
+      return;
+
+    // Close the connection to prevent browser from closing it
+    // abnormally with event code 1006.
+    //   For some strange reson this doesn't always work in Chrome.
+    // If we call socket.close(1000, "Tab closed"), onClose() event
+    // handler on respective server socket will receive the reason
+    // but sometimes code will be 1006 instead of 1000. To circumvent
+    // this, we send WebSocketEvent.REASON_CLOSE when socket is closed
+    // from onBeforeUnload() and we check for it in ServerSocket.onClose().
+    this.connection.close(WebSocketEvent.TAB_CLOSED);
   }
 
   // ~ Overrides Socket.onClose().

@@ -1,3 +1,7 @@
+TODO: Fix onBeforeUnload
+- když je connection closed nebo closing, nezavírat ji.
+[done]
+
 TODO: Naučit Serializable savovat Vectory, aby Vector nemusel bejt zděděnej
   ze Serializable.
 - netestováno

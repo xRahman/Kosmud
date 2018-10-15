@@ -106,6 +106,14 @@ export abstract class Socket extends PacketHandler
     Syslog.log("[WEBSOCKET]", message);
   }
 
+  protected isClosingOrClosed()
+  {
+    const isClosing = this.webSocket.readyState === WebSocket.CLOSING;
+    const isClosed = this.webSocket.readyState === WebSocket.CLOSED
+
+    return isClosing || isClosed;
+  }
+
   // ---------------- Private methods -------------------
 
   private init()
@@ -149,14 +157,6 @@ export abstract class Socket extends PacketHandler
 
     if (this.listeners.onclose)
       this.webSocket.removeEventListener('close', this.listeners.onclose);
-  }
-
-  private isClosingOrClosed()
-  {
-    const isClosing = this.webSocket.readyState === WebSocket.CLOSING;
-    const isClosed = this.webSocket.readyState === WebSocket.CLOSED
-
-    return isClosing || isClosed;
   }
 
   // ---------------- Event handlers --------------------
