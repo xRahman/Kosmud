@@ -1,5 +1,5 @@
 import {Syslog} from '../../Shared/Log/Syslog';
-import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
+import {KeyboardInput} from '../../Shared/Protocol/KeyboardInput';
 import {Connection} from '../../Client/Net/Connection';
 import {REPORT} from '../../Shared/Log/REPORT';
 
@@ -191,8 +191,8 @@ export class Keyboard
 
 function sendKeyboardInput
 (
-  actionType: PlayerInput.ActionType,
-  startOrStop: PlayerInput.StartOrStop
+  action: KeyboardInput.Action,
+  startOrStop: KeyboardInput.StartOrStop
 )
 {
   /// TODO: All keyboard event handling should be disabled when
@@ -202,16 +202,9 @@ function sendKeyboardInput
   if (!Connection.isOpen())
     return;
 
-  const input: PlayerInput.Action =
-  {
-    inputType: "Action",
-    actionType,
-    startOrStop
-  };
-
   try
   {
-    Connection.send(new PlayerInput(input));
+    Connection.send(new KeyboardInput(action, startOrStop));
   }
   catch (error)
   {

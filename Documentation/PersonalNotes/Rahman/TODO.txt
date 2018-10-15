@@ -33,7 +33,29 @@ TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
 TODO: Rozdělit PlayerInput na MouseInput a KeyboardInput
 (nemusel bych dělat komplikovanej vnitřní typ).
 
+TODO: Vymyslet, jak to udělat s typama
+- určitě chci Position (nebo Vector?)
+- otázka je, jestli to opravdu má bejt v GameEntity.
+  Smysl to sice jakž takž dává, ale GameEntity není ničím zvláštní.
+- Možná to hodit do Types?
+- Nebo použít Vector (ať se s tím dá rovnou počítat?)
+  - asi jo.
+- Vector by asi měl bejt Serializable
 
+TODO: Vyrobit classu Vector (v Physics)
+
+TODO: Použít classu Vector všude kde jsou koordináty
+- místo GameEntity.Position
+- místo { x: number, y: number }
+- místo b2Vec2
+
+
+TODO: Omezit ve Steering.seek() rotaci a vracet ji jako další return value.
+
+TODO: Aplikovat rotaci ze Steering.seek()
+  (asi ne přes Torque Force ale rovnou přes SetAngularVelocity()).
+  - což je ok, protože steering se volá v dalším tiku znova, takže se
+    angular velocity bude průběžně updatovat.
 
 
 Výhledově budu potřebovat načíst výstup z Tiled editoru.

@@ -13,7 +13,8 @@ import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
 import {SystemMessage} from '../../Server/Protocol/SystemMessage';
 import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
-import {PlayerInput} from '../../Server/Protocol/PlayerInput';
+import {KeyboardInput} from '../../Server/Protocol/KeyboardInput';
+import {MouseInput} from '../../Server/Protocol/MouseInput';
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
@@ -23,7 +24,8 @@ import * as WebSocket from 'isomorphic-ws';
 // imported and not used, typescript doesn't execute it's code.
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
-Classes.registerSerializableClass(PlayerInput);
+Classes.registerSerializableClass(KeyboardInput);
+Classes.registerSerializableClass(MouseInput);
 
 
 export class Connection extends Socket

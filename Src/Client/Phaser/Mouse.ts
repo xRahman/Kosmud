@@ -1,5 +1,5 @@
 import {Syslog} from '../../Shared/Log/Syslog';
-import {PlayerInput} from '../../Shared/Protocol/PlayerInput';
+import {MouseInput} from '../../Shared/Protocol/MouseInput';
 import {Connection} from '../../Client/Net/Connection';
 import {REPORT} from '../../Shared/Log/REPORT';
 
@@ -35,16 +35,9 @@ function sendMouseInput(mousePosition: { x: number, y: number })
   if (!Connection.isOpen())
     return;
 
-  const input: PlayerInput.MouseMove =
-  {
-    inputType: "Mouse move",
-    x: mousePosition.x,
-    y: mousePosition.y
-  };
-
   try
   {
-    Connection.send(new PlayerInput(input));
+    Connection.send(new MouseInput(mousePosition.x, mousePosition.y));
   }
   catch (error)
   {
