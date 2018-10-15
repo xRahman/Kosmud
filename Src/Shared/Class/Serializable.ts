@@ -65,7 +65,8 @@ const REFERENCE_CLASS_NAME = 'Reference';
 // (dor example 'map' property holds an Array that represents serialized
 //  data of a Map object).
 const BITVECTOR = 'bitvector';
-const VECTOR = 'vector'
+const VECTOR_X = 'x';
+const VECTOR_Y = 'y';
 const MAP = 'map';
 const SET = 'set';
 const ID = 'id';
@@ -931,7 +932,13 @@ export class Serializable extends Attributable
   // Converts 'param.sourceProperty' to a Vector object.
   private readVector(param: DeserializeParam)
   {
-    return new Vector(this.getProperty(param, VECTOR));
+    const vector =
+    {
+      x: this.getProperty(param, VECTOR_X),
+      y: this.getProperty(param, VECTOR_Y)
+    };
+
+    return new Vector(vector);
   }
 
   // ! Throws exception on error.
@@ -1139,9 +1146,9 @@ export class Serializable extends Attributable
   {
     let saver = this.createSaver(VECTOR_CLASS_NAME);
 
-    // Bitvector is saved as it's JSON string representation to
-    // property 'bitvector'.
-    (saver as any)[VECTOR] = vector.toJSON();
+    // Write 'x' and 'y' to make packets more concise.
+    (saver as any)[VECTOR_X] = vector.x;
+    (saver as any)[VECTOR_Y] = vector.y;
 
     return saver;
   }
