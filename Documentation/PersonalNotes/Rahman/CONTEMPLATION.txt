@@ -9,6 +9,35 @@ Ovládání lodi (ship handling)
 - blbě by se ale strafovalo (leda si k tomu něco přimačknout).
   - třeba LMB = follow, RMB = strafe? (nebo jakkoliv si to user nabinduje)
 
+- Pomalé otáčení nebudu asi muset moc řešit, protože vesmírné lodě se mohou
+  kolem těžiště točit celkem svižně.
+  - možná to bude přece jen chtít omezit kvůli fakt velkým lodím, ale
+    nemusím to přehánět.
+  "sluggishness" bude dána tím, že je ta věc pomalu akceleruje.
+
+Ovládání klávesnicí:
+- vypne se seek behavior.
+- klávesy točí lodí
+- 'W' akceleruje, 'S' decceleruje.
+
+TODO: Brždění bez otočení lodě
+  (dozadu by měla bejt síla o dost menší).
+- čili budu mít vlastně dvě "approach" funkce:
+  - "agresivní" s otočením lodě.
+     - tady asi bude muset bejt "reakční vzdálenost" rovna součtu
+       bezdné vzdálenosti (čukámek pryč) a vzálenosti, kterou loď uletí,
+       než se celá otočí.
+  - "pohodová" s bržděním.
+
+Strafování:
+- boční trysky s malým thrustem
+- to by asi nemuselo vypínat steering.
+
+TODO: Časem by to chtělo zohlednit možnost strafování ve steering funkcích.
+- v zásadě asi nějak tak, že se síla složí s forward thrustu a strafe thrustu
+  (což může být v součtu víc než čistě forward thrust).
+- asi jen tam, kde to dává smysl. Tzn. ne když pronásleduju cíl, ale
+jo když se chci vyhnout překážce.
 
 -----------------------------------------------------------------------
 
