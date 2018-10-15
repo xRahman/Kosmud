@@ -1,3 +1,21 @@
+TODO: Vyrobit classu Vector (v Physics)
+- Math ne, to by kolidovalo s javascriptovým Math.
+[done]
+
+TODO: Rozdělit PlayerInput na MouseInput a KeyboardInput
+(nemusel bych dělat komplikovanej vnitřní typ).
+[done]
+
+TODO: Vymyslet, jak to udělat s typama
+- určitě chci Position (nebo Vector?)
+- otázka je, jestli to opravdu má bejt v GameEntity.
+  Smysl to sice jakž takž dává, ale GameEntity není ničím zvláštní.
+- Možná to hodit do Types?
+- Nebo použít Vector (ať se s tím dá rovnou počítat?)
+  - asi jo.
+- Vector by asi měl bejt Serializable
+[done]
+
 TODO: Implementovat "Follow mouse position"
 - posílat mouse_position na server
   [done]

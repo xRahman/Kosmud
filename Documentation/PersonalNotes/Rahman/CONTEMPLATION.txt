@@ -1,5 +1,30 @@
 -----------------------------------------------------------------------
 
+Serializable vektory
+---------------------
+
+Otázka je, jestli je dobrej nápad mít extra overhead na Vectorech.
+- možná by bylo lepší mít typ Position, což by bylo Serializable
+  a Vectory nechat čistě na počítání.
+(i když, možná si budu chtít pamatovat i síly a tak a na to se typ Position
+ nehodí).
+
+- Alternativa je nedědit Vector ze Serializable, ale upravit Serializable,
+  aby umělo Vectory nativně.
+To je asi lepší, udělám to tak.
+
+
+Static version v Serializable
+------------------------------
+
+Mohla by bejt version static?
+- jakej je důvod, aby nebyla?
+    Jasně, zapisuje se do serializované verze, aby se pak mohla zkontrolovat,
+  ale to by asi šlo i se static propertou.
+
+
+-----------------------------------------------------------------------
+
 Ovládání lodi (ship handling)
 ------------------------------
 
