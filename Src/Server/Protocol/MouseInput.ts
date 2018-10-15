@@ -6,15 +6,16 @@
   (Part of client-server communication protocol.)
 */
 
+import {Vector} from '../../Shared/Physics/Vector';
 import {Connection} from '../../Server/Net/Connection';
 import {Game} from '../../Server/Game/Game';
 import * as Shared from '../../Shared/Protocol/MouseInput';
 
 export class MouseInput extends Shared.MouseInput
 {
-  constructor(x: number, y: number)
+  constructor(mousePosition: Vector)
   {
-    super(x, y);
+    super(mousePosition);
 
     this.version = 0;
   }
@@ -24,7 +25,7 @@ export class MouseInput extends Shared.MouseInput
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    Game.ship.seekPosition({ x: this.x, y: this.y });
+    Game.ship.seekPosition(this.mousePosition);
   }
 }
 

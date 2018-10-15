@@ -4,6 +4,7 @@
   TEST - a ship.
 */
 
+import {Vector} from '../../Shared/Physics/Vector';
 import {Steering} from "../../Shared/Physics/Steering";
 import {PhysicsBody} from "../../Shared/Physics/PhysicsBody";
 import * as Shared from "../../Shared/Game/Ship";
@@ -18,7 +19,7 @@ export class Ship extends Shared.Ship
     this.targetPosition = physicsBody.getPosition();
   }
 
-  private targetPosition: { x: number, y: number };
+  private targetPosition: Vector
 
   public getPosition()
   {
@@ -40,7 +41,7 @@ export class Ship extends Shared.Ship
     return this.physicsBody.getY();
   }
 
-  public seekPosition(position: { x: number, y: number })
+  public seekPosition(position: Vector)
   {
     this.targetPosition = position;
   }

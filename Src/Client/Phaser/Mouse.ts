@@ -1,7 +1,7 @@
-import {Syslog} from '../../Shared/Log/Syslog';
+import {REPORT} from '../../Shared/Log/REPORT';
+import {Vector} from '../../Shared/Physics/Vector';
 import {MouseInput} from '../../Shared/Protocol/MouseInput';
 import {Connection} from '../../Client/Net/Connection';
-import {REPORT} from '../../Shared/Log/REPORT';
 
 export class Mouse
 {
@@ -20,13 +20,13 @@ export class Mouse
 
   private getMousePosition()
   {
-    return { x: this.mousePointer.x, y: this.mousePointer.y };
+    return new Vector({ x: this.mousePointer.x, y: this.mousePointer.y });
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-function sendMouseInput(mousePosition: { x: number, y: number })
+function sendMouseInput(mousePosition: Vector)
 {
   /// TODO: All keyboard event handling should be disabled when
   /// the player gets disconnected (reconnect window should be
@@ -37,7 +37,7 @@ function sendMouseInput(mousePosition: { x: number, y: number })
 
   try
   {
-    Connection.send(new MouseInput(mousePosition.x, mousePosition.y));
+    Connection.send(new MouseInput(mousePosition));
   }
   catch (error)
   {

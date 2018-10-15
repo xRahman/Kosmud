@@ -30,12 +30,9 @@ TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
  packetu, než dělat komplikovaný vnitřní typy).
 
 
-TODO: Použít classu Vector všude kde jsou koordináty
-- místo GameEntity.Position
-  [done]
-- místo { x: number, y: number }
-- místo b2Vec2
-
+TODO: metoda Vector.setLength();
+- normalize
+- scale
 
 
 TODO: Omezit ve Steering.seek() rotaci a vracet ji jako další return value.

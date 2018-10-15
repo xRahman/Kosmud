@@ -1,3 +1,11 @@
+TODO: Použít classu Vector všude kde jsou koordináty
+- místo GameEntity.Position
+  [done]
+- místo { x: number, y: number }
+  [done]
+- místo b2Vec2
+[done]
+
 TODO: Fix onBeforeUnload
 - když je connection closed nebo closing, nezavírat ji.
 [done]

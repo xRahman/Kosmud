@@ -64,15 +64,14 @@ export class PhysicsBody
     this.body.SetAngularVelocity(velocityRadians);
   }
 
-  public applyForce(force: { x: number, y: number })
+  public applyForce(force: Vector)
   {
-    // let force: Matter.Vector = { x: 0.01, y: 0.01 };
     this.body.ApplyForceToCenter(force);
   }
 
-  public getVelocity()
+  public getVelocity(): Vector
   {
-    return this.body.GetLinearVelocity();
+    return new Vector(this.body.GetLinearVelocity());
   }
 
   // private getVelocityVector(velocity: number)

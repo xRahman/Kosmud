@@ -4,9 +4,7 @@
   Steering behavior of autonomous vehicles.
 */
 
-import {b2Vec2} from '../../Shared/Box2D/Box2D';
-
-type Vector = { x: number, y: number };
+import {Vector} from '../../Shared/Physics/Vector';
 
 /// Zatím natvrdo.
 const MAX_SPEED = 100;
@@ -23,28 +21,24 @@ export class Steering
     targetPosition: Vector
   )
   {
-    let desiredVelocity = new b2Vec2(targetPosition.x, targetPosition.y);
+		// 1. 'desired velocity' = 'target position' - 'vehicle position'.
+		let desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
 		
-		// 1. (desired velocity) = (target position) - (vehicle position).
-		desiredVelocity = desiredVelocity.SelfSub(vehiclePosition);
+		// 2. Normalize 'desired velocity'.
+		desiredVelocity.normalize();
 		
-		// 2. normalize (desired velocity).
-		desiredVelocity.SelfNormalize();
+		// 3. Scale 'desired velocity' to maximum speed.
+		desiredVelocity.scale(MAX_SPEED);
 		
-		// 3. scale (desired velocity) to maximum speed.
-		desiredVelocity.SelfMul(MAX_SPEED);
-		
-    // 4. vector(steering force) = vector(desired velocity) - vector(current velocity)
-    let steeringForce = desiredVelocity.Clone();
+    // 4. 'steering force' = 'desired velocity' - 'current velocity'.
+    let steeringForce = Vector.v1MinusV2(desiredVelocity, vehicleVelocity);
 
-    steeringForce.SelfSub(vehicleVelocity);
-
-		
+	
 		// 5. limit the magnitude of vector(steering force) to maximum force
-    if (steeringForce.LengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
+    if (steeringForce.lengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
     {
-      steeringForce.SelfNormalize();
-      steeringForce.SelfMul(MAXIMUM_STEERING_FORCE);
+      steeringForce.normalize();
+      steeringForce.scale(MAXIMUM_STEERING_FORCE);
     }
 
     return steeringForce;

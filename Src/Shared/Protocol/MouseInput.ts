@@ -6,11 +6,12 @@
   (Part of client-server communication protocol.)
 */
 
+import {Vector} from '../../Shared/Physics/Vector';
 import {Packet} from '../../Shared/Protocol/Packet';
 
 export class MouseInput extends Packet
 {
-  constructor(protected x: number, protected y: number)
+  constructor(protected mousePosition: Vector)
   {
     super();
 
