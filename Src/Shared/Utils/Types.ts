@@ -4,6 +4,7 @@
   Types and associated utility functions.
 */
 
+import {Vector} from '../../Shared/Physics/Vector';
 import {Serializable} from '../../Shared/Class/Serializable';
 
 // 3rd party modules.
@@ -77,6 +78,11 @@ export module Types
       return false;
 
     return variable.constructor.name === 'FastBitSet';
+  }
+
+  export function isVector(variable: any)
+  {
+    return variable instanceof Vector;
   }
 
   export function isDate(variable: any)

@@ -1,3 +1,8 @@
+TODO: Naučit Serializable savovat Vectory, aby Vector nemusel bejt zděděnej
+  ze Serializable.
+- netestováno
+[done]
+
 TODO: Vyrobit classu Vector (v Physics)
 - Math ne, to by kolidovalo s javascriptovým Math.
 [done]

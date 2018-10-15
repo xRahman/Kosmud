@@ -4,15 +4,18 @@
   2D vector.
 */
 
-import {b2Vec2} from '../../Shared/Box2D/Box2D';
-import {Serializable} from '../../Shared/Class/Serializable';
+/*
+  Notes:
+    Methods called on Vector instance modify the instance.
+    Static methods always return a new Vector.
+*/
 
-export class Vector extends Serializable
+import {b2Vec2} from '../../Shared/Box2D/Box2D';
+
+export class Vector
 {
   constructor({ x, y }: { x: number, y: number } = { x: 0, y: 0 })
   {
-    super();
-
     this.x = x;
     this.y = y;
   }
@@ -211,5 +214,10 @@ export class Vector extends Serializable
     this.y = (-this.y);
 
     return this;
+  }
+
+  public toJSON()
+  {
+    return "{ x: " + this.x + ", y: " + this.y + "}";
   }
 }

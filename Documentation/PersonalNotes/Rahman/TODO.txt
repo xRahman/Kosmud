@@ -30,9 +30,6 @@ TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
  packetu, než dělat komplikovaný vnitřní typy).
 
 
-TODO: Naučit Serializable savovat Vectory, aby Vector nemusel bejt zděděnej
-  ze Serializable.
-
 TODO: Použít classu Vector všude kde jsou koordináty
 - místo GameEntity.Position
 - místo { x: number, y: number }

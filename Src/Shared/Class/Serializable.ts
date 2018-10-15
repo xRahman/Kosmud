@@ -39,7 +39,8 @@
 */
 
 import {Types} from '../../Shared/Utils/Types';
-import {Utils} from '../Utils/Utils';
+import {Utils} from '../../Shared/Utils/Utils';
+import {Vector} from '../../Shared/Physics/Vector';
 import {Classes} from '../../Shared/Class/Classes';
 import {JsonObject} from '../../Shared/Class/JsonObject';
 import {Attributable} from '../../Shared/Class/Attributable';
@@ -55,6 +56,7 @@ const NAME = 'name';
 // but they don't really exists in code (Set and Map are build-in
 // javascript classes, Bitvector translates to a 'fastbitset' object.
 const BITVECTOR_CLASS_NAME = 'Bitvector';
+const VECTOR_CLASS_NAME = 'Vector';
 const SET_CLASS_NAME = 'Set';
 const MAP_CLASS_NAME = 'Map';
 const REFERENCE_CLASS_NAME = 'Reference';
@@ -63,6 +65,7 @@ const REFERENCE_CLASS_NAME = 'Reference';
 // (dor example 'map' property holds an Array that represents serialized
 //  data of a Map object).
 const BITVECTOR = 'bitvector';
+const VECTOR = 'vector'
 const MAP = 'map';
 const SET = 'set';
 const ID = 'id';
@@ -358,6 +361,9 @@ export class Serializable extends Attributable
     if (Types.isBitvector(property))
       return this.createBitvectorSaver(property).saveToJsonObject(mode);
 
+    if (Types.isVector(property))
+      return this.createVectorSaver(property).saveToJsonObject(mode);
+
     if (Types.isSet(property))
       return this.createSetSaver(property).saveToJsonObject(mode);
 
@@ -493,6 +499,10 @@ export class Serializable extends Attributable
     if ((result = this.deserializeAsBitvector(param)) !== undefined)
       return result;
 
+    // Attempt to load property as Vector object.
+    if ((result = this.deserializeAsVector(param)) !== undefined)
+      return result;
+
     // Attempt to load property as Set object.
     if ((result = this.deserializeAsSet(param)) !== undefined)
       return result;
@@ -586,11 +596,36 @@ export class Serializable extends Attributable
       throw new Error("Failed to deserialize because target"
         + " property '" + param.propertyName + "'"
         + this.composePathString(param.path)
-        + " is not 'null' or 'bitvector' when deserializing"
-        + " property of type 'bitvector'");
+        + " is not 'null', 'undefined' or 'bitvector' when"
+        + " deserializing property of type 'bitvector'");
     }
 
     return this.readBitvector(param);
+  }
+
+  // ! Throws exception on error.
+  // Attempts to convert 'param.sourceProperty' to Vector object.
+  // -> Returns 'undefined' if 'param.sourceProperty' is not a bitvector.
+  private deserializeAsVector(param: DeserializeParam)
+  {
+    if (!this.isVectorRecord(param.sourceProperty))
+      return undefined;
+
+    let targetIsValid =
+         param.targetProperty === null
+      || param.targetProperty === undefined
+      || Types.isVector(param.targetProperty);
+
+    if (!targetIsValid)
+    {
+      throw new Error("Failed to deserialize because target"
+        + " property '" + param.propertyName + "'"
+        + this.composePathString(param.path)
+        + " is not 'null', 'undefined' or 'Vector' when"
+        + " deserializing property of type 'Vector'");
+    }
+
+    return this.readVector(param);
   }
 
   // ! Throws exception on error.
@@ -850,6 +885,15 @@ export class Serializable extends Attributable
     return (jsonObject as any)[CLASS_NAME] === BITVECTOR_CLASS_NAME;
   }
 
+  // Checks if 'param.sourceProperty' represents a saved Vector object.
+  private isVectorRecord(jsonObject: Object): boolean
+  {
+    if (!jsonObject)
+      return false;
+
+    return (jsonObject as any)[CLASS_NAME] === VECTOR_CLASS_NAME;
+  }
+
   // Checks if 'param.sourceProperty' represents a saved Set object.
   private isSetRecord(jsonObject: Object): boolean
   {
@@ -882,6 +926,12 @@ export class Serializable extends Attributable
   private readBitvector(param: DeserializeParam)
   {
     return new FastBitSet(this.getProperty(param, BITVECTOR));
+  }
+
+  // Converts 'param.sourceProperty' to a Vector object.
+  private readVector(param: DeserializeParam)
+  {
+    return new Vector(this.getProperty(param, VECTOR));
   }
 
   // ! Throws exception on error.
@@ -1080,6 +1130,18 @@ export class Serializable extends Attributable
     // Bitvector is saved as it's JSON string representation to
     // property 'bitvector'.
     (saver as any)[BITVECTOR] = bitvector.toJSON();
+
+    return saver;
+  }
+
+  // ! Throws exception on error.
+  private createVectorSaver(vector: Vector)
+  {
+    let saver = this.createSaver(VECTOR_CLASS_NAME);
+
+    // Bitvector is saved as it's JSON string representation to
+    // property 'bitvector'.
+    (saver as any)[VECTOR] = vector.toJSON();
 
     return saver;
   }
