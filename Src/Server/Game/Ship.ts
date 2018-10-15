@@ -13,7 +13,7 @@ export class Ship extends Shared.Ship
 
   constructor(private physicsBody: PhysicsBody)
   {
-    super(physicsBody.getPosition());
+    super(physicsBody.getPosition(), physicsBody.getAngle());
 
     this.targetPosition = physicsBody.getPosition();
   }
@@ -25,6 +25,11 @@ export class Ship extends Shared.Ship
     return this.physicsBody.getPosition();
   }
 
+  public getAngle()
+  {
+    return this.physicsBody.getAngle();
+  }
+
   public getX()
   {
     return this.physicsBody.getX();
@@ -33,11 +38,6 @@ export class Ship extends Shared.Ship
   public getY()
   {
     return this.physicsBody.getY();
-  }
-
-  public getAngle()
-  {
-    return this.physicsBody.getAngle();
   }
 
   public seekPosition(position: { x: number, y: number })

@@ -7,11 +7,11 @@
 */
 
 import {Packet} from '../../Shared/Protocol/Packet';
-import {GameEntity} from '../../Shared/Game/GameEntity';
+import {Vector} from '../../Shared/Physics/Vector';
 
 export class SceneUpdate extends Packet
 {
-  constructor(public shipPosition: GameEntity.Position)
+  constructor(public shipPosition: Vector, public shipRotationRadians: number)
   {
     super();
 

@@ -14,10 +14,4 @@
 // It must be declared after the class because Typescript says so...
 export module GameEntity
 {
-  export type Position =
-  {
-    x: number,
-    y: number,
-    angle: number
-  };
 }

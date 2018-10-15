@@ -32,8 +32,18 @@ TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
 
 TODO: Použít classu Vector všude kde jsou koordináty
 - místo GameEntity.Position
+  [done]
 - místo { x: number, y: number }
 - místo b2Vec2
+
+TODO: Fix onBeforeUnload
+- když je connection closed nebo closing, nezavírat ji.
+    if (this.connection === "Not connected")
+      return;
+    if (this.connection.isClosedOrClosing())
+      return;
+
+
 
 
 TODO: Omezit ve Steering.seek() rotaci a vracet ji jako další return value.

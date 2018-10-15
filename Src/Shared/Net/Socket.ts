@@ -59,7 +59,7 @@ export abstract class Socket extends PacketHandler
   {
     if (this.isClosingOrClosed())
     {
-      throw new Error("Failed to cose socket to " + this.getOrigin() +
+      throw new Error("Failed to close socket to " + this.getOrigin()
           + " because it is already closing or closed");
     }
 

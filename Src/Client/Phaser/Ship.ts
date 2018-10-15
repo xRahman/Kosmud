@@ -1,4 +1,4 @@
-import {GameEntity} from '../../Shared/Game/GameEntity';
+import {Vector} from '../../Shared/Physics/Vector';
 
 
 const SHIP_SPRITE_ID = 'ship';
@@ -19,11 +19,11 @@ export class Ship
 
   // ---------------- Public methods --------------------
 
-  public setPosition(position: GameEntity.Position)
+  public setPositionAndAngle(position: Vector, angleRadians: number)
   {
     this.sprite.x = position.x;
     this.sprite.y = position.y;
-    this.sprite.rotation = position.angle;
+    this.sprite.rotation = angleRadians;
   }
 }
 

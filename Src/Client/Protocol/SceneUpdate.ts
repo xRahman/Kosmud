@@ -10,14 +10,14 @@
 
 import {Renderer} from '../../Client/Phaser/Renderer';
 import {Connection} from '../../Client/Net/Connection';
-import {GameEntity} from '../../Shared/Game/GameEntity';
+import {Vector} from '../../Shared/Physics/Vector';
 import * as Shared from '../../Shared/Protocol/SceneUpdate';
 
 export class SceneUpdate extends Shared.SceneUpdate
 {
-  constructor(shipPosition: GameEntity.Position)
+  constructor(shipPosition: Vector, shipRotationRadians: number)
   {
-    super(shipPosition);
+    super(shipPosition, shipRotationRadians);
 
     this.version = 0;
   }
@@ -30,7 +30,13 @@ export class SceneUpdate extends Shared.SceneUpdate
     let sceneContents = Renderer.getFlightSceneContents();
 
     if (sceneContents)
-      sceneContents.getShip().setPosition(this.shipPosition);
+    {
+      sceneContents.getShip().setPositionAndAngle
+      (
+        this.shipPosition,
+        this.shipRotationRadians
+      );
+    }
   }
 }
 

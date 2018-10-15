@@ -218,6 +218,6 @@ export class Vector
 
   public toJSON()
   {
-    return "{ x: " + this.x + ", y: " + this.y + "}";
+    return { x: this.x, y: this.y };
   }
 }

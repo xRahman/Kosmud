@@ -4,9 +4,9 @@
   TEST - shared Ship class ancestor.
 */
 
-import {GameEntity} from '../../Shared/Game/GameEntity';
+import {Vector} from '../../Shared/Physics/Vector';
 
 export class Ship
 {
-  constructor(protected position: GameEntity.Position) {}
+  constructor(protected position: Vector, protected angle: number) {}
 }

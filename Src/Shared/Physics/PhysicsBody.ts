@@ -5,7 +5,7 @@
 */
 
 // import {PhysicsWorld} from '../../Shared/Physics/PhysicsWorld';
-import {GameEntity} from '../../Shared/Game/GameEntity';
+import {Vector} from '../../Shared/Physics/Vector';
 
 import
 {
@@ -34,14 +34,7 @@ export class PhysicsBody
 
   public getPosition()
   {
-    let position: GameEntity.Position =
-    {
-      x: this.getX(),
-      y: this.getY(),
-      angle: this.getAngle()
-    };
-
-    return position;
+    return new Vector(this.body.GetPosition());
   }
 
   public getX()

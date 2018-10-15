@@ -1225,8 +1225,8 @@ interface SerializeParam
 export module Serializable
 {
   export type Mode =
-    'Save to File' |
-    'Send to Client' |
-    'Send to Server' |
-    'Send to Editor';
+    "Save to File"
+  | "Send to Client"
+  | "Send to Server"
+  | "Send to Editor";
 }
