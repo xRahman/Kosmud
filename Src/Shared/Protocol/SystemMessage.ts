@@ -18,7 +18,5 @@ export class SystemMessage extends Packet
   )
   {
     super();
-
-    this.version = 0;
   }
 }

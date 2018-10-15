@@ -73,12 +73,12 @@ const ID = 'id';
 
 export class Serializable extends Attributable
 {
-  // ---------------- Protected data --------------------
+  // ------------- Protected static data ----------------
 
   // 'version' is used to convert data from older formats.
-  //   You have to initialize it in the constructor
-  // (otherwise you get an exception while serializing).
-  protected version = 0;
+  //   If your class is saved to disk, you have to initialize it's 
+  // 'version' (otherwise you get an exception while serializing).
+  protected static version = 0;
 
   // ------------- Public static methods ----------------
 
@@ -204,23 +204,35 @@ export class Serializable extends Attributable
     return jsonObject;
   }
 
-  private writeVersion(jsonObject: Object)
+  private writeVersion(jsonObject: Object, mode: Serializable.Mode)
   {
-    if (!this.hasOwnProperty(VERSION))
+    switch (mode)
     {
-      throw new Error("Failed to serialize " + this.getErrorIdString()
-        + " because " + VERSION + " property is missing on it. Make"
-        + " sure that '" + VERSION + "' is inicialized in the constructor");
+      case "Send to Client":
+      case "Send to Server":
+        // Version is not written to serialized packets because they
+        // are always sent and received by the same code so it's
+        // useless in them anyways.
+        return jsonObject;
     }
 
-    let version = (this as any)[VERSION];
+    // 'this.constructor' contains static properties of this class.
+    if (!this.constructor.hasOwnProperty(VERSION))
+    {
+      throw new Error("Failed to serialize " + this.getErrorIdString()
+        + " because static " + VERSION + " property is missing on it."
+        + " Make sure that static '" + VERSION + "' is inicialized in"
+        + " class " + this.getClassName());
+    }
+
+    let version = (this.constructor as any)[VERSION];
 
     if (!Types.isNumber(version))
     {
       throw new Error("Failed to serialize " + this.getErrorIdString()
-        + " because " + VERSION + " property is not a number. Make"
-        + " sure that '" + VERSION + "' is inicialized in the constructor"
-        + " to some number");
+        + " because static " + VERSION + " property is not a number."
+        + " Make sure that static '" + VERSION + "' is inicialized in"
+        + " class " + this.getClassName() + " to some number");
     }
 
     (jsonObject as any)[VERSION] = version;
@@ -247,17 +259,16 @@ export class Serializable extends Attributable
     // A little hack - save 'name', 'version' and 'className' properties
     // first (out of order) to make saved JSON files more readable.
     jsonObject = this.writeName(jsonObject);
-    jsonObject = this.writeVersion(jsonObject);
+    jsonObject = this.writeVersion(jsonObject, mode);
     jsonObject = this.writeClassName(jsonObject);
 
     // Cycle through all properties in source object.
     for (let propertyName in this)
     {
-      // Skip 'name', 'version' and 'className' properties because
-      // they are already saved by hack.
-      if (propertyName === NAME
-          || propertyName === VERSION
-          || propertyName === CLASS_NAME)
+      // Skip 'name' and 'className' properties because they are already
+      // saved by hack (we don't have to skip 'version' property because
+      // it is static).
+      if (propertyName === NAME || propertyName === CLASS_NAME)
         continue;
 
       // Skip inherited properties (they are serialized on prototype entity).
@@ -560,22 +571,22 @@ export class Serializable extends Attributable
   {
     let version = (jsonObject as any)[VERSION];
 
-    // Note: '0' is a valid 'version'.
+    // If there isn't a 'version' property in jsonObject,
+    // it won't be checked for (it's generally not used in
+    // packets because they are always sent and received
+    // from the same code).
     if (version === undefined)
-    {
-      let pathString = this.composePathString(path);
+      return;
 
-      throw new Error("Failed to deserialize because"
-        + " '" + VERSION + "' property is missing in JSON"
-        + " data" + pathString);
-    }
+    // 'this.constructor[VERSION]' acesses static property 'version'.
+    const thisVersion = (this.constructor as any)[VERSION];
 
-    if (version !== this.version)
+    if (version !== thisVersion)
     {
       throw new Error("Failed to deserialize because"
         + " version of JSON data (" + version + ")"
         + this.composePathString(path) + " doesn't"
-        + " match required version (" + this.version + ")");
+        + " match required version (" + thisVersion + ")");
     }
   }
 

@@ -20,8 +20,6 @@ export class KeyboardInput extends Shared.KeyboardInput
   )
   {
     super(action, startOrStop);
-
-    this.version = 0;
   }
 
   // ---------------- Public methods --------------------

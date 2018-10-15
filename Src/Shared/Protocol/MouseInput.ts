@@ -14,8 +14,6 @@ export class MouseInput extends Packet
   constructor(protected mousePosition: Vector)
   {
     super();
-
-    this.version = 0;
   }
 }
 

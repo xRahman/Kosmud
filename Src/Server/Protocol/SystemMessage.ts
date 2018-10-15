@@ -15,8 +15,6 @@ export class SystemMessage extends Shared.SystemMessage
   constructor(message: string, messageType: Syslog.MessageType)
   {
     super(message, messageType);
-
-    this.version = 0;
   }
 
   // ---------------- Public methods --------------------

@@ -14,7 +14,5 @@ export class SceneUpdate extends Packet
   constructor(public shipPosition: Vector, public shipRotationRadians: number)
   {
     super();
-
-    this.version = 0;
   }
 }

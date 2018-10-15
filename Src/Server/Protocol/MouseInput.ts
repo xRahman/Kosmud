@@ -16,8 +16,6 @@ export class MouseInput extends Shared.MouseInput
   constructor(mousePosition: Vector)
   {
     super(mousePosition);
-
-    this.version = 0;
   }
 
   // ---------------- Public methods --------------------

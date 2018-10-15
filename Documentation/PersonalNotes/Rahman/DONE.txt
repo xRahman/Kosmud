@@ -1,3 +1,25 @@
+TODO: Udělat 'version' static.
+[done]
+TODO: Nepsat 'version' do paketů a nekontrolovat ji při deserializaci.
+[done]
+
+TODO: Možná by v Packetech přece jen nemusel bejt Vector, ale pouze
+  {x, y}. Posílalo by se míň dat (a fungovat to asi bude taky)
+  - otázka je, jak ten typ pojmenovat. XY? Coords?
+  - a kam ho dát? Do Types? Do Packetu, protože se bude používat jen
+    v packetech?
+  - nebo prostě Packet.Vector...
+[done]
+- blbý je, že se to musí konvertit ručně, páč Vector se vleze do
+  interfacu { x, y }...
+Možná teda vyžadovat v constructoru packetů paramety (x: number, y: number)
+  místo složeného typu (to zabrání předání a tedy assignování vectoru).
+- err, to je taky naprd.
+Takže jinak:
+TODO: Vrátit do packetů vectory a upravit Serializační kód aby byl výsledek
+  míň ukecanej.
+[done]
+
 TODO: metoda Vector.setLength();
 - normalize
 - scale

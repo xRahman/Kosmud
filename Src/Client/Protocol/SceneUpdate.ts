@@ -18,8 +18,6 @@ export class SceneUpdate extends Shared.SceneUpdate
   constructor(shipPosition: Vector, shipRotationRadians: number)
   {
     super(shipPosition, shipRotationRadians);
-
-    this.version = 0;
   }
 
   // ---------------- Public methods --------------------

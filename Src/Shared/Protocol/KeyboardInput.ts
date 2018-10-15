@@ -17,8 +17,6 @@ export class KeyboardInput extends Packet
   )
   {
     super();
-
-    this.version = 0;
   }
 }
 
