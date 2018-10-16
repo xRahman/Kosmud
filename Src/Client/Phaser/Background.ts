@@ -22,6 +22,8 @@ export class Background
 
   private sprite: Phaser.GameObjects.Sprite;
 
+  /// Preload je static, protože asset se pak odkazuje idčkem,
+  /// takže se na něj nikde nedrží odkaz.
   public static preload(scene: Phaser.Scene)
   {
     scene.load.image

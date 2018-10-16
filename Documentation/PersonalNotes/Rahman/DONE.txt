@@ -1,3 +1,10 @@
+TODO: Mergnout SceneContents a Scene.
+- to asi nebyl úplně nejlepší nápad. Teď zas musím ošetřovat každou property
+  zvlášť. Mít to sdružený dohromady dávalo smysl.
+Takže jinak: Nechat SceneContents, ale jen jako data container, nedávat do
+  něj metody. Scéna prostě bude přistupovat přes this.contentns.camera apod.
+[done]
+
 TODO: Na serveru vyrábět a posílat paket ShipToScene
 - otázka je kdy.
   - asi jako response na přihlášení klienta

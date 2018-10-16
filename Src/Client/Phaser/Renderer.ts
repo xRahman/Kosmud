@@ -27,11 +27,9 @@ export class Renderer
     this.getPhaserEngine().resize(width, height);
   }
 
-  // ! Throws exception on error.
-  public static getFlightSceneContents()
+  public static getFlightScene()
   {
-    // ! Throws exception on error.
-    return this.getPhaserEngine().getFlightScene().getSceneContents();
+    return this.getPhaserEngine().getFlightScene();
   }
 
   private static getPhaserEngine(): PhaserEngine
