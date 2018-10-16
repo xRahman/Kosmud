@@ -64,6 +64,22 @@ TODO: Časem by to chtělo zohlednit možnost strafování ve steering funkcích
 - asi jen tam, kde to dává smysl. Tzn. ne když pronásleduju cíl, ale
 jo když se chci vyhnout překážce.
 
+Steering behaviors
+-------------------
+
+Obstacle avoidance
+
+- Při vyhýbání se překážkám asi stačí brát v úvahu nejbližší vertex
+  (od něj se snažit být na safe vzdálenost).
+
+- Při vyhýbání se překážkám asi není třeba řešit přesnej tvar lodi,
+  stačí k "safe vzdálenosti" přičíst poloměr bounding circlu.
+  (Tohle teda nebude úplně fungovat u dlouhých úzkých lodí a úzkých
+   šterbin, ale to si můžu nechat jako specialitku).
+  - V zásadě dokud si nechám dostatečnou rezervu (včetně poloměru lodi)
+    vůči nejbližšímu vertexu nejbližší překážky, tak bych měl bejt
+    safe a do ničeho nevrazit.
+
 -----------------------------------------------------------------------
 
 Coordinates and measures

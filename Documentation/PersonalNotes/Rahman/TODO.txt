@@ -1,18 +1,4 @@
-Ok, co dál:
-- načítat data z Tiles editoru nepotřebuju, dokud nebudu řešit kolize,
-  vyhýbání se překážkám a tak.
-
-Potřebuju vyzkoušet steering behaviours (obecně si ujasnit, jak se bude
-  ovládat loď).
-  - follow by asi mohlo stačit.
-  - a close nejspíš (zastavování).
-
-TODO: Debugové zobrazení fyziky na klientu
-  - target position
-  - desired velocity
-  - steering force
-    (a to před limitem i po limitu ať vidím, jak moc se mi to ořezává)
-  - physics body (obrys)
+TODO: Remove unecessary constructors from packet classes.
 
 TODO: Je blbost posílat geometrii v každém tiku, takže:
 - vyrobit packet "Přidávám playera na scénu"
@@ -28,6 +14,27 @@ TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
   entity v průběhu, takže se to neztratí.
 (Technicky vzato je to update scény, ale asi je lepší udělat novej typ
  packetu, než dělat komplikovaný vnitřní typy).
+
+
+
+TODO: Debugové zobrazení fyziky na klientu
+  - target position
+  - desired velocity
+  - steering force
+    (a to před limitem i po limitu ať vidím, jak moc se mi to ořezává)
+  - physics body (obrys)
+
+
+Ok, co dál:
+- načítat data z Tiles editoru nepotřebuju, dokud nebudu řešit kolize,
+  vyhýbání se překážkám a tak.
+
+Potřebuju vyzkoušet steering behaviours (obecně si ujasnit, jak se bude
+  ovládat loď).
+  - follow by asi mohlo stačit.
+  - a close nejspíš (zastavování).
+    - zatím vůči jednomu bodu (mouse click).
+    - časem vůči nejbližšímu vertexu od všech překážek v určité vzdálensoti.
 
 
 

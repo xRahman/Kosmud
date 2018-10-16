@@ -13,6 +13,7 @@ import {Classes} from '../../Shared/Class/Classes';
 import {Connections} from '../../Server/Net/Connections';
 import {SystemMessage} from '../../Server/Protocol/SystemMessage';
 import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
+import {ShipToScene} from '../../Shared/Protocol/ShipToScene';
 import {KeyboardInput} from '../../Server/Protocol/KeyboardInput';
 import {MouseInput} from '../../Server/Protocol/MouseInput';
 
@@ -24,6 +25,7 @@ import * as WebSocket from 'isomorphic-ws';
 // imported and not used, typescript doesn't execute it's code.
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
+Classes.registerSerializableClass(ShipToScene);
 Classes.registerSerializableClass(KeyboardInput);
 Classes.registerSerializableClass(MouseInput);
 

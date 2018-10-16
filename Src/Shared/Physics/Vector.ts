@@ -166,6 +166,7 @@ export class Vector
     return this;
   }
 
+  // Note that this doesn't work for zero-length vectors.
   public setLength(length: number): this
   {
     this.normalize();
