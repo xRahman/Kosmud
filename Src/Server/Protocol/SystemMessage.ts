@@ -12,11 +12,6 @@ import * as Shared from '../../Shared/Protocol/SystemMessage';
 
 export class SystemMessage extends Shared.SystemMessage
 {
-  constructor(message: string, messageType: Syslog.MessageType)
-  {
-    super(message, messageType);
-  }
-
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().

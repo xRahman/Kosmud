@@ -1,5 +1,3 @@
-TODO: Remove unecessary constructors from packet classes.
-
 TODO: Je blbost posílat geometrii v každém tiku, takže:
 - vyrobit packet "Přidávám playera na scénu"
   - ShipToScene (přejmenovat to můžu vždycky)

@@ -15,11 +15,6 @@ import * as Shared from '../../Shared/Protocol/SceneUpdate';
 
 export class SceneUpdate extends Shared.SceneUpdate
 {
-  constructor(shipPosition: Vector, shipRotationRadians: number)
-  {
-    super(shipPosition, shipRotationRadians);
-  }
-
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().

@@ -13,11 +13,6 @@ import * as Shared from '../../Shared/Protocol/MouseInput';
 
 export class MouseInput extends Shared.MouseInput
 {
-  constructor(mousePosition: Vector)
-  {
-    super(mousePosition);
-  }
-
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().

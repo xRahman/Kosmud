@@ -13,15 +13,6 @@ import * as Shared from '../../Shared/Protocol/KeyboardInput';
 
 export class KeyboardInput extends Shared.KeyboardInput
 {
-  constructor
-  (
-    action: Shared.KeyboardInput.Action,
-    startOrStop: Shared.KeyboardInput.StartOrStop
-  )
-  {
-    super(action, startOrStop);
-  }
-
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().
