@@ -1,5 +1,25 @@
 -----------------------------------------------------------------------
 
+Renderování v Phaseru
+----------------------
+
+- UI, ve smyslu fixního layeru nad hrou, by mělo bejt v samostatné scéně,
+  nebo prostě jako html (to skoro dává větší smysl).
+
+- debugovací vykreslování physics geometrie, rychlostí a tak - to je otázka.
+  - Layery v Phaseru 3 nejsou a Containery nejsou moc doporučené (vlastně není
+    moc důvod container použít).
+  - zato existuje Zindex, takže bych prostě asi mohl vykreslovat s určitým
+    z indexem...
+    - to samý platí pro případné in-world ui (healthbary u lodí, damage
+      numbers a podobně).
+Zorder se dělá přes: image.setDepth(depth);
+
+
+
+
+-----------------------------------------------------------------------
+
 Serializable vektory
 ---------------------
 

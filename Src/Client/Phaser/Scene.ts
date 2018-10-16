@@ -3,6 +3,9 @@ import {Background} from '../../Client/Phaser/Background';
 import {Ship} from '../../Client/Phaser/Ship';
 import {SceneContents} from '../../Client/Phaser/SceneContents';
 
+const DEPTH_DEFAULT = 0;
+const DEPTH_DEBUG  = DEPTH_DEFAULT + 1;
+
 export class Scene extends Phaser.Scene
 {
   constructor
