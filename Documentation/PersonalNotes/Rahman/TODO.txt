@@ -1,26 +1,3 @@
-TODO: Zrušit přidávání shipy do scény při creatu scény.
-TODO: Procesit ShipToScene na clientu (přidat ship do scény).
-- možný problém: ShipToScene může klidně přijít před vytvořením
-  scény (až se bude dýl loadovat, tak to dokonce bude celkem pravděpodobný).
-Co s tím?
-- buď si to nabufferovat a zpracovat to až ve chvíli, kdy bude scéna existovat.
-  - tohle má výhodu v tom, že se mohou data poslat ještě v průběhu loadování.
-- nebo po vytvoření scény poslat na server request.
-
-OK, takže:
-
-TODO: Do Scene přidat buffer na přidávání věcí do scény.
-  - dokud není scéna vytvořená, dávat ShipToScene do bufferu.
-  - při vytvoření zpracovat ShipToScene z bufferu.
-
-TODO: Na klientu nevyrábět ship rovnou, ale až když mi přijde
-  packet s přidáním shipy do scény.
-- player se teda asi bude na scénu přidávat rovnou při loginu
-  (respektive spíš při EnterGame), ale přidávat se budou i jiný
-  entity v průběhu, takže se to neztratí.
-(Technicky vzato je to update scény, ale asi je lepší udělat novej typ
- packetu, než dělat komplikovaný vnitřní typy).
-
 
 TODO: Debugové zobrazení fyziky na klientu
   - target position

@@ -14,9 +14,9 @@ export class ShipToScene extends Packet
 {
   constructor
   (
-    protected shipGeometry: PhysicsBody.Geometry,
-    protected shipPosition: Vector,
-    protected shipAngleRadians: number
+    public shipGeometry: PhysicsBody.Geometry,
+    public shipPosition: Vector,
+    public shipAngleRadians: number
   )
   {
     super();

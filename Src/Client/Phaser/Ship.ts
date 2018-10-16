@@ -1,11 +1,17 @@
 import {Vector} from '../../Shared/Physics/Vector';
-
+import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
 
 const SHIP_SPRITE_ID = 'ship';
 
 export class Ship
 {
-  constructor(private scene: Phaser.Scene)
+  constructor
+  (
+    private scene: Phaser.Scene,
+    private geometry: PhysicsBody.Geometry,
+    position: Vector,
+    angle: number
+  )
   {
     this.sprite = createShipSprite(this.scene);
   }

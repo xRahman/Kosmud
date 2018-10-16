@@ -21,6 +21,8 @@ export class ShipToScene extends Shared.ShipToScene
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    Renderer.getFlightScene().addShip(this);
+
     // let sceneContents = Renderer.getFlightSceneContents();
 
     // if (sceneContents)

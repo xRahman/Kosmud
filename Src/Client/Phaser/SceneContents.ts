@@ -1,3 +1,4 @@
+import {ShipToScene} from '../../Client/Protocol/ShipToScene';
 import {Keyboard} from '../../Client/Phaser/Keyboard';
 import {Scene} from '../../Client/Phaser/Scene';
 import {Camera} from '../../Client/Phaser/Camera';
@@ -31,6 +32,12 @@ export class SceneContents
   public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
   // ---------------- Public methods --------------------
+
+  public addShip(ship: Ship)
+  {
+    /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
+    this.ship = ship;
+  }
 
   // // This method is run periodically by Phaser.
   // public update()
