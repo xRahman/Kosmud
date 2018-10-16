@@ -15,7 +15,7 @@ export abstract class PacketHandler
   public async deserializeAndProcessPacket(data: string)
   {
     /// DEBUG:
-    console.log(data);
+    // console.log(data);
 
     let packet: Packet;
 

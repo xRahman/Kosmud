@@ -29,6 +29,20 @@ export class Game
     );
   }
 
+  /// TEMPORARY (finálně by se tohle mělo dělat jinak - minimálně
+  //    bude víc lodí).
+  public static getShipToSceneInfo()
+  {
+    const shipInfo =
+    {
+      geometry: this.ship.getGeometry(),
+      position: this.ship.getPosition(),
+      angleRadians: this.ship.getAngle(),
+    };
+
+    return shipInfo;
+  }
+
   private static tick(tickDuration: number)
   {
     try
@@ -52,7 +66,6 @@ export class Game
   {
     let shipPosition = this.ship.getPosition();
     let shipAngle = this.ship.getAngle();
-    let shipGeometry = this.ship.getGeometry();
     let sceneUpdate = new SceneUpdate(shipPosition, shipAngle);
 
     // TODO: Sent all scene update data, not just one ship.

@@ -1,3 +1,25 @@
+TODO: Na serveru vyrábět a posílat paket ShipToScene
+- otázka je kdy.
+  - asi jako response na přihlášení klienta
+    (nejspíš tam, co se bude výhledově posílat LoginRequest či co...
+     - hmm, to asi nepůjde, páč komunikace po connectu začíná až tím,
+       že user klikne na login button - pak se pošle LoginRequest)
+     - takže asi zatím natvrdo do WebSocketServer.onNewConnection.
+[done]
+
+TODO: Je blbost posílat geometrii v každém tiku, takže:
+- vyrobit packet "Přidávám playera na scénu"
+  [done]
+  - ShipToScene (přejmenovat to můžu vždycky)
+- ten bude obsahovat:
+  - geometrii.
+    [done]
+  - startovní pozici
+    [done]
+  - co vlastně přidávám
+    (to zatím řešit nebudu)
+[done]
+
 TODO: Remove unecessary constructors from packet classes.
 [done]
 

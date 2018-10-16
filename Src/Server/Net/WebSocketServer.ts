@@ -128,6 +128,9 @@ function acceptConnection(webSocket: WebSocket, ip: string, url: string)
 
   Syslog.log("[WEBSOCKET_SERVER]",
     "Accepting connection " + connection.getOrigin());
+
+  /// DEBUG:
+  connection.sendShipToScene();
 }
 
 function denyConnection

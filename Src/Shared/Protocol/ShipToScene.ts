@@ -12,7 +12,12 @@ import {Packet} from '../../Shared/Protocol/Packet';
 
 export class ShipToScene extends Packet
 {
-  constructor(protected shipGeometry: PhysicsBody.Geometry)
+  constructor
+  (
+    protected shipGeometry: PhysicsBody.Geometry,
+    protected shipPosition: Vector,
+    protected shipAngleRadians: number
+  )
   {
     super();
   }
