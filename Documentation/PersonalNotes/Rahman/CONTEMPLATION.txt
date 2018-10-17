@@ -18,6 +18,37 @@ Zorder se dělá přes: image.setDepth(depth);
 
 
 
+Kreslení čar v Phaseru:
+------------------------
+
+Scene.create()
+{
+  graphics = this.add.graphics(0, 0);
+}
+
+Scene.update()
+{
+  graphics.clear();
+  graphics.lineStyle(1, 0x00ff00, 0.4);
+
+  graphics.beginPath();
+
+  drawLine(x1, y1, x2, y2);
+  drawLine(x1, y1, x2, y2);
+
+  graphics.closePath();
+  graphics.strokePath();
+}
+
+function drawLine (x0, y0, x1, y1)
+{
+  graphics.moveTo(x0, y0);
+  graphics.lineTo(x1, y1);
+}
+
+- Je na to class Server/Phaser/Graphics
+
+
 -----------------------------------------------------------------------
 
 Serializable vektory

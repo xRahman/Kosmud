@@ -1,3 +1,9 @@
+TODO: Vyrobit classu Phaser/Graphics,
+  která bude umět kreslit čáry (a rovnou třeba vykreslist Geometry).
+- je otázkla, jestli strokePoints() bude dělat to, co si myslím, ale
+  třeba jo. Musím to vyzkoušet.
+[done]
+
 TODO: Zdědit FlightScene ze Scene a rozhodit mezi ně kód.
 - DEPTH_COSI by asi měly bejt až ve FlightScene.
 [done]
