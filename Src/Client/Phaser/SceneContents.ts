@@ -1,9 +1,6 @@
-import {ShipToScene} from '../../Client/Protocol/ShipToScene';
 import {Keyboard} from '../../Client/Phaser/Keyboard';
 import {Scene} from '../../Client/Phaser/Scene';
 import {Camera} from '../../Client/Phaser/Camera';
-import {Background} from '../../Client/Phaser/Background';
-import {Ship} from '../../Client/Phaser/Ship';
 import {Mouse} from '../../Client/Phaser/Mouse';
 
 export class SceneContents
@@ -13,61 +10,14 @@ export class SceneContents
     this.camera = new Camera(scene);
     this.keyboard = new Keyboard(scene.input.keyboard);
     this.mouse = new Mouse(scene.input.activePointer, scene.input.mouse);
-
-    this.background = new Background(scene, canvasWidth, canvasHeight);
   }
-  
-
-  // public getShip() { return this.ship; }
 
   // ----------------- Public data ----------------------
  
- // public cursors = this.scene.input.keyboard.createCursorKeys();
-  public camera: Camera; 
+  // public cursors = this.scene.input.keyboard.createCursorKeys();
+  public camera: Camera;
+  /// TODO: Potřebují všechny scény keyboard a mouse? Možná ne...
+  /// (v tom případě to odtud vyhodit a dát to jen tam, kde je to potřeba).
   public keyboard: Keyboard;
   public mouse: Mouse;
-
-  public background: Background;
-
-  public ship: Ship | "Doesn't exist" = "Doesn't exist";
-
-  // ---------------- Public methods --------------------
-
-  public addShip(ship: Ship)
-  {
-    /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
-    this.ship = ship;
-  }
-
-  // // This method is run periodically by Phaser.
-  // public update()
-  // {
-  //   this.camera.update();
-  //   this.mouse.update();
-  // }
-
-  // public resize(width: number, height: number)
-  // {
-  //   this.background.resize(width, height);
-
-
-  //   // if (!this.cameras)
-  //   // {
-  //   //   ERROR("Attempt to resize phaser scene before"
-  //   //     + " it has been fully inicialized");
-  //   //   return;
-  //   // }
-  //   //? (Musí se tohle volat?)
-  //   /// - Nejspíš nemusí.
-  //   // this.cameras.resize(width, height);
-  // }
-
-  // ---------------- Private methods -------------------
-
-  // private onKeyupA()
-  // {
-  //   this.ship.turn(-1);
-  // }
 }
-
-// ----------------- Auxiliary Functions ---------------------

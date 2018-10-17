@@ -58,7 +58,7 @@ export class Body extends Component
     return Gui.getBody().getElement();
   }
 
-  // ---------------- Protected data -------------------- 
+  // ---------------- Protected data --------------------
 
   protected element: HTMLElement;
 

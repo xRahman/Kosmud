@@ -41,10 +41,6 @@ Scene.create()
 }
 
 
-TODO: Zdědit FlightScene ze Scene a rozhodit mezi ně kód.
-- DEPTH_COSI by asi měly bejt až ve FlightScene.
-
-
 TODO: Debugové zobrazení fyziky na klientu
   - target position
     - k tomu budu potřebovat měnit pozici pouze při button_down

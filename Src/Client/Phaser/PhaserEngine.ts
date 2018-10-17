@@ -1,5 +1,5 @@
 import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
-import {Scene} from '../../Client/Phaser/Scene';
+import {FlightScene} from '../../Client/Phaser/FlightScene';
 
 /// Phaser is listed in html direcly for now (should be imported though).
 //const Phaser = require('phaser');
@@ -8,7 +8,8 @@ export class PhaserEngine
 {
   constructor(width: number, height: number)
   {
-    this.flightScene = new Scene('FlightScene', width, height)
+    this.flightScene = new FlightScene(width, height);
+
     this.phaserGame = new Phaser.Game
     (
       {
@@ -21,7 +22,7 @@ export class PhaserEngine
     );
   }
 
-  private flightScene: Scene;
+  private flightScene: FlightScene;
 
   private phaserGame: Phaser.Game;
 

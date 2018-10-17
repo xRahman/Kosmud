@@ -1,4 +1,3 @@
-
 /*
   Part of Kosmud
 
@@ -7,11 +6,8 @@
   (Part of client-server communication protocol.)
 */
 
-
 import {Renderer} from '../../Client/Phaser/Renderer';
 import {Connection} from '../../Client/Net/Connection';
-import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
-import {Vector} from '../../Shared/Physics/Vector';
 import * as Shared from '../../Shared/Protocol/ShipToScene';
 
 export class ShipToScene extends Shared.ShipToScene
@@ -22,17 +18,6 @@ export class ShipToScene extends Shared.ShipToScene
   public async process(connection: Connection)
   {
     Renderer.getFlightScene().addShip(this);
-
-    // let sceneContents = Renderer.getFlightSceneContents();
-
-    // if (sceneContents)
-    // {
-    //   sceneContents.getShip().setPositionAndAngle
-    //   (
-    //     this.shipPosition,
-    //     this.shipRotationRadians
-    //   );
-    // }
   }
 }
 

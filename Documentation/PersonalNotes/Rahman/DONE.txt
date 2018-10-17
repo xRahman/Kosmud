@@ -1,3 +1,11 @@
+TODO: Zdědit FlightScene ze Scene a rozhodit mezi ně kód.
+- DEPTH_COSI by asi měly bejt až ve FlightScene.
+[done]
+
+TODO: Steně tak asi rovnou vyrobit i FlightSceneContents
+[done]
+
+
 TODO: Zrušit přidávání shipy do scény při creatu scény.
 [done]
 TODO: Procesit ShipToScene na clientu (přidat ship do scény).
