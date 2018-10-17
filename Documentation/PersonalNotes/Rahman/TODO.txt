@@ -1,17 +1,6 @@
-- a debug čáry by to asi chtělo dát do stejné grupy jako Ship
-  (respektive Ship bude group a v ní bude ship_hull, debug_draw a tak),
-  abych to rotoval a posouval najednou.
-
-Scene.create()
-{
-  let group = this.add.group();
-  let sprite = this.add.sprite(400, 300, 'phaser');
-  
-  group.add(sprite);
-}
-
-
 TODO: Debugové zobrazení fyziky na klientu
+  - physics body (obrys)
+    [done]
   - target position
     - k tomu budu potřebovat měnit pozici pouze při button_down
   - desired velocity
@@ -25,12 +14,6 @@ TODO: Debugové zobrazení fyziky na klientu
          - asi se přepínání bude muset posílat taky).
   - steering force
     (a to před limitem i po limitu ať vidím, jak moc se mi to ořezává)
-  - physics body (obrys)
-
-
-TODO: Až ship přestane být natvrdo ve SceneContents, tak možná přestane
-  mít SceneContents smysl - provolávání všeho možnýho přes scénu je dost
-  otrava.
 
 
 Ok, co dál:

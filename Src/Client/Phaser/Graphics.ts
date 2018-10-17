@@ -5,18 +5,22 @@
 
 // import {Vector} from '../../Shared/Physics/Vector';
 import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
-import {Scene} from '../../Client/Phaser/Scene';
 
-export abstract class Graphics
+export class Graphics
 {
-  constructor(scene: Scene)
+  constructor(scene: Phaser.Scene, depth = 0)
   {
     this.graphics = scene.add.graphics({ x: 0, y: 0 });
+    this.graphics.setDepth(depth);
   }
 
   // ----------------- Private data ---------------------
 
   private graphics: Phaser.GameObjects.Graphics;
+
+  // --------------- Public accessors -------------------
+
+  public getPhaserObject() { return this.graphics; }
 
   // ---------------- Public methods --------------------
 
@@ -29,15 +33,10 @@ export abstract class Graphics
   {
     this.graphics.lineStyle(1, 0x00ff00, 0.4);
 
-    // this.graphics.beginPath();
-
     for (let polygon of geometry)
     {
       this.graphics.strokePoints(polygon, true);
     }
-
-    // this.graphics.closePath();
-    // this.graphics.strokePath();
   }
 
   // ---------------- Private methods -------------------

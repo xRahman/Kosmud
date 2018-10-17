@@ -1,3 +1,19 @@
+TODO: Nastavit z-order pro Ship.gebugGraphics.
+[done]
+
+TODO: debug čáry by to asi chtělo dát do stejné grupy jako Ship
+  (respektive Ship bude group a v ní bude ship_hull, debug_draw a tak),
+  abych to rotoval a posouval najednou.
+  - musí to být container, s grupou se nedá hejbat.
+Scene.create()
+{
+  let group = this.add.group();
+  let sprite = this.add.sprite(400, 300, 'phaser');
+  
+  group.add(sprite);
+}
+[done]
+
 TODO: Vyrobit classu Phaser/Graphics,
   která bude umět kreslit čáry (a rovnou třeba vykreslist Geometry).
 - je otázkla, jestli strokePoints() bude dělat to, co si myslím, ale

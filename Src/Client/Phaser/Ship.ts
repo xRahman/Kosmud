@@ -1,5 +1,7 @@
 import {Vector} from '../../Shared/Physics/Vector';
 import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
+import {Graphics} from '../../Client/Phaser/Graphics';
+import { FlightScene } from './FlightScene';
 
 const SHIP_SPRITE_ID = 'ship';
 
@@ -13,10 +15,18 @@ export class Ship
     angle: number
   )
   {
+    this.container = scene.add.container(0, 0);
     this.sprite = createShipSprite(this.scene);
+    this.container.add(this.sprite);
+
+    this.debugGraphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
+    this.debugGraphics.drawBodyGeometry(geometry);
+    this.container.add(this.debugGraphics.getPhaserObject());
   }
 
+  private container: Phaser.GameObjects.Container;
   private sprite: Phaser.GameObjects.Sprite;
+  private debugGraphics: Graphics;
 
   public static preload(scene: Phaser.Scene)
   {
@@ -27,9 +37,9 @@ export class Ship
 
   public setPositionAndAngle(position: Vector, angleRadians: number)
   {
-    this.sprite.x = position.x;
-    this.sprite.y = position.y;
-    this.sprite.rotation = angleRadians;
+    this.container.x = position.x;
+    this.container.y = position.y;
+    this.container.rotation = angleRadians;
   }
 }
 
@@ -37,7 +47,7 @@ export class Ship
 
 function createShipSprite(scene: Phaser.Scene)
 {
-  let shipSprite = scene.add.sprite(400, 500, SHIP_SPRITE_ID);
+  let shipSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
   // shipSprite.setScrollFactor(0.5);
 
   return shipSprite;

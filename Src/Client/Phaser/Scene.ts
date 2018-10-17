@@ -34,4 +34,11 @@ export abstract class Scene extends Phaser.Scene
   }
 }
 
+// ------------------ Type Declarations ----------------------
+
+export module Scene
+{
+  export const Z_ORDER_DEFAULT = 0;
+}
+
 // ----------------- Auxiliary Functions ---------------------

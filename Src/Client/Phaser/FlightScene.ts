@@ -4,9 +4,6 @@ import {Ship} from '../../Client/Phaser/Ship';
 import {FlightSceneContents} from '../../Client/Phaser/FlightSceneContents';
 import {Scene} from '../../Client/Phaser/Scene';
 
-const DEPTH_DEFAULT = 0;
-const DEPTH_DEBUG  = DEPTH_DEFAULT + 1;
-
 export class FlightScene extends Scene
 {
   constructor
@@ -138,4 +135,11 @@ export class FlightScene extends Scene
       contents.addShip(this.createShip(request));
     }
   }
+}
+
+// ------------------ Type Declarations ----------------------
+
+export module FlightScene
+{
+  export const Z_ORDER_DEBUG = Scene.Z_ORDER_DEFAULT + 1;
 }
