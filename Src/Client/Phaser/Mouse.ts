@@ -5,13 +5,28 @@ import {Connection} from '../../Client/Net/Connection';
 
 export class Mouse
 {
-  constructor
-  (
-    private mousePointer: Phaser.Input.Pointer,
-    private mouseManager: Phaser.Input.Mouse.MouseManager
-  )
+  constructor(input: Phaser.Input.InputPlugin)
   {
+    this.mousePointer = input.activePointer;
+    this.mouseManager = input.mouse;
+
+    this.mouseManager.disableContextMenu();
+
+    input.on
+    (
+      'pointerdown',
+      (pointer: Phaser.Input.Pointer) => { this.onMouseDown(pointer) }
+    );
+
+    input.on
+    (
+      'pointerup',
+      (pointer: Phaser.Input.Pointer) => { this.onMouseUp(pointer) }
+    );
   }
+
+  private mousePointer: Phaser.Input.Pointer;
+  private mouseManager: Phaser.Input.Mouse.MouseManager;
 
   public update()
   {
@@ -21,6 +36,22 @@ export class Mouse
   private getMousePosition()
   {
     return new Vector({ x: this.mousePointer.x, y: this.mousePointer.y });
+  }
+
+  private onMouseDown(pointer: Phaser.Input.Pointer)
+  {
+    if (pointer.leftButtonDown())
+    {
+      /// TODO.
+    }
+  }
+
+  private onMouseUp(pointer: Phaser.Input.Pointer)
+  {
+    if (pointer.leftButtonDown())
+    {
+      /// TODO:
+    }
   }
 }
 

@@ -9,7 +9,7 @@ export class SceneContents
   {
     this.camera = new Camera(scene);
     this.keyboard = new Keyboard(scene.input.keyboard);
-    this.mouse = new Mouse(scene.input.activePointer, scene.input.mouse);
+    this.mouse = new Mouse(scene.input);
   }
 
   // ----------------- Public data ----------------------
