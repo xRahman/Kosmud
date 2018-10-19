@@ -1,4 +1,10 @@
-﻿==============================================================
+﻿TSLint
+--------
+
+https://github.com/palantir/tslint/blob/master/src/configs/recommended.ts
+https://palantir.github.io/tslint/rules/
+
+==============================================================
 
 Phaser html 5 engine
 ---------------------
