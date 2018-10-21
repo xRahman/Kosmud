@@ -4,81 +4,78 @@
   Manages interface.
 */
 
-import {Html} from '../../Client/Gui/Html';
-import {Body} from '../../Client/Gui/Body';
+import { Html } from "Client/Gui/Html";
+import { Body } from "Client/Gui/Body";
 
-export class Gui
+let html: Html | "Doesn't exist" = "Doesn't exist";
+let body: Body | "Doesn't exist" = "Doesn't exist";
+
+export namespace Gui
 {
-  // -------------- Private static data -----------------
-
-  private static html: Html | "Doesn't exist" = "Doesn't exist";
-  private static body: Body | "Doesn't exist" = "Doesn't exist";
-
-  // --------------- Static accessors -------------------
-
   // ! Throws exception on error.
-  public static getBody(): Body
+  export function getBody(): Body
   {
-    if (this.body === "Doesn't exist")
+    if (body === "Doesn't exist")
     {
       throw new Error("Body component doesn't exist");
     }
 
-    return this.body;
+    return body;
   }
 
   // ! Throws exception on error.
-  public static getHtml(): Html
+  export function getHtml(): Html
   {
-    if (this.html === "Doesn't exist")
+    if (html === "Doesn't exist")
     {
       throw new Error("Html component doesn't exist");
     }
 
-    return this.html;
+    return html;
   }
 
   // ------------- Public static methods ----------------
 
   // ! Throws exception on error.
-  public static init()
+  export function init()
   {
     // ! Throws exception on error.
-    this.initHtmlComponent();
+    initHtmlComponent();
 
     // ! Throws exception on error.
-    this.initBodyComponent();
+    initBodyComponent();
   }
+}
 
-  // ! Throws exception on error.
-  private static initHtmlComponent()
+// ----------------- Auxiliary Functions ---------------------
+
+// ! Throws exception on error.
+function initHtmlComponent()
+{
+  if (html !== "Doesn't exist")
   {
-    if (this.html !== "Doesn't exist")
-    {
-      throw new Error("Failed to init <html> component"
-        + " because it already exists");
-    }
-
-    // 'document.documentElement' is a direct reference to <html> element.
-    if (!document.documentElement)
-    {
-      throw new Error("Failed to init <html> component"
-        + " because it doesn't exist in the DOM");
-    }
-
-    this.html = new Html(document.documentElement);
+    throw new Error("Failed to init <html> component"
+      + " because it already exists");
   }
 
-
-  // ! Throws exception on error.
-  private static initBodyComponent()
+  // 'document.documentElement' is a direct reference to <html> element.
+  if (!document.documentElement)
   {
-    if (this.body !== "Doesn't exist")
-    {
-      throw new Error("Failed to init <body> component"
-        + " because it already exists");
-    }
-
-    this.body = new Body(document.body);
+    throw new Error("Failed to init <html> component"
+      + " because it doesn't exist in the DOM");
   }
+
+  html = new Html(document.documentElement);
+}
+
+// ! Throws exception on error.
+function initBodyComponent()
+{
+  if (body !== "Doesn't exist")
+  {
+    throw new Error("Failed to init <body> component"
+      + " because it already exists");
+  }
+
+  body = new Body(document.body);
 }

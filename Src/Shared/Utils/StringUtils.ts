@@ -4,7 +4,7 @@
   String utility functions.
 */
 
-export module StringUtils
+export namespace StringUtils
 {
   export function replaceCRLFwithLF(data: string)
   {
@@ -20,14 +20,14 @@ export module StringUtils
   {
     // Remove all whitespace characters from the beginning
     // of the string including tabs and line feeds.
-    return str.replace(/^\s+/,"");
+    return str.replace(/^\s+/, "");
   }
 
   export function trimRight(str: string): string
   {
     // Remove all whitespace characters from the end
     // of the string including tabs and line feeds.
-    return str.replace(/\s+$/,"");
+    return str.replace(/\s+$/, "");
   }
 
   export function uppercaseFirstLowercaseRest(str: string): string
@@ -45,13 +45,13 @@ export module StringUtils
   export function stringToInt(input: string): number
   {
     // ! Throws an exception on error.
-    let value = stringToFloat(input);
+    const value = stringToFloat(input);
 
-    // Check that result doesn't have any decimal part. 
+    // Check that result doesn't have any decimal part.
     if (!isInteger(value))
     {
-      throw new Error('Failed to convert string "' + input + '"'
-        + " to integer because it's not a stringified integer");
+      throw new Error(`Failed to convert string "${input}"`
+        + ` to integer because it's not a stringified integer`);
     }
 
     return value;
@@ -71,8 +71,8 @@ export module StringUtils
     // after a space or a tab, etc.
     str = trimRight(str);
 
-    if (str.slice(-1) !== '.')
-      return str + '.';
+    if (str.slice(-1) !== ".")
+      return `${str}.`;
 
     return str;
   }
@@ -82,7 +82,7 @@ export module StringUtils
   export function removeFirstLinesWithoutPrefix(str: string, prefix: string)
   {
     // Break 'str' into an array of lines.
-    let lines = str.split('\n');
+    const lines = str.split("\n");
 
     for (let i = 0; i < lines.length; i++)
     {
@@ -94,7 +94,7 @@ export module StringUtils
     }
 
     // Join 'lines' back to a single multi-line string.
-    return lines.join('\n');
+    return lines.join("\n");
   }
 }
 
@@ -108,12 +108,12 @@ function isInteger(value: number)
 // ! Throws an exception on error.
 function convertToNumber(input: any): number
 {
-  let result = input * 1;
+  const result = input * 1;
 
-  if (result === NaN)
+  if (Number.isNaN(result))
   {
-    throw new Error('Failed to convert "' + input + '"'
-        + " to number because it's not a stringified number");
+    throw new Error(`Failed to convert "${input}"`
+      + ` to number because it's not a stringified number`);
   }
 
   return result;

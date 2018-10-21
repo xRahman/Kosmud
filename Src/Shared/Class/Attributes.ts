@@ -7,14 +7,14 @@
 export interface Attributes
 {
   // Property is saved to disk.
-  saved?: boolean,
+  saved?: boolean;
   // Property can be edited.
-  edited?: boolean,
+  edited?: boolean;
   // Property is serialized when object is sent from the server to the client.
-  sentToClient?: boolean,
+  sentToClient?: boolean;
   // Property is serialized when object is send from the client to the server
-  sentToServer?: boolean
-};
+  sentToServer?: boolean;
+}
 
 export const DEFAULT_ATTRIBUTES: Attributes =
 {

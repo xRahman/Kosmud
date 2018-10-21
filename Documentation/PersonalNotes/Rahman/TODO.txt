@@ -1,3 +1,59 @@
+Warning: member-ordering - Bad member kind: public-before-private
+Warning: The 'prefer-readonly' rule requires type information.
+Warning: The 'promise-function-async' rule requires type information.
+Warning: The 'await-promise' rule requires type information.
+Warning: The 'no-floating-promises' rule requires type information.
+Warning: The 'no-for-in-array' rule requires type information.
+Warning: The 'no-inferred-empty-object-type' rule requires type information.
+Warning: The 'no-unsafe-any' rule requires type information.
+Warning: The 'restrict-plus-operands' rule requires type information.
+Warning: The 'strict-boolean-expressions' rule requires type information.
+Warning: The 'use-default-type-parameter' rule requires type information.
+Warning: The 'deprecation' rule requires type information.
+Warning: The 'match-default-export-name' rule requires type information.
+Warning: The 'no-boolean-literal-compare' rule requires type information.
+Warning: The 'no-unnecessary-type-assertion' rule requires type information.
+Warning: The 'return-undefined' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: member-ordering - Bad member kind: public-before-private
+[Warn  - 6:31:20 PM] Warning: The 'prefer-readonly' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'promise-function-async' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'await-promise' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-floating-promises' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-for-in-array' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-inferred-empty-object-type' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-unsafe-any' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'restrict-plus-operands' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'strict-boolean-expressions' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'use-default-type-parameter' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'deprecation' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'match-default-export-name' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-boolean-literal-compare' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-unnecessary-type-assertion' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'return-undefined' rule requires type information.
+[Warn  - 6:33:48 PM] vscode-tslint: Cannot read tslint configuration - 'Failed to load c:\Brutus\Kosmud\Src\tslint.json: Unexpected string in JSON at position 1515 in c:\Brutus\Kosmud\Src\tslint.json'
+
+
+
+TODO (Tslint) import { Cosi } from...
+
+TODO: Tslint (co momentálně nejde v tslintu nastavit):
+- zakázat newline na konci souboru
+- Vyžadovat newline za if (), while() a podobně
+  (teď se dá napsat na jednu řádku if (x === 0) { doSomething(); }).
+- závorky za funkcí (volání i deklarace)
+- jednořádkové if/for/do/while
+  (mělo by to bejt tak, že když je za ifem jeden řádek a je to return nebo
+   throw, tak {} být nemusí, jinak ano).
+   - Hmm a vlastně ani to vždycky neplatí, protože když je za ifem
+     throw new Error(), kterej se nevejde na jeden řádek, tak je taky lepší
+     ho uzávorkovat do {}.
+
+
+TODO: Prozkoumat (a ideálně použít):
+  https://decembersoft.com/posts/say-goodbye-to-relative-paths-in-typescript-imports/
+(nejspíš bude stačit baseurl)
+
+
 TODO: Debugové zobrazení fyziky na klientu
   - physics body (obrys)
     [done]

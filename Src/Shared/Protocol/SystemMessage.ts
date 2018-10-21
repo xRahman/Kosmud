@@ -6,8 +6,8 @@
   (Part of client-server communication protocol.)
 */
 
-import {Syslog} from '../../Shared/Log/Syslog';
-import {Packet} from '../../Shared/Protocol/Packet';
+import { Syslog } from "Shared/Log/Syslog";
+import { Packet } from "Shared/Protocol/Packet";
 
 export class SystemMessage extends Packet
 {

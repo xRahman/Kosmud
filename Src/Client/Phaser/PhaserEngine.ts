@@ -1,8 +1,8 @@
-import {CanvasDiv} from '../../Client/Gui/CanvasDiv';
-import {FlightScene} from '../../Client/Phaser/FlightScene';
+import { CanvasDiv } from "Client/Gui/CanvasDiv";
+import { FlightScene } from "Client/Phaser/FlightScene";
 
 /// Phaser is listed in html direcly for now (should be imported though).
-//const Phaser = require('phaser');
+// const Phaser = require('phaser');
 
 export class PhaserEngine
 {

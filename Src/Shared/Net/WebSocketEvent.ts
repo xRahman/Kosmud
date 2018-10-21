@@ -4,7 +4,7 @@
   Description of websocket close event codes.
 */
 
-export module WebSocketEvent
+export namespace WebSocketEvent
 {
   export const NORMAL_CLOSE = 1000;
 
@@ -53,13 +53,13 @@ export module WebSocketEvent
 
     if (code === 1004)
     {
-      return "Reserved. A meaning might be defined in the future."
+      return "Reserved. A meaning might be defined in the future.";
     }
 
     if (code === 1005)  // CLOSE_NO_STATUS
     {
       return "Reserved. Indicates that no status code was provided"
-          + " even though one was expected."
+          + " even though one was expected.";
     }
 
     if (code === 1006)  // CLOSE_ABNORMAL
@@ -73,7 +73,7 @@ export module WebSocketEvent
     {
       return "The endpoint is terminating the connection because"
           + " a message was received that contained inconsistent"
-          + " data (e.g., non-UTF-8 data within a text message)."
+          + " data (e.g., non-UTF-8 data within a text message).";
     }
 
     if (code === 1008)  // Policy Violation
@@ -87,7 +87,7 @@ export module WebSocketEvent
     if (code === 1009)  // CLOSE_TOO_LARGE
     {
       return "The endpoint is terminating the connection because"
-          + " a data frame was received that is too large."
+          + " a data frame was received that is too large.";
     }
 
     if (code === 1010)  // Missing Extension
@@ -101,7 +101,7 @@ export module WebSocketEvent
     {
       return "The server is terminating the connection because it"
           + " encountered an unexpected condition that prevented"
-          + " it from fulfilling the request."
+          + " it from fulfilling the request.";
     }
 
     if (code === 1012)  // Service Restart
@@ -143,12 +143,12 @@ export module WebSocketEvent
     {
       return "Available for use by libraries and frameworks."
           + " May not be used by applications. Available for"
-          + " registration at the IANA via first-come, first-serve."
+          + " registration at the IANA via first-come, first-serve.";
     }
-    
+
     if (code >= 4000 && code <= 4999)
     {
-      return "Available for use by applications."
+      return "Available for use by applications.";
     }
 
     return "Undefined event code.";

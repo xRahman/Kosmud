@@ -1,8 +1,8 @@
-import {ShipToScene} from '../../Client/Protocol/ShipToScene';
-import {Background} from '../../Client/Phaser/Background';
-import {Ship} from '../../Client/Phaser/Ship';
-import {FlightSceneContents} from '../../Client/Phaser/FlightSceneContents';
-import {Scene} from '../../Client/Phaser/Scene';
+import { ShipToScene } from "Client/Protocol/ShipToScene";
+import { Background } from "Client/Phaser/Background";
+import { Ship } from "Client/Phaser/Ship";
+import { FlightSceneContents } from "Client/Phaser/FlightSceneContents";
+import { Scene } from "Client/Phaser/Scene";
 
 export class FlightScene extends Scene
 {
@@ -12,7 +12,7 @@ export class FlightScene extends Scene
     height: number
   )
   {
-    super('Flight scene', width, height);
+    super("Flight scene", width, height);
   }
 
   // ---------------- Protected data --------------------
@@ -26,7 +26,7 @@ export class FlightScene extends Scene
 
   // --------------- Public accessors -------------------
 
-  public getShip(): Ship | "Doesn't exist" 
+  public getShip(): Ship | "Doesn't exist"
   {
     if (this.contents === "Doesn't exist")
       return "Doesn't exist";
@@ -63,8 +63,8 @@ export class FlightScene extends Scene
   {
     if (this.contents !== "Doesn't exist")
     {
-      throw new Error("Failed to create scene '" + this.name + "'"
-        + " because scene contents already exist");
+      throw new Error(`Failed to create scene '${this.name}'`
+        + ` because scene contents already exist`);
     }
 
     this.contents = new FlightSceneContents(this, this.width, this.height);
@@ -77,8 +77,8 @@ export class FlightScene extends Scene
   {
     if (this.contents === "Doesn't exist")
     {
-      throw new Error("Failed to update scene '" + this.name + "'"
-        + " because scene contents doesn't exist");
+      throw new Error(`Failed to update scene '${this.name}'`
+        + ` because scene contents doesn't exist`);
     }
 
     this.contents.camera.update();
@@ -93,13 +93,13 @@ export class FlightScene extends Scene
 
     if (this.contents === "Doesn't exist")
     {
-      throw new Error("Failed to resize scene '" + this.name + "'"
-        + " because scene contents doesn't exist");
+      throw new Error(`Failed to resize scene '${this.name}'`
+        + ` because scene contents doesn't exist`);
     }
 
     this.contents.background.resize(width, height);
 
-    //? (Musí se tohle volat?)
+    /// (Musí se tohle volat?)
     /// - Nejspíš nemusí.
     // this.cameras.resize(width, height);
   }
@@ -127,7 +127,7 @@ export class FlightScene extends Scene
 
   private createBufferedShips(contents: FlightSceneContents)
   {
-    for (let request of this.addRequestQueue)
+    for (const request of this.addRequestQueue)
     {
       /// DEBUG:
       console.log("Creating ship based on queued request");
@@ -139,7 +139,7 @@ export class FlightScene extends Scene
 
 // ------------------ Type Declarations ----------------------
 
-export module FlightScene
+export namespace FlightScene
 {
   export const Z_ORDER_DEBUG = Scene.Z_ORDER_DEFAULT + 1;
 }

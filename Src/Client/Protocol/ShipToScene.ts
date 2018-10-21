@@ -6,9 +6,9 @@
   (Part of client-server communication protocol.)
 */
 
-import {Renderer} from '../../Client/Phaser/Renderer';
-import {Connection} from '../../Client/Net/Connection';
-import * as Shared from '../../Shared/Protocol/ShipToScene';
+import { Renderer } from "Client/Phaser/Renderer";
+import { Connection } from "Client/Net/Connection";
+import * as Shared from "Shared/Protocol/ShipToScene";
 
 export class ShipToScene extends Shared.ShipToScene
 {

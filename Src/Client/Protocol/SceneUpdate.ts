@@ -7,9 +7,9 @@
   (Part of client-server communication protocol.)
 */
 
-import {Renderer} from '../../Client/Phaser/Renderer';
-import {Connection} from '../../Client/Net/Connection';
-import * as Shared from '../../Shared/Protocol/SceneUpdate';
+import { Renderer } from "Client/Phaser/Renderer";
+import { Connection } from "Client/Net/Connection";
+import * as Shared from "Shared/Protocol/SceneUpdate";
 
 export class SceneUpdate extends Shared.SceneUpdate
 {
@@ -18,8 +18,8 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    let ship = Renderer.getFlightScene().getShip();
-    
+    const ship = Renderer.getFlightScene().getShip();
+
     if (ship !== "Doesn't exist")
     {
       ship.setPositionAndAngle

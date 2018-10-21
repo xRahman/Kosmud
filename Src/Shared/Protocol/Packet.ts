@@ -6,8 +6,8 @@
   (Part of client-server communication protocol.)
 */
 
-import {Serializable} from '../../Shared/Class/Serializable';
-import {PacketHandler} from '../../Shared/Net/PacketHandler';
+import { Serializable } from "Shared/Class/Serializable";
+import { PacketHandler } from "Shared/Net/PacketHandler";
 
 export class Packet extends Serializable
 {

@@ -4,66 +4,61 @@
   Player connections.
 */
 
-import {Packet} from '../../Shared/Protocol/Packet';
-import {Connection} from '../../Server/Net/Connection';
+import { REPORT } from "Shared/Log/REPORT";
+import { Packet } from "Shared/Protocol/Packet";
+import { Connection } from "Server/Net/Connection";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
-import { REPORT } from '../../Shared/Log/REPORT';
+import * as WebSocket from "isomorphic-ws";
 
-export class Connections
+const connections = new Set<Connection>();
+
+export namespace Connections
 {
-  // -------------- Private static data -----------------
-
-  private static connections = new Set<Connection>();
-
-  // ------------- Public static methods ----------------
-
   // ! Throws exception on error.
-  public static removeConnection(connection: Connection)
+  export function removeConnection(connection: Connection)
   {
-    if (!this.connections.has(connection))
+    if (!connections.has(connection))
     {
-      throw new Error("Attempt to release connection"
-        + " " + connection.getUserInfo() + "which doesn't"
-        + " exist");
+      throw new Error(`Attempt to release connection`
+        + ` ${connection.getUserInfo()} which doesn't exist`);
     }
 
-    this.connections.delete(connection);
+    connections.delete(connection);
   }
 
   // ! Throws exception on error.
-  public static addConnection(webSocket: WebSocket, ip: string, url: string)
+  export function addConnection(webSocket: WebSocket, ip: string, url: string)
   {
-    let connection = new Connection(webSocket, ip, url);
+    const connection = new Connection(webSocket, ip, url);
 
-    if (this.connections.has(connection))
+    if (connections.has(connection))
     {
       throw new Error("Attempt to add connection which already"
         + " exists in Connections");
     }
 
-    this.connections.add(connection);
+    connections.add(connection);
 
     return connection;
   }
 
-  public static broadcast(packet: Packet)
+  export function broadcast(packet: Packet)
   {
-    for (let connection of this.connections)
+    for (const connection of connections)
     {
       if (!connection.isOpen())
         continue;
-      
+
       try
       {
         connection.send(packet);
       }
       catch (error)
       {
-        REPORT("Failed to broadcast packet to connection"
-          + " " + connection.getUserInfo());
+        REPORT(`Failed to broadcast packet to connection`
+          + ` ${connection.getUserInfo()}`);
       }
     }
   }

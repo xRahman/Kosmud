@@ -1,0 +1,166 @@
+{
+  "lintOptions":
+  {
+    "typeCheck": true
+  },
+  "extends": [ "tslint:all", "tslint-eslint-rules"],
+  "rules":
+  {
+    // Don't want these
+    "cyclomatic-complexity": false,
+    "increment-decrement": false,
+    "newline-before-return": false,
+    "no-parameter-properties": false,
+    "no-parameter-reassignment": false,
+    "no-unused-variable": false,
+    // TODO: Enable stricter options for these
+    "comment-format":
+    [
+        true,
+        "check-space"
+    ],
+    "member-access": true,
+    "only-arrow-functions":
+    [
+        true,
+        "allow-declarations",
+        "allow-named-functions"
+    ],
+
+    // TODO: Enable these
+    "completed-docs": false,
+    "no-any": false,
+    "no-magic-numbers": false,
+    "no-non-null-assertion": false,
+    "no-null-keyword": false,
+    "no-require-imports": false,
+    "no-unbound-method": false,
+    "no-unnecessary-qualifier": false,
+    "no-use-before-declare": false,
+    "no-void-expression": false,
+    "prefer-function-over-method": false,
+    "strict-type-predicates": false,
+    "triple-equals": [true, "allow-undefined-check"],
+    "typedef": false,
+
+    "ban": [true,
+      ["describe", "only"],
+      ["it", "only"]
+    ],
+
+    "ban-types":
+    {
+      "options":
+      [
+        ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
+        // ["Function", "Avoid using the `Function` type. Prefer a specific
+        //   function type, like `() => void`."],
+        ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+        ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+        ["String", "Avoid using the `String` type. Did you mean `string`?"],
+        ["Symbol", "Avoid using the `Symbol` type. Did you mean `symbol`?"]
+      ]
+    },
+
+    // This doesn't work along with 'baseUrl' in tsconfig.json.
+    "no-implicit-dependencies": false,
+
+    // This doesn't work along with 'baseUrl' in tsconfig.json.
+    "no-submodule-imports": false,
+
+    "file-name-casing":
+    [
+      true,
+      // File names like: 'PacketHandler.ts'.
+      "pascal-case"
+    ],
+    "whitespace":
+    [
+      true,
+      // if (...).
+      "check-branch",
+      // Whitespace around operator tokens.
+      "check-operator",
+      // Whitespace in import & export statements.
+      "check-module",
+      // Whitespace after comma: (something, somethign else).
+      "check-separator",
+      // No whitespace after rest/spread operator: (...).
+      "check-rest-spread",
+      // Whitespace before a variable type specification.
+      "check-type",
+      // Whitespace between a typecast and its target.
+      "check-typecast"
+    ],
+    // All strings must be "double quoted".
+    "quotemark": [ true, "double"],
+    // Do not enforce alphabetic order of imports.
+    "ordered-imports": false,
+    // Allow modules and namespaces.
+    "no-namespace": false,
+    // Do not force brackets to be on the same line as what preceeds them.
+    "one-line": false,
+    // Disallow trailing commas like: [ a, b, c, ].
+    "trailing-comma": false,
+    // Do not force object keys to be sorted alphabetically.
+    "object-literal-sort-keys": false,
+    // Do not force files to end with a newline.
+    "eofline": false,
+    // There is no option for what is needed :<
+    "space-before-function-paren": false,
+    // Enforce a break (or return) after the last 'case' in the switch
+    // (it prevents error when cases are reordered - including 'default').
+    "switch-final-break": [ true, "always"],
+    // There is no option for what is needed :<
+    "curly": false,
+    "array-type": false,
+    "interface-over-type-literal": false,
+
+    "interface-name": false,
+    // "file-header": [true,
+    //   "Copyright \\d{4} Palantir Technologies, Inc."
+    // ],
+    "max-classes-per-file": false,
+    "max-line-length": [true, 80],
+    "max-file-line-count": [true, 2000],
+    "member-ordering":
+    [
+      true,
+      {
+        "order":
+        [
+          "public-before-private",
+          "static-before-instance",
+          "variables-before-functions"
+        ]
+      }
+    ],
+    "newline-per-chained-call": false,
+    "no-console": false,
+    "no-switch-case-fall-through": true,
+    "strict-boolean-expressions": [true, "allow-boolean-or-undefined"],
+    "switch-default": false,
+    "variable-name": [true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "linebreak-style": false,
+    "no-consecutive-blank-lines": true,
+
+
+    // ------------ Rules enabled by tslint-eslint module -------------
+
+    "brace-style":
+    [
+      true,
+      // Enforce opening brace on the next line.
+      "allman",
+      {
+        // Allow single-line functions like getBox() { return this.box; }.
+        "allowSingleLine": true
+      }
+    ]
+  }
+}

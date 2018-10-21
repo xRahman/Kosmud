@@ -4,15 +4,15 @@
   Websocket wrapper.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
-import {Syslog} from '../../Shared/Log/Syslog';
-import {Types} from '../../Shared/Utils/Types';
-import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {PacketHandler} from '../../Shared/Net/PacketHandler';
+import { ERROR } from "Shared/Log/ERROR";
+import { Syslog } from "Shared/Log/Syslog";
+import { Types } from "Shared/Utils/Types";
+import { WebSocketEvent } from "Shared/Net/WebSocketEvent";
+import { PacketHandler } from "Shared/Net/PacketHandler";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
+import * as WebSocket from "isomorphic-ws";
 
 export abstract class Socket extends PacketHandler
 {
@@ -36,11 +36,11 @@ export abstract class Socket extends PacketHandler
   // when the socket closes.
   private listeners =
   {
-    onopen: <((event: Types.OpenEvent) => void) | null>null,
-    onmessage: <((event: Types.MessageEvent) => void) | null>null,
-    onerror: <((event: Types.ErrorEvent) => void) | null>null,
-    onclose: <((event: Types.CloseEvent) => void) | null>null
-  }
+    onopen: null as ((event: Types.OpenEvent) => void) | null,
+    onmessage: null as ((event: Types.MessageEvent) => void) | null,
+    onerror: null as ((event: Types.ErrorEvent) => void) | null,
+    onclose: null as ((event: Types.CloseEvent) => void) | null
+  };
 
   // ---------------- Public methods --------------------
 
@@ -59,8 +59,8 @@ export abstract class Socket extends PacketHandler
   {
     if (this.isClosingOrClosed())
     {
-      throw new Error("Failed to close socket to " + this.getOrigin()
-          + " because it is already closing or closed");
+      throw new Error(`Failed to close socket to ${this.getOrigin()}`
+        + ` because it is already closing or closed`);
     }
 
     this.webSocket.close(WebSocketEvent.NORMAL_CLOSE, reason);
@@ -73,8 +73,8 @@ export abstract class Socket extends PacketHandler
   {
     if (!this.isOpen())
     {
-      throw new Error("Failed to send data to " + this.getOrigin()
-        + " because the connection is closed");
+      throw new Error(`Failed to send data to ${this.getOrigin()}`
+        + ` because the connection is closed`);
     }
 
     if (this.webSocket)
@@ -85,23 +85,23 @@ export abstract class Socket extends PacketHandler
       }
       catch (error)
       {
-        throw new Error("Failed to send data to " + this.getOrigin() + "."
-          + " Reason: " + error.message);
+        throw new Error(`Failed to send data to ${this.getOrigin()}.`
+          + ` Reason: ${error.message}`);
       }
     }
   }
 
   protected logSocketClosingError(event: Types.CloseEvent)
   {
-    let message = "Socket to " + this.getOrigin() + " closed";
+    let message = `Socket to ${this.getOrigin()} closed`;
 
     if (event.reason)
     {
-      message += " because of error: " + event.reason;
+      message += ` because of error: ${event.reason}`;
     }
 
-    message += ". Code: " + event.code + "."
-    message += ' Description: "' + WebSocketEvent.description(event.code) + '"';
+    message += `. Code: ${event.code}.`;
+    message += ` Description: "${WebSocketEvent.description(event.code)}"`;
 
     Syslog.log("[WEBSOCKET]", message);
   }
@@ -109,7 +109,7 @@ export abstract class Socket extends PacketHandler
   protected isClosingOrClosed()
   {
     const isClosing = this.webSocket.readyState === WebSocket.CLOSING;
-    const isClosed = this.webSocket.readyState === WebSocket.CLOSED
+    const isClosed = this.webSocket.readyState === WebSocket.CLOSED;
 
     return isClosing || isClosed;
   }
@@ -145,18 +145,18 @@ export abstract class Socket extends PacketHandler
   }
 
   private cleanup()
-  {    
+  {
     if (this.listeners.onopen)
-      this.webSocket.removeEventListener('open', this.listeners.onopen);
+      this.webSocket.removeEventListener("open", this.listeners.onopen);
 
     if (this.listeners.onmessage)
-      this.webSocket.removeEventListener('message', this.listeners.onmessage);
-    
+      this.webSocket.removeEventListener("message", this.listeners.onmessage);
+
     if (this.listeners.onerror)
-      this.webSocket.removeEventListener('error', this.listeners.onerror);
+      this.webSocket.removeEventListener("error", this.listeners.onerror);
 
     if (this.listeners.onclose)
-      this.webSocket.removeEventListener('close', this.listeners.onclose);
+      this.webSocket.removeEventListener("close", this.listeners.onclose);
   }
 
   // ---------------- Event handlers --------------------
@@ -168,12 +168,12 @@ export abstract class Socket extends PacketHandler
 
   private async onMessage(event: Types.MessageEvent)
   {
-    if (typeof event.data !== 'string')
+    if (typeof event.data !== "string")
     {
-      ERROR("Websocket to " + this.getOrigin()
-        + " received non-string data. Message"
-        + " will not be processed because"
-        + " we can only process string data");
+      ERROR(`Websocket to ${this.getOrigin()}`
+        + ` received non-string data. Message`
+        + ` will not be processed because`
+        + ` we can only process string data`);
       return;
     }
 
@@ -195,9 +195,9 @@ export abstract class Socket extends PacketHandler
     let message = "Socket error occured";
 
     if (event.message)
-      message += ": " + event.message;
+      message += `: ${event.message}`;
 
-    message += ". Connection to " + this.getOrigin() + " will close";
+    message += `. Connection to ${this.getOrigin()} will close`;
 
     Syslog.log("[WEBSOCKET]", message);
   }

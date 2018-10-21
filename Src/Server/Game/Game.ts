@@ -4,77 +4,80 @@
   Server-side game simulation.
 */
 
-import {Syslog} from '../../Shared/Log/Syslog';
-//import {Physics} from '../../Server/Physics/Physics';
-import {Physics} from '../../Shared/Physics/Physics';
-import {Ship} from '../../Server/Game/Ship';
-import {Connections} from '../../Server/Net/Connections';
-import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
+import { Syslog } from "Shared/Log/Syslog";
+import { Physics } from "Shared/Physics/Physics";
+import { Ship } from "Server/Game/Ship";
+import { Connections } from "Server/Net/Connections";
+import { SceneUpdate } from "Shared/Protocol/SceneUpdate";
 
 const GAME_TICK_MILISECONDS = 1000 / 60;
 
-export class Game
+const physics = new Physics();
+
+export namespace Game
 {
-  private static physics = new Physics();
-
   /// Test:
-  public static ship = new Ship(Game.physics.world.createBody());
+  export let ship = new Ship(physics.world.createBody());
 
-  public static startLoop()
+  export function startLoop()
   {
     setInterval
     (
-      () => { this.tick(GAME_TICK_MILISECONDS); },
+      () => { tick(GAME_TICK_MILISECONDS); },
       GAME_TICK_MILISECONDS
     );
   }
 
   /// TEMPORARY (finálně by se tohle mělo dělat jinak - minimálně
   //    bude víc lodí).
-  public static getShipToSceneInfo()
+  export function getShipToSceneInfo()
   {
     const shipInfo =
     {
-      geometry: this.ship.getGeometry(),
-      position: this.ship.getPosition(),
-      angleRadians: this.ship.getAngle(),
+      angleRadians: ship.getAngle(),
+      geometry: ship.getGeometry(),
+      position: ship.getPosition(),
     };
 
     return shipInfo;
   }
+}
 
-  private static tick(tickDuration: number)
+// ----------------- Auxiliary Functions ---------------------
+
+function tick(tickDuration: number)
+{
+  try
   {
-    try
-    {
-      this.updatePhysics(tickDuration);
-      this.updateClients();
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
+    updatePhysics(tickDuration);
+    updateClients();
   }
-
-  private static updatePhysics(tickDuration: number)
+  catch (error)
   {
-    this.updateVelocity();
-    this.physics.tick(tickDuration);
+    Syslog.reportUncaughtException(error);
   }
+}
 
-  private static updateClients()
-  {
-    let shipPosition = this.ship.getPosition();
-    let shipAngle = this.ship.getAngle();
-    let sceneUpdate = new SceneUpdate(shipPosition, shipAngle);
+function updatePhysics(tickDuration: number)
+{
+  updateVelocity();
+  physics.tick(tickDuration);
+}
 
-    // TODO: Sent all scene update data, not just one ship.
-    Connections.broadcast(sceneUpdate);
-  }
+function updateClients()
+{
+  const sceneUpdate = new SceneUpdate
+  (
+    Game.ship.getPosition(),
+    Game.ship.getAngle()
+  );
 
-  private static updateVelocity()
-  {
-    //this.ship.updateVelocityDirection();
-    this.ship.steer();
-  }
+  // TODO: Sent all scene update data, not just one ship.
+  Connections.broadcast(sceneUpdate);
+}
+
+function updateVelocity()
+{
+  // ship.updateVelocityDirection();
+  Game.ship.steer();
 }

@@ -4,15 +4,19 @@
   Types and associated utility functions.
 */
 
-import {Vector} from '../../Shared/Physics/Vector';
-import {Serializable} from '../../Shared/Class/Serializable';
+import { Vector } from "Shared/Physics/Vector";
+import { Serializable } from "Shared/Class/Serializable";
 
 // 3rd party modules.
-let FastPriorityQueue = require('fastpriorityqueue');
+// Note: Disable tslint check for 'const x = require()' because we
+//   don't havetype definitions for 'fastbitset' module so it cannot
+//   be imported using 'import' keyword.
+// tslint:disable-next-line:no-var-requires
+const FastPriorityQueue = require("fastpriorityqueue");
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
+import * as WebSocket from "isomorphic-ws";
 
-export module Types
+export namespace Types
 {
   // Used for example in 'new Promise((resolve, reject) => { ... })'.
   export type ResolveFunction<T> = (value?: T | PromiseLike<T>) => void;
@@ -22,14 +26,14 @@ export module Types
 
   export type OpenEvent =
   {
-    target: WebSocket
+    target: WebSocket;
   };
 
   export type MessageEvent =
   {
     data: WebSocket.Data;
     type: string;
-    target: WebSocket
+    target: WebSocket;
   };
 
   export type ErrorEvent =
@@ -37,7 +41,7 @@ export module Types
     error: any;
     message: string;
     type: string;
-    target: WebSocket
+    target: WebSocket;
   };
 
   export type CloseEvent =
@@ -46,7 +50,7 @@ export module Types
     boolean;
     code: number;
     reason: string;
-    target: WebSocket
+    target: WebSocket;
   };
 
   // If you exclaim "WTF!" loudly after reading the next two lines of
@@ -69,7 +73,7 @@ export module Types
 
   export function isString(variable: any): boolean
   {
-    return typeof variable === 'string';
+    return typeof variable === "string";
   }
 
   export function isBitvector(variable: any)
@@ -77,7 +81,7 @@ export module Types
     if (variable === null || variable === undefined || !variable.constructor)
       return false;
 
-    return variable.constructor.name === 'FastBitSet';
+    return variable.constructor.name === "FastBitSet";
   }
 
   export function isVector(variable: any)
@@ -90,7 +94,7 @@ export module Types
     if (variable === null || variable === undefined || !variable.constructor)
       return false;
 
-    return variable.constructor.name === 'Date';
+    return variable.constructor.name === "Date";
   }
 
   export function isMap(variable: any)
@@ -98,7 +102,7 @@ export module Types
     if (variable === null || variable === undefined || !variable.constructor)
       return false;
 
-    return variable.constructor.name === 'Map';
+    return variable.constructor.name === "Map";
   }
 
   // Detects only native javascript Objects - not classes.
@@ -107,7 +111,7 @@ export module Types
     if (variable === null || variable === undefined || !variable.constructor)
       return false;
 
-    return variable.constructor.name === 'Object';
+    return variable.constructor.name === "Object";
   }
 
   export function isArray(variable: any)
@@ -115,7 +119,7 @@ export module Types
     if (variable === null || variable === undefined || !variable.constructor)
       return false;
 
-    return variable.constructor.name === 'Array';
+    return variable.constructor.name === "Array";
   }
 
   // -> Returns 'true' if 'variable' is a primitive type
@@ -124,7 +128,7 @@ export module Types
   {
     // For some reason typeof 'null' is 'object' in javascript
     // so we have check for it explicitely.
-    return variable === null || typeof variable !== 'object';
+    return variable === null || typeof variable !== "object";
   }
 
   export function isSet(variable: any)
@@ -132,7 +136,7 @@ export module Types
     if (variable === null || variable === undefined || !variable.constructor)
       return false;
 
-    return variable.constructor.name === 'Set';
+    return variable.constructor.name === "Set";
   }
 
   export function isSerializable(variable: any)
@@ -142,7 +146,7 @@ export module Types
 
   export function isNumber(variable: any)
   {
-    return typeof variable === 'number';
+    return typeof variable === "number";
   }
 
   export class PriorityQueue<T>
@@ -156,7 +160,7 @@ export module Types
     // Removes the item.
     public poll(): T | "Queue is empty"
     {
-      let item = this.queue.poll();
+      const item = this.queue.poll();
 
       if (item === undefined)
         return "Queue is empty";
@@ -167,7 +171,7 @@ export module Types
     // Does not remove the item.
     public peek(): T | "Queue is empty"
     {
-      let item = this.queue.peek();
+      const item = this.queue.peek();
 
       if (item === undefined)
         return "Queue is empty";

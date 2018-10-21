@@ -4,15 +4,14 @@
   Auxiliary static class that serializes objects to and from JSON.
 */
 
+import { js_beautify as beautify } from "js-beautify";
 
-let beautify = require('js-beautify').js_beautify;
-
-export class JsonObject
+export namespace JsonObject
 {
   // ---------------- Public methods --------------------
 
   // Same as JSON.stringify() but with more readable formatting.
-  public static stringify(jsonObject: Object): string
+  export function stringify(jsonObject: object): string
   {
     let jsonString = JSON.stringify(jsonObject);
 
@@ -20,12 +19,12 @@ export class JsonObject
     (
       jsonString,
       {
-        "indent_size": 2,
-        "indent_char": " ",
-        "eol": "\n",
-        "brace_style": "expand",
-        "keep_array_indentation": true,
-        "end_with_newline": false
+        indent_size: 2,
+        indent_char: " ",
+        eol: "\n",
+        brace_style: "expand",
+        keep_array_indentation: true,
+        end_with_newline: false
       }
     );
 
@@ -34,7 +33,7 @@ export class JsonObject
 
   // ! Throws exception on error.
   // Same as JSON.parse() but with more informative error message.
-  public static parse(jsonString: string, path?: string): Object
+  export function parse(jsonString: string, path?: string): object
   {
     try
     {
@@ -42,8 +41,8 @@ export class JsonObject
     }
     catch (e)
     {
-      throw new Error("Syntax error in JSON data:"
-        + " " + e.message + fileInfo(path));
+      throw new Error(`Syntax error in JSON data:`
+        + ` ${e.message}${fileInfo(path)}`);
     }
   }
 }
@@ -55,5 +54,5 @@ function fileInfo(path?: string)
   if (!path)
     return "";
 
-  return " in file " + path;
+  return ` in file ${path}`;
 }

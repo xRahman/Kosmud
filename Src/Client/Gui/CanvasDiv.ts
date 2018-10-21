@@ -4,8 +4,8 @@
   Div element containing html canvas.
 */
 
-import {Component} from '../../Client/Gui/Component';
-import {Renderer} from '../../Client/Phaser/Renderer';
+import { Component } from "Client/Gui/Component";
+import { Renderer } from "Client/Phaser/Renderer";
 
 export class CanvasDiv extends Component
 {
@@ -23,38 +23,37 @@ export class CanvasDiv extends Component
     /// TODO: Předělat na parametr funkce createDiv():
     this.element.id = CanvasDiv.ELEMENT_ID;
 
-
     window.addEventListener
     (
-      'resize',
+      "resize",
       () => { this.onResize(); }
     );
   }
 
   protected static css: Partial<CSSStyleDeclaration> =
   {
-    outline: '0 none',
-    margin: '0px',
-    padding: '0px',
-    width: '100%',
-    height: '100%',
-    minHeight: '100%',
-    minWidth: '100%',
-    position: 'absolute',
+    outline: "0 none",
+    margin: "0px",
+    padding: "0px",
+    width: "100%",
+    height: "100%",
+    minHeight: "100%",
+    minWidth: "100%",
+    position: "absolute",
 
     // Disable text selection.
-    webkitUserSelect: 'none',
-    userSelect: 'none',
+    webkitUserSelect: "none",
+    userSelect: "none",
 
     // Set default cursor.
     // (otherwise text select cursor would appear on
     //  components with disabled text selection)
-    cursor: 'default'
-  }
+    cursor: "default"
+  };
 
   // --------------- Static accessors -------------------
 
-  // ---------------- Protected data -------------------- 
+  // ---------------- Protected data --------------------
 
   protected element: HTMLElement;
 
@@ -84,9 +83,9 @@ export class CanvasDiv extends Component
 
 // ------------------ Type Declarations ----------------------
 
-export module CanvasDiv
+export namespace CanvasDiv
 {
-  export const ELEMENT_ID = 'canvas_div';
+  export const ELEMENT_ID = "canvas_div";
 }
 
 // ----------------- Auxiliary Functions ---------------------

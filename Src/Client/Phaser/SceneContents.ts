@@ -1,7 +1,7 @@
-import {Keyboard} from '../../Client/Phaser/Keyboard';
-import {Scene} from '../../Client/Phaser/Scene';
-import {Camera} from '../../Client/Phaser/Camera';
-import {Mouse} from '../../Client/Phaser/Mouse';
+import { Keyboard } from "Client/Phaser/Keyboard";
+import { Scene } from "Client/Phaser/Scene";
+import { Camera } from "Client/Phaser/Camera";
+import { Mouse } from "Client/Phaser/Mouse";
 
 export class SceneContents
 {
@@ -13,7 +13,7 @@ export class SceneContents
   }
 
   // ----------------- Public data ----------------------
- 
+
   // public cursors = this.scene.input.keyboard.createCursorKeys();
   public camera: Camera;
   /// TODO: Potřebují všechny scény keyboard a mouse? Možná ne...

@@ -4,28 +4,32 @@
   Https server.
 */
 
-import {REPORT} from '../../Shared/Log/REPORT';
-import {ERROR} from '../../Shared/Log/ERROR';
-import {Syslog} from '../../Shared/Log/Syslog';
-import {FileSystem} from '../../Server/FileSystem/FileSystem';
-import {WebSocketServer} from '../../Server/Net/WebSocketServer';
+import { REPORT } from "Shared/Log/REPORT";
+import { ERROR } from "Shared/Log/ERROR";
+import { Syslog } from "Shared/Log/Syslog";
+import { FileSystem } from "Server/FileSystem/FileSystem";
+import { WebSocketServer } from "Server/Net/WebSocketServer";
 
 // Built-in node.js modules.
-import * as http from 'http';
-import * as https from 'https';
+import * as http from "http";
+import * as https from "https";
 
 // 3rd party modules.
-import * as express from 'express';
-import {Express} from 'express';
+import * as express from "express";
+// This extra import is a anecessary workaround
+// (without it, you get an error "Cannot use namespace 'Express' as a type").
+// tslint:disable-next-line:no-duplicate-imports
+import { Express } from "express";
 
-const PRIVATE_KEY_FILE = './Server/Keys/kosmud-key.pem';
-const CERTIFICATE_FILE = './Server/Keys/kosmud-cert.pem';
+const PRIVATE_KEY_FILE = "./Server/Keys/kosmud-key.pem";
+const CERTIFICATE_FILE = "./Server/Keys/kosmud-cert.pem";
 
-const WWW_ROOT = './Client';
+const WWW_ROOT = "./Client";
 
 const DEFAULT_HTTP_PORT = 80;
 const DEFAULT_HTTPS_PORT = 443;
 
+// tslint:disable-next-line:no-unnecessary-class
 export class HttpsServer
 {
   // ----------------- Private data ---------------------
@@ -63,17 +67,17 @@ export class HttpsServer
   {
     if (this.httpServer !== "Not running")
     {
-      throw new Error("Failed to start http server because it's"
-        + " already running");
+      throw new Error(`Failed to start http server because it's`
+        + ` already running`);
     }
 
-    Syslog.log("[INFO]", "Starting http server at port " + port);
+    Syslog.log("[INFO]", `Starting http server at port ${port}`);
 
     this.httpServer = http.createServer(expressApp);
 
     this.httpServer.on
     (
-      'error',
+      "error",
       (error) => { this.onHttpError(error); }
     );
 
@@ -93,16 +97,16 @@ export class HttpsServer
         + " already running");
     }
 
-    Syslog.log("[INFO]", "Starting https server at port " + port);
-    
+    Syslog.log("[INFO]", `Starting https server at port ${port}`);
+
     // ! Throws exception on error.
-    let certificate = await loadCertificate();
+    const certificate = await loadCertificate();
 
     this.httpsServer = https.createServer(certificate, expressApp);
 
     this.httpsServer.on
     (
-      'error',
+      "error",
       (error) => { this.onHttpsError(error); }
     );
 
@@ -112,7 +116,7 @@ export class HttpsServer
       () => { this.onHttpsStartListening(); }
     );
   }
-  
+
   // ---------------- Event handlers --------------------
 
   private static onHttpStartListening()
@@ -151,12 +155,12 @@ export class HttpsServer
 
   private static onHttpError(error: Error)
   {
-    Syslog.log("[HTTP_SERVER]","Http error: " + error.message);
+    Syslog.log("[HTTP_SERVER]", `Http error: {$error.message}`);
   }
 
   private static onHttpsError(error: Error)
   {
-    Syslog.log("[HTTPS_SERVER]", "Https error: " + error.message);
+    Syslog.log("[HTTPS_SERVER]", `Https error: ${error.message}`);
   }
 }
 
@@ -177,7 +181,7 @@ async function readPrivateKey(): Promise<string>
   }
   catch (error)
   {
-    error.message = "Failed to read ssl private key: " + error.message;
+    error.message = `Failed to read ssl private key: ${error.message}`;
     throw error;
   }
 }
@@ -191,7 +195,7 @@ async function readCertificate(): Promise<string>
   }
   catch (error)
   {
-    error.message = "Failed to read ssl certificate: " + error.message;
+    error.message = `Failed to read ssl certificate: ${error.message}`;
     throw error;
   }
 }
@@ -200,11 +204,11 @@ async function readCertificate(): Promise<string>
 async function readFile(path: string): Promise<string>
 {
   // ! Throws exception on error.
-  let readResult = await FileSystem.readFile(path, true);
+  const readResult = await FileSystem.readFile(path, true);
 
   if (readResult === "File doesn't exist")
   {
-    throw new Error("File " + path + " doesn't exist");
+    throw new Error(`File "${path}" doesn't exist`);
   }
 
   return readResult.data;
@@ -222,7 +226,7 @@ function redirectHttpToHttps(expressApp: Express)
       }
       else
       {
-        response.redirect('https://' + request.headers.host + request.url);
+        response.redirect(`https://${request.headers.host}${request.url}`);
       }
     }
   );

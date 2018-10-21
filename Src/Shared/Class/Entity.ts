@@ -25,15 +25,12 @@
   of creating own propety on the instance).
 */
 
-// import {Utils} from '../../shared/Utils';
-// import {DEFAULT_ATTRIBUTES} from '../../Shared/Class/Attributes';
-// import {Attributes} from '../../Shared/Class/Attributes';
-import {Serializable} from '../../Shared/Class/Serializable';
+import { Serializable } from "Shared/Class/Serializable";
 
 export class Entity extends Serializable
 {
   /// Zatím provizorně.
-  id: string = "";
+  public id = "";
 
   // --------------- Public methods ---------------------
 

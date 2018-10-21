@@ -3,8 +3,7 @@
   Draws lines directly to canvas.
 */
 
-// import {Vector} from '../../Shared/Physics/Vector';
-import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
+import { PhysicsBody } from "Shared/Physics/PhysicsBody";
 
 export class Graphics
 {
@@ -31,9 +30,9 @@ export class Graphics
 
   public drawBodyGeometry(geometry: PhysicsBody.Geometry)
   {
-    this.graphics.lineStyle(1, 0x00ff00, 0.4);
+    this.graphics.lineStyle(1, 0x00FF00, 0.4);
 
-    for (let polygon of geometry)
+    for (const polygon of geometry)
     {
       this.graphics.strokePoints(polygon, true);
     }

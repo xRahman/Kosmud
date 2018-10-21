@@ -4,11 +4,11 @@
   Server-side websocket wrapper.
 */
 
-import * as Shared from '../../Shared/Net/Socket';
+import * as Shared from "Shared/Net/Socket";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
+import * as WebSocket from "isomorphic-ws";
 
 export abstract class Socket extends Shared.Socket
 {
@@ -21,7 +21,7 @@ export abstract class Socket extends Shared.Socket
   {
     super(webSocket);
   }
-  
+
   // ---------------- Public methods --------------------
 
   public getIpAddress(): string
@@ -31,6 +31,6 @@ export abstract class Socket extends Shared.Socket
 
   public getOrigin()
   {
-    return "(" + this.url + " [" + this.ip + "])";
+    return `(${this.url} [${this.ip}])`;
   }
 }

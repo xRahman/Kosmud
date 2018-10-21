@@ -4,17 +4,17 @@
   Clisnt-side websocket wrapper.
 */
 
-import {Syslog} from '../../Shared/Log/Syslog';
-import {Types} from '../../Shared/Utils/Types';
-import * as Shared from '../../Shared/Net/Socket';
+import { Syslog } from "Shared/Log/Syslog";
+import { Types } from "Shared/Utils/Types";
+import * as Shared from "Shared/Net/Socket";
 
 export abstract class Socket extends Shared.Socket
 {
   // ---------------- Static methods --------------------
-  
+
   protected static browserSupportsWebSockets(): boolean
   {
-    return typeof WebSocket !== 'undefined';
+    return typeof WebSocket !== "undefined";
   }
 
   // ---------------- Public methods --------------------

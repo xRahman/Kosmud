@@ -4,7 +4,7 @@
   Abstract ancestor of classes that encapsulate DOM elements.
 */
 
-import {ERROR} from "../../Shared/Log/ERROR";
+import { ERROR } from "Shared/Log/ERROR";
 
 export abstract class Component
 {
@@ -29,7 +29,7 @@ export abstract class Component
   public hide()
   {
     this.rememberDisplayMode();
-    
+
     this.element.style.display = "none";
   }
 
@@ -53,15 +53,16 @@ export abstract class Component
     // set their values to respective properties in this.element.style.
     // (It works because 'css' has the same properties as
     //  this.element.style, only they are all optional).
-    for (let property in css)
+    for (const property in css)
     {
-      if (css.hasOwnProperty(property))
-      {
-        let value = css[property];
+      // Skip inherited properties.
+      if (!css.hasOwnProperty(property))
+        continue;
 
-        if (value)
-          this.element.style[property] = value;
-      }
+      const value = css[property];
+
+      if (value)
+        this.element.style[property] = value;
     }
   }
 
@@ -72,7 +73,7 @@ export abstract class Component
   )
   : HTMLDivElement
   {
-    let div = <HTMLDivElement>document.createElement('div');
+    const div = document.createElement("div");
 
     insertToParent(div, parent, insertMode);
 
@@ -86,7 +87,9 @@ export abstract class Component
   private rememberDisplayMode()
   {
     if (this.element.style.display)
+    {
       this.displayMode = this.element.style.display;
+    }
   }
 
   private restoreDisplayMode()
@@ -97,7 +100,7 @@ export abstract class Component
 
 // ------------------ Type Declarations ----------------------
 
-export module Component
+export namespace Component
 {
   export enum InsertMode
   {
@@ -115,7 +118,9 @@ export module Component
 function clearHtmlContent(element: HTMLElement)
 {
   while (element.lastChild)
+  {
     element.removeChild(element.lastChild);
+  }
 }
 
 function insertToParent

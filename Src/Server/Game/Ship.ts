@@ -4,13 +4,14 @@
   TEST - a ship.
 */
 
-import {Vector} from '../../Shared/Physics/Vector';
-import {Steering} from "../../Shared/Physics/Steering";
-import {PhysicsBody} from "../../Shared/Physics/PhysicsBody";
-import * as Shared from "../../Shared/Game/Ship";
+import { Vector } from "Shared/Physics/Vector";
+import { Steering } from "Shared/Physics/Steering";
+import { PhysicsBody } from "Shared/Physics/PhysicsBody";
+import * as Shared from "Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
+  private targetPosition: Vector;
 
   constructor(private physicsBody: PhysicsBody)
   {
@@ -18,8 +19,6 @@ export class Ship extends Shared.Ship
 
     this.targetPosition = physicsBody.getPosition();
   }
-
-  private targetPosition: Vector
 
   public getPosition()
   {
@@ -48,12 +47,12 @@ export class Ship extends Shared.Ship
 
   public startTurningLeft()
   {
-    this.physicsBody.setAngularVelocity(-Math.PI/30);
+    this.physicsBody.setAngularVelocity(-Math.PI / 30);
   }
 
   public startTurningRight()
   {
-    this.physicsBody.setAngularVelocity(Math.PI/30);
+    this.physicsBody.setAngularVelocity(Math.PI / 30);
   }
 
   public stopTurning()

@@ -1,9 +1,9 @@
-import {Vector} from '../../Shared/Physics/Vector';
-import {PhysicsBody} from '../../Shared/Physics/PhysicsBody';
-import {Graphics} from '../../Client/Phaser/Graphics';
-import { FlightScene } from './FlightScene';
+import { Vector } from "Shared/Physics/Vector";
+import { PhysicsBody } from "Shared/Physics/PhysicsBody";
+import { Graphics } from "Client/Phaser/Graphics";
+import { FlightScene } from "Client/Phaser/FlightScene";
 
-const SHIP_SPRITE_ID = 'ship';
+const SHIP_SPRITE_ID = "ship";
 
 export class Ship
 {
@@ -30,7 +30,7 @@ export class Ship
 
   public static preload(scene: Phaser.Scene)
   {
-    scene.load.image(SHIP_SPRITE_ID, '/graphics/ships/hecate.png');
+    scene.load.image(SHIP_SPRITE_ID, "/graphics/ships/hecate.png");
   }
 
   // ---------------- Public methods --------------------
@@ -47,7 +47,7 @@ export class Ship
 
 function createShipSprite(scene: Phaser.Scene)
 {
-  let shipSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
+  const shipSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
   // shipSprite.setScrollFactor(0.5);
 
   return shipSprite;

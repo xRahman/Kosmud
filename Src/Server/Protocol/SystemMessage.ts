@@ -6,9 +6,9 @@
   (Part of client-server communication protocol.)
 */
 
-import {Syslog} from '../../Shared/Log/Syslog';
-import {Connection} from '../../Server/Net/Connection';
-import * as Shared from '../../Shared/Protocol/SystemMessage';
+import { Syslog } from "Shared/Log/Syslog";
+import { Connection } from "Server/Net/Connection";
+import * as Shared from "Shared/Protocol/SystemMessage";
 
 export class SystemMessage extends Shared.SystemMessage
 {
@@ -23,7 +23,7 @@ export class SystemMessage extends Shared.SystemMessage
         Syslog.log
         (
           this.messageType,
-          "User " + connection.getUserInfo() + " " + this.message
+          `User ${connection.getUserInfo()} ${this.message}`
         );
         break;
 

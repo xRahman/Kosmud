@@ -42,5 +42,6 @@
   "editor.detectIndentation": false,
 
   // The default end of line character.
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

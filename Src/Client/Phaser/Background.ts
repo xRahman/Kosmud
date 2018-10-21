@@ -1,4 +1,4 @@
-const BACKGROUND_SPRITE_ID = 'background';
+const BACKGROUND_SPRITE_ID = "background";
 
 export class Background
 {
@@ -29,7 +29,7 @@ export class Background
     scene.load.image
     (
       BACKGROUND_SPRITE_ID,
-      '/graphics/background/deep_space0.jpg'
+      "/graphics/background/deep_space0.jpg"
     );
   }
 
@@ -130,7 +130,7 @@ function createBackgroundSprite
   // of canvas coords is at the top left. We want to center
   // the background in the canvas so we need to place it
   // to [canvasWidth / 2, canvasHeight / 2] coordinates.
-  let backgroundSprite = scene.add.sprite
+  const backgroundSprite = scene.add.sprite
   (
     canvasWidth / 2,
     canvasHeight / 2,

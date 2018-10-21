@@ -4,8 +4,8 @@
   Client-side logger.
 */
 
-import {ERROR} from '../../Shared/Log/ERROR';
-import * as Shared from '../../Shared/Log/Syslog';
+import { ERROR } from "Shared/Log/ERROR";
+import * as Shared from "Shared/Log/Syslog";
 
 export class Syslog extends Shared.Syslog
 {
@@ -22,7 +22,7 @@ export class Syslog extends Shared.Syslog
   // ~ Overrides Shared.Syslog.log().
   protected log(messageType: Shared.Syslog.MessageType, message: string)
   {
-    let entry = this.createLogEntry(messageType, message);
+    const entry = this.createLogEntry(messageType, message);
 
     console.log(entry);
   }
@@ -30,7 +30,7 @@ export class Syslog extends Shared.Syslog
   // ~ Overrides Shared.Syslog.reportException().
   protected reportException(error: Error, isCaught: boolean): void
   {
-    let messageType = this.exceptionMessageType(isCaught);
+    const messageType = this.exceptionMessageType(isCaught);
 
     error.message = this.createLogEntry(messageType, error.message);
 
@@ -41,7 +41,7 @@ export class Syslog extends Shared.Syslog
   protected reportError(message: string): void
   {
     const logEntry = this.createLogEntry("[ERROR]", message);
-    let error = new Error(logEntry);
+    const error = new Error(logEntry);
 
     this.trimStackTrace(error, ERROR);
 

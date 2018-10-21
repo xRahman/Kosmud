@@ -4,19 +4,19 @@
   Websocket server.
 */
 
-import {REPORT} from '../../Shared/Log/REPORT';
-import {ERROR} from '../../Shared/Log/ERROR';
-import {Syslog} from '../../Server/Log/Syslog';
-import {Connection} from '../../Server/Net/Connection';
-import {Connections} from '../../Server/Net/Connections';
+import { REPORT } from "Shared/Log/REPORT";
+import { ERROR } from "Shared/Log/ERROR";
+import { Syslog } from "Server/Log/Syslog";
+import { Connection } from "Server/Net/Connection";
+import { Connections } from "Server/Net/Connections";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
+import * as WebSocket from "isomorphic-ws";
 
 // Built-in node.js modules.
-import * as http from 'http';  // Import namespace 'http' from node.js.
-import * as https from 'https';  // Import namespace 'http' from node.js.
+import * as http from "http";  // Import namespace 'http' from node.js.
+import * as https from "https";  // Import namespace 'http' from node.js.
 
 export class WebSocketServer
 {
@@ -46,7 +46,7 @@ export class WebSocketServer
 
     this.webSocketServer.on
     (
-      'connection',
+      "connection",
       (socket, request) => { this.onNewConnection(socket, request); }
     );
 
@@ -56,8 +56,8 @@ export class WebSocketServer
     //   But since the websocket server runs inside a http server,
     // it must be started after onStartListening() is fired on http
     // server.
-    Syslog.log("[WEBSOCKET_SERVER]",
-      "Websocket server is up and listening to new connections");
+    Syslog.log("[WEBSOCKET_SERVER]", `Websocket server is up`
+      + ` and listening to new connections`);
 
     this.open = true;
   }
@@ -70,8 +70,8 @@ export class WebSocketServer
     request: http.IncomingMessage
   )
   {
-    let ip = parseAddress(request);
-    let url = request.url;
+    const ip = parseAddress(request);
+    const url = request.url;
 
     // Request.url is only valid for requests obtained from http.Server
     // (which should be our case).
@@ -126,8 +126,8 @@ function acceptConnection(webSocket: WebSocket, ip: string, url: string)
     return;
   }
 
-  Syslog.log("[WEBSOCKET_SERVER]",
-    "Accepting connection " + connection.getOrigin());
+  Syslog.log("[WEBSOCKET_SERVER]", `Accepting`
+    + ` connection ${connection.getOrigin()}`);
 
   /// DEBUG:
   connection.sendShipToScene();
@@ -141,15 +141,10 @@ function denyConnection
   url?: string
 )
 {
-  let address: string;
-  
-  if (url)
-    address = "(" + url + "[" + ip + "])";
-  else
-    address = "[" + ip + "]";
+  const address = url ? `(${url} [${ip}])` : `[${ip}]`;
 
-  Syslog.log("[WEBSOCKET_SERVER]",
-    "Denying connection " + address + ": " + reason);
+  Syslog.log("[WEBSOCKET_SERVER]", `Denying`
+    + ` connection ${address}: ${reason}`);
 
   socket.close();
 }

@@ -6,10 +6,10 @@
   (Part of client-server communication protocol.)
 */
 
-import {Utils} from '../../Shared/Utils/Utils';
-import {Connection} from '../../Server/Net/Connection';
-import {Game} from '../../Server/Game/Game';
-import * as Shared from '../../Shared/Protocol/KeyboardInput';
+import { Utils } from "Shared/Utils/Utils";
+import { Connection } from "Server/Net/Connection";
+import { Game } from "Server/Game/Game";
+import * as Shared from "Shared/Protocol/KeyboardInput";
 
 export class KeyboardInput extends Shared.KeyboardInput
 {
@@ -29,7 +29,7 @@ export class KeyboardInput extends Shared.KeyboardInput
         break;
 
       default:
-        Utils.reportMissingCase(this.startOrStop);
+        throw Utils.reportMissingCase(this.startOrStop);
     }
   }
 
@@ -50,13 +50,13 @@ export class KeyboardInput extends Shared.KeyboardInput
       case "Forward":
         Game.ship.moveForward();
         break;
-        
+
       case "Backward":
         Game.ship.moveBackward();
         break;
 
       default:
-        Utils.reportMissingCase(action);
+        throw Utils.reportMissingCase(action);
     }
   }
 
@@ -75,7 +75,7 @@ export class KeyboardInput extends Shared.KeyboardInput
         break;
 
       default:
-        Utils.reportMissingCase(action);
+        throw Utils.reportMissingCase(action);
     }
   }
 }

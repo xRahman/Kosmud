@@ -1,4 +1,4 @@
-import {SceneContents} from '../../Client/Phaser/SceneContents';
+import { SceneContents } from "Client/Phaser/SceneContents";
 
 export abstract class Scene extends Phaser.Scene
 {
@@ -36,7 +36,7 @@ export abstract class Scene extends Phaser.Scene
 
 // ------------------ Type Declarations ----------------------
 
-export module Scene
+export namespace Scene
 {
   export const Z_ORDER_DEFAULT = 0;
 }

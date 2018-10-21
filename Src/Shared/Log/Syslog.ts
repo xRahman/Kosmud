@@ -4,7 +4,7 @@
   Logger abstract ancestor.
 */
 
-import {StringUtils} from '../Utils/StringUtils';
+import { StringUtils } from "Shared/Utils/StringUtils";
 
 export abstract class Syslog
 {
@@ -40,10 +40,10 @@ export abstract class Syslog
 
   public static reportUncaughtException(error: any)
   {
-    const uncaughtExceptionMessage = " (this exception has"
-      + " propagated to top-level function. It needs to"
-      + " be caught much deeper where the error can be"
-      + " properly recovered from.)"
+    const uncaughtExceptionMessage = ` (this exception has`
+      + ` propagated to top-level function. It needs to`
+      + ` be caught much deeper where the error can be`
+      + ` properly recovered from.)`;
 
     if (error instanceof Error)
     {
@@ -77,11 +77,8 @@ export abstract class Syslog
     // logging process so we throw exception instead.
     if (!this.instance)
     {
-      throw new Error
-      (
-        "ERROR() occured before application was created:"
-        + ' "' + message + '"'
-      );
+      throw new Error(`ERROR() occured before`
+        + `application was created: "${message}"`);
     }
 
     this.instance.reportError(message);
@@ -101,7 +98,7 @@ export abstract class Syslog
   protected createTrimmedStackTrace(stackTop?: Function): string
   {
     // Create a temporary error object to construct stack trace for us.
-    let tmpErr = new Error();
+    const tmpErr = new Error();
 
     this.trimStackTrace(tmpErr, stackTop);
 
@@ -125,12 +122,12 @@ export abstract class Syslog
     //   To remove it, we trim lines not starting with '    at '.
     // That's because error message can be multi-line so removing
     // just 1 line would not always be enough.
-    return StringUtils.removeFirstLinesWithoutPrefix(stackTrace, '    at ');
+    return StringUtils.removeFirstLinesWithoutPrefix(stackTrace, "    at ");
   }
 
   protected createLogEntry(messageType: Syslog.MessageType, message: string)
   {
-    return messageType + " " + message;
+    return `${messageType} ${message}`;
   }
 
   protected exceptionMessageType(isCaught: boolean): Syslog.MessageType
@@ -141,7 +138,7 @@ export abstract class Syslog
 
 // ------------------ Type Declarations ----------------------
 
-export module Syslog
+export namespace Syslog
 {
   export type MessageType =
     // Sent when REPORT(error) is called. Contains original exception.

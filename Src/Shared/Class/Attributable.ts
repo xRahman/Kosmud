@@ -22,11 +22,10 @@
   }
 */
 
-import {Utils} from '../Utils/Utils';
-import {DEFAULT_ATTRIBUTES} from '../../Shared/Class/Attributes';
-import {Attributes} from '../../Shared/Class/Attributes';
+import { Utils } from "Shared/Utils/Utils";
+import { Attributes, DEFAULT_ATTRIBUTES } from "Shared/Class/Attributes";
 
-const DEFAULT_ATTRIBUTES_PROPERTY = 'defaultAttributes';
+const DEFAULT_ATTRIBUTES_PROPERTY = "defaultAttributes";
 
 export class Attributable
 {
@@ -47,18 +46,19 @@ export class Attributable
   {
     // If an Attributable class has a static property 'defaultValues', it
     // will serve as default values of attributes of all class properties.
-    let classDefaultAttributes =
+    const classDefaultAttributes =
       (this.constructor as any)[DEFAULT_ATTRIBUTES_PROPERTY];
 
     // Any property of Attributable class can have specific attributes.
     // They are declared as a static class property with the same name.
-    let propertySpecificAttributes = (this.constructor as any)[propertyName];
+    const propertySpecificAttributes = (this.constructor as any)[propertyName];
 
     let attributes = {};
+    const globalDefaultAttibutes = Attributable.defaultAttributes;
 
-    Utils.applyDefaults(attributes, propertySpecificAttributes);
-    Utils.applyDefaults(attributes, classDefaultAttributes);
-    Utils.applyDefaults(attributes, Attributable.defaultAttributes);
+    attributes = Utils.applyDefaults(attributes, propertySpecificAttributes);
+    attributes = Utils.applyDefaults(attributes, classDefaultAttributes);
+    attributes = Utils.applyDefaults(attributes, globalDefaultAttibutes);
 
     return attributes;
   }

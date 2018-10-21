@@ -4,23 +4,23 @@
   A connection to the server.
 */
 
-import {Syslog} from '../../Shared/Log/Syslog';
-import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {Types} from '../../Shared/Utils/Types';
-import {Packet} from '../../Shared/Protocol/Packet';
-import {Socket} from '../../Server/Net/Socket';
-import {Classes} from '../../Shared/Class/Classes';
-import {Connections} from '../../Server/Net/Connections';
-import {SystemMessage} from '../../Server/Protocol/SystemMessage';
-import {SceneUpdate} from '../../Shared/Protocol/SceneUpdate';
-import {ShipToScene} from '../../Shared/Protocol/ShipToScene';
-import {KeyboardInput} from '../../Server/Protocol/KeyboardInput';
-import {MouseInput} from '../../Server/Protocol/MouseInput';
+import { Syslog } from "Shared/Log/Syslog";
+import { WebSocketEvent } from "Shared/Net/WebSocketEvent";
+import { Types } from "Shared/Utils/Types";
+import { Packet } from "Shared/Protocol/Packet";
+import { Socket } from "Server/Net/Socket";
+import { Classes } from "Shared/Class/Classes";
+import { Connections } from "Server/Net/Connections";
+import { SystemMessage } from "Server/Protocol/SystemMessage";
+import { SceneUpdate } from "Shared/Protocol/SceneUpdate";
+import { ShipToScene } from "Shared/Protocol/ShipToScene";
+import { KeyboardInput } from "Server/Protocol/KeyboardInput";
+import { MouseInput } from "Server/Protocol/MouseInput";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
-import { Game } from '../Game/Game';
+import * as WebSocket from "isomorphic-ws";
+import { Game } from "../Game/Game";
 
 // We need to registr packet classes here because when a module is
 // imported and not used, typescript doesn't execute it's code.
@@ -29,7 +29,6 @@ Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(ShipToScene);
 Classes.registerSerializableClass(KeyboardInput);
 Classes.registerSerializableClass(MouseInput);
-
 
 export class Connection extends Socket
 {
@@ -47,7 +46,7 @@ export class Connection extends Socket
     /// Disabled for now.
     // if (this.account !== "Not attached")
     //   info += this.account.getEmail() + " ";
-    
+
     // Add (url [ip]).
     info += this.getOrigin();
 
@@ -61,7 +60,7 @@ export class Connection extends Socket
     this.sendData
     (
       // ! Throws exception on error.
-      packet.serialize('Send to Client')
+      packet.serialize("Send to Client")
     );
   }
 
@@ -71,7 +70,7 @@ export class Connection extends Socket
   {
     const shipInfo = Game.getShipToSceneInfo();
 
-    let packet = new ShipToScene
+    const packet = new ShipToScene
     (
       shipInfo.geometry,
       shipInfo.position,
@@ -108,7 +107,7 @@ export class Connection extends Socket
   protected onClose(event: Types.CloseEvent)
   {
     super.onClose(event);
-    
+
     if (isNormalDisconnect(event))
     {
       logNormalDisconnect(this.getUserInfo(), event);
@@ -128,12 +127,12 @@ function logNormalDisconnect(user: string, event: Types.CloseEvent)
 {
   if (isCausedByClosingTab(event))
   {
-    Syslog.log("[CONNECTION_INFO]", "User " + user + " has"
-      + " disconnected by closing or reloading browser tab");
+    Syslog.log("[CONNECTION_INFO]", `User ${user} has`
+      + ` disconnected by closing or reloading browser tab`);
   }
   else
   {
-    Syslog.log("[CONNECTION_INFO]", "User " + user + " has disconnected");
+    Syslog.log("[CONNECTION_INFO]", `User ${user} has disconnected`);
   }
 }
 
@@ -149,6 +148,6 @@ function isCausedByClosingTab(event: Types.CloseEvent)
 function isNormalDisconnect(event: Types.CloseEvent)
 {
   const isNormalClose = WebSocketEvent.isNormalClose(event.code);
-  
+
   return isNormalClose || isCausedByClosingTab(event);
 }

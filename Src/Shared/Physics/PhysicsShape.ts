@@ -4,7 +4,6 @@
   Geometry of a physics object.
 */
 
-
 export class PhysicsShape
 {
 }

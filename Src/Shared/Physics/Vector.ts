@@ -10,16 +10,16 @@
     Static methods always return a new Vector.
 */
 
-import {b2Vec2} from '../../Shared/Box2D/Box2D';
+import { b2Vec2 } from "Shared/Box2D/Box2D";
 
 export class Vector
 {
-  constructor({ x, y }: { x: number, y: number } = { x: 0, y: 0 })
+  constructor({ x, y }: { x: number; y: number } = { x: 0, y: 0 })
   {
     this.x = x;
     this.y = y;
   }
-  
+
   public x: number;
   public y: number;
 
@@ -51,15 +51,15 @@ export class Vector
 
   public static v1PlusV2
   (
-    v1: { x: number, y: number },
-    v2: { x: number, y: number }
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
   )
   : Vector
   {
     return new Vector({ x: v1.x + v2.x, y: v1.y + v2.y });
   }
 
-  public add({ x, y }: { x: number, y: number }): this
+  public add({ x, y }: { x: number; y: number }): this
   {
     this.x += x;
     this.y += y;
@@ -69,15 +69,15 @@ export class Vector
 
   public static v1MinusV2
   (
-    v1: { x: number, y: number },
-    v2: { x: number, y: number }
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
   )
   : Vector
   {
     return new Vector({ x: v1.x - v2.x, y: v1.y - v2.y });
   }
 
-  public subtract({ x, y }: { x: number, y: number }): this
+  public subtract({ x, y }: { x: number; y: number }): this
   {
     this.x -= x;
     this.y -= y;
@@ -85,7 +85,7 @@ export class Vector
     return this;
   }
 
-  public static scale({ x, y }: { x: number, y: number }, value: number)
+  public static scale({ x, y }: { x: number; y: number }, value: number)
   {
     return new Vector({ x: x * value, y: y * value });
   }
@@ -94,36 +94,36 @@ export class Vector
   {
     this.x *= value;
     this.y *= value;
-    
+
     return this;
   }
 
   public static v1DotV2
   (
-    v1: { x: number, y: number },
-    v2: { x: number, y: number }
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
   )
   : number
   {
     return v1.x * v2.x + v1.y * v2.y;
   }
 
-  public dot({ x, y }: { x: number, y: number }): number
+  public dot({ x, y }: { x: number; y: number }): number
   {
     return this.x * x + this.y * y;
   }
 
   public static v1CrossV2
   (
-    v1: { x: number, y: number },
-    v2: { x: number, y: number }
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
   )
   : number
   {
     return v1.x * v2.y - v1.y * v2.x;
   }
 
-  public cross({ x, y }: { x: number, y: number }): number
+  public cross({ x, y }: { x: number; y: number }): number
   {
     return this.x * y - this.y * x;
   }
@@ -177,7 +177,7 @@ export class Vector
 
   public static rotate
   (
-    { x, y }: { x: number, y: number },
+    { x, y }: { x: number; y: number },
     radians: number
   )
   : Vector
@@ -212,7 +212,7 @@ export class Vector
     return isFinite(this.x) && isFinite(this.y);
   }
 
-  public static negate({ x, y }: { x: number, y: number }): Vector
+  public static negate({ x, y }: { x: number; y: number }): Vector
   {
     return new Vector({ x: -x, y: -y });
   }

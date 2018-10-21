@@ -4,21 +4,20 @@
   Connection to the server.
 */
 
-
-import {Classes} from '../../Shared/Class/Classes';
-import {WebSocketEvent} from '../../Shared/Net/WebSocketEvent';
-import {Types} from '../../Shared/Utils/Types';
-import {Packet} from '../../Shared/Protocol/Packet';
-import {SystemMessage} from '../../Shared/Protocol/SystemMessage';
-import {SceneUpdate} from '../../Client/Protocol/SceneUpdate';
-import {ShipToScene} from '../../Client/Protocol/ShipToScene';
-import {KeyboardInput} from '../../Shared/Protocol/KeyboardInput';
-import {MouseInput} from '../../Shared/Protocol/MouseInput';
-import {Socket} from '../../Client/Net/Socket';
+import { Classes } from "Shared/Class/Classes";
+import { WebSocketEvent } from "Shared/Net/WebSocketEvent";
+import { Types } from "Shared/Utils/Types";
+import { Packet } from "Shared/Protocol/Packet";
+import { SystemMessage } from "Shared/Protocol/SystemMessage";
+import { SceneUpdate } from "Client/Protocol/SceneUpdate";
+import { ShipToScene } from "Client/Protocol/ShipToScene";
+import { KeyboardInput } from "Shared/Protocol/KeyboardInput";
+import { MouseInput } from "Shared/Protocol/MouseInput";
+import { Socket } from "Client/Net/Socket";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
-import * as WebSocket from 'isomorphic-ws';
+import * as WebSocket from "isomorphic-ws";
 
 // We need to registr packet classes here because when a module is
 // imported and not used, typescript doesn't execute it's code.
@@ -40,14 +39,10 @@ export class Connection extends Socket
   public static connect()
   {
     if (this.isOpen())
-    {
       throw new Error("Already connected");
-    }
 
     if (!this.browserSupportsWebSockets())
-    {
       throw new Error("Your browser doesn't support websockets.");
-    }
 
     this.registerBeforeUnloadEvent();
 
@@ -56,7 +51,7 @@ export class Connection extends Socket
     // is fired and onSocketError() is executed.
     //   We don't need to specify port because websocket server runs
     // inside https server so it automaticaly uses htts port.
-    let webSocket = new WebSocket('wss://' + window.location.hostname);
+    const webSocket = new WebSocket(`wss://${window.location.hostname}`);
 
     this.connection = new Connection(webSocket);
   }
@@ -69,7 +64,7 @@ export class Connection extends Socket
     return this.connection.isOpen();
   }
 
-  /// TODO: reconnect should probably be static because it will 
+  /// TODO: reconnect should probably be static because it will
   ///   be necessary to create new connection instance.
   // // Attempts to reconnect.
   // public static reConnect()
@@ -85,7 +80,7 @@ export class Connection extends Socket
   //   /// TODO: Tohle by asi měl bejt error (exception).
   //     // There is no point if the socket is already trying to connect.
   //     return;
-    
+
   //   if (this.isClosing())
   //     // If the socket is still closing, old event handlers are not yet
   //     // detached so we shouldn't create a new socket yet.
@@ -102,7 +97,6 @@ export class Connection extends Socket
   //   /// Možná by se reconnect taky měl řešit taky tam.
   //   this.connect();
   // }
-
 
   // ! Throws exception on error.
   // Make sure that you check isOpen() before you call send().
@@ -122,8 +116,10 @@ export class Connection extends Socket
 
   private static registerBeforeUnloadEvent()
   {
-    window.onbeforeunload =
-      (event: BeforeUnloadEvent) => { this.onBeforeUnload(event); }
+    window.onbeforeunload = (event: BeforeUnloadEvent) =>
+    {
+      this.onBeforeUnload(event);
+    };
   }
 
   // ---------------- Public methods --------------------
@@ -188,7 +184,7 @@ export class Connection extends Socket
     this.sendData
     (
       // ! Throws exception on error.
-      packet.serialize('Send to Server')
+      packet.serialize("Send to Server")
     );
   }
 }
@@ -223,27 +219,26 @@ function reportLostConnection()
   // Test if device is online.
   if (isDeviceOnline())
   {
-    alert('You have been disconnected from the server.');
+    alert("You have been disconnected from the server.");
   }
   else
   {
-    alert('You have been disconnected. Your device reports'
-      + ' offline status, please check your internet connection.');
+    alert("You have been disconnected. Your device reports"
+      + " offline status, please check your internet connection.");
   }
 }
-
 
 function reportConnectionFailure()
 {
   // Test is user device is online.
   if (navigator.onLine)
   {
-    alert('Failed to open websocket connection.'
-      + ' Server is down or unreachable.');
+    alert("Failed to open websocket connection."
+      + " Server is down or unreachable.");
   }
   else
   {
-    alert('Failed to open websocket connection. Your device reports'
-      + ' offline status. Please check your internet connection.');
+    alert("Failed to open websocket connection. Your device reports"
+      + " offline status. Please check your internet connection.");
   }
 }

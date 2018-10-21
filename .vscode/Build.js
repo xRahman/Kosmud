@@ -37,6 +37,13 @@ const clientBuild = spawn
   { stdio: 'inherit' }
 );
 
+/// This doesn't work.
+// clientBuild.on
+// (
+//   'exit',
+//   (code) => { lintClient(code); }
+// );
+
 // Compile server code.
 const serverBuild = spawn
 (
@@ -79,3 +86,25 @@ function rmTree(path)
     fs.rmdirSync(path);
   }
 };
+
+// function lintClient(code)
+// {
+//   console.log("Client build exited with code " + code);
+
+//   if (code === 0)
+//   {
+//     console.log('Linting client code...');
+
+//     const clientLinter = spawn
+//     (
+//       'node',
+//       [
+//         "./node_modules/tslint/lib/tslintCli.js",
+//         "--project", "./Src/Client/tsconfig.json"
+//       ],
+//       // Child process will use parent's stdios
+//       // (so they will be displayed in vs code).
+//       { stdio: 'inherit' }
+//     );
+//   }
+// }

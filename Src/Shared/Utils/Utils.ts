@@ -4,9 +4,9 @@
   Various utility functions.
 */
 
-import {Types} from '../../Shared/Utils/Types';
+import { Types } from "Shared/Utils/Types";
 
-export module Utils
+export namespace Utils
 {
   // Copies properties of 'defaults' object to 'target' object
   // if they are not present in it. This is even done recursively
@@ -19,41 +19,43 @@ export module Utils
     if (!defaults)
       return target;
 
-    for (let propertyName in defaults)
+    for (const propertyName in defaults)
     {
-      let sourceProperty = defaults[propertyName];
-      let targetProperty = target[propertyName]
-
-      if (!defaults.hasOwnProperty(propertyName))
-        continue;
-
-      if (sourceProperty === undefined)
-        continue;
-
-      if (targetProperty === undefined)
+      if (defaults.hasOwnProperty(propertyName))
       {
-        target[propertyName] = sourceProperty;
-        continue;
-      }
+        const sourceProperty = defaults[propertyName];
+        const targetProperty = target[propertyName];
 
-      const sourceIsPlainObject = Types.isPlainObject(sourceProperty);
-      const targetIsPlainObject = Types.isPlainObject(targetProperty);
+        if (!defaults.hasOwnProperty(propertyName))
+          continue;
 
-      if(sourceIsPlainObject && targetIsPlainObject)
-      {
-        applyDefaults(targetProperty, sourceProperty);
+        if (sourceProperty === undefined)
+          continue;
+
+        if (targetProperty === undefined)
+        {
+          target[propertyName] = sourceProperty;
+          continue;
+        }
+
+        const sourceIsPlainObject = Types.isPlainObject(sourceProperty);
+        const targetIsPlainObject = Types.isPlainObject(targetProperty);
+
+        if (sourceIsPlainObject && targetIsPlainObject)
+        {
+          applyDefaults(targetProperty, sourceProperty);
+        }
       }
     }
 
     return target;
   }
 
-  // ! Throws exception on error.
   // Note: If you get a compiler error "Argument of type '"xy"'
   //   is not assignable to parameter of type 'never'",
   //   it means that there is a case missing in the switch.
   export function reportMissingCase(variable: never)
   {
-    throw new Error("Unhandled switch case");
+    return new Error("Unhandled switch case");
   }
 }

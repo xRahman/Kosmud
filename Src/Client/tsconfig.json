@@ -8,10 +8,14 @@
     "strict": true,   // Enforce strict checking of 'null' and 'undefined'.
     "charset": "UTF-8",
     "moduleResolution": "node",
+    // "traceResolution": true, // Print module resolution to terminal.
     "newLine": "LF",
     "noEmitOnError": true,
     "outDir": "../../Client/js",
+    // 'rootDir' points to Src directory.
     "rootDir": "../",
+    // 'baseUrl' points to Src so we don't have to use '../../..' in imports.
+    "baseUrl": "../",
     "sourceMap": true
     // "sourceRoot": "../",
     // // Print names of generated files during the compilation.

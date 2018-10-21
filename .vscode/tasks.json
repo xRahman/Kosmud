@@ -1,37 +1,76 @@
 /*
-  Part of BrutusNEXT
+  Part of Kosmud
 
   Tasks definition for vs code.
-
-  Note:
-    Because we need to build two projects (client and server)
-  and there can only be one build task active in vs code, we
-  use an external script (located at ./.vscode/Build.js) run
-  under node.js to launch two external tsc processes.
 */
 
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
-  // for the documentation about the tasks.json format
-  "version": "0.1.0",
-  "command": "node",
-  "isShellCommand": true,
-  "echoCommand": true, // Task runner will output what it is trying to do.
-  "suppressTaskName": true, // Do not add 'taskName' as parameter to 'tsc'.
-  "showOutput": "always",   // Output tsc messages.
+  "version": "2.0.0",
   "tasks":
   [
     {
-      "taskName": "Build",
+      "label": "Client Build",
+      "command": "node",
+      "type": "process",
+      "presentation" : { "panel": "shared" },
+      "isBackground": true,
       "args":
       [
-        "./.vscode/Build.js"
+        "./node_modules/typescript/lib/tsc.js",
+        "--watch",
+        "--project", "./Src/Client"
       ],
-      "problemMatcher": "$tsc",
-      // Watch file changes ('--watch' must be passed to tsc for this to work).
+      "problemMatcher": [ "$tsc" ]
+    },
+    {
+      "label": "Server Build",
+      "command": "node",
+      "type": "process",
+      "presentation" : { "panel": "shared" },
       "isBackground": true,
-      // Run this task on "Ctrl+Shift+B".
-      "isBuildCommand": true
+      "args":
+      [
+        "./node_modules/typescript/lib/tsc.js",
+        "--watch",
+        "--project", "./Src/Server"
+      ],
+      "problemMatcher": [ "$tsc" ]
+    },
+    {
+      "label": "Build",
+      "dependsOn": ["Client Build", "Server Build"],
+      "group":
+      {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ]
 }
+
+
+// {
+//   // See https://go.microsoft.com/fwlink/?LinkId=733558
+//   // for the documentation about the tasks.json format
+//   "version": "0.1.0",
+//   "command": "node",
+//   "isShellCommand": true,
+//   "echoCommand": true, // Task runner will output what it is trying to do.
+//   "suppressTaskName": true, // Do not add 'taskName' as parameter to 'tsc'.
+//   "showOutput": "always",   // Output tsc messages.
+//   "tasks":
+//   [
+//     {
+//       "taskName": "Build",
+//       "args":
+//       [
+//         "./.vscode/Build.js"
+//       ],
+//       "problemMatcher": "$tsc",
+//       // Watch file changes ('--watch' must be passed to tsc for this to work).
+//       "isBackground": true,
+//       // Run this task on "Ctrl+Shift+B".
+//       "isBuildCommand": true
+//     }
+//   ]
+// }

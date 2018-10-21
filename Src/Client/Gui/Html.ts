@@ -4,7 +4,7 @@
   <html> element and functionality attached to html 'document'.
 */
 
-import {Component} from '../../Client/Gui/Component';
+import { Component } from "Client/Gui/Component";
 
 export class Html extends Component
 {
@@ -16,7 +16,7 @@ export class Html extends Component
     this.element = htmlElement;
     this.setCss(Html.css);
 
-    window.addEventListener('resize', () => { this.onDocumentResize(); });
+    window.addEventListener("resize", () => { this.onDocumentResize(); });
   }
 
   // ------------- Protected static data ----------------
@@ -27,9 +27,9 @@ export class Html extends Component
     outline: "0 none",
     margin: "0px",
     padding: "0px"
-  }
+  };
 
-  // ---------------- Protected data -------------------- 
+  // ---------------- Protected data --------------------
 
   protected element: HTMLElement;
 

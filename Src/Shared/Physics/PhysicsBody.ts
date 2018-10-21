@@ -4,14 +4,10 @@
   Rigid body.
 */
 
-// import {PhysicsWorld} from '../../Shared/Physics/PhysicsWorld';
-import {Vector} from '../../Shared/Physics/Vector';
+import { Vector } from "Shared/Physics/Vector";
 
-import
-{
-  b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType, b2FixtureDef, b2Shape, b2ShapeType
-}
-from '../../Shared/Box2D/Box2D';
+import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
+  b2FixtureDef, b2Shape, b2ShapeType } from "Shared/Box2D/Box2D";
 
 export class PhysicsBody
 {
@@ -87,15 +83,20 @@ export class PhysicsBody
 
   public updateVelocityDirection()
   {
-    //this.body.SetLinearVelocity(this.getVelocityVector(this.velocity));
+    // this.body.SetLinearVelocity(this.getVelocityVector(this.velocity));
     this.body.SetLinearVelocity(this.getVelocity());
   }
 
   public getGeometry()
   {
-    let geometry: PhysicsBody.Geometry = [];
+    const geometry: PhysicsBody.Geometry = [];
 
-    for (let fixture = this.body.GetFixtureList(); fixture !== null; fixture = fixture.GetNext())
+    for
+    (
+      let fixture = this.body.GetFixtureList();
+      fixture !== null;
+      fixture = fixture.GetNext()
+    )
     {
       const shapeType = fixture.GetType();
 
@@ -103,9 +104,9 @@ export class PhysicsBody
       {
         const vertices = (fixture.GetShape() as b2PolygonShape).m_vertices;
 
-        let polygon: PhysicsBody.Polygon = [];
+        const polygon: PhysicsBody.Polygon = [];
 
-        for (let vertex of vertices)
+        for (const vertex of vertices)
         {
           polygon.push({ x: vertex.x, y: vertex.y });
         }
@@ -120,15 +121,15 @@ export class PhysicsBody
 
 // ------------------ Type Declarations ----------------------
 
-export module PhysicsBody
+export namespace PhysicsBody
 {
   export type Config =
   {
     /// Zatím to dám natvrdo, stejně se to bude nejspíš muset
     /// načítat z exportu z Tiled editoru.
-  }
+  };
 
-  export type Polygon = Array<{x: number, y: number}>;
+  export type Polygon = Array<{ x: number; y: number }>;
 
   export type Geometry = Array<Polygon>;
 }

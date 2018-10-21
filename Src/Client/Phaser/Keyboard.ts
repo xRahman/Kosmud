@@ -1,7 +1,7 @@
-import {Syslog} from '../../Shared/Log/Syslog';
-import {KeyboardInput} from '../../Shared/Protocol/KeyboardInput';
-import {Connection} from '../../Client/Net/Connection';
-import {REPORT} from '../../Shared/Log/REPORT';
+import { Syslog } from "Shared/Log/Syslog";
+import { KeyboardInput } from "Shared/Protocol/KeyboardInput";
+import { Connection } from "Client/Net/Connection";
+import { REPORT } from "Shared/Log/REPORT";
 
 /// Návod:
 /// http://www.html5gamedevs.com/topic/36693-problems-with-keyboard-events/
@@ -12,59 +12,59 @@ export class Keyboard
   {
     keyboard.on
     (
-      'keydown_A',
+      "keydown_A",
       () => { this.onKeydownA(); }
     );
 
     keyboard.on
     (
-      'keyup_A',
+      "keyup_A",
       () => { this.onKeyupA(); }
     );
 
     keyboard.on
     (
-      'keydown_D',
+      "keydown_D",
       () => { this.onKeydownD(); }
     );
 
     keyboard.on
     (
-      'keyup_D',
+      "keyup_D",
       () => { this.onKeyupD(); }
     );
 
     keyboard.on
     (
-      'keydown_S',
+      "keydown_S",
       () => { this.onKeydownS(); }
     );
 
     keyboard.on
     (
-      'keyup_S',
+      "keyup_S",
       () => { this.onKeyupS(); }
     );
 
     keyboard.on
     (
-      'keydown_W',
+      "keydown_W",
       () => { this.onKeydownW(); }
     );
 
     keyboard.on
     (
-      'keyup_W',
+      "keyup_W",
       () => { this.onKeyupW(); }
     );
-
 
     // this.W = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     // this.A = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     // this.S = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     // this.D = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-    // //   // Wire up an event handler for each K.  The handler is a Phaser.Signal attached to the Key Object
+    // // Wire up an event handler for each K.  The handler is a
+    // // Phaser.Signal attached to the Key Object.
     // // this.W.onDown.add(SimpleGame.prototype.moveUp, this);
     // // this.A.onDown.add(SimpleGame.prototype.moveLeft, this);
     // // this.S.onDown.add(SimpleGame.prototype.moveDown, this);
@@ -72,11 +72,11 @@ export class Keyboard
 
     // // Since we are allowing the combination of CTRL+W, which is a shortcut
     // // for close window, we need to trap all handling of the W key and make
-    // // sure it doesnt get handled by the browser.  
+    // // sure it doesnt get handled by the browser.
     // //   Unfortunately you can no longer capture the CTRL+W key combination
     // // in Google Chrome except in "Application Mode" because apparently
-    // // Google thought an unstoppable un prompted key combo of death was a good
-    // // idea...
+    // // Google thought an unstoppable un prompted key combo of death was
+    // // a good idea...
     // /// Obviously this doesn't work in Phaser 3...
     // // keyboard.addKeyCapture(Phaser.Keyboard.W);
   }
@@ -94,11 +94,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Left', 'Stop');
+      sendKeyboardInput("Left", "Stop");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -106,11 +106,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Left', 'Start');
+      sendKeyboardInput("Left", "Start");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -118,11 +118,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Right', 'Stop');
+      sendKeyboardInput("Right", "Stop");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -130,11 +130,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Right', 'Start');
+      sendKeyboardInput("Right", "Start");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -142,11 +142,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Backward', 'Stop');
+      sendKeyboardInput("Backward", "Stop");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -154,11 +154,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Backward', 'Start');
+      sendKeyboardInput("Backward", "Start");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -166,11 +166,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Forward', 'Stop');
+      sendKeyboardInput("Forward", "Stop");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 
@@ -178,11 +178,11 @@ export class Keyboard
   {
     try
     {
-      sendKeyboardInput('Forward', 'Start');
+      sendKeyboardInput("Forward", "Start");
     }
     catch (error)
     {
-      Syslog.reportUncaughtException(error)
+      Syslog.reportUncaughtException(error);
     }
   }
 }
