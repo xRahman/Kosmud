@@ -1,3 +1,14 @@
+TODO (Tslint) import { Cosi } from...
+- pořád se mi to moc nezdá, ale asi jo, no
+  (každopádně to dává smysl, je to v podsatě vytahování properties z objektů).
+[done]
+
+TODO: Prozkoumat (a ideálně použít):
+  https://decembersoft.com/posts/say-goodbye-to-relative-paths-in-typescript-imports/
+(nejspíš bude stačit baseurl
+ - nebude, na serveru to nefunguje a je potřeba nastavit NODE_PATH)
+[done]
+
 TODO: Nastavit z-order pro Ship.gebugGraphics.
 [done]
 

@@ -1,3 +1,7 @@
+TODO: Zvážit použití
+  https://marketplace.visualstudio.com/items?itemName=eg2.ts-tslint
+  (kvůlivá kontrolám, které vyžadují type information)
+
 Warning: member-ordering - Bad member kind: public-before-private
 Warning: The 'prefer-readonly' rule requires type information.
 Warning: The 'promise-function-async' rule requires type information.
@@ -34,8 +38,6 @@ Warning: The 'return-undefined' rule requires type information.
 
 
 
-TODO (Tslint) import { Cosi } from...
-
 TODO: Tslint (co momentálně nejde v tslintu nastavit):
 - zakázat newline na konci souboru
 - Vyžadovat newline za if (), while() a podobně
@@ -48,10 +50,6 @@ TODO: Tslint (co momentálně nejde v tslintu nastavit):
      throw new Error(), kterej se nevejde na jeden řádek, tak je taky lepší
      ho uzávorkovat do {}.
 
-
-TODO: Prozkoumat (a ideálně použít):
-  https://decembersoft.com/posts/say-goodbye-to-relative-paths-in-typescript-imports/
-(nejspíš bude stačit baseurl)
 
 
 TODO: Debugové zobrazení fyziky na klientu
