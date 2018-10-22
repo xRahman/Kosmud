@@ -4,8 +4,8 @@
   Server-side logger.
 */
 
-import { ERROR } from "Shared/Log/ERROR";
-import * as Shared from "Shared/Log/Syslog";
+import { ERROR } from "../../Shared/Log/ERROR";
+import * as Shared from "../../Shared/Log/Syslog";
 
 export class Syslog extends Shared.Syslog
 {

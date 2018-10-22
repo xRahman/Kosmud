@@ -4,7 +4,7 @@
   <html> element and functionality attached to html 'document'.
 */
 
-import { Component } from "Client/Gui/Component";
+import { Component } from "../../Client/Gui/Component";
 
 export class Html extends Component
 {

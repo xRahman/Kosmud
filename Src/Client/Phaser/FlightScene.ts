@@ -1,8 +1,8 @@
-import { ShipToScene } from "Client/Protocol/ShipToScene";
-import { Background } from "Client/Phaser/Background";
-import { Ship } from "Client/Phaser/Ship";
-import { FlightSceneContents } from "Client/Phaser/FlightSceneContents";
-import { Scene } from "Client/Phaser/Scene";
+import { ShipToScene } from "../../Client/Protocol/ShipToScene";
+import { Background } from "../../Client/Phaser/Background";
+import { Ship } from "../../Client/Phaser/Ship";
+import { FlightSceneContents } from "../../Client/Phaser/FlightSceneContents";
+import { Scene } from "../../Client/Phaser/Scene";
 
 export class FlightScene extends Scene
 {

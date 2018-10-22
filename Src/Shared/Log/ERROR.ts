@@ -35,7 +35,7 @@
     added automatically to the log message.
 */
 
-import { Syslog } from "Shared/Log/Syslog";
+import { Syslog } from "../../Shared/Log/Syslog";
 
 export function ERROR(message: string)
 {

@@ -1,7 +1,7 @@
-import { Keyboard } from "Client/Phaser/Keyboard";
-import { Scene } from "Client/Phaser/Scene";
-import { Camera } from "Client/Phaser/Camera";
-import { Mouse } from "Client/Phaser/Mouse";
+import { Keyboard } from "../../Client/Phaser/Keyboard";
+import { Scene } from "../../Client/Phaser/Scene";
+import { Camera } from "../../Client/Phaser/Camera";
+import { Mouse } from "../../Client/Phaser/Mouse";
 
 export class SceneContents
 {

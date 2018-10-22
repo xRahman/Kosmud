@@ -22,8 +22,8 @@
   }
 */
 
-import { Utils } from "Shared/Utils/Utils";
-import { Attributes, DEFAULT_ATTRIBUTES } from "Shared/Class/Attributes";
+import { Utils } from "../../Shared/Utils/Utils";
+import { Attributes, DEFAULT_ATTRIBUTES } from "../../Shared/Class/Attributes";
 
 const DEFAULT_ATTRIBUTES_PROPERTY = "defaultAttributes";
 

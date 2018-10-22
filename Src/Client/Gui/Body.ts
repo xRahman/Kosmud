@@ -4,9 +4,9 @@
   <body> element.
 */
 
-import { Component } from "Client/Gui/Component";
-import { Gui } from "Client/Gui/Gui";
-import { CanvasDiv } from "Client/Gui/CanvasDiv";
+import { Component } from "../../Client/Gui/Component";
+import { Gui } from "../../Client/Gui/Gui";
+import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 
 export class Body extends Component
 {

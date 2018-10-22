@@ -1,7 +1,7 @@
-import { FlightScene } from "Client/Phaser/FlightScene";
-import { Background } from "Client/Phaser/Background";
-import { Ship } from "Client/Phaser/Ship";
-import { SceneContents } from "Client/Phaser/SceneContents";
+import { FlightScene } from "../../Client/Phaser/FlightScene";
+import { Background } from "../../Client/Phaser/Background";
+import { Ship } from "../../Client/Phaser/Ship";
+import { SceneContents } from "../../Client/Phaser/SceneContents";
 
 export class FlightSceneContents extends SceneContents
 {

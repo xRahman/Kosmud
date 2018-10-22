@@ -6,9 +6,9 @@
   (Part of client-server communication protocol.)
 */
 
-import { Connection } from "Server/Net/Connection";
-import { Game } from "Server/Game/Game";
-import * as Shared from "Shared/Protocol/MouseInput";
+import { Connection } from "../../Server/Net/Connection";
+import { Game } from "../../Server/Game/Game";
+import * as Shared from "../../Shared/Protocol/MouseInput";
 
 export class MouseInput extends Shared.MouseInput
 {

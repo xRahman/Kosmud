@@ -12,8 +12,9 @@
     "outDir": "../../Server/js",
     // 'rootDir' points to Src directory.
     "rootDir": "../",
+    // Unfortunaly this doesn't work very well in vs code.
     // 'baseUrl' points to Src so we don't have to use '../../..' in imports.
-    "baseUrl": "../",
+    // "baseUrl": "../",
     "sourceMap": true,
     // Allow importing of .json files.
     "resolveJsonModule": true

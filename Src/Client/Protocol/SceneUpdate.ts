@@ -7,9 +7,9 @@
   (Part of client-server communication protocol.)
 */
 
-import { Renderer } from "Client/Phaser/Renderer";
-import { Connection } from "Client/Net/Connection";
-import * as Shared from "Shared/Protocol/SceneUpdate";
+import { Renderer } from "../../Client/Phaser/Renderer";
+import { Connection } from "../../Client/Net/Connection";
+import * as Shared from "../../Shared/Protocol/SceneUpdate";
 
 export class SceneUpdate extends Shared.SceneUpdate
 {

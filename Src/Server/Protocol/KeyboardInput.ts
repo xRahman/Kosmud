@@ -6,10 +6,10 @@
   (Part of client-server communication protocol.)
 */
 
-import { Utils } from "Shared/Utils/Utils";
-import { Connection } from "Server/Net/Connection";
-import { Game } from "Server/Game/Game";
-import * as Shared from "Shared/Protocol/KeyboardInput";
+import { Utils } from "../../Shared/Utils/Utils";
+import { Connection } from "../../Server/Net/Connection";
+import { Game } from "../../Server/Game/Game";
+import * as Shared from "../../Shared/Protocol/KeyboardInput";
 
 export class KeyboardInput extends Shared.KeyboardInput
 {

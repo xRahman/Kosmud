@@ -4,7 +4,7 @@
   Abstract ancestor of classes that encapsulate DOM elements.
 */
 
-import { ERROR } from "Shared/Log/ERROR";
+import { ERROR } from "../../Shared/Log/ERROR";
 
 export abstract class Component
 {

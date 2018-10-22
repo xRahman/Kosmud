@@ -23,8 +23,8 @@
     }
 */
 
-import { Syslog } from "Shared/Log/Syslog";
-import { ERROR } from "Shared/Log/ERROR";
+import { Syslog } from "../../Shared/Log/Syslog";
+import { ERROR } from "../../Shared/Log/ERROR";
 
 // Note: 'error' parameter has type 'any' because when you catch
 //   an error, typescript has no way of knowing it's type. You still

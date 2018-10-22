@@ -6,8 +6,8 @@
   (Part of client-server communication protocol.)
 */
 
-import { Packet } from "Shared/Protocol/Packet";
-import { Vector } from "Shared/Physics/Vector";
+import { Packet } from "../../Shared/Protocol/Packet";
+import { Vector } from "../../Shared/Physics/Vector";
 
 export class SceneUpdate extends Packet
 {

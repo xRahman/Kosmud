@@ -4,10 +4,11 @@
   Rigid body.
 */
 
-import { Vector } from "Shared/Physics/Vector";
+import { Vector } from "../../Shared/Physics/Vector";
 
+// 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
-  b2FixtureDef, b2Shape, b2ShapeType } from "Shared/Box2D/Box2D";
+  b2FixtureDef, b2Shape, b2ShapeType } from "../../Shared/Box2D/Box2D";
 
 export class PhysicsBody
 {

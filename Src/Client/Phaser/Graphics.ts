@@ -3,7 +3,7 @@
   Draws lines directly to canvas.
 */
 
-import { PhysicsBody } from "Shared/Physics/PhysicsBody";
+import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
 export class Graphics
 {

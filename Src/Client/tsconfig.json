@@ -14,8 +14,9 @@
     "outDir": "../../Client/js",
     // 'rootDir' points to Src directory.
     "rootDir": "../",
+    // Unfortunaly this doesn't work very well in vs code.
     // 'baseUrl' points to Src so we don't have to use '../../..' in imports.
-    "baseUrl": "../",
+    // "baseUrl": "../",
     "sourceMap": true
     // "sourceRoot": "../",
     // // Print names of generated files during the compilation.

@@ -4,7 +4,7 @@
   Logger abstract ancestor.
 */
 
-import { StringUtils } from "Shared/Utils/StringUtils";
+import { StringUtils } from "../../Shared/Utils/StringUtils";
 
 export abstract class Syslog
 {

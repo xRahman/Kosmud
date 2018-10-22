@@ -5,10 +5,10 @@
   in runtime.
 */
 
-import { Serializable } from "Shared/Class/Serializable";
-import { Types } from "Shared/Utils/Types";
-import { Entity } from "Shared/Class/Entity";
-import { Entities } from "Shared/Class/Entities";
+import { Serializable } from "../../Shared/Class/Serializable";
+import { Types } from "../../Shared/Utils/Types";
+import { Entity } from "../../Shared/Class/Entity";
+import { Entities } from "../../Shared/Class/Entities";
 
 // Classes extended from Serializable but not from Entity.
 const serializableClasses = new Map<string, new() => any>();

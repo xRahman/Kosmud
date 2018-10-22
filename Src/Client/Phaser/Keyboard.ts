@@ -1,7 +1,7 @@
-import { Syslog } from "Shared/Log/Syslog";
-import { KeyboardInput } from "Shared/Protocol/KeyboardInput";
-import { Connection } from "Client/Net/Connection";
-import { REPORT } from "Shared/Log/REPORT";
+import { Syslog } from "../../Shared/Log/Syslog";
+import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
+import { Connection } from "../../Client/Net/Connection";
+import { REPORT } from "../../Shared/Log/REPORT";
 
 /// Návod:
 /// http://www.html5gamedevs.com/topic/36693-problems-with-keyboard-events/

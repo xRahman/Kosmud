@@ -4,10 +4,10 @@
   TEST - a ship.
 */
 
-import { Vector } from "Shared/Physics/Vector";
-import { Steering } from "Shared/Physics/Steering";
-import { PhysicsBody } from "Shared/Physics/PhysicsBody";
-import * as Shared from "Shared/Game/Ship";
+import { Vector } from "../../Shared/Physics/Vector";
+import { Steering } from "../../Shared/Physics/Steering";
+import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {

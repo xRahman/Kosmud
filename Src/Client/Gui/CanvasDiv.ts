@@ -4,8 +4,8 @@
   Div element containing html canvas.
 */
 
-import { Component } from "Client/Gui/Component";
-import { Renderer } from "Client/Phaser/Renderer";
+import { Component } from "../../Client/Gui/Component";
+import { Renderer } from "../../Client/Phaser/Renderer";
 
 export class CanvasDiv extends Component
 {

@@ -4,8 +4,8 @@
   Filesystem I/O operations.
 */
 
-import { Types } from "Shared/Utils/Types";
-import { SavingQueue } from "Server/FileSystem/SavingQueue";
+import { Types } from "../../Shared/Utils/Types";
+import { SavingQueue } from "../../Server/FileSystem/SavingQueue";
 
 // Built-in node.js modules.
 import * as FS from "fs-extra";

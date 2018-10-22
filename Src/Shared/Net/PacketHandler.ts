@@ -4,9 +4,9 @@
   Deserializes and processes packets.
 */
 
-import { REPORT } from "Shared/Log/REPORT";
-import { Serializable } from "Shared/Class/Serializable";
-import { Packet } from "Shared/Protocol/Packet";
+import { REPORT } from "../../Shared/Log/REPORT";
+import { Serializable } from "../../Shared/Class/Serializable";
+import { Packet } from "../../Shared/Protocol/Packet";
 
 export abstract class PacketHandler
 {

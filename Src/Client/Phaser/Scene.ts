@@ -1,4 +1,4 @@
-import { SceneContents } from "Client/Phaser/SceneContents";
+import { SceneContents } from "../../Client/Phaser/SceneContents";
 
 export abstract class Scene extends Phaser.Scene
 {

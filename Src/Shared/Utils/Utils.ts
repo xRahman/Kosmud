@@ -4,7 +4,7 @@
   Various utility functions.
 */
 
-import { Types } from "Shared/Utils/Types";
+import { Types } from "../../Shared/Utils/Types";
 
 export namespace Utils
 {

@@ -1,5 +1,5 @@
-import { Body } from "Client/Gui/Body";
-import { PhaserEngine } from "Client/Phaser/PhaserEngine";
+import { Body } from "../../Client/Gui/Body";
+import { PhaserEngine } from "../../Client/Phaser/PhaserEngine";
 
 let phaserEngine: PhaserEngine | "Doesn't exist" = "Doesn't exist";
 

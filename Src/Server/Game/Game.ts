@@ -4,11 +4,11 @@
   Server-side game simulation.
 */
 
-import { Syslog } from "Shared/Log/Syslog";
-import { Physics } from "Shared/Physics/Physics";
-import { Ship } from "Server/Game/Ship";
-import { Connections } from "Server/Net/Connections";
-import { SceneUpdate } from "Shared/Protocol/SceneUpdate";
+import { Syslog } from "../../Shared/Log/Syslog";
+import { Physics } from "../../Shared/Physics/Physics";
+import { Ship } from "../../Server/Game/Ship";
+import { Connections } from "../../Server/Net/Connections";
+import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 
 const GAME_TICK_MILISECONDS = 1000 / 60;
 

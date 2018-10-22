@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# Startup script to launch Kosmud server.
-
-# Note that 'NODE_PATH' environmnetal variable must be set for
-# module resolution to work correctly (because we are using
-# imports without '../../' traversing.
-export NODE_PATH="./Server/js"
-node Server/js/Server/KosmudServer.js 

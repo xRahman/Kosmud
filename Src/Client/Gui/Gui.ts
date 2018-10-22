@@ -4,8 +4,8 @@
   Manages interface.
 */
 
-import { Html } from "Client/Gui/Html";
-import { Body } from "Client/Gui/Body";
+import { Html } from "../../Client/Gui/Html";
+import { Body } from "../../Client/Gui/Body";
 
 let html: Html | "Doesn't exist" = "Doesn't exist";
 let body: Body | "Doesn't exist" = "Doesn't exist";

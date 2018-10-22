@@ -4,8 +4,8 @@
   Types and associated utility functions.
 */
 
-import { Vector } from "Shared/Physics/Vector";
-import { Serializable } from "Shared/Class/Serializable";
+import { Vector } from "../../Shared/Physics/Vector";
+import { Serializable } from "../../Shared/Class/Serializable";
 
 // 3rd party modules.
 // Note: Disable tslint check for 'const x = require()' because we

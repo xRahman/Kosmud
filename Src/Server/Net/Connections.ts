@@ -4,9 +4,9 @@
   Player connections.
 */
 
-import { REPORT } from "Shared/Log/REPORT";
-import { Packet } from "Shared/Protocol/Packet";
-import { Connection } from "Server/Net/Connection";
+import { REPORT } from "../../Shared/Log/REPORT";
+import { Packet } from "../../Shared/Protocol/Packet";
+import { Connection } from "../../Server/Net/Connection";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.

@@ -1,7 +1,7 @@
-import { Vector } from "Shared/Physics/Vector";
-import { PhysicsBody } from "Shared/Physics/PhysicsBody";
-import { Graphics } from "Client/Phaser/Graphics";
-import { FlightScene } from "Client/Phaser/FlightScene";
+import { Vector } from "../../Shared/Physics/Vector";
+import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { Graphics } from "../../Client/Phaser/Graphics";
+import { FlightScene } from "../../Client/Phaser/FlightScene";
 
 const SHIP_SPRITE_ID = "ship";
 

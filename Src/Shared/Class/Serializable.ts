@@ -38,12 +38,12 @@
     (A samozřejmě tuhle funkcionalitu přidat do Attributable class).
 */
 
-import { Types } from "Shared/Utils/Types";
-import { Utils } from "Shared/Utils/Utils";
-import { Vector } from "Shared/Physics/Vector";
-import { Classes } from "Shared/Class/Classes";
-import { JsonObject } from "Shared/Class/JsonObject";
-import { Attributable } from "Shared/Class/Attributable";
+import { Types } from "../../Shared/Utils/Types";
+import { Utils } from "../../Shared/Utils/Utils";
+import { Vector } from "../../Shared/Physics/Vector";
+import { Classes } from "../../Shared/Class/Classes";
+import { JsonObject } from "../../Shared/Class/JsonObject";
+import { Attributable } from "../../Shared/Class/Attributable";
 
 // 3rd party modules.
 // Note: Disable tslint check for 'const x = require()' because we

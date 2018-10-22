@@ -5,11 +5,11 @@
 */
 
 // import {PhysicsBody} from 'Shared/Physics/PhysicsBody';
-import { PhysicsWorld } from "Shared/Physics/PhysicsWorld";
+import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
-         b2FixtureDef } from "Shared/Box2D/Box2D";
+         b2FixtureDef } from "../../Shared/Box2D/Box2D";
 
 export class Physics
 {

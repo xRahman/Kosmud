@@ -4,11 +4,11 @@
   Websocket server.
 */
 
-import { REPORT } from "Shared/Log/REPORT";
-import { ERROR } from "Shared/Log/ERROR";
-import { Syslog } from "Server/Log/Syslog";
-import { Connection } from "Server/Net/Connection";
-import { Connections } from "Server/Net/Connections";
+import { REPORT } from "../../Shared/Log/REPORT";
+import { ERROR } from "../../Shared/Log/ERROR";
+import { Syslog } from "../../Server/Log/Syslog";
+import { Connection } from "../../Server/Net/Connection";
+import { Connections } from "../../Server/Net/Connections";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.

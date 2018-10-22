@@ -4,16 +4,16 @@
   Connection to the server.
 */
 
-import { Classes } from "Shared/Class/Classes";
-import { WebSocketEvent } from "Shared/Net/WebSocketEvent";
-import { Types } from "Shared/Utils/Types";
-import { Packet } from "Shared/Protocol/Packet";
-import { SystemMessage } from "Shared/Protocol/SystemMessage";
-import { SceneUpdate } from "Client/Protocol/SceneUpdate";
-import { ShipToScene } from "Client/Protocol/ShipToScene";
-import { KeyboardInput } from "Shared/Protocol/KeyboardInput";
-import { MouseInput } from "Shared/Protocol/MouseInput";
-import { Socket } from "Client/Net/Socket";
+import { Classes } from "../../Shared/Class/Classes";
+import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
+import { Types } from "../../Shared/Utils/Types";
+import { Packet } from "../../Shared/Protocol/Packet";
+import { SystemMessage } from "../../Shared/Protocol/SystemMessage";
+import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
+import { ShipToScene } from "../../Client/Protocol/ShipToScene";
+import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
+import { MouseInput } from "../../Shared/Protocol/MouseInput";
+import { Socket } from "../../Client/Net/Socket";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.

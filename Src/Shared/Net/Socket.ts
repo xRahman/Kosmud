@@ -4,11 +4,11 @@
   Websocket wrapper.
 */
 
-import { ERROR } from "Shared/Log/ERROR";
-import { Syslog } from "Shared/Log/Syslog";
-import { Types } from "Shared/Utils/Types";
-import { WebSocketEvent } from "Shared/Net/WebSocketEvent";
-import { PacketHandler } from "Shared/Net/PacketHandler";
+import { ERROR } from "../../Shared/Log/ERROR";
+import { Syslog } from "../../Shared/Log/Syslog";
+import { Types } from "../../Shared/Utils/Types";
+import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
+import { PacketHandler } from "../../Shared/Net/PacketHandler";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.

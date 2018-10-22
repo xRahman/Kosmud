@@ -4,7 +4,7 @@
   Server-side websocket wrapper.
 */
 
-import * as Shared from "Shared/Net/Socket";
+import * as Shared from "../../Shared/Net/Socket";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.

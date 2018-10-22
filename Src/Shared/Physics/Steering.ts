@@ -4,7 +4,7 @@
   Steering behavior of autonomous vehicles.
 */
 
-import { Vector } from "Shared/Physics/Vector";
+import { Vector } from "../../Shared/Physics/Vector";
 
 /// Zatím natvrdo.
 const MAX_SPEED = 100;

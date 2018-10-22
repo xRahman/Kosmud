@@ -25,7 +25,7 @@
   of creating own propety on the instance).
 */
 
-import { Serializable } from "Shared/Class/Serializable";
+import { Serializable } from "../../Shared/Class/Serializable";
 
 export class Entity extends Serializable
 {

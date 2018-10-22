@@ -1,7 +1,7 @@
-import { REPORT } from "Shared/Log/REPORT";
-import { Vector } from "Shared/Physics/Vector";
-import { MouseInput } from "Shared/Protocol/MouseInput";
-import { Connection } from "Client/Net/Connection";
+import { REPORT } from "../../Shared/Log/REPORT";
+import { Vector } from "../../Shared/Physics/Vector";
+import { MouseInput } from "../../Shared/Protocol/MouseInput";
+import { Connection } from "../../Client/Net/Connection";
 
 export class Mouse
 {

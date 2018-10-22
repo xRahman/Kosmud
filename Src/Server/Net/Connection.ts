@@ -4,18 +4,18 @@
   A connection to the server.
 */
 
-import { Syslog } from "Shared/Log/Syslog";
-import { WebSocketEvent } from "Shared/Net/WebSocketEvent";
-import { Types } from "Shared/Utils/Types";
-import { Packet } from "Shared/Protocol/Packet";
-import { Socket } from "Server/Net/Socket";
-import { Classes } from "Shared/Class/Classes";
-import { Connections } from "Server/Net/Connections";
-import { SystemMessage } from "Server/Protocol/SystemMessage";
-import { SceneUpdate } from "Shared/Protocol/SceneUpdate";
-import { ShipToScene } from "Shared/Protocol/ShipToScene";
-import { KeyboardInput } from "Server/Protocol/KeyboardInput";
-import { MouseInput } from "Server/Protocol/MouseInput";
+import { Syslog } from "../../Shared/Log/Syslog";
+import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
+import { Types } from "../../Shared/Utils/Types";
+import { Packet } from "../../Shared/Protocol/Packet";
+import { Socket } from "../../Server/Net/Socket";
+import { Classes } from "../../Shared/Class/Classes";
+import { Connections } from "../../Server/Net/Connections";
+import { SystemMessage } from "../../Server/Protocol/SystemMessage";
+import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
+import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
+import { KeyboardInput } from "../../Server/Protocol/KeyboardInput";
+import { MouseInput } from "../../Server/Protocol/MouseInput";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
