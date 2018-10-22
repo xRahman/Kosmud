@@ -2,6 +2,14 @@
   // I'm not sure what this is for.
   // "lintOptions": { "typeCheck": true },
   "extends": [ "tslint:all", "tslint-eslint-rules"],
+  "linterOptions":
+  {
+    "exclude":
+    [
+      "**/Src/Shared/Box2D/**/*.*",
+      "**/*.d.ts"
+    ]
+  },
   "rules":
   {
     // Don't want these.
@@ -27,15 +35,11 @@
         "allow-declarations",
         "allow-named-functions"
     ],
-    "increment-decrement": true,
     "no-parameter-reassignment": true,
     "no-magic-numbers": true,
     "no-non-null-assertion": true,
     // This is worth trying
     "no-null-keyword": true,
-    "no-unbound-method": true,
-    "no-unnecessary-qualifier": true,
-    "no-use-before-declare": true,
     "prefer-function-over-method": true,
     "triple-equals": true,
     "typedef":
@@ -187,6 +191,12 @@
     "no-void-expression": false,
     // This would probably be useful.
     "strict-type-predicates": false,
+    // This would proably be useful.
+    "no-unbound-method": false,
+    // This would proably be useful.
+    "no-use-before-declare": false,
+    // This would proably be useful.
+    "no-unnecessary-qualifier": false,
 
     // ------------ Rules enabled by tslint-eslint module -------------
 

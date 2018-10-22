@@ -9,10 +9,50 @@
   "tasks":
   [
     {
-      "label": "Client Build",
+      "label": "Remove Old Build",
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
+      "isBackground": false,
+      "args": [ "./.vscode/RemoveOldBuild.js" ]
+    },
+    {
+      "label": "Build Client",
       "presentation" : { "panel": "shared" },
+      "command": "node",
+      "type": "process",
+      "isBackground": true,
+      "args":
+      [
+        "./node_modules/typescript/lib/tsc.js",
+        // "--watch",
+        "--project", "./Src/Client"
+      ],
+      "problemMatcher": [ "$tsc" ],
+      "dependsOn": [ "Remove Old Build" ]
+    },
+    {
+      "label": "Lint Client",
+      "presentation" : { "panel": "shared" },
+      //"command": "./node_modules/tslint/bin/tslint",
+      "command": "node",
+      "type": "process",
+      "isBackground": false,
+      "args":
+      [
+        "./node_modules/tslint/bin/tslint",
+        "--project", "./Src/Client/tsconfig.json"
+      ],
+      "problemMatcher": [ "$tslint5" ],
+      "dependsOn": [ "Build Client" ]
+    },
+    {
+      // Run tsc again, this time in watch mode
+      // (if we did it right away, tslint wouldn't run).
+      "label": "Watch Client",
+      "presentation" : { "panel": "shared" },
+      "command": "node",
+      "type": "process",
       "isBackground": true,
       "args":
       [
@@ -20,13 +60,45 @@
         "--watch",
         "--project", "./Src/Client"
       ],
-      "problemMatcher": [ "$tsc" ]
+      "problemMatcher": [ "$tsc" ],
+      "dependsOn": [ "Lint Client" ]
     },
     {
-      "label": "Server Build",
+      "label": "Build Server",
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
+      "isBackground": true,
+      "args":
+      [
+        "./node_modules/typescript/lib/tsc.js",
+        // "--watch",
+        "--project", "./Src/Server"
+      ],
+      "problemMatcher": [ "$tsc" ],
+      "dependsOn": [ "Remove Old Build" ]
+    },
+    {
+      "label": "Lint Server",
       "presentation" : { "panel": "shared" },
+      "command": "node",
+      "type": "process",
+      "isBackground": false,
+      "args":
+      [
+        "./node_modules/tslint/bin/tslint",
+        "--project", "./Src/Server/tsconfig.json"
+      ],
+      "problemMatcher": [ "$tslint5" ],
+      "dependsOn": [ "Build Server" ]
+    },
+    {
+      // Run tsc again, this time in watch mode
+      // (if we did it right away, tslint wouldn't run).
+      "label": "Watch Server",
+      "presentation" : { "panel": "shared" },
+      "command": "node",
+      "type": "process",
       "isBackground": true,
       "args":
       [
@@ -34,11 +106,13 @@
         "--watch",
         "--project", "./Src/Server"
       ],
-      "problemMatcher": [ "$tsc" ]
+      "problemMatcher": [ "$tsc" ],
+      "dependsOn": [ "Lint Server" ]
     },
     {
       "label": "Build",
-      "dependsOn": ["Client Build", "Server Build"],
+      "presentation" : { "panel": "new" },
+      "dependsOn": [ "Watch Client", "Watch Server" ],
       "group":
       {
         "kind": "build",
@@ -47,30 +121,3 @@
     }
   ]
 }
-
-
-// {
-//   // See https://go.microsoft.com/fwlink/?LinkId=733558
-//   // for the documentation about the tasks.json format
-//   "version": "0.1.0",
-//   "command": "node",
-//   "isShellCommand": true,
-//   "echoCommand": true, // Task runner will output what it is trying to do.
-//   "suppressTaskName": true, // Do not add 'taskName' as parameter to 'tsc'.
-//   "showOutput": "always",   // Output tsc messages.
-//   "tasks":
-//   [
-//     {
-//       "taskName": "Build",
-//       "args":
-//       [
-//         "./.vscode/Build.js"
-//       ],
-//       "problemMatcher": "$tsc",
-//       // Watch file changes ('--watch' must be passed to tsc for this to work).
-//       "isBackground": true,
-//       // Run this task on "Ctrl+Shift+B".
-//       "isBuildCommand": true
-//     }
-//   ]
-// }

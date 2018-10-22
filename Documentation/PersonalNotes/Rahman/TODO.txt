@@ -1,8 +1,23 @@
+TODO: Upgradnout verzi typecriptu (a možná i tslintu)
+
+TODO: Smazat ./vscode/Build, až ho nebudu potřebovat.
+
 TODO: Přidat do build tasku mazání starého buildu.
+- popravdě asi bude nejlepší se vrátit k původnímu buildování
+  (pokud s tím bude fungovat tslint)
 
 TODO: Možná do build tasku hodit i lint celého kódu
   (ideálně s type information), ať se při rebuildu
   checkne všechno.
+- pokud to rozběhnu, budu potřebovat -e na ignorování Box2d
+.
+for those who use vscode with tslint as editor/lintinig you can add the
+following to the vscode config:
+// Configure glob patterns of file paths to exclude from linting
+"tslint.exclude": "**/PATH_eg_TESTS/**/*.ts"
+- musím opravit liter errory, abych zjistil, jestli to pak pustí tsc
+  ve watch módu
+[maybe]
 
 
 TODO: Zvážit použití
