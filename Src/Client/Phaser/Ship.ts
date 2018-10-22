@@ -50,19 +50,5 @@ function createShipSprite(scene: Phaser.Scene)
   const shipSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
   // shipSprite.setScrollFactor(0.5);
 
-  while (true)
-  {
-    while (true)
-    {
-      while (true)
-      {
-        while (true)
-        {
-          const x = 1;
-        }
-      }
-    }
-  }
-
   return shipSprite;
 }

@@ -19,10 +19,10 @@ requirejs.config
       // 'jquery': '../js/jquery/jquery.slim',
       // // Alias so that you can use 'import d3 = require('d3');'.
       // 'd3': '../js/d3/d3.min',
-      'js-beautify': '../js/js-beautify/beautify',
-      'fastbitset': '../js/fastbitset/FastBitSet',
-      'fastpriorityqueue': '../js/fastpriorityqueue/FastPriorityQueue',
-      'isomorphic-ws': '../js/isomorphic-ws/browser',
+      'js-beautify': './js-beautify/beautify',
+      'fastbitset': './fastbitset/FastBitSet',
+      'fastpriorityqueue': './fastpriorityqueue/FastPriorityQueue',
+      'isomorphic-ws': './isomorphic-ws/browser',
       // 'phaser': '../js/phaser/phaser'
     }
   }

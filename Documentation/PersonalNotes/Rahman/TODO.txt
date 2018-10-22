@@ -1,3 +1,10 @@
+TODO: Přidat do build tasku mazání starého buildu.
+
+TODO: Možná do build tasku hodit i lint celého kódu
+  (ideálně s type information), ať se při rebuildu
+  checkne všechno.
+
+
 TODO: Zvážit použití
   https://marketplace.visualstudio.com/items?itemName=eg2.ts-tslint
   (kvůlivá kontrolám, které vyžadují type information)
