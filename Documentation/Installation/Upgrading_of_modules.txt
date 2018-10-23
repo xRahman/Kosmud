@@ -11,11 +11,12 @@ Some modules also need to be fixed to work on the client:
 
 ==============================================================
 
-Planck.js
+Box2D
 ----------
 
-Add 'export = planck;' at the start of file:
-  node_modules\planck-js\lib\index.d.ts
+Box2D ts is not a node_module so we can't use npm install. Instead it
+is just cloned from github repository and placed to /Src/Shared/Box2D.
 
+https://github.com/flyover/box2d.ts
 
 ==============================================================
