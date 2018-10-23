@@ -2,14 +2,15 @@
   // I'm not sure what this is for.
   // "lintOptions": { "typeCheck": true },
   "extends": [ "tslint:all", "tslint-eslint-rules"],
-  "linterOptions":
-  {
-    "exclude":
-    [
-      "**/Src/Shared/Box2D/**/*.*",
-      "**/*.d.ts"
-    ]
-  },
+  /// This probably doesn't work.
+  // "linterOptions":
+  // {
+  //   "exclude":
+  //   [
+  //     "**/Src/Shared/Box2D/**/*.*",
+  //     "**/*.d.ts"
+  //   ]
+  // },
   "rules":
   {
     // Don't want these.
@@ -18,6 +19,8 @@
     "cyclomatic-complexity": false,
     "completed-docs": false,
     "no-any": false,
+    // This would be nice but it's too strict to be useful.
+    "no-magic-numbers": false,
     // This would be nice but it's not realistic atm.
     "no-require-imports": false,
     "ban": false,
@@ -36,7 +39,6 @@
         "allow-named-functions"
     ],
     "no-parameter-reassignment": true,
-    "no-magic-numbers": true,
     "no-non-null-assertion": true,
     // This is worth trying
     "no-null-keyword": true,

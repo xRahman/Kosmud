@@ -19,6 +19,7 @@ export class Entities
 
   // ------------- Public static methods ----------------
 
+  // tslint:disable-next-line:prefer-function-over-method
   public getReference(id: string)
   {
     /// Zatím provizorně.

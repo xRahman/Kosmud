@@ -32,6 +32,8 @@ import { ERROR } from "../../Shared/Log/ERROR";
 //   an error message if you don't.
 export function REPORT(error: any, catchMessage?: string)
 {
+  let exception = error;
+
   if (!(error instanceof Error))
   {
     ERROR("'error' parameter passed to function REPORT() isn't"
@@ -41,11 +43,11 @@ export function REPORT(error: any, catchMessage?: string)
       + " can show where the error occured rather than where it has"
       + " been caught");
 
-    error = new Error(error);
+    exception = new Error(error);
   }
 
   if (catchMessage)
-    error.message = `${catchMessage} (${error.message$})`;
+    exception.message = `${catchMessage} (${exception.message$})`;
 
-  Syslog.reportException(error);
+  Syslog.reportException(exception);
 }

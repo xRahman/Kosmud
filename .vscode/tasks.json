@@ -10,7 +10,7 @@
   [
     {
       "label": "Remove Old Build",
-      "presentation" : { "panel": "shared" },
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": false,
@@ -18,7 +18,7 @@
     },
     {
       "label": "Build Client",
-      "presentation" : { "panel": "shared" },
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": true,
@@ -33,15 +33,15 @@
     },
     {
       "label": "Lint Client",
-      "presentation" : { "panel": "shared" },
-      //"command": "./node_modules/tslint/bin/tslint",
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": false,
       "args":
       [
         "./node_modules/tslint/bin/tslint",
-        "--project", "./Src/Client/tsconfig.json"
+        "--project", "./Src/Client/tsconfig.json",
+        "--exclude", "**/Src/Shared/Box2D/**/*.*"
       ],
       "problemMatcher": [ "$tslint5" ],
       "dependsOn": [ "Build Client" ]
@@ -50,7 +50,7 @@
       // Run tsc again, this time in watch mode
       // (if we did it right away, tslint wouldn't run).
       "label": "Watch Client",
-      "presentation" : { "panel": "shared" },
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": true,
@@ -65,7 +65,7 @@
     },
     {
       "label": "Build Server",
-      "presentation" : { "panel": "shared" },
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": true,
@@ -80,14 +80,15 @@
     },
     {
       "label": "Lint Server",
-      "presentation" : { "panel": "shared" },
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": false,
       "args":
       [
         "./node_modules/tslint/bin/tslint",
-        "--project", "./Src/Server/tsconfig.json"
+        "--project", "./Src/Server/tsconfig.json",
+        "--exclude", "**/Src/Shared/Box2D/**/*.*"
       ],
       "problemMatcher": [ "$tslint5" ],
       "dependsOn": [ "Build Server" ]
@@ -96,7 +97,8 @@
       // Run tsc again, this time in watch mode
       // (if we did it right away, tslint wouldn't run).
       "label": "Watch Server",
-      "presentation" : { "panel": "shared" },
+      // "presentation" : { "panel": "shared" },
+      "presentation" : { "panel": "new" },
       "command": "node",
       "type": "process",
       "isBackground": true,

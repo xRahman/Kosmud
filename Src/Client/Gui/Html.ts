@@ -16,7 +16,7 @@ export class Html extends Component
     this.element = htmlElement;
     this.setCss(Html.css);
 
-    window.addEventListener("resize", () => { this.onDocumentResize(); });
+    window.addEventListener("resize", () => { onDocumentResize(); });
   }
 
   // ------------- Protected static data ----------------
@@ -32,11 +32,11 @@ export class Html extends Component
   // ---------------- Protected data --------------------
 
   protected element: HTMLElement;
+}
 
-  // ---------------- Event handlers --------------------
+// ---------------- Event handlers --------------------
 
-  private onDocumentResize()
-  {
-    // Windows.onDocumentResize();
-  }
+function onDocumentResize()
+{
+  // Windows.onDocumentResize();
 }

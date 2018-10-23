@@ -20,30 +20,33 @@ export class Syslog extends Shared.Syslog
   // --------------- Protected methods ------------------
 
   // ~ Overrides Shared.Syslog.log().
+  // tslint:disable-next-line:prefer-function-over-method
   protected log(messageType: Shared.Syslog.MessageType, message: string)
   {
-    const entry = this.createLogEntry(messageType, message);
+    const entry = Shared.Syslog.createLogEntry(messageType, message);
 
     console.log(entry);
   }
 
   // ~ Overrides Shared.Syslog.reportException().
+  // tslint:disable-next-line:prefer-function-over-method
   protected reportException(error: Error, isCaught: boolean): void
   {
-    const messageType = this.exceptionMessageType(isCaught);
+    const messageType = Shared.Syslog.exceptionMessageType(isCaught);
 
-    error.message = this.createLogEntry(messageType, error.message);
+    error.message = Shared.Syslog.createLogEntry(messageType, error.message);
 
     logError(error);
   }
 
   // ~ Overrides Shared.Syslog.reportError().
+  // tslint:disable-next-line:prefer-function-over-method
   protected reportError(message: string): void
   {
-    const logEntry = this.createLogEntry("[ERROR]", message);
+    const logEntry = Shared.Syslog.createLogEntry("[ERROR]", message);
     const error = new Error(logEntry);
 
-    this.trimStackTrace(error, ERROR);
+    Shared.Syslog.trimStackTrace(error, ERROR);
 
     logError(error);
   }

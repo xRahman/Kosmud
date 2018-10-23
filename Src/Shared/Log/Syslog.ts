@@ -11,14 +11,14 @@ export abstract class Syslog
   // -------------- Static class data -------------------
 
   // This property needs to be inicialized in descendants.
-  protected static instance: Syslog | null = null;
+  protected static instance: Syslog | "Doesn't exist" = "Doesn't exist";
 
   // --------------- Static accessors -------------------
 
   // ! Throws exception on error.
   private static getInstance(): Syslog
   {
-    if (!this.instance)
+    if (this.instance === "Doesn't exist")
     {
       throw new Error
       (
@@ -63,7 +63,7 @@ export abstract class Syslog
     // an application instance is created (for example
     // directly from a class inicialization), we can't
     // use regular logging process.
-    if (!this.instance)
+    if (this.instance === "Doesn't exist")
       throw error;
 
     this.instance.reportException(error, isCaught);
@@ -75,7 +75,7 @@ export abstract class Syslog
     // If someone tries to report error before a syslog instance is created
     // (for example directly from a class inicialization), we can't use regular
     // logging process so we throw exception instead.
-    if (!this.instance)
+    if (this.instance === "Doesn't exist")
     {
       throw new Error(`ERROR() occured before`
         + `application was created: "${message}"`);
@@ -84,35 +84,16 @@ export abstract class Syslog
     this.instance.reportError(message);
   }
 
-  // --------------- Protected methods ------------------
-
-  protected abstract log
-  (
-    messageType: Syslog.MessageType,
-    message: string
-  )
-  : void;
-  protected abstract reportException(error: Error, isCaught: boolean): void;
-  protected abstract reportError(message: string): void;
-
-  protected createTrimmedStackTrace(stackTop?: Function): string
-  {
-    // Create a temporary error object to construct stack trace for us.
-    const tmpErr = new Error();
-
-    this.trimStackTrace(tmpErr, stackTop);
-
-    return this.removeErrorMessage(tmpErr.stack);
-  }
+  // ------------ Protected static methods --------------
 
   // Modifies 'stack' property of 'error' parameter.
-  protected trimStackTrace(error: Error, stackTop?: Function)
+  protected static trimStackTrace(error: Error, stackTop?: Function)
   {
      if (Error.captureStackTrace)
       Error.captureStackTrace(error, stackTop);
   }
 
-  protected removeErrorMessage(stackTrace?: string)
+  protected static removeErrorMessage(stackTrace?: string)
   {
     if (!stackTrace)
       return "Stack trace is not available.";
@@ -125,15 +106,40 @@ export abstract class Syslog
     return StringUtils.removeFirstLinesWithoutPrefix(stackTrace, "    at ");
   }
 
-  protected createLogEntry(messageType: Syslog.MessageType, message: string)
+  protected static createLogEntry
+  (
+    messageType: Syslog.MessageType,
+    message: string
+  )
   {
     return `${messageType} ${message}`;
   }
 
-  protected exceptionMessageType(isCaught: boolean): Syslog.MessageType
+  protected static exceptionMessageType(isCaught: boolean): Syslog.MessageType
   {
     return isCaught ? "[EXCEPTION]" : "[UNCAUGHT_EXCEPTION]";
   }
+
+  protected static createTrimmedStackTrace(stackTop?: Function): string
+  {
+    // Create a temporary error object to construct stack trace for us.
+    const tmpErr = new Error();
+
+    Syslog.trimStackTrace(tmpErr, stackTop);
+
+    return Syslog.removeErrorMessage(tmpErr.stack);
+  }
+
+  // --------------- Protected methods ------------------
+
+  protected abstract log
+  (
+    messageType: Syslog.MessageType,
+    message: string
+  )
+  : void;
+  protected abstract reportException(error: Error, isCaught: boolean): void;
+  protected abstract reportError(message: string): void;
 }
 
 // ------------------ Type Declarations ----------------------
@@ -161,3 +167,5 @@ export namespace Syslog
     // Player has connected etc.
   | "[CONNECTION_INFO]";
 }
+
+// ----------------- Auxiliary Functions ---------------------

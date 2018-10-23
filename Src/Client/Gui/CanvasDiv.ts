@@ -15,7 +15,7 @@ export class CanvasDiv extends Component
     super();
 
     // ! Throws an exception on error.
-    this.element = this.createDiv(parent);
+    this.element = Component.createDiv(parent);
 
     /// TODO: Předělat na parametr funkce createDiv():
     this.setCss(CanvasDiv.css);

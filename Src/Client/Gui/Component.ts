@@ -20,6 +20,25 @@ export abstract class Component
 
   // ----------------- Public data ----------------------
 
+  // ------------ Protected static methods --------------
+
+  /// This method is static because it doesn't access 'this'.
+  protected static createDiv
+  (
+    parent: HTMLElement,
+    insertMode: Component.InsertMode = Component.InsertMode.APPEND
+  )
+  : HTMLDivElement
+  {
+    const div = document.createElement("div");
+
+    insertToParent(div, parent, insertMode);
+
+    /// TODO: Nastavit atributy, css.
+
+    return div;
+  }
+
   // --------------- Public accessors -------------------
 
   public getElement() { return this.element; }
@@ -64,22 +83,6 @@ export abstract class Component
       if (value)
         this.element.style[property] = value;
     }
-  }
-
-  protected createDiv
-  (
-    parent: HTMLElement,
-    insertMode: Component.InsertMode = Component.InsertMode.APPEND
-  )
-  : HTMLDivElement
-  {
-    const div = document.createElement("div");
-
-    insertToParent(div, parent, insertMode);
-
-    /// TODO: Nastavit atributy, css.
-
-    return div;
   }
 
   // ---------------- Private methods -------------------

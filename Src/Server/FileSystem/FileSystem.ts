@@ -463,10 +463,12 @@ function replaceControlCharacter(str: string, charCode: number)
 
 function escapeReservedCharacters(str: string)
 {
-  for (const [key, value] of FILENAME_RESERVED_CHARACTERS.entries())
-    str = str.split(key).join(value);
+  let result = str;
 
-  return str;
+  for (const [key, value] of FILENAME_RESERVED_CHARACTERS.entries())
+    result = result.split(key).join(value);
+
+  return result;
 }
 
 function escapeReservedFilenames(str: string)
@@ -474,27 +476,18 @@ function escapeReservedFilenames(str: string)
   for (const [key, value] of RESERVED_FILENAMES.entries())
   {
     if (str === key)
-    {
-      str = value;
-      return str;
-    }
+      return value;
   }
 
   for (let i = 1; i <= 9; i++)
   {
     // Escape COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9.
     if (str === `com${i}`)
-    {
-      str = `~com${i}~`;
-      return str;
-    }
+      return `~com${i}~`;
 
     // Escape LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, LPT9.
     if (str === `lpt${i}`)
-    {
-      str = `~lpt${i}~`;
-      return str;
-    }
+      return `~lpt${i}~`;
   }
 
   return str;
@@ -502,33 +495,36 @@ function escapeReservedFilenames(str: string)
 
 function escapeControlCharacters(str: string)
 {
+  let result = str;
+
   // Escape control characters (0x00–0x1F)
   for (let i = 0x00; i < 0x1F; i++)
-    str = replaceControlCharacter(str, i);
+    result = replaceControlCharacter(result, i);
 
   // Escape control characters (0x80–0x9F)
   for (let i = 0x80; i < 0x9F; i++)
-    str = replaceControlCharacter(str, i);
+    result = replaceControlCharacter(result, i);
 
-  return str;
+  return result;
 }
 
 function escapeTrailingCharacter(str: string, character: string)
 {
   if (str.slice(-1) === character)
-    str = `${str.slice(0, -1)}~${character}~`;
+    return `${str.slice(0, -1)}~${character}~`;
 
   return str;
 }
 
 function encodeStringAsFileName(str: string)
 {
-  str = str.toLowerCase();
-  str = escapeReservedCharacters(str);
-  str = escapeReservedFilenames(str);
-  str = escapeControlCharacters(str);
-  str = escapeTrailingCharacter(str, ".");
-  str = escapeTrailingCharacter(str, " ");
+  let result = str.toLowerCase();
 
-  return str;
+  result = escapeReservedCharacters(result);
+  result = escapeReservedFilenames(result);
+  result = escapeControlCharacters(result);
+  result = escapeTrailingCharacter(result, ".");
+  result = escapeTrailingCharacter(result, " ");
+
+  return result;
 }

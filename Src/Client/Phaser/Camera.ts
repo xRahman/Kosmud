@@ -8,16 +8,16 @@ export class Camera
 
   private camera: Phaser.Cameras.Scene2D.Camera;
 
-  public update()
-  {
-    // // Note: Setting 'x' and 'y' to the camera ignores
-    // // 'scrollFactor' set on game objects. So in  order to
-    // // 'use scrollFactor' we need to set 'scrollX' and 'scrollY'.
-    // if (this.camera.scrollX < -500 || this.camera.scrollX > 500)
-    //   this.camera.scrollX -= 1;
-    // else
-    //   this.camera.scrollX += 1;
-  }
+  // public update()
+  // {
+  //   // Note: Setting 'x' and 'y' to the camera ignores
+  //   // 'scrollFactor' set on game objects. So in  order to
+  //   // 'use scrollFactor' we need to set 'scrollX' and 'scrollY'.
+  //   if (this.camera.scrollX < -500 || this.camera.scrollX > 500)
+  //     this.camera.scrollX -= 1;
+  //   else
+  //     this.camera.scrollX += 1;
+  // }
 }
 
 // ----------------- Auxiliary Functions ---------------------

@@ -21,63 +21,63 @@ export class KeyboardInput extends Shared.KeyboardInput
     switch (this.startOrStop)
     {
       case "Start":
-        this.startMovingShip(this.action);
+        startMovingShip(this.action);
         break;
 
       case "Stop":
-        this.stopMovingShip(this.action);
+        stopMovingShip(this.action);
         break;
 
       default:
         throw Utils.reportMissingCase(this.startOrStop);
     }
   }
-
-  // --------------- Private methods --------------------
-
-  private startMovingShip(action: Shared.KeyboardInput.Action)
-  {
-    switch (action)
-    {
-      case "Left":
-        Game.ship.startTurningLeft();
-        break;
-
-      case "Right":
-        Game.ship.startTurningRight();
-        break;
-
-      case "Forward":
-        Game.ship.moveForward();
-        break;
-
-      case "Backward":
-        Game.ship.moveBackward();
-        break;
-
-      default:
-        throw Utils.reportMissingCase(action);
-    }
-  }
-
-  private stopMovingShip(action: Shared.KeyboardInput.Action)
-  {
-    switch (action)
-    {
-      case "Left":
-      case "Right":
-        Game.ship.stopTurning();
-        break;
-
-      case "Forward":
-      case "Backward":
-        Game.ship.stopMoving();
-        break;
-
-      default:
-        throw Utils.reportMissingCase(action);
-    }
-  }
 }
 
 // This class is registered in Server/Net/Connection.
+
+// ----------------- Auxiliary Functions ---------------------
+
+function startMovingShip(action: Shared.KeyboardInput.Action)
+{
+  switch (action)
+  {
+    case "Left":
+      Game.ship.startTurningLeft();
+      break;
+
+    case "Right":
+      Game.ship.startTurningRight();
+      break;
+
+    case "Forward":
+      Game.ship.moveForward();
+      break;
+
+    case "Backward":
+      Game.ship.moveBackward();
+      break;
+
+    default:
+      throw Utils.reportMissingCase(action);
+  }
+}
+
+function stopMovingShip(action: Shared.KeyboardInput.Action)
+{
+  switch (action)
+  {
+    case "Left":
+    case "Right":
+      Game.ship.stopTurning();
+      break;
+
+    case "Forward":
+    case "Backward":
+      Game.ship.stopMoving();
+      break;
+
+    default:
+      throw Utils.reportMissingCase(action);
+  }
+}

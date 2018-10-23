@@ -9,9 +9,7 @@ export namespace StringUtils
   export function replaceCRLFwithLF(data: string)
   {
     if (data && data.length > 0)
-    {
-      data = data.replace(/\r/gi, "");
-    }
+      return data.replace(/\r/gi, "");
 
     return data;
   }
@@ -66,15 +64,15 @@ export namespace StringUtils
 
   export function ensureDotAtTheEnd(str: string): string
   {
-    // Note: 'str' is trimmed from the right before the dot
-    // is added so you don't end up with a dot on the new line,
-    // after a space or a tab, etc.
-    str = trimRight(str);
+    // Trim 'str' from the right before the dot is added so
+    // you don't end up with a dot on the new line, after
+    // a space or a tab, etc.
+    const result = trimRight(str);
 
-    if (str.slice(-1) !== ".")
-      return `${str}.`;
+    if (result.slice(-1) !== ".")
+      return `${result}.`;
 
-    return str;
+    return result;
   }
 
   // Removes lines from the start of the string 'str' that don't
