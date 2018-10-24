@@ -4,21 +4,6 @@
   Tasks definition for vs code.
 */
 
-/*
-  Note:
-    'tsc' is called twice for both client and server code, because
-    when a task is launched in watch mode, no other task will launch
-    after that so we would't be able to run tslint (which needs to
-    be run after the code is ).
-
-    So the order is:
-    1. Remove old build
-    2. Run typescript compiler (without watch mode)
-    3. Run tslint
-    4. Run typescript compiler again (this time in watch mode)
-    (And this is done for both Client and Server code).
-*/
-
 {
   "version": "2.0.0",
   "tasks":
@@ -30,20 +15,6 @@
       "type": "process",
       "isBackground": false,
       "args": [ "./.vscode/RemoveOldBuild.js" ]
-    },
-    {
-      "label": "Build Client",
-      "presentation" : { "panel": "shared" },
-      "command": "node",
-      "type": "process",
-      "isBackground": true,
-      "args":
-      [
-        "./node_modules/typescript/lib/tsc.js",
-        "--project", "./Src/Client"
-      ],
-      "problemMatcher": [ "$tsc" ],
-      "dependsOn": [ "Remove Old Build" ]
     },
     {
       "label": "Lint Client",
@@ -58,12 +29,10 @@
         "--exclude", "**/Src/Shared/Box2D/**/*.*"
       ],
       "problemMatcher": [ "$tslint5" ],
-      "dependsOn": [ "Build Client" ]
+      "dependsOn": [ "Remove Old Build" ]
     },
     {
-      // Run tsc again, this time in watch mode
-      // (if we did it right away, tslint wouldn't run).
-      "label": "Watch Client",
+      "label": "Transpile Client",
       "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
@@ -78,20 +47,6 @@
       "dependsOn": [ "Lint Client" ]
     },
     {
-      "label": "Build Server",
-      "presentation" : { "panel": "shared" },
-      "command": "node",
-      "type": "process",
-      "isBackground": true,
-      "args":
-      [
-        "./node_modules/typescript/lib/tsc.js",
-        "--project", "./Src/Server"
-      ],
-      "problemMatcher": [ "$tsc" ],
-      "dependsOn": [ "Remove Old Build" ]
-    },
-    {
       "label": "Lint Server",
       "presentation" : { "panel": "shared" },
       "command": "node",
@@ -104,12 +59,10 @@
         "--exclude", "**/Src/Shared/Box2D/**/*.*"
       ],
       "problemMatcher": [ "$tslint5" ],
-      "dependsOn": [ "Build Server" ]
+      "dependsOn": [ "Remove Old Build" ]
     },
     {
-      // Run tsc again, this time in watch mode
-      // (if we did it right away, tslint wouldn't run).
-      "label": "Watch Server",
+      "label": "Transpile Server",
       "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
@@ -126,7 +79,7 @@
     {
       "label": "Build",
       "presentation" : { "panel": "shared" },
-      "dependsOn": [ "Watch Client", "Watch Server" ],
+      "dependsOn": [ "Transpile Client", "Transpile Server" ],
       "group":
       {
         "kind": "build",
