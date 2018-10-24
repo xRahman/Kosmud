@@ -79,13 +79,6 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
     že při velkém lagu objekt ustřelí kamsi do dáli. Zastavit ho je mnohem
     lepší).
 
-
------------------------------------------------------------------------
-
-
-TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
-
-
 -----------------------------------------------------------------------
 
 Odložené TODO:

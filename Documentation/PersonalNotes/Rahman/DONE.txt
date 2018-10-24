@@ -1,3 +1,6 @@
+TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
+[done]
+
 TODO: Vyhodit tslint option "no-unused-variables" a nahradit ji typescriptovou.
 [done]
 
