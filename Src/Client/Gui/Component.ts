@@ -61,13 +61,6 @@ export abstract class Component
 
   protected setCss(css: Partial<CSSStyleDeclaration>)
   {
-    if (!this.element)
-    {
-      ERROR("Attempt to set css to component that doesn't have"
-        + " a DOM element yet.");
-      return;
-    }
-
     // Here we iterate over all own properties of 'css' object and
     // set their values to respective properties in this.element.style.
     // (It works because 'css' has the same properties as

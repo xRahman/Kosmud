@@ -1,7 +1,9 @@
 TODO: Vyhodit tslint option "no-unused-variables" a nahradit ji typescriptovou.
+[done]
 
 TODO: Použít https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
 místo stávající extension.
+- nefunguje...
 
 TODO: Vyzkoušet ještě lint options co chtějí type info.
 

@@ -188,7 +188,6 @@
     "no-boolean-literal-compare": true,
     "no-unnecessary-type-assertion": true,
     "return-undefined": true,
-    "no-unused-variable": true,
     "no-void-expression": true,
     // This would probably be useful.
     "strict-type-predicates": true,
