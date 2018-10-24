@@ -4,13 +4,28 @@
   Tasks definition for vs code.
 */
 
+/*
+  Note:
+    'tsc' is called twice for both client and server code, because
+    when a task is launched in watch mode, no other task will launch
+    after that so we would't be able to run tslint (which needs to
+    be run after the code is ).
+
+    So the order is:
+    1. Remove old build
+    2. Run typescript compiler (without watch mode)
+    3. Run tslint
+    4. Run typescript compiler again (this time in watch mode)
+    (And this is done for both Client and Server code).
+*/
+
 {
   "version": "2.0.0",
   "tasks":
   [
     {
       "label": "Remove Old Build",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": false,
@@ -18,14 +33,13 @@
     },
     {
       "label": "Build Client",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": true,
       "args":
       [
         "./node_modules/typescript/lib/tsc.js",
-        // "--watch",
         "--project", "./Src/Client"
       ],
       "problemMatcher": [ "$tsc" ],
@@ -33,7 +47,7 @@
     },
     {
       "label": "Lint Client",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": false,
@@ -50,7 +64,7 @@
       // Run tsc again, this time in watch mode
       // (if we did it right away, tslint wouldn't run).
       "label": "Watch Client",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": true,
@@ -65,14 +79,13 @@
     },
     {
       "label": "Build Server",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": true,
       "args":
       [
         "./node_modules/typescript/lib/tsc.js",
-        // "--watch",
         "--project", "./Src/Server"
       ],
       "problemMatcher": [ "$tsc" ],
@@ -80,7 +93,7 @@
     },
     {
       "label": "Lint Server",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": false,
@@ -97,8 +110,7 @@
       // Run tsc again, this time in watch mode
       // (if we did it right away, tslint wouldn't run).
       "label": "Watch Server",
-      // "presentation" : { "panel": "shared" },
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "command": "node",
       "type": "process",
       "isBackground": true,
@@ -113,7 +125,7 @@
     },
     {
       "label": "Build",
-      "presentation" : { "panel": "new" },
+      "presentation" : { "panel": "shared" },
       "dependsOn": [ "Watch Client", "Watch Server" ],
       "group":
       {

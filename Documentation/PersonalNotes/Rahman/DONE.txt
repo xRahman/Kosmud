@@ -1,3 +1,6 @@
+TODO: Upgradnout verzi typecriptu (a možná i tslintu)
+[done]
+
 TODO (Tslint) import { Cosi } from...
 - pořád se mi to moc nezdá, ale asi jo, no
   (každopádně to dává smysl, je to v podsatě vytahování properties z objektů).

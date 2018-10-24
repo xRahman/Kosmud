@@ -29,12 +29,16 @@ export namespace Types
     target: WebSocket;
   };
 
+  export type OpenEventHandler = (event: Types.OpenEvent) => void;
+
   export type MessageEvent =
   {
     data: WebSocket.Data;
     type: string;
     target: WebSocket;
   };
+
+  export type MessageEventHandler = (event: Types.MessageEvent) => void;
 
   export type ErrorEvent =
   {
@@ -44,6 +48,8 @@ export namespace Types
     target: WebSocket;
   };
 
+  export type ErrorEventHandler = (event: Types.ErrorEvent) => void;
+
   export type CloseEvent =
   {
     wasClean:
@@ -52,6 +58,8 @@ export namespace Types
     reason: string;
     target: WebSocket;
   };
+
+  export type CloseEventHandler = (event: Types.CloseEvent) => void;
 
   // If you exclaim "WTF!" loudly after reading the next two lines of
   // code, I absolutely aggree with you.

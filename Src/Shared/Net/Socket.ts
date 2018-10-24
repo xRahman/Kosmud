@@ -36,10 +36,10 @@ export abstract class Socket extends PacketHandler
   // when the socket closes.
   private listeners =
   {
-    onopen: null as ((event: Types.OpenEvent) => void) | null,
-    onmessage: null as ((event: Types.MessageEvent) => void) | null,
-    onerror: null as ((event: Types.ErrorEvent) => void) | null,
-    onclose: null as ((event: Types.CloseEvent) => void) | null
+    onopen: "Not attached" as (Types.OpenEventHandler | "Not attached"),
+    onmessage: "Not attached" as (Types.MessageEventHandler | "Not attached"),
+    onerror: "Not attached" as (Types.ErrorEventHandler | "Not attached"),
+    onclose: "Not attached" as (Types.CloseEventHandler | "Not attached")
   };
 
   // ---------------- Public methods --------------------
@@ -146,16 +146,16 @@ export abstract class Socket extends PacketHandler
 
   private cleanup()
   {
-    if (this.listeners.onopen)
+    if (this.listeners.onopen !== "Not attached")
       this.webSocket.removeEventListener("open", this.listeners.onopen);
 
-    if (this.listeners.onmessage)
+    if (this.listeners.onmessage !== "Not attached")
       this.webSocket.removeEventListener("message", this.listeners.onmessage);
 
-    if (this.listeners.onerror)
+    if (this.listeners.onerror !== "Not attached")
       this.webSocket.removeEventListener("error", this.listeners.onerror);
 
-    if (this.listeners.onclose)
+    if (this.listeners.onclose !== "Not attached")
       this.webSocket.removeEventListener("close", this.listeners.onclose);
   }
 

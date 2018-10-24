@@ -15,13 +15,13 @@ export class Mouse
     input.on
     (
       "pointerdown",
-      (pointer: Phaser.Input.Pointer) => { this.onMouseDown(pointer); }
+      (pointer: Phaser.Input.Pointer) => { onMouseDown(pointer); }
     );
 
     input.on
     (
       "pointerup",
-      (pointer: Phaser.Input.Pointer) => { this.onMouseUp(pointer); }
+      (pointer: Phaser.Input.Pointer) => { onMouseUp(pointer); }
     );
   }
 
@@ -36,22 +36,6 @@ export class Mouse
   private getMousePosition()
   {
     return new Vector({ x: this.mousePointer.x, y: this.mousePointer.y });
-  }
-
-  private onMouseDown(pointer: Phaser.Input.Pointer)
-  {
-    if (pointer.leftButtonDown())
-    {
-      /// TODO.
-    }
-  }
-
-  private onMouseUp(pointer: Phaser.Input.Pointer)
-  {
-    if (pointer.leftButtonDown())
-    {
-      /// TODO:
-    }
   }
 }
 
@@ -73,5 +57,23 @@ function sendMouseInput(mousePosition: Vector)
   catch (error)
   {
     REPORT(error, "Failed to send mouse input");
+  }
+}
+
+// ---------------- Event handlers --------------------
+
+function onMouseDown(pointer: Phaser.Input.Pointer)
+{
+  if (pointer.leftButtonDown())
+  {
+    /// TODO.
+  }
+}
+
+function onMouseUp(pointer: Phaser.Input.Pointer)
+{
+  if (pointer.leftButtonDown())
+  {
+    /// TODO:
   }
 }

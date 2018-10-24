@@ -13,49 +13,49 @@ export class Keyboard
     keyboard.on
     (
       "keydown_A",
-      () => { this.onKeydownA(); }
+      () => { onKeydownA(); }
     );
 
     keyboard.on
     (
       "keyup_A",
-      () => { this.onKeyupA(); }
+      () => { onKeyupA(); }
     );
 
     keyboard.on
     (
       "keydown_D",
-      () => { this.onKeydownD(); }
+      () => { onKeydownD(); }
     );
 
     keyboard.on
     (
       "keyup_D",
-      () => { this.onKeyupD(); }
+      () => { onKeyupD(); }
     );
 
     keyboard.on
     (
       "keydown_S",
-      () => { this.onKeydownS(); }
+      () => { onKeydownS(); }
     );
 
     keyboard.on
     (
       "keyup_S",
-      () => { this.onKeyupS(); }
+      () => { onKeyupS(); }
     );
 
     keyboard.on
     (
       "keydown_W",
-      () => { this.onKeydownW(); }
+      () => { onKeydownW(); }
     );
 
     keyboard.on
     (
       "keyup_W",
-      () => { this.onKeyupW(); }
+      () => { onKeyupW(); }
     );
 
     // this.W = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -89,102 +89,6 @@ export class Keyboard
   // private A: Phaser.Input.Keyboard.Key;
   // private S: Phaser.Input.Keyboard.Key;
   // private D: Phaser.Input.Keyboard.Key;
-
-  private onKeyupA()
-  {
-    try
-    {
-      sendKeyboardInput("Left", "Stop");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeydownA()
-  {
-    try
-    {
-      sendKeyboardInput("Left", "Start");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeyupD()
-  {
-    try
-    {
-      sendKeyboardInput("Right", "Stop");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeydownD()
-  {
-    try
-    {
-      sendKeyboardInput("Right", "Start");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeyupS()
-  {
-    try
-    {
-      sendKeyboardInput("Backward", "Stop");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeydownS()
-  {
-    try
-    {
-      sendKeyboardInput("Backward", "Start");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeyupW()
-  {
-    try
-    {
-      sendKeyboardInput("Forward", "Stop");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
-
-  private onKeydownW()
-  {
-    try
-    {
-      sendKeyboardInput("Forward", "Start");
-    }
-    catch (error)
-    {
-      Syslog.reportUncaughtException(error);
-    }
-  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
@@ -209,5 +113,103 @@ function sendKeyboardInput
   catch (error)
   {
     REPORT(error, "Failed to send keyboard input");
+  }
+}
+
+// ---------------- Event handlers --------------------
+
+function onKeyupA()
+{
+  try
+  {
+    sendKeyboardInput("Left", "Stop");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeydownA()
+{
+  try
+  {
+    sendKeyboardInput("Left", "Start");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeyupD()
+{
+  try
+  {
+    sendKeyboardInput("Right", "Stop");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeydownD()
+{
+  try
+  {
+    sendKeyboardInput("Right", "Start");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeyupS()
+{
+  try
+  {
+    sendKeyboardInput("Backward", "Stop");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeydownS()
+{
+  try
+  {
+    sendKeyboardInput("Backward", "Start");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeyupW()
+{
+  try
+  {
+    sendKeyboardInput("Forward", "Stop");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
+  }
+}
+
+function onKeydownW()
+{
+  try
+  {
+    sendKeyboardInput("Forward", "Start");
+  }
+  catch (error)
+  {
+    Syslog.reportUncaughtException(error);
   }
 }
