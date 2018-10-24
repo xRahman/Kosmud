@@ -1,7 +1,3 @@
-TODO: Smazat ./vscode/Build, až ho nebudu potřebovat.
-
-
-
 
 TODO: Debugové zobrazení fyziky na klientu
   - physics body (obrys)

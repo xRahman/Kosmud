@@ -1,3 +1,5 @@
+TODO: Smazat ./vscode/Build, až ho nebudu potřebovat.
+
 TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
 [done]
 
