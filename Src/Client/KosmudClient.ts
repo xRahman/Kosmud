@@ -28,7 +28,7 @@ function start()
   catch (error)
   {
     REPORT(error, "Failed to start the client");
-    alert(`Failed to start (${error.message})`);
+    alert(`Failed to start`);
   }
 }
 

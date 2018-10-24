@@ -65,7 +65,7 @@ export class Body extends Component
   // ----------------- Private data ---------------------
 
   /// TEMPORARY (CanvasDiv should be a window).
-  private canvasDiv: CanvasDiv;
+  private readonly canvasDiv: CanvasDiv;
 
   // ---------------- Event handlers --------------------
 
