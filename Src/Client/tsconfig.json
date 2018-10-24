@@ -17,8 +17,7 @@
     // Unfortunaly this doesn't work very well in vs code.
     // 'baseUrl' points to Src so we don't have to use '../../..' in imports.
     // "baseUrl": "../",
-    "sourceMap": true,
-    "noUnusedLocals": true
+    "sourceMap": true
     // "sourceRoot": "../",
     // // Print names of generated files during the compilation.
     // "listFiles": true,

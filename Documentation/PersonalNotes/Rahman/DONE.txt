@@ -1,3 +1,74 @@
+TODO: Vyhodit tslint option "no-unused-variables" a nahradit ji typescriptovou.
+[done]
+
+TODO: Vyzkoušet ještě lint options co chtějí type info.
+- nepovedlo se mi rozběhat.
+[done]
+
+TODO: Zkusit pouštět tslint před tsc (sice v tslintu píšou,
+  že se má pouštět až na zkompilovaný kód, ale třeba to není
+  nutný).
+  - pokud to bude ok, tak smazat příslušné commenty v tasks.json.
+[done]
+
+TODO: Přidat do build tasku mazání starého buildu.
+[done]
+
+TODO: Možná do build tasku hodit i lint celého kódu
+  (ideálně s type information), ať se při rebuildu
+  checkne všechno.
+- pokud to rozběhnu, budu potřebovat -e na ignorování Box2d.
+[done]
+
+for those who use vscode with tslint as editor/lintinig you can add the
+following to the vscode config:
+// Configure glob patterns of file paths to exclude from linting
+"tslint.exclude": "**/PATH_eg_TESTS/**/*.ts"
+- musím opravit liter errory, abych zjistil, jestli to pak pustí tsc
+  ve watch módu
+[done]
+
+TODO: Zvážit použití
+  https://marketplace.visualstudio.com/items?itemName=eg2.ts-tslint
+  (kvůlivá kontrolám, které vyžadují type information)
+- nepovedlo se mi rozběhat
+[done]
+
+Warning: member-ordering - Bad member kind: public-before-private
+Warning: The 'prefer-readonly' rule requires type information.
+Warning: The 'promise-function-async' rule requires type information.
+Warning: The 'await-promise' rule requires type information.
+Warning: The 'no-floating-promises' rule requires type information.
+Warning: The 'no-for-in-array' rule requires type information.
+Warning: The 'no-inferred-empty-object-type' rule requires type information.
+Warning: The 'no-unsafe-any' rule requires type information.
+Warning: The 'restrict-plus-operands' rule requires type information.
+Warning: The 'strict-boolean-expressions' rule requires type information.
+Warning: The 'use-default-type-parameter' rule requires type information.
+Warning: The 'deprecation' rule requires type information.
+Warning: The 'match-default-export-name' rule requires type information.
+Warning: The 'no-boolean-literal-compare' rule requires type information.
+Warning: The 'no-unnecessary-type-assertion' rule requires type information.
+Warning: The 'return-undefined' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: member-ordering - Bad member kind: public-before-private
+[Warn  - 6:31:20 PM] Warning: The 'prefer-readonly' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'promise-function-async' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'await-promise' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-floating-promises' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-for-in-array' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-inferred-empty-object-type' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-unsafe-any' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'restrict-plus-operands' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'strict-boolean-expressions' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'use-default-type-parameter' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'deprecation' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'match-default-export-name' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-boolean-literal-compare' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'no-unnecessary-type-assertion' rule requires type information.
+[Warn  - 6:31:20 PM] Warning: The 'return-undefined' rule requires type information.
+[Warn  - 6:33:48 PM] vscode-tslint: Cannot read tslint configuration - 'Failed to load c:\Brutus\Kosmud\Src\tslint.json: Unexpected string in JSON at position 1515 in c:\Brutus\Kosmud\Src\tslint.json'
+[done]
+
 TODO: Upgradnout verzi typecriptu (a možná i tslintu)
 [done]
 

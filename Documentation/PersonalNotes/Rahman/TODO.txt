@@ -1,88 +1,5 @@
-TODO: Vyhodit tslint option "no-unused-variables" a nahradit ji typescriptovou.
-[done]
-
-TODO: Použít https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
-místo stávající extension.
-- nefunguje...
-
-TODO: Vyzkoušet ještě lint options co chtějí type info.
-
-TODO: Zkusit pouštět tslint před tsc (sice v tslintu píšou,
-  že se má pouštět až na zkompilovaný kód, ale třeba to není
-  nutný).
-  - pokud to bude ok, tak smazat příslušné commenty v tasks.json.
-
 TODO: Smazat ./vscode/Build, až ho nebudu potřebovat.
 
-TODO: Přidat do build tasku mazání starého buildu.
-- popravdě asi bude nejlepší se vrátit k původnímu buildování
-  (pokud s tím bude fungovat tslint)
-
-TODO: Možná do build tasku hodit i lint celého kódu
-  (ideálně s type information), ať se při rebuildu
-  checkne všechno.
-- pokud to rozběhnu, budu potřebovat -e na ignorování Box2d
-.
-for those who use vscode with tslint as editor/lintinig you can add the
-following to the vscode config:
-// Configure glob patterns of file paths to exclude from linting
-"tslint.exclude": "**/PATH_eg_TESTS/**/*.ts"
-- musím opravit liter errory, abych zjistil, jestli to pak pustí tsc
-  ve watch módu
-[maybe]
-
-
-TODO: Zvážit použití
-  https://marketplace.visualstudio.com/items?itemName=eg2.ts-tslint
-  (kvůlivá kontrolám, které vyžadují type information)
-
-Warning: member-ordering - Bad member kind: public-before-private
-Warning: The 'prefer-readonly' rule requires type information.
-Warning: The 'promise-function-async' rule requires type information.
-Warning: The 'await-promise' rule requires type information.
-Warning: The 'no-floating-promises' rule requires type information.
-Warning: The 'no-for-in-array' rule requires type information.
-Warning: The 'no-inferred-empty-object-type' rule requires type information.
-Warning: The 'no-unsafe-any' rule requires type information.
-Warning: The 'restrict-plus-operands' rule requires type information.
-Warning: The 'strict-boolean-expressions' rule requires type information.
-Warning: The 'use-default-type-parameter' rule requires type information.
-Warning: The 'deprecation' rule requires type information.
-Warning: The 'match-default-export-name' rule requires type information.
-Warning: The 'no-boolean-literal-compare' rule requires type information.
-Warning: The 'no-unnecessary-type-assertion' rule requires type information.
-Warning: The 'return-undefined' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: member-ordering - Bad member kind: public-before-private
-[Warn  - 6:31:20 PM] Warning: The 'prefer-readonly' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'promise-function-async' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'await-promise' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'no-floating-promises' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'no-for-in-array' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'no-inferred-empty-object-type' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'no-unsafe-any' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'restrict-plus-operands' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'strict-boolean-expressions' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'use-default-type-parameter' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'deprecation' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'match-default-export-name' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'no-boolean-literal-compare' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'no-unnecessary-type-assertion' rule requires type information.
-[Warn  - 6:31:20 PM] Warning: The 'return-undefined' rule requires type information.
-[Warn  - 6:33:48 PM] vscode-tslint: Cannot read tslint configuration - 'Failed to load c:\Brutus\Kosmud\Src\tslint.json: Unexpected string in JSON at position 1515 in c:\Brutus\Kosmud\Src\tslint.json'
-
-
-
-TODO: Tslint (co momentálně nejde v tslintu nastavit):
-- zakázat newline na konci souboru
-- Vyžadovat newline za if (), while() a podobně
-  (teď se dá napsat na jednu řádku if (x === 0) { doSomething(); }).
-- závorky za funkcí (volání i deklarace)
-- jednořádkové if/for/do/while
-  (mělo by to bejt tak, že když je za ifem jeden řádek a je to return nebo
-   throw, tak {} být nemusí, jinak ano).
-   - Hmm a vlastně ani to vždycky neplatí, protože když je za ifem
-     throw new Error(), kterej se nevejde na jeden řádek, tak je taky lepší
-     ho uzávorkovat do {}.
 
 
 
@@ -201,6 +118,19 @@ https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width
 
 Výhledové TODO:
 -----------------
+
+TODO: Tslint (co momentálně nejde v tslintu nastavit):
+- zakázat newline na konci souboru
+- Vyžadovat newline za if (), while() a podobně
+  (teď se dá napsat na jednu řádku if (x === 0) { doSomething(); }).
+- závorky za funkcí (volání i deklarace)
+- jednořádkové if/for/do/while
+  (mělo by to bejt tak, že když je za ifem jeden řádek a je to return nebo
+   throw, tak {} být nemusí, jinak ano).
+   - Hmm a vlastně ani to vždycky neplatí, protože když je za ifem
+     throw new Error(), kterej se nevejde na jeden řádek, tak je taky lepší
+     ho uzávorkovat do {}.
+- kontroly vyžadující type information
 
 TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
 - jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'

@@ -1,5 +1,5 @@
 ﻿Install tslint extension
 -------------------------
 
-TODO: Zatím nevím jakou.
+https://marketplace.visualstudio.com/items?itemName=eg2.tslint
 
