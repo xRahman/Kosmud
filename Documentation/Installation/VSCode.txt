@@ -1,0 +1,4 @@
+﻿Install tslint plugin extension
+-------------------------
+
+https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
