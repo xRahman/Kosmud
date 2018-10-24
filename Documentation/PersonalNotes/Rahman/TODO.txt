@@ -1,3 +1,6 @@
+TODO: Destination marker by se výhledově asi měl renderovat v nějaké UI scéně
+(aby nescaloval se zoomováním - i když, možná to bude ok...).
+
 
 TODO: Debugové zobrazení fyziky na klientu
   - physics body (obrys)

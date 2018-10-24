@@ -23,12 +23,10 @@ export class Vector
   public x: number;
   public y: number;
 
-  public set(x: number, y: number): this
+  public set({ x, y }: { x: number; y: number })
   {
     this.x = x;
     this.y = y;
-
-    return this;
   }
 
   public setZero(): this
@@ -210,6 +208,12 @@ export class Vector
   public isValid(): boolean
   {
     return isFinite(this.x) && isFinite(this.y);
+  }
+
+  public equals(vector: Vector): boolean
+  {
+    return Math.abs(this.x - vector.x) <= Number.EPSILON
+        && Math.abs(this.y - vector.y) <= Number.EPSILON;
   }
 
   public static negate({ x, y }: { x: number; y: number }): Vector

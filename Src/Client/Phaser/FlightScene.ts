@@ -1,6 +1,7 @@
 import { ShipToScene } from "../../Client/Protocol/ShipToScene";
 import { Background } from "../../Client/Phaser/Background";
 import { Ship } from "../../Client/Phaser/Ship";
+import { DestinationMarker } from "../../Client/Phaser/DestinationMarker";
 import { FlightSceneContents } from "../../Client/Phaser/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
 
@@ -51,10 +52,7 @@ export class FlightScene extends Scene
   // This method is run by Phaser.
   public preload()
   {
-    /// Preloady jsou static - na preloadnuté assety se později
-    /// odkazuje idčkem, nedrží se přímé reference.
-    Background.preload(this);
-    Ship.preload(this);
+    FlightSceneContents.preload(this);
   }
 
   // ! Throws exception on error.
@@ -80,6 +78,8 @@ export class FlightScene extends Scene
       throw new Error(`Failed to update scene '${this.name}'`
         + ` because scene contents doesn't exist`);
     }
+
+    this.contents.destinationMarker.update(this.contents.mouse);
 
     // this.contents.camera.update();
     this.contents.mouse.update();

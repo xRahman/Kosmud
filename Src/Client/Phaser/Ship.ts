@@ -7,6 +7,10 @@ const SHIP_SPRITE_ID = "ship";
 
 export class Ship
 {
+  private container: Phaser.GameObjects.Container;
+  private sprite: Phaser.GameObjects.Sprite;
+  private debugGraphics: Graphics;
+
   constructor
   (
     private scene: Phaser.Scene,
@@ -22,15 +26,13 @@ export class Ship
     this.debugGraphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
     this.debugGraphics.drawBodyGeometry(geometry);
     this.container.add(this.debugGraphics.getPhaserObject());
-  }
 
-  private container: Phaser.GameObjects.Container;
-  private sprite: Phaser.GameObjects.Sprite;
-  private debugGraphics: Graphics;
+    this.setPositionAndAngle(position, angle);
+  }
 
   public static preload(scene: Phaser.Scene)
   {
-    scene.load.image(SHIP_SPRITE_ID, "/graphics/ships/hecate.png");
+    scene.load.image(SHIP_SPRITE_ID, "/Graphics/Ships/hecate.png");
   }
 
   // ---------------- Public methods --------------------
