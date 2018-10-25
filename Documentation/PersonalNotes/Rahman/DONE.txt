@@ -1,3 +1,7 @@
+TODO: Destination market by měl zmizet, když na cílové místo dorazím.
+- to je asi zbytečný, loď ho prostě překreje.
+[won't do]
+
 TODO: Zvážit, jestli místo matter.js nepoužít radši Box2d
 - zváženo a použito
 [done]
