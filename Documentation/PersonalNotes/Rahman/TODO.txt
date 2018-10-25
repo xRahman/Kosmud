@@ -1,3 +1,6 @@
+TODO: DestinationMarker by se možná mohl jmenovat Waypoint
+  (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
+
 
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).
