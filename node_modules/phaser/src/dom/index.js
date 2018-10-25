@@ -8,7 +8,7 @@
  * @namespace Phaser.DOM
  */
 
-module.exports = {
+var Dom = {
 
     AddToDOM: require('./AddToDOM'),
     DOMContentLoaded: require('./DOMContentLoaded'),
@@ -17,3 +17,5 @@ module.exports = {
     RequestAnimationFrame: require('./RequestAnimationFrame')
 
 };
+
+module.exports = Dom;

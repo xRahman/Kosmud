@@ -1,4 +1,18 @@
+TODO: Seekovat k destination markeru, ne k pozici myši.
+- to asi znamená, posílat něco jinýho než MouseInput.
+TODO: Vyrobit a posílat paket SetDestination
+TODO: Zpracovávat SetDestination na serveru (místo MouseInputu).
+[done]
+
+TODO: Destination marker má zůstat viditelný i po releasu buttonu
+[done]
+
+TODO: Opravit detektování mouse-down.
+- je to chyba v Phaseru
+[done]
+
 TODO: Smazat ./vscode/Build, až ho nebudu potřebovat.
+[done]
 
 TODO: Updatovat verzi tasks.json (budu to muset celý předělat...)
 [done]

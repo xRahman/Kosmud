@@ -57,6 +57,9 @@ var CreateRenderer = function (game)
     if (config.canvas)
     {
         game.canvas = config.canvas;
+
+        game.canvas.width = game.config.width;
+        game.canvas.height = game.config.height;
     }
     else
     {
@@ -97,9 +100,6 @@ var CreateRenderer = function (game)
         if (config.renderType === CONST.WEBGL)
         {
             game.renderer = new WebGLRenderer(game);
-
-            //  The WebGL Renderer sets this value during its init, not on construction
-            game.context = null;
         }
         else
         {
@@ -116,9 +116,6 @@ var CreateRenderer = function (game)
         config.renderType = CONST.WEBGL;
 
         game.renderer = new WebGLRenderer(game);
-
-        //  The WebGL Renderer sets this value during its init, not on construction
-        game.context = null;
     }
 
     if (!typeof WEBGL_RENDERER && typeof CANVAS_RENDERER)

@@ -16,6 +16,7 @@ export class PhaserEngine
         type: Phaser.AUTO,
         width,
         height,
+        disableContextMenu: true,
         parent: CanvasDiv.ELEMENT_ID,
         scene: this.flightScene
       }

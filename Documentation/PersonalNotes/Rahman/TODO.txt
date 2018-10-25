@@ -1,5 +1,17 @@
+TODO: SetDestination by se asi mělo posílat z něčeho jinýho než
+  z DestinationMarkeru.
+
+TODO: Destination market by měl zmizet, když na cílové místo dorazím
+
+TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
+
+TODO: Zamyslet se nad linter messagema se zapnutými type checky
+  (i když to třeba pak nechám vypnutý).
+
 TODO: Destination marker by se výhledově asi měl renderovat v nějaké UI scéně
 (aby nescaloval se zoomováním - i když, možná to bude ok...).
+- zoomování vypadá ok.
+TODO: Dát mu Z-order (menší než DEBUG ale větší než DEFAULT).
 
 
 TODO: Debugové zobrazení fyziky na klientu

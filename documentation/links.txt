@@ -58,6 +58,18 @@ https://gamedevelopment.tutsplus.com/tutorials/parallax-scrolling-a-simple-effec
 Scene manager:
 https://photonstorm.github.io/phaser3-docs/Phaser.Scenes.SceneManager.html#methods
 
+
+Rectangle selection by mouse example
+-------------------------------------
+http://labs.phaser.io/edit.html?src=src\input\pointer\pointer%20buttons.js
+
+
+Ztmavení spritu:
+--------------------------
+sprite.setTint(0x7878ff);
+sprite.clearTint();
+https://labs.phaser.io/edit.html?src=src\input\mouse\circle%20hit%20area.js
+
 ==============================================================
 
 matter.js physics engine

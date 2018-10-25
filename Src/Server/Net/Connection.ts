@@ -16,6 +16,7 @@ import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
 import { KeyboardInput } from "../../Server/Protocol/KeyboardInput";
 import { MouseInput } from "../../Server/Protocol/MouseInput";
+import { SetDestination } from "../../Server/Protocol/SetDestination";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
@@ -29,6 +30,7 @@ Classes.registerSerializableClass(SceneUpdate);
 Classes.registerSerializableClass(ShipToScene);
 Classes.registerSerializableClass(KeyboardInput);
 Classes.registerSerializableClass(MouseInput);
+Classes.registerSerializableClass(SetDestination);
 
 export class Connection extends Socket
 {

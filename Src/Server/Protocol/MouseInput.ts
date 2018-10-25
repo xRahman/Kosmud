@@ -7,7 +7,7 @@
 */
 
 import { Connection } from "../../Server/Net/Connection";
-import { Game } from "../../Server/Game/Game";
+// import { Game } from "../../Server/Game/Game";
 import * as Shared from "../../Shared/Protocol/MouseInput";
 
 export class MouseInput extends Shared.MouseInput
@@ -15,9 +15,10 @@ export class MouseInput extends Shared.MouseInput
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().
+  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
-    Game.ship.seekPosition(this.mousePosition);
+    // Game.ship.seekPosition(this.mousePosition);
   }
 }
 

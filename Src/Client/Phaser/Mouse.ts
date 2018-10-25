@@ -5,27 +5,33 @@ import { Connection } from "../../Client/Net/Connection";
 
 export class Mouse
 {
-  // private lmbDown = false;
-  // private rmbDown = false;
+  // private leftButtonDown = false;
+  // private middleButtonDown = false;
+  // private rightButtonDown = false;
 
   constructor(input: Phaser.Input.InputPlugin)
   {
-    // this.mousePointer = input.activePointer;
-    this.mousePointer = input.mousePointer;
+    this.mousePointer = input.activePointer;
     this.mouseManager = input.mouse;
 
-    this.mouseManager.disableContextMenu();
-
-    // input.on
-    // (
-    //   "pointerdown",
-    //   (pointer: Phaser.Input.Pointer) => { this.onMouseDown(pointer); }
-    // );
+    // this.mouseManager.disableContextMenu();
 
     // input.on
     // (
     //   "pointerup",
-    //   (pointer: Phaser.Input.Pointer) => { this.onMouseUp(pointer); }
+    //   (pointer: Phaser.Input.Pointer) => { this.onPointerUp(pointer); }
+    // );
+
+    // input.on
+    // (
+    //   "pointerdown",
+    //   (pointer: Phaser.Input.Pointer) => { this.onPointerDown(pointer); }
+    // );
+
+    // input.on
+    // (
+    //   "pointermove",
+    //   (pointer: Phaser.Input.Pointer) => { this.onPointerMove(pointer); }
     // );
   }
 
@@ -33,6 +39,7 @@ export class Mouse
   private mouseManager: Phaser.Input.Mouse.MouseManager;
 
   public isLeftButtonDown() { return this.mousePointer.leftButtonDown(); }
+  public isMiddleButtonDown() { return this.mousePointer.middleButtonDown(); }
   public isRightButtonDown() { return this.mousePointer.rightButtonDown(); }
 
   public update()
@@ -47,36 +54,37 @@ export class Mouse
 
   // ---------------- Event handlers --------------------
 
-  /// Zapamatovávat si, kdy je co značknuté, zjevně nemusím - dá
-  /// se to číst z phaser pointeru.
-  // private onMouseDown(pointer: Phaser.Input.Pointer)
+  // private onPointerUp(pointer: Phaser.Input.Pointer)
   // {
   //   if (pointer.leftButtonDown())
-  //   {
-  //     /// TODO.
-  //     // Přesunout značku pro target location.
-  //     this.lmbDown = true;
-  //   }
+  //     this.leftButtonDown = false;
+
+  //   if (pointer.middleButtonDown())
+  //     this.middleButtonDown = false;
 
   //   if (pointer.rightButtonDown())
-  //   {
-  //     this.rmbDown = true;
-  //   }
+  //     this.rightButtonDown = false;
   // }
 
-  // private onMouseUp(pointer: Phaser.Input.Pointer)
+  // private onPointerDown(pointer: Phaser.Input.Pointer)
   // {
   //   if (pointer.leftButtonDown())
-  //   {
-  //     /// TODO:
+  //     this.leftButtonDown = true;
 
-  //     this.lmbDown = false;
-  //   }
+  //   if (pointer.middleButtonDown())
+  //     this.middleButtonDown = true;
 
   //   if (pointer.rightButtonDown())
-  //   {
-  //     this.rmbDown = false;
-  //   }
+  //     this.rightButtonDown = true;
+  // }
+
+  // private onPointerMove(pointer: Phaser.Input.Pointer)
+  // {
+  //   this.leftButtonDown = pointer.leftButtonDown();
+
+  //   this.middleButtonDown = pointer.middleButtonDown();
+
+  //   this.rightButtonDown = pointer.rightButtonDown();
   // }
 }
 
