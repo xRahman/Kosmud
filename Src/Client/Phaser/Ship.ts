@@ -5,6 +5,9 @@ import { FlightScene } from "../../Client/Phaser/FlightScene";
 
 const SHIP_SPRITE_ID = "ship";
 
+const Z_ORDER_SHIP_SPRITE = 0;
+const Z_ORDER_DEBUG = Z_ORDER_SHIP_SPRITE + 1;
+
 export class Ship
 {
   private container: Phaser.GameObjects.Container;
@@ -20,10 +23,13 @@ export class Ship
   )
   {
     this.container = scene.add.container(0, 0);
+
+    this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
+
     this.sprite = createShipSprite(this.scene);
     this.container.add(this.sprite);
 
-    this.debugGraphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
+    this.debugGraphics = new Graphics(scene, Z_ORDER_DEBUG);
     this.debugGraphics.drawBodyGeometry(geometry);
     this.container.add(this.debugGraphics.getPhaserObject());
 
@@ -50,7 +56,10 @@ export class Ship
 function createShipSprite(scene: Phaser.Scene)
 {
   const shipSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
+
   // shipSprite.setScrollFactor(0.5);
+
+  shipSprite.setDepth(Z_ORDER_SHIP_SPRITE);
 
   return shipSprite;
 }

@@ -1,9 +1,3 @@
-TODO: SetDestination by se asi mělo posílat z něčeho jinýho než
-  z DestinationMarkeru.
-
-TODO: Destination market by měl zmizet, když na cílové místo dorazím
-
-TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).
@@ -12,6 +6,14 @@ TODO: Destination marker by se výhledově asi měl renderovat v nějaké UI sc�
 (aby nescaloval se zoomováním - i když, možná to bude ok...).
 - zoomování vypadá ok.
 TODO: Dát mu Z-order (menší než DEBUG ale větší než DEFAULT).
+- správně by to mělo bejt:
+  Překážky ve scéně
+  - Waypointy
+    - Ship
+      - debug graphics
+TODO: Dát lodi Z_ORDER_SHIPS
+IMPORTANT: depth je potřeba nastavit kontejneru (v Ship). Celej obsah
+  containeru má zřejmě jeho depth (+ uvnitř to ještě může bejt jinak).
 
 
 TODO: Debugové zobrazení fyziky na klientu
@@ -67,8 +69,6 @@ TODO: Shared/Game/Ship je možná zbytečná, Ship na clientu z ní není
 
 -----------------------------------------------------------------------
 
-TODO: Zvážit, jestli místo matter.js nepoužít radši Box2d
-
 
 Prozatímní řešení client-server predikce
 -----------------------------------------
@@ -94,6 +94,19 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 
 Odložené TODO:
 ---------------
+
+
+TODO: SetDestination by se asi mělo posílat z něčeho jinýho než
+  z DestinationMarkeru.
+
+TODO: Destination market by měl zmizet, když na cílové místo dorazím.
+
+TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
+  (momentálně mám hacknutou client-side opravu v 'up: function (event, time)').
+  https://github.com/photonstorm/phaser/issues/3779
+
+
+
 
 TODO: Výhledově zrušit posílání ShipToScene
   z WebSocketServer.acceptConnection()

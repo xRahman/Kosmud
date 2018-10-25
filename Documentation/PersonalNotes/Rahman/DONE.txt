@@ -1,3 +1,7 @@
+TODO: Zvážit, jestli místo matter.js nepoužít radši Box2d
+- zváženo a použito
+[done]
+
 TODO: Seekovat k destination markeru, ne k pozici myši.
 - to asi znamená, posílat něco jinýho než MouseInput.
 TODO: Vyrobit a posílat paket SetDestination

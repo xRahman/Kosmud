@@ -120,7 +120,7 @@ export class FlightScene extends Scene
   private queueAddShipRequest(request: ShipToScene)
   {
     /// DEBUG:
-    console.log("Queueing ship add request");
+    // console.log("Queueing ship add request");
 
     this.addRequestQueue.push(request);
   }
@@ -130,7 +130,7 @@ export class FlightScene extends Scene
     for (const request of this.addRequestQueue)
     {
       /// DEBUG:
-      console.log("Creating ship based on queued request");
+      // console.log("Creating ship based on queued request");
 
       contents.addShip(this.createShip(request));
     }
@@ -141,5 +141,8 @@ export class FlightScene extends Scene
 
 export namespace FlightScene
 {
-  export const Z_ORDER_DEBUG = Scene.Z_ORDER_DEFAULT + 1;
+  export const Z_ORDER_OBSTACLES = Scene.Z_ORDER_DEFAULT + 1;
+  export const Z_ORDER_WAYPOINTS = Z_ORDER_OBSTACLES + 1;
+  export const Z_ORDER_SHIPS = Z_ORDER_WAYPOINTS + 1;
+  // export const Z_ORDER_DEBUG = Z_ORDER_SHIPS + 1;
 }

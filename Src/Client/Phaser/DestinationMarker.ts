@@ -1,3 +1,4 @@
+import { FlightScene } from "../../Client/Phaser/FlightScene";
 import { SetDestination } from "../../Shared/Protocol/SetDestination";
 import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";
@@ -85,12 +86,16 @@ export class DestinationMarker
 
 function createSprite(scene: Phaser.Scene, position: Vector)
 {
-  return scene.add.sprite
+  const sprite = scene.add.sprite
   (
     position.x,
     position.y,
     DESTINATION_MARKER_SPRITE_ID
   );
+
+  sprite.setDepth(FlightScene.Z_ORDER_WAYPOINTS);
+
+  return sprite;
 }
 
 function sendDestination(destination: Vector)

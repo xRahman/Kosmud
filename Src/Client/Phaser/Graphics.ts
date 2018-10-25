@@ -30,7 +30,7 @@ export class Graphics
 
   public drawBodyGeometry(geometry: PhysicsBody.Geometry)
   {
-    this.graphics.lineStyle(1, 0x00FF00, 0.4);
+    this.graphics.lineStyle(1, 0x00FFFF, 0.8);
 
     for (const polygon of geometry)
     {
