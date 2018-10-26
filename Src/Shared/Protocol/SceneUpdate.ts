@@ -11,7 +11,13 @@ import { Vector } from "../../Shared/Physics/Vector";
 
 export class SceneUpdate extends Packet
 {
-  constructor(public shipPosition: Vector, public shipRotationRadians: number)
+  constructor
+  (
+    public shipPosition: Vector,
+    public shipRotationRadians: number,
+    public desiredVelocity: Vector,
+    public steeringForce: Vector
+  )
   {
     super();
   }

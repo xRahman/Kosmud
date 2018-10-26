@@ -69,7 +69,9 @@ function updateClients()
   const sceneUpdate = new SceneUpdate
   (
     Game.ship.getPosition(),
-    Game.ship.getAngle()
+    Game.ship.getAngle(),
+    Game.ship.getDesiredVelocity(),
+    Game.ship.getSteeringForce()
   );
 
   // TODO: Sent all scene update data, not just one ship.

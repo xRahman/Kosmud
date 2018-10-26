@@ -11,38 +11,29 @@ import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private targetPosition: Vector;
+  private desiredPosition: Vector;
+  private desiredVelocity = new Vector();
+  private steeringForce = new Vector();
 
   constructor(private physicsBody: PhysicsBody)
   {
     super(physicsBody.getPosition(), physicsBody.getAngle());
 
-    this.targetPosition = physicsBody.getPosition();
+    this.desiredPosition = physicsBody.getPosition();
   }
 
-  public getPosition()
-  {
-    return this.physicsBody.getPosition();
-  }
+  public getPosition() {  return this.physicsBody.getPosition(); }
 
-  public getAngle()
-  {
-    return this.physicsBody.getAngle();
-  }
+  public getX() { return this.physicsBody.getX(); }
+  public getY() { return this.physicsBody.getY(); }
+  public getAngle() { return this.physicsBody.getAngle(); }
 
-  public getX()
-  {
-    return this.physicsBody.getX();
-  }
-
-  public getY()
-  {
-    return this.physicsBody.getY();
-  }
+  public getDesiredVelocity() { return this.desiredVelocity; }
+  public getSteeringForce() { return this.steeringForce; }
 
   public seekPosition(position: Vector)
   {
-    this.targetPosition = position;
+    this.desiredPosition = position;
   }
 
   public startTurningLeft()
@@ -86,18 +77,20 @@ export class Ship extends Shared.Ship
     // console.log("Steering to position"
     //   + " [" + this.targetPosition.x + ", " + this.targetPosition.y + "]");
 
-    const steeringForce = Steering.seek
+    const steeringResult = Steering.seek
     (
       this.getPosition(),
       this.physicsBody.getVelocity(),
-      this.targetPosition
+      this.desiredPosition
     );
 
     /// DEBUG:
     // console.log("Applying steering force"
     //   + " [" + steeringForce.x + ", " + steeringForce.y + "]");
 
-    this.physicsBody.applyForce(steeringForce);
+    this.desiredVelocity = steeringResult.desiredVelocity;
+    this.steeringForce = steeringResult.steeringForce;
+    this.physicsBody.applyForce(this.steeringForce);
   }
 
   public getGeometry()

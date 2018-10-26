@@ -12,7 +12,12 @@ export class Ship
 {
   private container: Phaser.GameObjects.Container;
   private sprite: Phaser.GameObjects.Sprite;
-  private debugGraphics: Graphics;
+  private debugGeometry: Graphics;
+  private debugVectors: Graphics;
+
+  /// TODO: To samé je na serveru.
+  private desiredVelocity = new Vector();
+  private steeringForce = new Vector();
 
   constructor
   (
@@ -29,9 +34,12 @@ export class Ship
     this.sprite = createShipSprite(this.scene);
     this.container.add(this.sprite);
 
-    this.debugGraphics = new Graphics(scene, Z_ORDER_DEBUG);
-    this.debugGraphics.drawBodyGeometry(geometry);
-    this.container.add(this.debugGraphics.getPhaserObject());
+    this.debugGeometry = new Graphics(scene, Z_ORDER_DEBUG);
+    this.debugGeometry.drawBodyGeometry(geometry);
+    this.container.add(this.debugGeometry.getPhaserObject());
+
+    this.debugVectors = new Graphics(scene, Z_ORDER_DEBUG);
+    this.container.add(this.debugVectors.getPhaserObject());
 
     this.setPositionAndAngle(position, angle);
   }
@@ -48,6 +56,39 @@ export class Ship
     this.container.x = position.x;
     this.container.y = position.y;
     this.container.rotation = angleRadians;
+  }
+
+  public setDesiredVelocity(desiredVelocity: Vector)
+  {
+    this.desiredVelocity = desiredVelocity;
+    this.updateVectorsDebugGraphics();
+  }
+
+  public setSteeringForce(steeringForce: Vector)
+  {
+    this.steeringForce = steeringForce;
+    this.updateVectorsDebugGraphics();
+  }
+
+  // ---------------- Private methods -------------------
+
+  private updateVectorsDebugGraphics()
+  {
+    this.debugVectors.clear();
+
+    this.debugVectors.drawVector
+    (
+      this.desiredVelocity,
+      new Vector(),
+      0x0000FF
+    );
+
+    this.debugVectors.drawVector
+    (
+      this.steeringForce,
+      new Vector(),
+      0xFFFF00
+    );
   }
 }
 

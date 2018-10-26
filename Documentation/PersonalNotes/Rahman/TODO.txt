@@ -5,36 +5,29 @@ TODO: DestinationMarker by se možná mohl jmenovat Waypoint
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).
 
-TODO: Destination marker by se výhledově asi měl renderovat v nějaké UI scéně
-(aby nescaloval se zoomováním - i když, možná to bude ok...).
-- zoomování vypadá ok.
-TODO: Dát mu Z-order (menší než DEBUG ale větší než DEFAULT).
-- správně by to mělo bejt:
-  Překážky ve scéně
-  - Waypointy
-    - Ship
-      - debug graphics
-TODO: Dát lodi Z_ORDER_SHIPS
-IMPORTANT: depth je potřeba nastavit kontejneru (v Ship). Celej obsah
-  containeru má zřejmě jeho depth (+ uvnitř to ještě může bejt jinak).
-
 
 TODO: Debugové zobrazení fyziky na klientu
   - physics body (obrys)
     [done]
   - target position
     - k tomu budu potřebovat měnit pozici pouze při button_down
+    [done]
   - desired velocity
     - k tomu ji budu muset posílat v rámci SceneUpdate
-    - flaga na zapnutí debug view by asi měla bejt na serveru (v accountu?)
+    [done]
+  - steering force
+    (a to před limitem i po limitu ať vidím, jak moc se mi to ořezává)
+    - po limitu done.
+  TODO: Ještě před limitem.
+
+TODO: Zapínání a vypínání debug grafiky.
+- flaga na zapnutí debug view by asi měla bejt na serveru (v accountu?)
       (bude přepínat, jestli se ve SceneUpdate bude nebo nebude
        posílat info na debug draw a když tam bude, tak ho klient
        prostě vykreslí
        - otázka ale je, co s vykreslováním bounding boxů, které
          se neposílají v každém paketu
          - asi se přepínání bude muset posílat taky).
-  - steering force
-    (a to před limitem i po limitu ať vidím, jak moc se mi to ořezává)
 
 
 Ok, co dál:
@@ -69,6 +62,7 @@ Výhledově budu potřebovat načíst výstup z Tiled editoru.
 
 TODO: Shared/Game/Ship je možná zbytečná, Ship na clientu z ní není
   zděděná.
+- tak možná ne, nějaké společné properties to už má.
 
 -----------------------------------------------------------------------
 

@@ -20,6 +20,7 @@ export namespace Steering
     vehicleVelocity: Vector,
     targetPosition: Vector
   )
+  : { steeringForce: Vector; desiredVelocity: Vector }
   {
     // 1. 'desired velocity' = 'target position' - 'vehicle position'.
     const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
@@ -36,7 +37,7 @@ export namespace Steering
       steeringForce.setLength(MAXIMUM_STEERING_FORCE);
     }
 
-    return steeringForce;
+    return { steeringForce, desiredVelocity };
 
     // // 5. vector(new velocity) =
     // //    vector(current velocity) + vector(steering force)

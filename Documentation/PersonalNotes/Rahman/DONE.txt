@@ -1,3 +1,20 @@
+TODO: Destination marker by se výhledově asi měl renderovat v nějaké UI scéně
+(aby nescaloval se zoomováním - i když, možná to bude ok...).
+- zoomování vypadá ok.
+[won't do]
+TODO: Dát mu Z-order (menší než DEBUG ale větší než DEFAULT).
+- správně by to mělo bejt:
+  Překážky ve scéně
+  - Waypointy
+    - Ship
+      - debug graphics
+[done]
+TODO: Dát lodi Z_ORDER_SHIPS
+[done]
+IMPORTANT: depth je potřeba nastavit kontejneru (v Ship). Celej obsah
+  containeru má zřejmě jeho depth (+ uvnitř to ještě může bejt jinak).
+[done]
+
 TODO: Destination market by měl zmizet, když na cílové místo dorazím.
 - to je asi zbytečný, loď ho prostě překreje.
 [won't do]
