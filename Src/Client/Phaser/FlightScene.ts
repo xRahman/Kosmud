@@ -79,10 +79,7 @@ export class FlightScene extends Scene
         + ` because scene contents doesn't exist`);
     }
 
-    this.contents.destinationMarker.update(this.contents.mouse);
-
-    // this.contents.camera.update();
-    this.contents.mouse.update();
+    this.contents.update();
   }
 
   // ! Throws exception on error.

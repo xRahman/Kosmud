@@ -28,9 +28,9 @@ export class SceneUpdate extends Shared.SceneUpdate
         this.shipRotationRadians
       );
 
-      ship.setDesiredVelocity(this.desiredVelocity);
-      ship.setSteeringForce(this.steeringForce);
-      ship.setDesiredSteeringForce(this.desiredSteeringForce);
+      ship.vectors.setDesiredVelocity(this.desiredVelocity);
+      ship.vectors.setSteeringForce(this.steeringForce);
+      ship.vectors.setDesiredSteeringForce(this.desiredSteeringForce);
     }
   }
 }

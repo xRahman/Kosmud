@@ -1,11 +1,6 @@
 TODO: DestinationMarker by se možná mohl jmenovat Waypoint
   (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
 
-TODO: Refactorovat Ship do předka.
-
-TODO: DebugGraphics by mohla být samostatná class
-  (obecně debug grafika pro pohybující se objekty).
-
 TODO: Fce jako setDesiredVelocity() v Client/Ship by asi neměly překreslovat
   debug grafiku rovnou, ale pouze queueovat requst na překreslení
   (ať se to zbytečně nepřekresluje víckrát v jednom tiku).

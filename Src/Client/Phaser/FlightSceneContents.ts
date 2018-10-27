@@ -40,4 +40,15 @@ export class FlightSceneContents extends SceneContents
     /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
     this.ship = ship;
   }
+
+  public update()
+  {
+    this.destinationMarker.update(this.mouse);
+
+    this.mouse.update();
+    // this.camera.update();
+
+    if (this.ship !== "Doesn't exist")
+      this.ship.update();
+  }
 }

@@ -49,7 +49,12 @@ export class Graphics
     }
   }
 
-  public drawVector(vector: Vector, origin: Vector, color: number)
+  public drawVector
+  (
+    color: number,
+    vector: Vector,
+    origin: Vector = new Vector()
+  )
   {
     const LINE_WIDTH = 1;
 

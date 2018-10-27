@@ -1,3 +1,8 @@
+TODO: DebugGraphics by mohla být samostatná class.
+- nakonec jen ShipVectors (ať je to single responsibility class).
+  (debugGeometry je přímo Graphics, na to není třeba extra classa)
+[done]
+
 TODO: Debugové zobrazení fyziky na klientu
   - physics body (obrys)
     [done]
