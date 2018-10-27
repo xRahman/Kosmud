@@ -30,6 +30,7 @@ export class SceneUpdate extends Shared.SceneUpdate
 
       ship.setDesiredVelocity(this.desiredVelocity);
       ship.setSteeringForce(this.steeringForce);
+      ship.setDesiredSteeringForce(this.desiredSteeringForce);
     }
   }
 }

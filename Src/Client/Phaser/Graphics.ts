@@ -18,6 +18,16 @@ export class Graphics
 
   private graphics: Phaser.GameObjects.Graphics;
 
+  public static rgb(red: number, green: number, blue: number)
+  {
+    return Phaser.Display.Color.GetColor(red, green, blue);
+  }
+
+  public static rgba(red: number, green: number, blue: number, alpha: number)
+  {
+    return Phaser.Display.Color.GetColor32(red, green, blue, alpha);
+  }
+
   // --------------- Public accessors -------------------
 
   public getPhaserObject() { return this.graphics; }
@@ -41,7 +51,9 @@ export class Graphics
 
   public drawVector(vector: Vector, origin: Vector, color: number)
   {
-    this.graphics.lineStyle(1, color);
+    const LINE_WIDTH = 1;
+
+    this.graphics.lineStyle(LINE_WIDTH, color);
 
     this.graphics.beginPath();
 
@@ -72,6 +84,15 @@ export class Graphics
     this.graphics.moveTo(from.x, from.y);
     this.graphics.lineTo(to.x, to.y);
   }
+}
+
+// ------------------ Type declarations ----------------------
+
+// Namespace is exported so you can use enum type from outside this file.
+// It must be declared after the class because Typescript says so...
+export namespace Graphics
+{
+  export type RGB = { r: number; g: number; b: number };
 }
 
 // ----------------- Auxiliary Functions ---------------------

@@ -141,7 +141,7 @@ export class Vector
   {
     const length = this.length();
 
-    if (length >= Number.EPSILON)
+    if (length > Number.EPSILON)
     {
       this.x /= length;
       this.y /= length;
@@ -151,11 +151,17 @@ export class Vector
   }
 
   // Note that zero-length vector stays unchanged after Normalize().
+  public static normalize({ x, y }: { x: number; y: number }): Vector
+  {
+    return new Vector({ x, y }).normalize();
+  }
+
+  // Note that zero-length vector stays unchanged after Normalize().
   public normalize(): this
   {
     const length = this.length();
 
-    if (length >= Number.EPSILON)
+    if (length > Number.EPSILON)
     {
       this.x /= length;
       this.y /= length;
@@ -210,10 +216,10 @@ export class Vector
     return isFinite(this.x) && isFinite(this.y);
   }
 
-  public equals(vector: Vector): boolean
+  public equals({ x, y }: { x: number; y: number }): boolean
   {
-    return Math.abs(this.x - vector.x) <= Number.EPSILON
-        && Math.abs(this.y - vector.y) <= Number.EPSILON;
+    return Math.abs(this.x - x) <= Number.EPSILON
+        && Math.abs(this.y - y) <= Number.EPSILON;
   }
 
   public static negate({ x, y }: { x: number; y: number }): Vector

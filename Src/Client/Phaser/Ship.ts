@@ -18,6 +18,7 @@ export class Ship
   /// TODO: To samé je na serveru.
   private desiredVelocity = new Vector();
   private steeringForce = new Vector();
+  private desiredSteeringForce = new Vector();
 
   constructor
   (
@@ -61,33 +62,63 @@ export class Ship
   public setDesiredVelocity(desiredVelocity: Vector)
   {
     this.desiredVelocity = desiredVelocity;
-    this.updateVectorsDebugGraphics();
+    this.updateDebugVectors();
   }
 
   public setSteeringForce(steeringForce: Vector)
   {
     this.steeringForce = steeringForce;
-    this.updateVectorsDebugGraphics();
+    this.updateDebugVectors();
+  }
+
+  public setDesiredSteeringForce(desiredSteeringForce: Vector)
+  {
+    this.desiredSteeringForce = desiredSteeringForce;
+    this.updateDebugVectors();
   }
 
   // ---------------- Private methods -------------------
 
-  private updateVectorsDebugGraphics()
+  private updateDebugVectors()
   {
     this.debugVectors.clear();
 
+    // Order of calling determines order of drawing (the last will be on top).
+    this.drawDesiredVelocity();
+    this.drawDesiredSteeringForce();
+    this.drawSteeringForce();
+  }
+
+  private drawDesiredVelocity()
+  {
     this.debugVectors.drawVector
     (
       this.desiredVelocity,
       new Vector(),
-      0x0000FF
+      Graphics.rgb(0, 0, 255)
     );
+  }
 
+  private drawDesiredSteeringForce()
+  {
+    /// DEBUG:
+    console.log(this.desiredSteeringForce);
+
+    this.debugVectors.drawVector
+    (
+      this.desiredSteeringForce,
+      new Vector(),
+      Graphics.rgb(160, 160, 0)
+    );
+  }
+
+  private drawSteeringForce()
+  {
     this.debugVectors.drawVector
     (
       this.steeringForce,
       new Vector(),
-      0xFFFF00
+      Graphics.rgb(255, 255, 0)
     );
   }
 }

@@ -14,13 +14,20 @@ const MAXIMUM_STEERING_FORCE_SQUARED =
 
 export namespace Steering
 {
+  export type Result =
+  {
+    steeringForce: Vector;
+    desiredVelocity: Vector;
+    desiredSteeringForce: Vector;
+  };
+
   export function seek
   (
     vehiclePosition: Vector,
     vehicleVelocity: Vector,
     targetPosition: Vector
   )
-  : { steeringForce: Vector; desiredVelocity: Vector }
+  : Result
   {
     // 1. 'desired velocity' = 'target position' - 'vehicle position'.
     const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
@@ -29,15 +36,28 @@ export namespace Steering
     desiredVelocity.setLength(MAX_SPEED);
 
     // 3. 'steering force' = 'desired velocity' - 'current velocity'.
-    const steeringForce = Vector.v1MinusV2(desiredVelocity, vehicleVelocity);
+    const desiredSteeringForce = Vector.v1MinusV2
+    (
+      desiredVelocity,
+      vehicleVelocity
+    );
 
-    // 4. limit the magnitude of vector(steering force) to maximum force
-    if (steeringForce.lengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
+    let steeringForce: Vector;
+
+    // 4. Limit the magnitude of vector(steering force) to maximum force.
+    if (desiredSteeringForce.lengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
     {
-      steeringForce.setLength(MAXIMUM_STEERING_FORCE);
+      steeringForce = new Vector(desiredSteeringForce).setLength
+      (
+        MAXIMUM_STEERING_FORCE
+      );
+    }
+    else
+    {
+      steeringForce = new Vector(desiredSteeringForce);
     }
 
-    return { steeringForce, desiredVelocity };
+    return { steeringForce, desiredVelocity, desiredSteeringForce };
 
     // // 5. vector(new velocity) =
     // //    vector(current velocity) + vector(steering force)

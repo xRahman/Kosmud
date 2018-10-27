@@ -14,6 +14,7 @@ export class Ship extends Shared.Ship
   private desiredPosition: Vector;
   private desiredVelocity = new Vector();
   private steeringForce = new Vector();
+  private desiredSteeringForce = new Vector();
 
   constructor(private physicsBody: PhysicsBody)
   {
@@ -30,6 +31,7 @@ export class Ship extends Shared.Ship
 
   public getDesiredVelocity() { return this.desiredVelocity; }
   public getSteeringForce() { return this.steeringForce; }
+  public getDesiredSteeringForce() { return this.desiredSteeringForce; }
 
   public seekPosition(position: Vector)
   {
@@ -90,6 +92,8 @@ export class Ship extends Shared.Ship
 
     this.desiredVelocity = steeringResult.desiredVelocity;
     this.steeringForce = steeringResult.steeringForce;
+    this.desiredSteeringForce = steeringResult.desiredSteeringForce;
+
     this.physicsBody.applyForce(this.steeringForce);
   }
 
