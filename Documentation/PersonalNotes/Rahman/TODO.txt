@@ -1,3 +1,12 @@
+TODO: Pořešit transformaci koordinátů mezi serverem a klientem
+- flip y axis
+- flip all angles.
+
+TODO: Odstranit debugovací kód ze Steering.seek().
+
+TODO: Vymyslet, kam dát funkce lowerBound(), upperBound() a intervalBound()
+  (momentálně jsou ve Steering).
+
 TODO: Rotaci lodě říkat 'rotation', ne 'angle'
 
 TODO: DestinationMarker by se možná mohl jmenovat Waypoint

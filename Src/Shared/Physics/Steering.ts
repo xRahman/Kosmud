@@ -159,6 +159,12 @@ export namespace Steering
     const desiredAngle = desiredVelocity.angleToX();
     let desiredAngularVelocity = desiredAngle - currentAngle;
 
+    /// DEBUG:
+    // console.log("Current angle:");
+    // console.log(currentAngle);
+    // console.log("Desired angle:");
+    // console.log(desiredAngle);
+
     // Make sure that we make a turn the shorter way.
     if (desiredAngularVelocity > Math.PI)
       desiredAngularVelocity -= Math.PI * 2;
@@ -181,6 +187,11 @@ export namespace Steering
         to: ANGULAR_VELOCITY
       }
     );
+
+    // ------------------
+
+    /// DEBUG:
+    // steeringForce = new Vector();
 
     // ------------------
 

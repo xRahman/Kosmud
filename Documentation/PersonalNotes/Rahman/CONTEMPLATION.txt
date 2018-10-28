@@ -49,6 +49,25 @@ function drawLine (x0, y0, x1, y1)
 - Je na to class Server/Phaser/Graphics
 
 
+Problém se souřadným systémem
+------------------------------
+
+IDEA: Používat na klientu i na serveru (v mém kódu) stejný souřadný systém.
+- asi bych musel vyrobit wrapper classy pro Phaser entity:
+  Graphics (tu už mám),
+  Container
+  Sprite
+  Mouse (to už mám).
+a flipovat to v nich.
+
+To zní asi jako nejlepší řešení, protože:
+- mít na serveru a na klientu různé souřadnice je na pěst.
+- většina počítání se děje na serveru v Box2D, takže dává smysl
+  primárně používat souřadnice v Box2D
+- flipovat to někde v komunikačním protokolu by bylo dost na pěst,
+  při přidání každé nové packet classy bych na to musel myslet.
+
+
 -----------------------------------------------------------------------
 
 Serializable vektory
