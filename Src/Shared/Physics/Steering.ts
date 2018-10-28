@@ -160,6 +160,8 @@ export namespace Steering
     let desiredAngularVelocity = desiredAngle - currentAngle;
 
     /// DEBUG:
+    // console.log("Desired velocity:");
+    // console.log(desiredVelocity);
     // console.log("Current angle:");
     // console.log(currentAngle);
     // console.log("Desired angle:");

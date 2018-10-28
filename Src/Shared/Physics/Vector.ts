@@ -235,9 +235,12 @@ export class Vector
     return this;
   }
 
+  // -> Returns number between -π and π.
   public angleToX(): number
   {
-    return Math.atan2(this.x, this.y);
+    // OMGF Math.atan2 gets 'y' as first argument and 'x' as second.
+    // Tell me why, tell me why, tell me why...
+    return Math.atan2(this.y, this.x);
   }
 
   public toJSON()

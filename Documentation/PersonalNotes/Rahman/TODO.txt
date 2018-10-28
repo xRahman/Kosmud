@@ -1,3 +1,6 @@
+TODO: seek() se pořád místy chová divně
+- jen při couvání směrem trochu šikmo na levou trysku...
+
 TODO. ShipGraphics by se možná mohlo jmenovat ShipVisuals...
 
 TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
@@ -8,6 +11,11 @@ TODO: Opravit background.
 TODO: Phaser.GameObject wrappery přece jen z něčeho zdědit.
 - transformace zajistí interní setX, setY a setAngle v předkovi.
 - spousta metod je stejná, chce to nějak podědit.
+TODO: Graphics by potřebovala oddělit kód kterej pracuje s Box2d koordinátama
+ a kód na transformaci koordinátů.
+ (částečně to je, DrawLine a DrawPolygon jsou ty transformační metody.
+  Možná je hodit do předka?)
+  
 
 TODO: Odstranit debugovací kód ze Steering.seek().
 
