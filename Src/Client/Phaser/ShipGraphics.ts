@@ -26,10 +26,10 @@ export class ShipGraphics
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
     this.sprite = createShipSprite(this.scene);
-    this.container.addSprite(this.sprite);
+    this.container.add(this.sprite);
 
     this.geometryGraphics = new GeometryGraphics(scene, physicsGeometry);
-    this.container.addGraphics(this.geometryGraphics.getGraphics());
+    this.container.add(this.geometryGraphics.getGraphics());
   }
 
   // ------------- Public static methods ----------------

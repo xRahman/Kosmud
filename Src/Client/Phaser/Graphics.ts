@@ -11,18 +11,21 @@
 
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
-export class Graphics
+export class Graphics extends PhaserObject
 {
+  protected phaserObject: Phaser.GameObjects.Graphics;
+
   constructor(scene: Phaser.Scene, depth = 0)
   {
-    this.graphics = scene.add.graphics({ x: 0, y: 0 });
-    this.graphics.setDepth(depth);
+    super(scene);
+
+    this.phaserObject = scene.add.graphics({ x: 0, y: 0 });
+    this.phaserObject.setDepth(depth);
   }
 
   // ----------------- Private data ---------------------
-
-  private graphics: Phaser.GameObjects.Graphics;
 
   public static rgb(red: number, green: number, blue: number)
   {
@@ -36,19 +39,14 @@ export class Graphics
 
   // ---------------- Public methods --------------------
 
-  public addToContainer(container: Phaser.GameObjects.Container)
-  {
-    container.add(this.graphics);
-  }
-
   public clear()
   {
-    this.graphics.clear();
+    this.phaserObject.clear();
   }
 
   public drawGeometry(geometry: PhysicsBody.Geometry)
   {
-    this.graphics.lineStyle(1, 0x00FFFF, 0.8);
+    this.phaserObject.lineStyle(1, 0x00FFFF, 0.8);
 
     for (const polygon of geometry)
       this.drawPolygon(polygon);
@@ -59,7 +57,7 @@ export class Graphics
     // Note:
     //   Points in 'polygon' are transformed from Box2D coords
     //   to Phaser coords before rendering.
-    this.graphics.strokePoints(transformPologyon(polygon), true);
+    this.phaserObject.strokePoints(transformPologyon(polygon), true);
   }
 
   public drawVector
@@ -71,9 +69,9 @@ export class Graphics
   {
     const LINE_WIDTH = 1;
 
-    this.graphics.lineStyle(LINE_WIDTH, color);
+    this.phaserObject.lineStyle(LINE_WIDTH, color);
 
-    this.graphics.beginPath();
+    this.phaserObject.beginPath();
 
     const arrowTip = Vector.v1PlusV2(origin, vector);
     const fletchingLength = Math.min(20, vector.length() / 2);
@@ -87,15 +85,8 @@ export class Graphics
     this.drawLine(arrowTip, Vector.v1PlusV2(arrowTip, fletchingLeft));
     this.drawLine(arrowTip, Vector.v1PlusV2(arrowTip, fletchingRight));
 
-    this.graphics.closePath();
-    this.graphics.strokePath();
-  }
-
-  public setPosition(position: Vector)
-  {
-    // Note: Coordinates transform ('y' axis is inverted).
-    this.graphics.x = position.x;
-    this.graphics.y = -position.y;
+    this.phaserObject.closePath();
+    this.phaserObject.strokePath();
   }
 
   // ---------------- Private methods -------------------
@@ -106,8 +97,8 @@ export class Graphics
   private drawLine(from: Vector, to: Vector)
   {
     // Note: Coordinates transform ('y' axis is inverted).
-    this.graphics.moveTo(from.x, -from.y);
-    this.graphics.lineTo(to.x, -to.y);
+    this.phaserObject.moveTo(from.x, -from.y);
+    this.phaserObject.lineTo(to.x, -to.y);
   }
 }
 
