@@ -1,3 +1,9 @@
+TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
+  nebudu angular velocity limitovat hned, ale až když bude zbývat jen
+  část mojí ANGULAR_VELOCITY (třeba desetina).
+- a možná bych mohl udělati "zrychlování" rotace, tj. aby to z 0 na full
+  neskočilo okamžitě.
+
 TODO: seek() se pořád místy chová divně
 - jen při couvání směrem trochu šikmo na levou trysku...
 
@@ -5,8 +11,6 @@ TODO. ShipGraphics by se možná mohlo jmenovat ShipVisuals...
 
 TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
   Zbytek hodit do jiného adresáře.
-
-TODO: Opravit background.
 
 TODO: Phaser.GameObject wrappery přece jen z něčeho zdědit.
 - transformace zajistí interní setX, setY a setAngle v předkovi.
