@@ -1,6 +1,7 @@
 import { FlightScene } from "../../Client/Phaser/FlightScene";
 import { Background } from "../../Client/Phaser/Background";
 import { Ship } from "../../Client/Phaser/Ship";
+import { ShipGraphics } from "../../Client/Phaser/ShipGraphics";
 import { SceneContents } from "../../Client/Phaser/SceneContents";
 import { DestinationMarker } from "./DestinationMarker";
 import { Vector } from "../../Shared/Physics/Vector";
@@ -29,7 +30,7 @@ export class FlightSceneContents extends SceneContents
   public static preload(scene: FlightScene)
   {
     Background.preload(scene);
-    Ship.preload(scene);
+    ShipGraphics.preload(scene);
     DestinationMarker.preload(scene);
   }
 

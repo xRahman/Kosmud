@@ -15,8 +15,27 @@ const MAXIMUM_STEERING_FORCE_SQUARED =
 const FORWARD_THRUST = 20;
 const BARKWARD_THRUST = 10;
 const STRAFE_THRUST = 5;
-// const MAXIMUM_ANGULAR_VELOCITY_RADIANS = Math.PI / 20;
+// const MAXIMUM_ANGULAR_VELOCITY = Math.PI / 20;
 const ANGULAR_VELOCITY = Math.PI / 20;
+
+function lowerBound(value: number, bound: number)
+{
+  return Math.max(value, bound);
+}
+
+function upperBound(value: number, bound: number)
+{
+  return Math.min(value, bound);
+}
+
+function intervalBound
+(
+  value: number,
+  { from, to }: { from: number; to: number }
+)
+{
+  return Math.min(Math.max(value, from), to);
+}
 
 export namespace Steering
 {
@@ -33,7 +52,7 @@ export namespace Steering
     vehiclePosition: Vector,
     vehicleVelocity: Vector,
     targetPosition: Vector,
-    angle: number
+    currentAngle: number
   )
   : Result
   {
@@ -114,11 +133,11 @@ export namespace Steering
     // }
     // else if (crossZ > 0)
     // {
-    //   angularVelocity = -ANGULAR_VELOCITY_RADIANS;
+    //   angularVelocity = -ANGULAR_VELOCITY;
     // }
     // else
     // {
-    //   angularVelocity = ANGULAR_VELOCITY_RADIANS;
+    //   angularVelocity = ANGULAR_VELOCITY;
     // }
 
     // ------------------
@@ -128,10 +147,40 @@ export namespace Steering
     // - Spočítám desiredAngle
     // - k tomu se budu točit.
 
+    //
+
+    // des 350
+    // cur 10
+    // ------
+    // -20
+
+    // des - cur = 340, -360 = -20
+
     const desiredAngle = desiredVelocity.angleToX();
-    const desiredAngularVelocity = desiredAngle - angle;
-    const angularVelocity = (desiredAngularVelocity > ANGULAR_VELOCITY) ?
-      ANGULAR_VELOCITY : desiredAngularVelocity;
+    let desiredAngularVelocity = desiredAngle - currentAngle;
+
+    // Make sure that we make a turn the shorter way.
+    if (desiredAngularVelocity > Math.PI)
+      desiredAngularVelocity -= Math.PI * 2;
+
+    /// Tímhle jsem vlastně ale nevyřešil zastavení na požadovaném směru
+    /// (leda bych se na něm zastavil náhodou), protože angular velocity je
+    /// "za sekundu", ne za tik.
+    /// - i když možná vyřešil - angularVelocity by se měla při přibližování
+    ///  snižovat... Každopádně to nefunguje.
+
+    /// Proč se mi to po dosažení směru přetáčí?
+    /// - no, angularVelocity je buď +max nebo -max
+
+    // Limit to ANGULAR_VELOCITY.
+    const angularVelocity = intervalBound
+    (
+      desiredAngularVelocity,
+      {
+        from: -ANGULAR_VELOCITY,
+        to: ANGULAR_VELOCITY
+      }
+    );
 
     // ------------------
 

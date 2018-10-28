@@ -14,7 +14,7 @@ export class SceneUpdate extends Packet
   constructor
   (
     public shipPosition: Vector,
-    public shipRotationRadians: number,
+    public shipAngle: number,
     public desiredVelocity: Vector,
     public steeringForce: Vector,
     public desiredSteeringForce: Vector

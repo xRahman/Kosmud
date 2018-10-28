@@ -182,12 +182,12 @@ export class Vector
   public static rotate
   (
     { x, y }: { x: number; y: number },
-    radians: number
+    angle: number
   )
   : Vector
   {
-    const cosine: number = Math.cos(radians);
-    const sine: number = Math.sin(radians);
+    const cosine: number = Math.cos(angle);
+    const sine: number = Math.sin(angle);
     const origX = x;
 
     return new Vector
@@ -199,10 +199,10 @@ export class Vector
     );
   }
 
-  public rotate(radians: number): this
+  public rotate(angle: number): this
   {
-    const cosine: number = Math.cos(radians);
-    const sine: number = Math.sin(radians);
+    const cosine: number = Math.cos(angle);
+    const sine: number = Math.sin(angle);
     const x = this.x;
 
     this.x = cosine * x - sine * this.y;

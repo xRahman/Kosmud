@@ -110,7 +110,7 @@ export class FlightScene extends Scene
       this,
       request.shipGeometry,
       request.shipPosition,
-      request.shipAngleRadians
+      request.shipAngle
     );
   }
 
@@ -141,5 +141,5 @@ export namespace FlightScene
   export const Z_ORDER_OBSTACLES = Scene.Z_ORDER_DEFAULT + 1;
   export const Z_ORDER_WAYPOINTS = Z_ORDER_OBSTACLES + 1;
   export const Z_ORDER_SHIPS = Z_ORDER_WAYPOINTS + 1;
-  // export const Z_ORDER_DEBUG = Z_ORDER_SHIPS + 1;
+  export const Z_ORDER_DEBUG = Z_ORDER_SHIPS + 1;
 }

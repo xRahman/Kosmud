@@ -56,9 +56,9 @@ export class PhysicsBody
     this.updateVelocityDirection();
   }
 
-  public setAngularVelocity(velocityRadians: number)
+  public setAngularVelocity(angularVelocity: number)
   {
-    this.body.SetAngularVelocity(velocityRadians);
+    this.body.SetAngularVelocity(angularVelocity);
   }
 
   public applyForce(force: Vector)

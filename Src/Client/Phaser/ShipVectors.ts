@@ -1,6 +1,7 @@
 import { Ship } from "../../Client/Phaser/Ship";
 import { Graphics } from "../../Client/Phaser/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
+import { FlightScene } from "../../Client/Phaser/FlightScene";
 
 export class ShipVectors
 {
@@ -10,7 +11,16 @@ export class ShipVectors
   private steeringForce = new Vector();
   private desiredSteeringForce = new Vector();
 
-  constructor(private ship: Ship, private graphics: Graphics) {}
+  private graphics: Graphics;
+
+  constructor
+  (
+    private ship: Ship,
+    scene: Phaser.Scene
+  )
+  {
+    this.graphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
+  }
 
   // ---------------- Public methods --------------------
 

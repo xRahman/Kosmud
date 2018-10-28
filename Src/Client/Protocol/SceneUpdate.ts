@@ -25,7 +25,7 @@ export class SceneUpdate extends Shared.SceneUpdate
       ship.setPositionAndAngle
       (
         this.shipPosition,
-        this.shipRotationRadians
+        this.shipAngle
       );
 
       ship.vectors.setDesiredVelocity(this.desiredVelocity);

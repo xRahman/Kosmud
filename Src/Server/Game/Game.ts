@@ -34,7 +34,7 @@ export namespace Game
   {
     const shipInfo =
     {
-      angleRadians: ship.getAngle(),
+      angle: ship.getAngle(),
       geometry: ship.getGeometry(),
       position: ship.getPosition(),
     };

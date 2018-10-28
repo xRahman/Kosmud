@@ -1,5 +1,8 @@
+TODO: Rotaci lodě říkat 'rotation', ne 'angle'
+
 TODO: DestinationMarker by se možná mohl jmenovat Waypoint
   (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
+- Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
 
 TODO: Vyřešit problém s odečítáním úhlů a cyklením po 2*PI.
 
