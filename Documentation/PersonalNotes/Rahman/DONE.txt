@@ -1,3 +1,9 @@
+TODO: seek() se pořád místy chová divně
+- jen při couvání směrem trochu šikmo na levou trysku...
+- problém byl v tom, že se odečítaly úhly v různých intervalech
+  (což pak při ořezání na menší interval občas dělalo psí kusy)
+[done]
+
 TODO: Opravit background.
 [done]
 

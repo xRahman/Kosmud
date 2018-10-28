@@ -1,11 +1,12 @@
+TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
+  bylo uprostřed obrazovky.
+  (protože typicky budu chtít loď uprostřed obrazovky...)
+
 TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
   nebudu angular velocity limitovat hned, ale až když bude zbývat jen
   část mojí ANGULAR_VELOCITY (třeba desetina).
 - a možná bych mohl udělati "zrychlování" rotace, tj. aby to z 0 na full
   neskočilo okamžitě.
-
-TODO: seek() se pořád místy chová divně
-- jen při couvání směrem trochu šikmo na levou trysku...
 
 TODO. ShipGraphics by se možná mohlo jmenovat ShipVisuals...
 

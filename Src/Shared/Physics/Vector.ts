@@ -235,12 +235,21 @@ export class Vector
     return this;
   }
 
-  // -> Returns number between -π and π.
+  // -> Returns number between 0 and 2π.
   public angleToX(): number
   {
     // OMGF Math.atan2 gets 'y' as first argument and 'x' as second.
     // Tell me why, tell me why, tell me why...
-    return Math.atan2(this.y, this.x);
+    let angle = Math.atan2(this.y, this.x);
+
+    // Convert angle from interval [-π, π] returned by atan2
+    // to interval [0, 2π] (because all angles in game are in
+    // that interval and comparing angles in different intervals
+    // leads to hard-to-debug quirky behaviour).
+    if (angle < 0)
+      angle += Math.PI * 2;
+
+    return angle;
   }
 
   public toJSON()
