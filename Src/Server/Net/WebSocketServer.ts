@@ -130,6 +130,7 @@ function acceptConnection(webSocket: WebSocket, ip: string, url: string)
     + ` connection ${connection.getOrigin()}`);
 
   /// DEBUG:
+  /// (ship by se měla přidávat do scény až poté, co se player naloguje.)
   connection.sendShipToScene();
 }
 

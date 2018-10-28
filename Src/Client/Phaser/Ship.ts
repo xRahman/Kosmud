@@ -35,8 +35,8 @@ export class Ship
     this.debugGeometry.drawBodyGeometry(geometry);
     this.container.add(this.debugGeometry.getPhaserObject());
 
-    this.vectors = new ShipVectors(new Graphics(scene, Z_ORDER_DEBUG));
-    this.container.add(this.vectors.getPhaserObject());
+    this.vectors = new ShipVectors(this, new Graphics(scene, Z_ORDER_DEBUG));
+    // this.container.add(this.vectors.getPhaserObject());
 
     this.setPositionAndAngle(position, angle);
   }
@@ -58,6 +58,11 @@ export class Ship
     this.container.x = position.x;
     this.container.y = position.y;
     this.container.rotation = angleRadians;
+  }
+
+  public getPosition(): Vector
+  {
+    return new Vector({ x: this.container.x, y: this.container.y });
   }
 
   // ---------------- Private methods -------------------

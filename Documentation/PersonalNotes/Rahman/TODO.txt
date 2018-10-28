@@ -1,23 +1,12 @@
 TODO: DestinationMarker by se možná mohl jmenovat Waypoint
   (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
 
-TODO: Fce jako setDesiredVelocity() v Client/Ship by asi neměly překreslovat
-  debug grafiku rovnou, ale pouze queueovat requst na překreslení
-  (ať se to zbytečně nepřekresluje víckrát v jednom tiku).
+TODO: Vyřešit problém s odečítáním úhlů a cyklením po 2*PI.
 
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).
 
-
-TODO: Zapínání a vypínání debug grafiky.
-- flaga na zapnutí debug view by asi měla bejt na serveru (v accountu?)
-      (bude přepínat, jestli se ve SceneUpdate bude nebo nebude
-       posílat info na debug draw a když tam bude, tak ho klient
-       prostě vykreslí
-       - otázka ale je, co s vykreslováním bounding boxů, které
-         se neposílají v každém paketu
-         - asi se přepínání bude muset posílat taky).
-
+TODO: Když jsou vektory mimo kontejner lodi, musí mí jinak z-order.
 
 Ok, co dál:
 - načítat data z Tiles editoru nepotřebuju, dokud nebudu řešit kolize,
@@ -45,6 +34,7 @@ TODO: Aplikovat rotaci ze Steering.seek()
 
 
 Výhledově budu potřebovat načíst výstup z Tiled editoru.
+- na serveru do fyziky, na klientu do grafiky
 
 
 -----------------------------------------------------------------------
@@ -80,6 +70,15 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 
 Odložené TODO:
 ---------------
+
+TODO: Zapínání a vypínání debug grafiky.
+- flaga na zapnutí debug view by asi měla bejt na serveru (v accountu?)
+      (bude přepínat, jestli se ve SceneUpdate bude nebo nebude
+       posílat info na debug draw a když tam bude, tak ho klient
+       prostě vykreslí
+       - otázka ale je, co s vykreslováním bounding boxů, které
+         se neposílají v každém paketu
+         - asi se přepínání bude muset posílat taky).
 
 TODO: SetDestination by se asi mělo posílat z něčeho jinýho než
   z DestinationMarkeru.

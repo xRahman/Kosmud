@@ -1,3 +1,13 @@
+TODO: Vektory nakonec nesmí být v kontejneru s grafikou lodi
+  (netočí se, jsou absolutní).
+  - jo, ale musej se translatovat na pozici lodi.
+[done]
+
+TODO: Fce jako setDesiredVelocity() v Client/Ship by asi neměly překreslovat
+  debug grafiku rovnou, ale pouze queueovat requst na překreslení
+  (ať se to zbytečně nepřekresluje víckrát v jednom tiku).
+[done]
+
 TODO: DebugGraphics by mohla být samostatná class.
 - nakonec jen ShipVectors (ať je to single responsibility class).
   (debugGeometry je přímo Graphics, na to není třeba extra classa)

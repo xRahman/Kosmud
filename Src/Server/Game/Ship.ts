@@ -83,7 +83,8 @@ export class Ship extends Shared.Ship
     (
       this.getPosition(),
       this.physicsBody.getVelocity(),
-      this.desiredPosition
+      this.desiredPosition,
+      this.physicsBody.getAngle()
     );
 
     /// DEBUG:
@@ -95,6 +96,7 @@ export class Ship extends Shared.Ship
     this.desiredSteeringForce = steeringResult.desiredSteeringForce;
 
     this.physicsBody.applyForce(this.steeringForce);
+    this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);
   }
 
   public getGeometry()

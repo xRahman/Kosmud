@@ -235,6 +235,11 @@ export class Vector
     return this;
   }
 
+  public angleToX(): number
+  {
+    return Math.atan2(this.x, this.y);
+  }
+
   public toJSON()
   {
     return { x: this.x, y: this.y };

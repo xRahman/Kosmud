@@ -76,7 +76,12 @@ export class Graphics
 
     this.graphics.closePath();
     this.graphics.strokePath();
+  }
 
+  public setPosition(position: Vector)
+  {
+    this.graphics.x = position.x;
+    this.graphics.y = position.y;
   }
 
   // ---------------- Private methods -------------------

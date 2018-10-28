@@ -1,3 +1,4 @@
+import { Ship } from "../../Client/Phaser/Ship";
 import { Graphics } from "../../Client/Phaser/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
 
@@ -9,7 +10,7 @@ export class ShipVectors
   private steeringForce = new Vector();
   private desiredSteeringForce = new Vector();
 
-  constructor(private graphics: Graphics) {}
+  constructor(private ship: Ship, private graphics: Graphics) {}
 
   // ---------------- Public methods --------------------
 
@@ -17,6 +18,8 @@ export class ShipVectors
 
   public update()
   {
+    this.graphics.setPosition(this.ship.getPosition());
+
     if (this.needsRedraw)
     {
       this.draw();
