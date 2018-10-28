@@ -24,8 +24,6 @@ export class ShipVectors
 
   // ---------------- Public methods --------------------
 
-  public getPhaserObject() { return this.graphics.getPhaserObject(); }
-
   public update()
   {
     this.graphics.setPosition(this.ship.getPosition());

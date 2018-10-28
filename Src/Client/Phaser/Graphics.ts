@@ -3,6 +3,12 @@
   Draws lines directly to canvas.
 */
 
+/*
+  Note:
+    This class transforms coordinates from Box2D to Phaser coords
+    ('y' axis and angles are inverted).
+*/
+
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
@@ -28,25 +34,32 @@ export class Graphics
     return Phaser.Display.Color.GetColor32(red, green, blue, alpha);
   }
 
-  // --------------- Public accessors -------------------
-
-  public getPhaserObject() { return this.graphics; }
-
   // ---------------- Public methods --------------------
+
+  public addToContainer(container: Phaser.GameObjects.Container)
+  {
+    container.add(this.graphics);
+  }
 
   public clear()
   {
     this.graphics.clear();
   }
 
-  public drawBodyGeometry(geometry: PhysicsBody.Geometry)
+  public drawGeometry(geometry: PhysicsBody.Geometry)
   {
     this.graphics.lineStyle(1, 0x00FFFF, 0.8);
 
     for (const polygon of geometry)
-    {
-      this.graphics.strokePoints(polygon, true);
-    }
+      this.drawPolygon(polygon);
+  }
+
+  public drawPolygon(polygon: Array<{ x: number; y: number }>)
+  {
+    // Note:
+    //   Points in 'polygon' are transformed from Box2D coords
+    //   to Phaser coords before rendering.
+    this.graphics.strokePoints(transformPologyon(polygon), true);
   }
 
   public drawVector
@@ -80,8 +93,9 @@ export class Graphics
 
   public setPosition(position: Vector)
   {
+    // Note: Coordinates transform ('y' axis is inverted).
     this.graphics.x = position.x;
-    this.graphics.y = position.y;
+    this.graphics.y = -position.y;
   }
 
   // ---------------- Private methods -------------------
@@ -91,8 +105,9 @@ export class Graphics
   /// 'this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
-    this.graphics.moveTo(from.x, from.y);
-    this.graphics.lineTo(to.x, to.y);
+    // Note: Coordinates transform ('y' axis is inverted).
+    this.graphics.moveTo(from.x, -from.y);
+    this.graphics.lineTo(to.x, -to.y);
   }
 }
 
@@ -106,3 +121,16 @@ export namespace Graphics
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+function transformPologyon(polygon: Array<{ x: number; y: number }>)
+{
+  const result = [];
+
+  for (const point of polygon)
+  {
+    // Note: Coordinates transform ('y' axis is inverted).
+    result.push({ x: point.x, y: -point.y });
+  }
+
+  return result;
+}

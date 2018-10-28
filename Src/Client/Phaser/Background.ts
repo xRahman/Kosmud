@@ -1,3 +1,5 @@
+import { Sprite } from "../../Client/Phaser/Sprite";
+
 const BACKGROUND_SPRITE_ID = "background";
 
 export class Background
@@ -20,7 +22,7 @@ export class Background
     this.resize(canvasWidth, canvasHeight);
   }
 
-  private sprite: Phaser.GameObjects.Sprite;
+  private sprite: Sprite;
 
   /// Preload je static, protože asset se pak odkazuje idčkem,
   /// takže se na něj nikde nedrží odkaz.
@@ -44,8 +46,8 @@ export class Background
         + " background sprite doesn't exist");
     }
 
-    const imageWidth = this.sprite.width;
-    const imageHeight = this.sprite.height;
+    const imageWidth = this.sprite.getWidth();
+    const imageHeight = this.sprite.getHeight();
 
     if (canvasWidth <= 0)
     {
@@ -127,11 +129,12 @@ function createBackgroundSprite
 )
 {
   // Display origin of the sprite is in the middle but origin
-  // of canvas coords is at the top left. We want to center
+  // of canvas coords is at the bottom right. We want to center
   // the background in the canvas so we need to place it
   // to [canvasWidth / 2, canvasHeight / 2] coordinates.
-  const backgroundSprite = scene.add.sprite
+  const backgroundSprite = new Sprite
   (
+    scene,
     canvasWidth / 2,
     canvasHeight / 2,
     BACKGROUND_SPRITE_ID

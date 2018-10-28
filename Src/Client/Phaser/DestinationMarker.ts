@@ -3,13 +3,14 @@ import { SetDestination } from "../../Shared/Protocol/SetDestination";
 import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Mouse } from "../../Client/Phaser/Mouse";
+import { Sprite } from "../../Client/Phaser/Sprite";
 
 const DESTINATION_MARKER_SPRITE_ID = "destination_marker";
 
 export class DestinationMarker
 {
   private visible = false;
-  private sprite: Phaser.GameObjects.Sprite;
+  private sprite: Sprite;
 
   constructor
   (
@@ -39,8 +40,7 @@ export class DestinationMarker
   {
     this.position.set(position);
 
-    this.sprite.x = position.x;
-    this.sprite.y = position.y;
+    this.sprite.setPosition(position);
 
     sendDestination(position);
   }
@@ -86,8 +86,9 @@ export class DestinationMarker
 
 function createSprite(scene: Phaser.Scene, position: Vector)
 {
-  const sprite = scene.add.sprite
+  const sprite = new Sprite
   (
+    scene,
     position.x,
     position.y,
     DESTINATION_MARKER_SPRITE_ID

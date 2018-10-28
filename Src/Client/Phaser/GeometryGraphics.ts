@@ -9,10 +9,8 @@ export class GeometryGraphics
   constructor(scene: Phaser.Scene, private geometry: PhysicsBody.Geometry)
   {
     this.graphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
-    this.graphics.drawBodyGeometry(geometry);
+    this.graphics.drawGeometry(geometry);
   }
 
-  // ---------------- Public methods --------------------
-
-  public getPhaserObject() { return this.graphics.getPhaserObject(); }
+  public getGraphics() { return this.graphics; }
 }

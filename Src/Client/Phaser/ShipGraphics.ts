@@ -1,4 +1,6 @@
 import { Vector } from "../../Shared/Physics/Vector";
+import { Sprite } from "../../Client/Phaser/Sprite";
+import { Container } from "../../Client/Phaser/Container";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { FlightScene } from "../../Client/Phaser/FlightScene";
 import { GeometryGraphics } from "../../Client/Phaser/GeometryGraphics";
@@ -9,8 +11,8 @@ const SHIP_SPRITE_ID = "ship";
 
 export class ShipGraphics
 {
-  private container: Phaser.GameObjects.Container;
-  private sprite: Phaser.GameObjects.Sprite;
+  private container: Container;
+  private sprite: Sprite;
 
   private geometryGraphics: GeometryGraphics;
 
@@ -20,14 +22,14 @@ export class ShipGraphics
     private physicsGeometry: PhysicsBody.Geometry,
   )
   {
-    this.container = scene.add.container(0, 0);
+    this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
     this.sprite = createShipSprite(this.scene);
-    this.container.add(this.sprite);
+    this.container.addSprite(this.sprite);
 
     this.geometryGraphics = new GeometryGraphics(scene, physicsGeometry);
-    this.container.add(this.geometryGraphics.getPhaserObject());
+    this.container.addGraphics(this.geometryGraphics.getGraphics());
   }
 
   // ------------- Public static methods ----------------
@@ -41,14 +43,13 @@ export class ShipGraphics
 
   public setPositionAndAngle(position: Vector, angle: number)
   {
-    this.container.x = position.x;
-    this.container.y = position.y;
-    this.container.rotation = angle;
+    this.container.setPosition(position);
+    this.container.setRotation(angle);
   }
 
   public getPosition(): Vector
   {
-    return new Vector({ x: this.container.x, y: this.container.y });
+    return this.container.getPosition();
   }
 }
 
@@ -56,7 +57,7 @@ export class ShipGraphics
 
 function createShipSprite(scene: Phaser.Scene)
 {
-  const shipSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
+  const shipSprite = new Sprite(scene, 0, 0, SHIP_SPRITE_ID);
 
   // shipSprite.setScrollFactor(0.5);
 

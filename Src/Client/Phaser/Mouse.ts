@@ -1,3 +1,9 @@
+/*
+  Note:
+    This class transforms coordinates from Box2D to Phaser coords
+    ('y' axis and angles are inverted).
+*/
+
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Vector } from "../../Shared/Physics/Vector";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
@@ -49,7 +55,8 @@ export class Mouse
 
   public getPosition()
   {
-    return new Vector({ x: this.mousePointer.x, y: this.mousePointer.y });
+    // Note: Coordinates transform ('y' axis is inverted).
+    return new Vector({ x: this.mousePointer.x, y: -this.mousePointer.y });
   }
 
   // ---------------- Event handlers --------------------

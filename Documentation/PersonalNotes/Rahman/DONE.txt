@@ -1,3 +1,9 @@
+TODO: Pořešit transformaci koordinátů mezi serverem a klientem
+- flip y axis
+- flip all angles.
+TODO: Ještě v Graphics.
+[done]
+
 TODO: Vektory nakonec nesmí být v kontejneru s grafikou lodi
   (netočí se, jsou absolutní).
   - jo, ale musej se translatovat na pozici lodi.
