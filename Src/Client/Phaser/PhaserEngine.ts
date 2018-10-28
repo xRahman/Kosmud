@@ -21,8 +21,6 @@ export class PhaserEngine
         scene: this.flightScene
       }
     );
-
-    this.phaserGame.tra
   }
 
   private flightScene: FlightScene;
