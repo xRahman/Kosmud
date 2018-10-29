@@ -13,13 +13,14 @@ export class Ship
     private scene: Phaser.Scene,
     private geometry: PhysicsBody.Geometry,
     position: Vector,
-    angle: number
+    rotation: number
   )
   {
     this.graphics = new ShipGraphics(scene, geometry);
     this.vectors = new ShipVectors(this, scene);
 
-    this.setPositionAndAngle(position, angle);
+    this.setPosition(position);
+    this.setRotation(rotation);
   }
 
   // ---------------- Public methods --------------------
@@ -29,9 +30,14 @@ export class Ship
     this.vectors.update();
   }
 
-  public setPositionAndAngle(position: Vector, angle: number)
+  public setPosition(position: Vector)
   {
-    this.graphics.setPositionAndAngle(position, angle);
+    this.graphics.setPosition(position);
+  }
+
+  public setRotation(rotation: number)
+  {
+    this.graphics.setRotation(rotation);
   }
 
   public getPosition(): Vector

@@ -52,7 +52,7 @@ export namespace Steering
     vehiclePosition: Vector,
     vehicleVelocity: Vector,
     targetPosition: Vector,
-    currentAngle: number
+    currentRotation: number
   )
   : Result
   {
@@ -93,9 +93,9 @@ export namespace Steering
 
     // IDEA: Natáčení do směru udělat podobně jako seek.
     // Tzn:
-    // - spočítat desired angle
+    // - spočítat desired rotation
     // - aplikovat torque
-    // - zpomalovat rotaci, když už se blížím k desired angle
+    // - zpomalovat rotaci, když už se blížím k desired rotation
     // Hmm a asi to fakt zjednoduším a budu počítat a setovat
     // rovnou angular velocity
 
@@ -143,8 +143,8 @@ export namespace Steering
     // ------------------
 
     // Ok tak ještě jinak (jednodušeji a lépe):
-    // - Znám aktuální angle lodi.
-    // - Spočítám desiredAngle
+    // - Znám aktuální rotation lodi.
+    // - Spočítám desiredRotation
     // - k tomu se budu točit.
 
     //
@@ -156,16 +156,16 @@ export namespace Steering
 
     // des - cur = 340, -360 = -20
 
-    const desiredAngle = desiredVelocity.angleToX();
-    let desiredAngularVelocity = desiredAngle - currentAngle;
+    const desiredRotation = desiredVelocity.getRotation();
+    let desiredAngularVelocity = desiredRotation - currentRotation;
 
     /// DEBUG:
     // console.log("Desired velocity:");
     // console.log(desiredVelocity);
-    // console.log("Current angle:");
-    // console.log(currentAngle);
-    // console.log("Desired angle:");
-    // console.log(desiredAngle);
+    // console.log("Current rotation:");
+    // console.log(currentRotation);
+    // console.log("Desired rotation:");
+    // console.log(desiredRotation);
 
     // Make sure that we make a turn the shorter way.
     if (desiredAngularVelocity > Math.PI)

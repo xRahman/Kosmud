@@ -76,7 +76,7 @@ export class Connection extends Socket
     (
       shipInfo.geometry,
       shipInfo.position,
-      shipInfo.angle
+      shipInfo.rotation
     );
 
     this.send(packet);

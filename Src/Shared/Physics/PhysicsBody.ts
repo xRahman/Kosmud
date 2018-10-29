@@ -44,7 +44,7 @@ export class PhysicsBody
     return this.body.GetPosition().y;
   }
 
-  public getAngle()
+  public getRotation()
   {
     return this.body.GetAngle();
   }
@@ -75,8 +75,8 @@ export class PhysicsBody
   // {
   //   let velocityVector =
   //   {
-  //     x: velocity * Math.cos(this.getAngle()),
-  //     y: velocity * Math.sin(this.getAngle())
+  //     x: velocity * Math.cos(this.getRotation()),
+  //     y: velocity * Math.sin(this.getRotation())
   //   }
 
   //   return velocityVector;

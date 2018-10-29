@@ -110,7 +110,7 @@ export class FlightScene extends Scene
       this,
       request.shipGeometry,
       request.shipPosition,
-      request.shipAngle
+      request.shipRotation
     );
   }
 

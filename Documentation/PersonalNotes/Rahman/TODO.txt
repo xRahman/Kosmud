@@ -1,3 +1,15 @@
+TODO: Možná ještě přece jen PhaserObject zdědit (nejspíš z CoordsTransform)
+  a přesunout tam metody na transformaci koordinátů.
+  (transformVector(), transformPolygon(), transformAngle()).
+  - obojí musí být tam i zpět (takže by ty metody asi měly bejt pojmenovaný
+    podle toho, z čeho do čeho transformují).
+    angleFromPhaserToBox2d()
+    angleFromBox2dToPhaser()
+    vectorFromPhaserToBox2d()
+    vectorFromBox2dToPhaser()
+    polygonFromPhaserToBox2d()
+    polygonFromBox2dToPhaser()
+
 TODO: Vymyslet, kam dát funkce lowerBound(), upperBound() a intervalBound()
   (momentálně jsou ve Steering).
 TODO: Ještě jednou zvážit rozdělení Utils (a možná přejmenování).

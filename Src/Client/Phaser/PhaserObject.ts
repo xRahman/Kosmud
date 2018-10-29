@@ -20,6 +20,7 @@ interface PhaserGameObject extends Phaser.GameObjects.GameObject
   setY(y: number): void;
   x: number;
   y: number;
+  rotation: number;
   setRotation(rotation: number): void;
   setDepth(depth: number): void;
   setScrollFactor(scrollFactor: number): void;
@@ -70,6 +71,12 @@ export abstract class PhaserObject
   {
     // Note: Coordinates transform (rotation is inverted).
     this.phaserObject.setRotation(-rotation);
+  }
+
+  public getRotation()
+  {
+    // Note: Coordinates transform (rotation is inverted).
+    return -this.phaserObject.rotation;
   }
 
   public setPosition(position: Vector)

@@ -41,15 +41,24 @@ export class ShipGraphics
 
   // ---------------- Public methods --------------------
 
-  public setPositionAndAngle(position: Vector, angle: number)
+  public setPosition(position: Vector)
   {
     this.container.setPosition(position);
-    this.container.setRotation(angle);
   }
 
   public getPosition(): Vector
   {
     return this.container.getPosition();
+  }
+
+  public setRotation(rotation: number)
+  {
+    this.container.setRotation(rotation);
+  }
+
+  public getRotation()
+  {
+    return this.container.getRotation();
   }
 }
 

@@ -8,5 +8,5 @@ import { Vector } from "../../Shared/Physics/Vector";
 
 export class Ship
 {
-  constructor(protected position: Vector, protected angle: number) {}
+  constructor(protected position: Vector, protected rotation: number) {}
 }

@@ -34,9 +34,9 @@ export namespace Game
   {
     const shipInfo =
     {
-      angle: ship.getAngle(),
-      geometry: ship.getGeometry(),
+      rotation: ship.getRotation(),
       position: ship.getPosition(),
+      geometry: ship.getGeometry(),
     };
 
     return shipInfo;
@@ -69,7 +69,7 @@ function updateClients()
   const sceneUpdate = new SceneUpdate
   (
     Game.ship.getPosition(),
-    Game.ship.getAngle(),
+    Game.ship.getRotation(),
     Game.ship.getDesiredVelocity(),
     Game.ship.getSteeringForce(),
     Game.ship.getDesiredSteeringForce()

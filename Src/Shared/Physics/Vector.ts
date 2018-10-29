@@ -235,21 +235,21 @@ export class Vector
     return this;
   }
 
-  // -> Returns number between 0 and 2π.
-  public angleToX(): number
+  // -> Returns angle between vector and 'x' axis (between 0 and 2π).
+  public getRotation(): number
   {
     // OMGF Math.atan2 gets 'y' as first argument and 'x' as second.
     // Tell me why, tell me why, tell me why...
-    let angle = Math.atan2(this.y, this.x);
+    let rotation = Math.atan2(this.y, this.x);
 
     // Convert angle from interval [-π, π] returned by atan2
-    // to interval [0, 2π] (because all angles in game are in
+    // to interval [0, 2π] (because all rotations in game are in
     // that interval and comparing angles in different intervals
     // leads to hard-to-debug quirky behaviour).
-    if (angle < 0)
-      angle += Math.PI * 2;
+    if (rotation < 0)
+      rotation += Math.PI * 2;
 
-    return angle;
+    return rotation;
   }
 
   public toJSON()

@@ -22,11 +22,8 @@ export class SceneUpdate extends Shared.SceneUpdate
 
     if (ship !== "Doesn't exist")
     {
-      ship.setPositionAndAngle
-      (
-        this.shipPosition,
-        this.shipAngle
-      );
+      ship.setPosition(this.shipPosition);
+      ship.setRotation(this.shipRotation);
 
       ship.vectors.setDesiredVelocity(this.desiredVelocity);
       ship.vectors.setSteeringForce(this.steeringForce);
