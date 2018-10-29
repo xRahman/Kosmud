@@ -8,7 +8,7 @@
     ('y' axis and angles are inverted).
 */
 
-import { CoordTransform } from "../../Shared/Physics/CoordTransform";
+import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 
 // Phaser.GameObjects.GameObject technicaly is an ancestor of
 // Sprite, Container, Graphics etc., but we need to use common
@@ -48,17 +48,17 @@ export abstract class PhaserObject
 
   public setRotation(rotation: number)
   {
-    this.phaserObject.setRotation(CoordTransform.transformAngle(rotation));
+    this.phaserObject.setRotation(CoordsTransform.transformAngle(rotation));
   }
 
   public getRotation()
   {
-    return CoordTransform.transformAngle(this.phaserObject.rotation);
+    return CoordsTransform.transformAngle(this.phaserObject.rotation);
   }
 
   public setPosition(position: { x: number; y: number })
   {
-    const transformedPosition = CoordTransform.transformVector(position);
+    const transformedPosition = CoordsTransform.transformVector(position);
 
     this.phaserObject.setX(transformedPosition.x);
     this.phaserObject.setY(transformedPosition.y);
@@ -66,7 +66,7 @@ export abstract class PhaserObject
 
   public getPosition()
   {
-    return CoordTransform.transformVector(this.phaserObject);
+    return CoordsTransform.transformVector(this.phaserObject);
   }
 
   public setDepth(depth: number)

@@ -12,7 +12,7 @@
 */
 
 import { Vector } from "../../Shared/Physics/Vector";
-import { CoordTransform } from "../../Shared/Physics/CoordTransform";
+import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
@@ -71,7 +71,7 @@ export class Graphics extends PhaserObject
   {
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
-    const tranformedPolygon = CoordTransform.transformPolygon(polygon);
+    const tranformedPolygon = CoordsTransform.transformPolygon(polygon);
 
     this.phaserObject.strokePoints(tranformedPolygon, true);
   }
@@ -111,8 +111,8 @@ export class Graphics extends PhaserObject
   /// and followed by 'this.graphics.closePath(); this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
-    const transformedFrom = CoordTransform.transformVector(from);
-    const transformedTo = CoordTransform.transformVector(to);
+    const transformedFrom = CoordsTransform.transformVector(from);
+    const transformedTo = CoordsTransform.transformVector(to);
 
     this.phaserObject.moveTo(transformedFrom.x, transformedFrom.y);
     this.phaserObject.lineTo(transformedTo.x, transformedTo.y);

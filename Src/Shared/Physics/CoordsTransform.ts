@@ -10,7 +10,7 @@ import { Vector } from "../../Shared/Physics/Vector";
 
 type Polygon = Array<{ x: number; y: number }>;
 
-export namespace CoordTransform
+export namespace CoordsTransform
 {
   export function transformAngle(angle: number): number
   {
