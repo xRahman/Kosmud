@@ -39,7 +39,7 @@
 */
 
 import { Types } from "../../Shared/Utils/Types";
-import { Utils } from "../../Shared/Utils/Utils";
+import { Syslog } from "../../Shared/Log/Syslog";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Classes } from "../../Shared/Class/Classes";
 import { JsonObject } from "../../Shared/Class/JsonObject";
@@ -326,7 +326,7 @@ export class Serializable extends Attributable
         return attributes.edited !== false;
 
       default:
-        throw Utils.reportMissingCase(mode);
+        throw Syslog.reportMissingCase(mode);
     }
   }
 
@@ -639,7 +639,7 @@ export class Serializable extends Attributable
     if (!Array.isArray(param.sourceProperty))
       return "Property is not an Array";
 
-    // Here we need to use Utils.isArray() instead of Array.isArray()
+    // Here we need to use Types.isArray() instead of Array.isArray()
     // because 'param.targetProperty' can be a {} with an array
     // as it's prototype created by object.create().
     const targetIsValid =

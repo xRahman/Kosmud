@@ -6,7 +6,7 @@
   (Part of client-server communication protocol.)
 */
 
-import { Utils } from "../../Shared/Utils/Utils";
+import { Syslog } from "../../Shared/log/Syslog";
 import { Connection } from "../../Server/Net/Connection";
 import { Game } from "../../Server/Game/Game";
 import * as Shared from "../../Shared/Protocol/KeyboardInput";
@@ -29,7 +29,7 @@ export class KeyboardInput extends Shared.KeyboardInput
         break;
 
       default:
-        throw Utils.reportMissingCase(this.startOrStop);
+        throw Syslog.reportMissingCase(this.startOrStop);
     }
   }
 }
@@ -59,7 +59,7 @@ function startMovingShip(action: Shared.KeyboardInput.Action)
       break;
 
     default:
-      throw Utils.reportMissingCase(action);
+      throw Syslog.reportMissingCase(action);
   }
 }
 
@@ -78,6 +78,6 @@ function stopMovingShip(action: Shared.KeyboardInput.Action)
       break;
 
     default:
-      throw Utils.reportMissingCase(action);
+      throw Syslog.reportMissingCase(action);
   }
 }

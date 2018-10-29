@@ -9,15 +9,7 @@ TODO: Možná ještě přece jen PhaserObject zdědit (nejspíš z CoordsTransfo
     vectorFromBox2dToPhaser()
     polygonFromPhaserToBox2d()
     polygonFromBox2dToPhaser()
-
-TODO: Vymyslet, kam dát funkce lowerBound(), upperBound() a intervalBound()
-  (momentálně jsou ve Steering).
-TODO: Ještě jednou zvážit rozdělení Utils (a možná přejmenování).
-  - /Utils/StringUtils by mohlo být prostě Utils/String.
-  - applyDefaults() by mohlo být v Utils/Object
-  - reportMissingCase() těžko říct kam, možná do Syslogu?
-    (sice to nic neloguje, aspoň ne přímo, ale asi proč ne).
-  - lowerBound, upperBound a podobně buď do Utils/Math nebo Utils/Number.
+  - možná by nemuselo bejt potřeba zvlášť setX() a setY().
 
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.

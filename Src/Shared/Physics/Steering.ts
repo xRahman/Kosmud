@@ -4,6 +4,7 @@
   Steering behavior of autonomous vehicles.
 */
 
+import { intervalBound } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
 
 /// Zatím natvrdo.
@@ -17,25 +18,6 @@ const BARKWARD_THRUST = 10;
 const STRAFE_THRUST = 5;
 // const MAXIMUM_ANGULAR_VELOCITY = Math.PI / 20;
 const ANGULAR_VELOCITY = Math.PI / 20;
-
-function lowerBound(value: number, bound: number)
-{
-  return Math.max(value, bound);
-}
-
-function upperBound(value: number, bound: number)
-{
-  return Math.min(value, bound);
-}
-
-function intervalBound
-(
-  value: number,
-  { from, to }: { from: number; to: number }
-)
-{
-  return Math.min(Math.max(value, from), to);
-}
 
 export namespace Steering
 {

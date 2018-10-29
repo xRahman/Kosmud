@@ -22,7 +22,7 @@
   }
 */
 
-import { Utils } from "../../Shared/Utils/Utils";
+import { applyDefaults } from "../../Shared/Utils/Object";
 import { Attributes, DEFAULT_ATTRIBUTES } from "../../Shared/Class/Attributes";
 
 const DEFAULT_ATTRIBUTES_PROPERTY = "defaultAttributes";
@@ -56,9 +56,9 @@ export class Attributable
     let attributes = {};
     const globalDefaultAttibutes = Attributable.defaultAttributes;
 
-    attributes = Utils.applyDefaults(attributes, propertySpecificAttributes);
-    attributes = Utils.applyDefaults(attributes, classDefaultAttributes);
-    attributes = Utils.applyDefaults(attributes, globalDefaultAttibutes);
+    attributes = applyDefaults(attributes, propertySpecificAttributes);
+    attributes = applyDefaults(attributes, classDefaultAttributes);
+    attributes = applyDefaults(attributes, globalDefaultAttibutes);
 
     return attributes;
   }

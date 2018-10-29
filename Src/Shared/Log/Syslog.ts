@@ -4,7 +4,7 @@
   Logger abstract ancestor.
 */
 
-import { StringUtils } from "../../Shared/Utils/StringUtils";
+import { removeFirstLinesWithoutPrefix } from "../../Shared/Utils/String";
 
 export abstract class Syslog
 {
@@ -84,6 +84,14 @@ export abstract class Syslog
     this.instance.reportError(message);
   }
 
+  // Note: If you get a compiler error "Argument of type '"xy"'
+  //   is not assignable to parameter of type 'never'",
+  //   it means that there is a case missing in the switch.
+  public static reportMissingCase(variable: never)
+  {
+    return new Error("Unhandled switch case");
+  }
+
   // ------------ Protected static methods --------------
 
   // Modifies 'stack' property of 'error' parameter.
@@ -103,7 +111,7 @@ export abstract class Syslog
     //   To remove it, we trim lines not starting with '    at '.
     // That's because error message can be multi-line so removing
     // just 1 line would not always be enough.
-    return StringUtils.removeFirstLinesWithoutPrefix(stackTrace, "    at ");
+    return removeFirstLinesWithoutPrefix(stackTrace, "    at ");
   }
 
   protected static createLogEntry
