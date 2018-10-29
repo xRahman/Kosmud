@@ -1,3 +1,9 @@
+TODO:
+  Tohle by chtělo udělat nějak líp:
+    this.container.add(this.geometryGraphics.getGraphics());
+  (možná zdědit ShipGraphics z Graphics?)
+[done]
+
 TODO: Phaser.GameObject wrappery přece jen z něčeho zdědit.
 - transformace zajistí interní setX, setY a setAngle v předkovi.
 - spousta metod je stejná, chce to nějak podědit.

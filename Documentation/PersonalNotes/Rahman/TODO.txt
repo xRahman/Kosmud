@@ -1,8 +1,3 @@
-TODO:
-  Tohle by chtělo udělat nějak líp:
-    this.container.add(this.geometryGraphics.getGraphics());
-  (možná zdědit ShipGraphics z Graphics?)
-
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)

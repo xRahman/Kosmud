@@ -29,7 +29,7 @@ export class ShipGraphics
     this.container.add(this.sprite);
 
     this.geometryGraphics = new GeometryGraphics(scene, physicsGeometry);
-    this.container.add(this.geometryGraphics.getGraphics());
+    this.container.add(this.geometryGraphics);
   }
 
   // ------------- Public static methods ----------------

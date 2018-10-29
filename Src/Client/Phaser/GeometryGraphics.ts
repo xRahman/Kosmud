@@ -2,15 +2,12 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Graphics } from "../../Client/Phaser/Graphics";
 import { FlightScene } from "../../Client/Phaser/FlightScene";
 
-export class GeometryGraphics
+export class GeometryGraphics extends Graphics
 {
-  private graphics: Graphics;
-
   constructor(scene: Phaser.Scene, private geometry: PhysicsBody.Geometry)
   {
-    this.graphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
-    this.graphics.drawGeometry(geometry);
-  }
+    super(scene, FlightScene.Z_ORDER_DEBUG);
 
-  public getGraphics() { return this.graphics; }
+    this.drawGeometry(geometry);
+  }
 }
