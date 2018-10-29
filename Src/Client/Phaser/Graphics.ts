@@ -17,11 +17,11 @@ export class Graphics extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Phaser.Scene, depth = 0)
+  constructor(scene: Phaser.Scene, depth = 0, position = new Vector())
   {
     super(scene);
 
-    this.phaserObject = scene.add.graphics({ x: 0, y: 0 });
+    this.phaserObject = scene.add.graphics(position);
     this.phaserObject.setDepth(depth);
   }
 
@@ -44,16 +44,30 @@ export class Graphics extends PhaserObject
     this.phaserObject.clear();
   }
 
-  public drawGeometry(geometry: PhysicsBody.Geometry)
+  public drawGeometry
+  (
+    geometry: PhysicsBody.Geometry,
+    lineWidth: number,
+    color: number,
+    alpha0to1: number
+  )
   {
-    this.phaserObject.lineStyle(1, 0x00FFFF, 0.8);
-
     for (const polygon of geometry)
-      this.drawPolygon(polygon);
+    {
+      this.drawPolygon(polygon, lineWidth, color, alpha0to1);
+    }
   }
 
-  public drawPolygon(polygon: Array<{ x: number; y: number }>)
+  public drawPolygon
+  (
+    polygon: Array<{ x: number; y: number }>,
+    lineWidth: number,
+    color: number,
+    alpha0to1: number
+  )
   {
+    this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
+
     // Note:
     //   Points in 'polygon' are transformed from Box2D coords
     //   to Phaser coords before rendering.
@@ -62,14 +76,14 @@ export class Graphics extends PhaserObject
 
   public drawVector
   (
-    color: number,
     vector: Vector,
-    origin: Vector = new Vector()
+    origin: Vector,
+    lineWidth: number,
+    color: number,
+    alpha0to1: number
   )
   {
-    const LINE_WIDTH = 1;
-
-    this.phaserObject.lineStyle(LINE_WIDTH, color);
+    this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
     this.phaserObject.beginPath();
 
@@ -92,8 +106,7 @@ export class Graphics extends PhaserObject
   // ---------------- Private methods -------------------
 
   /// This only makes sense it it's preceded by 'this.graphics.beginPath();'
-  /// and followed by 'this.graphics.closePath();' and
-  /// 'this.graphics.strokePath();'.
+  /// and followed by 'this.graphics.closePath(); this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
     // Note: Coordinates transform ('y' axis is inverted).

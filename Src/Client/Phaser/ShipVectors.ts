@@ -62,20 +62,17 @@ export class ShipVectors
 
     this.graphics.drawVector
     (
-      Graphics.rgb(0, 0, 255),
-      this.desiredVelocity
+      this.desiredVelocity, new Vector(), 1, Graphics.rgb(0, 0, 255), 1
     );
 
     this.graphics.drawVector
     (
-      Graphics.rgb(160, 160, 0),
-      this.desiredSteeringForce
+      this.desiredSteeringForce, new Vector(), 1, Graphics.rgb(160, 160, 0), 1
     );
 
     this.graphics.drawVector
     (
-      Graphics.rgb(255, 255, 0),
-      this.steeringForce
+      this.steeringForce, new Vector(), 1, Graphics.rgb(255, 255, 0), 1
     );
   }
 }

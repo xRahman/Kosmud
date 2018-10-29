@@ -8,6 +8,6 @@ export class GeometryGraphics extends Graphics
   {
     super(scene, FlightScene.Z_ORDER_DEBUG);
 
-    this.drawGeometry(geometry);
+    this.drawGeometry(geometry, 1, Graphics.rgb(0, 255, 255), 0.8);
   }
 }
