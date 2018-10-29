@@ -1,4 +1,3 @@
-
 /*
   Draws lines directly to canvas.
 */
@@ -13,6 +12,7 @@
 */
 
 import { Vector } from "../../Shared/Physics/Vector";
+import { CoordTransform } from "../../Shared/Physics/CoordTransform";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
@@ -71,10 +71,9 @@ export class Graphics extends PhaserObject
   {
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
-    // Note:
-    //   Points in 'polygon' are transformed from Box2D coords
-    //   to Phaser coords before rendering.
-    this.phaserObject.strokePoints(Graphics.transformPolygon(polygon), true);
+    const tranformedPolygon = CoordTransform.transformPolygon(polygon);
+
+    this.phaserObject.strokePoints(tranformedPolygon, true);
   }
 
   public drawVector
@@ -112,11 +111,8 @@ export class Graphics extends PhaserObject
   /// and followed by 'this.graphics.closePath(); this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
-    // Note:
-    //   Vectors are transformed from Box2D coords to Phaser
-    //   coords before rendering.
-    const transformedFrom = Graphics.transformVector(from);
-    const transformedTo = Graphics.transformVector(to);
+    const transformedFrom = CoordTransform.transformVector(from);
+    const transformedTo = CoordTransform.transformVector(to);
 
     this.phaserObject.moveTo(transformedFrom.x, transformedFrom.y);
     this.phaserObject.lineTo(transformedTo.x, transformedTo.y);

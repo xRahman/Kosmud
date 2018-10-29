@@ -114,10 +114,10 @@ export class Background
     // Position of background needs to be in the middle of
     // canvas so it depends on cavas size too and we need to
     // update it.
-    this.sprite.setX(canvasWidth / 2);
-    // Topleft is [0, 0] but y axis points so 'y' needs to
+
+    // Topleft is [0, 0] but y axis points up so 'y' needs to
     // be negative to be in the middle of canvas.
-    this.sprite.setY(-canvasHeight / 2);
+    this.sprite.setPosition({ x: (canvasWidth / 2), y: -(canvasHeight / 2) });
   }
 }
 

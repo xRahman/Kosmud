@@ -1,16 +1,3 @@
-TODO: Možná ještě přece jen PhaserObject zdědit (nejspíš z CoordsTransform)
-  a přesunout tam metody na transformaci koordinátů.
-  (transformVector(), transformPolygon(), transformAngle()).
-  - obojí musí být tam i zpět (takže by ty metody asi měly bejt pojmenovaný
-    podle toho, z čeho do čeho transformují).
-    angleFromPhaserToBox2d()
-    angleFromBox2dToPhaser()
-    vectorFromPhaserToBox2d()
-    vectorFromBox2dToPhaser()
-    polygonFromPhaserToBox2d()
-    polygonFromBox2dToPhaser()
-  - možná by nemuselo bejt potřeba zvlášť setX() a setY().
-
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)

@@ -8,7 +8,7 @@
     ('y' axis and angles are inverted).
 */
 
-import { Vector } from "../../Shared/Physics/Vector";
+import { CoordTransform } from "../../Shared/Physics/CoordTransform";
 
 // Phaser.GameObjects.GameObject technicaly is an ancestor of
 // Sprite, Container, Graphics etc., but we need to use common
@@ -33,62 +33,40 @@ export abstract class PhaserObject
 
   constructor(protected scene: Phaser.Scene) {}
 
-  // ------------ Protected static methods --------------
-
-  protected static transformPolygon(polygon: Array<{ x: number; y: number }>)
-  {
-    const result = [];
-
-    for (const point of polygon)
-    {
-      // Note: Coordinates transform ('y' axis is inverted).
-      result.push({ x: point.x, y: -point.y });
-    }
-
-    return result;
-  }
-
-  protected static transformVector(vector: Vector)
-  {
-    // Note: Coordinates transform ('y' axis is inverted).
-    return new Vector({ x: vector.x, y: -vector.y });
-  }
-
   // ---------------- Public methods --------------------
 
-  public setX(x: number)
-  {
-    this.phaserObject.setX(x);
-  }
+  // public setX(x: number)
+  // {
+  //   this.phaserObject.setX(x);
+  // }
 
-  public setY(y: number)
-  {
-    // Note: Coordinates transform ('y' axis is inverted).
-    this.phaserObject.setY(-y);
-  }
+  // public setY(y: number)
+  // {
+  //   // Note: Coordinates transform ('y' axis is inverted).
+  //   this.phaserObject.setY(-y);
+  // }
 
   public setRotation(rotation: number)
   {
-    // Note: Coordinates transform (rotation is inverted).
-    this.phaserObject.setRotation(-rotation);
+    this.phaserObject.setRotation(CoordTransform.transformAngle(rotation));
   }
 
   public getRotation()
   {
-    // Note: Coordinates transform (rotation is inverted).
-    return -this.phaserObject.rotation;
+    return CoordTransform.transformAngle(this.phaserObject.rotation);
   }
 
-  public setPosition(position: Vector)
+  public setPosition(position: { x: number; y: number })
   {
-    this.setX(position.x);
-    this.setY(position.y);
+    const transformedPosition = CoordTransform.transformVector(position);
+
+    this.phaserObject.setX(transformedPosition.x);
+    this.phaserObject.setY(transformedPosition.y);
   }
 
   public getPosition()
   {
-    // Note: Coordinates transform ('y' axis is inverted).
-    return new Vector({ x: this.phaserObject.x, y: -this.phaserObject.y });
+    return CoordTransform.transformVector(this.phaserObject);
   }
 
   public setDepth(depth: number)
