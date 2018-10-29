@@ -1,3 +1,12 @@
+TODO: Vymyslet, kam dát funkce lowerBound(), upperBound() a intervalBound()
+  (momentálně jsou ve Steering).
+TODO: Ještě jednou zvážit rozdělení Utils (a možná přejmenování).
+  - /Utils/StringUtils by mohlo být prostě Utils/String.
+  - applyDefaults() by mohlo být v Utils/Object
+  - reportMissingCase() těžko říct kam, možná do Syslogu?
+    (sice to nic neloguje, aspoň ne přímo, ale asi proč ne).
+  - lowerBound, upperBound a podobně buď do Utils/Math nebo Utils/Number.
+
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
@@ -16,17 +25,9 @@ TODO. ShipGraphics by se možná mohlo jmenovat ShipVisuals...
 
 TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
   Zbytek hodit do jiného adresáře.
-
-TODO: Graphics by potřebovala oddělit kód kterej pracuje s Box2d koordinátama
- a kód na transformaci koordinátů.
- (částečně to je, DrawLine a DrawPolygon jsou ty transformační metody.
-  Možná je hodit do předka?)
   
 
 TODO: Odstranit debugovací kód ze Steering.seek().
-
-TODO: Vymyslet, kam dát funkce lowerBound(), upperBound() a intervalBound()
-  (momentálně jsou ve Steering).
 
 TODO: Rotaci lodě říkat 'rotation', ne 'angle'
 

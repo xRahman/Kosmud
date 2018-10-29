@@ -7,6 +7,9 @@
   Note:
     This class transforms coordinates from Box2D to Phaser coords
     ('y' axis and angles are inverted).
+
+    Actual transformation functions should only be in PhaserObject class
+    (see PhaserObject.transformVector() and PhaserObject.transformPolygon()).
 */
 
 import { Vector } from "../../Shared/Physics/Vector";
@@ -71,7 +74,7 @@ export class Graphics extends PhaserObject
     // Note:
     //   Points in 'polygon' are transformed from Box2D coords
     //   to Phaser coords before rendering.
-    this.phaserObject.strokePoints(transformPologyon(polygon), true);
+    this.phaserObject.strokePoints(Graphics.transformPolygon(polygon), true);
   }
 
   public drawVector
@@ -109,9 +112,14 @@ export class Graphics extends PhaserObject
   /// and followed by 'this.graphics.closePath(); this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
-    // Note: Coordinates transform ('y' axis is inverted).
-    this.phaserObject.moveTo(from.x, -from.y);
-    this.phaserObject.lineTo(to.x, -to.y);
+    // Note:
+    //   Vectors are transformed from Box2D coords to Phaser
+    //   coords before rendering.
+    const transformedFrom = Graphics.transformVector(from);
+    const transformedTo = Graphics.transformVector(to);
+
+    this.phaserObject.moveTo(transformedFrom.x, transformedFrom.y);
+    this.phaserObject.lineTo(transformedTo.x, transformedTo.y);
   }
 }
 
@@ -122,19 +130,4 @@ export class Graphics extends PhaserObject
 export namespace Graphics
 {
   export type RGB = { r: number; g: number; b: number };
-}
-
-// ----------------- Auxiliary Functions ---------------------
-
-function transformPologyon(polygon: Array<{ x: number; y: number }>)
-{
-  const result = [];
-
-  for (const point of polygon)
-  {
-    // Note: Coordinates transform ('y' axis is inverted).
-    result.push({ x: point.x, y: -point.y });
-  }
-
-  return result;
 }

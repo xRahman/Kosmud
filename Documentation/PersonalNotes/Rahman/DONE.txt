@@ -1,3 +1,9 @@
+TODO: Graphics by potřebovala oddělit kód kterej pracuje s Box2d koordinátama
+ a kód na transformaci koordinátů.
+ (částečně to je, DrawLine a DrawPolygon jsou ty transformační metody.
+  Možná je hodit do předka?)
+[done]
+
 TODO:
   Tohle by chtělo udělat nějak líp:
     this.container.add(this.geometryGraphics.getGraphics());

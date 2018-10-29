@@ -32,6 +32,27 @@ export abstract class PhaserObject
 
   constructor(protected scene: Phaser.Scene) {}
 
+  // ------------ Protected static methods --------------
+
+  protected static transformPolygon(polygon: Array<{ x: number; y: number }>)
+  {
+    const result = [];
+
+    for (const point of polygon)
+    {
+      // Note: Coordinates transform ('y' axis is inverted).
+      result.push({ x: point.x, y: -point.y });
+    }
+
+    return result;
+  }
+
+  protected static transformVector(vector: Vector)
+  {
+    // Note: Coordinates transform ('y' axis is inverted).
+    return new Vector({ x: vector.x, y: -vector.y });
+  }
+
   // ---------------- Public methods --------------------
 
   public setX(x: number)
