@@ -1,6 +1,6 @@
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Graphics } from "../../Client/Phaser/Graphics";
-import { FlightScene } from "../../Client/Phaser/FlightScene";
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 
 export class GeometryGraphics extends Graphics
 {

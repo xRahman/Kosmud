@@ -13,7 +13,6 @@
   // },
   "rules":
   {
-    // Don't want these.
     "newline-before-return": false,
     "no-parameter-properties": false,
     "cyclomatic-complexity": false,
@@ -23,13 +22,15 @@
     "no-magic-numbers": false,
     // This would be nice but it's not realistic atm.
     "no-require-imports": false,
+    // "import-spacing" doesn't allow newlines in import spacing
+    // so it cannot be used along with line lenght limit because
+    // some imports are doomed to be longer.
+    "import-spacing": false,
     "ban": false,
     // This doesn't work along with 'baseUrl' in tsconfig.json.
-    "no-implicit-dependencies": false,
+    "no-implicit-dependencies": true,
     // This doesn't work along with 'baseUrl' in tsconfig.json.
-    "no-submodule-imports": false,
-
-    // Enable these.
+    "no-submodule-imports": true,
     "comment-format": [ true, "check-space" ],
     "member-access": true,
     "only-arrow-functions":

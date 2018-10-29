@@ -1,8 +1,9 @@
 import { ShipToScene } from "../../Client/Protocol/ShipToScene";
-import { Background } from "../../Client/Phaser/Background";
-import { Ship } from "../../Client/Phaser/Ship";
-import { DestinationMarker } from "../../Client/Phaser/DestinationMarker";
-import { FlightSceneContents } from "../../Client/Phaser/FlightSceneContents";
+import { Background } from "../../Client/FlightScene/Background";
+import { Ship } from "../../Client/Game/Ship";
+import { DestinationMarker } from "../../Client/FlightScene/DestinationMarker";
+import { FlightSceneContents }
+  from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
 
 export class FlightScene extends Scene

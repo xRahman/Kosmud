@@ -1,8 +1,8 @@
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
 import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
-import { ShipGraphics } from "../../Client/Phaser/ShipGraphics";
-import { ShipVectors } from "../../Client/Phaser/ShipVectors";
+import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
+import { ShipVectors } from "../../Client/FlightScene/ShipVectors";
 
 export class Ship
 {

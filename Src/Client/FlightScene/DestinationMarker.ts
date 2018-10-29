@@ -1,4 +1,4 @@
-import { FlightScene } from "../../Client/Phaser/FlightScene";
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { SetDestination } from "../../Shared/Protocol/SetDestination";
 import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";

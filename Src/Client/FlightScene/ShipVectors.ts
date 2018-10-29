@@ -1,8 +1,8 @@
-import { Ship } from "../../Client/Phaser/Ship";
+import { Ship } from "../../Client/Game/Ship";
 import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
 import { Graphics } from "../../Client/Phaser/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
-import { FlightScene } from "../../Client/Phaser/FlightScene";
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 
 export class ShipVectors
 {
