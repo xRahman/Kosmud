@@ -32,6 +32,7 @@ export namespace Renderer
     return getPhaserEngine().getFlightScene();
   }
 
+  /// Tohle zjevně nemusí bejt public.
   export function getPhaserEngine(): PhaserEngine
   {
     if (phaserEngine === "Doesn't exist")
