@@ -1,6 +1,7 @@
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
+  - i když, to možná bude lepší vyřešit kamerou.
 
 TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
   nebudu angular velocity limitovat hned, ale až když bude zbývat jen
@@ -12,26 +13,67 @@ TODO: Asi budu potřebovat seekForward() a seekBackward()
 (protože v současném módu se couvat moc nedá).
 IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
 
-TODO. ShipGraphics by se možná mohlo jmenovat ShipVisuals...
-
 TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
-  Zbytek hodit do jiného adresáře.
-  
+  Zbytek hodit do jiného adresáře
+  (Engine? Potom ale PhaserEngine bude jinde...).
+  Navíc je Ship záležitost enginu nebo hry?
+    (ono na klientu asi hra moc smysl nedává tak jako tak).
+  I když... Na serveru je Ship taky v Game, takže by to aspoň bylo
+  konzistentní.
+
+Phaser
+  Camera
+  Container
+  Scene
+  SceneContents (Sice to není wrapper Phaser objectu, ale patří to do Scene,
+    což wrapper je.)
+  Graphics
+  Keyboard
+  Mouse
+  phaser.d.ts
+  Renderer (do kterého je mergnutý PhaserEngine)
+  PhaserObject
+  Sprite
+Game
+  Ship
+NevímKam (Scene? FlightScene?)
+  Background
+  DestinationMarker (Waypoint)
+  FlightScene
+  FlightSceneContents
+  GeometryGraphics (tohle by se mělo jmenovat jinak. PhysicsShape?
+    a stejně jako u ShipVectors - renderování by mělo bejt v ShipGraphics, ale
+    data by se měla držet v Ship (a předávat do ShipGraphics jako parametr)).
+  ShipGraphics? (to asi spíš do Scene než do Game)
+  ShipVectors?
+    (jako renderuje to, ale taky je to drží informace o lodi.
+    Takže možná spíš Game? Na druhou stranu by to asi mělo bejt obecnější,
+    vektory maj obecně všechny pohybující se objekty (tzn. Vehicles)
+
+TODO: Sloučit PhaserEngine do Rendereru.
+  Renderer (to už vůbec nevím kam. Scéna? Nerenderuje jen scénu...
+    možná sloučit Renderer a PhaserEngine - to zní rozumně (asi pod Renderer)
+
+
+TODO:
+S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Game)
+  a příslušný Graphics oject (tedy renderování) by měl bejt v ShipGraphics
+  (to, že se renderuje nezávisle na containeru, na věci nic nemění. Je to
+   prostě součást grafiky).
+  Při renderování by se měly vektory předat do ShipGraphics jako parametr.
+A ShipGraphics tudíž může bejt ve Scene (respektive FlightScene).
+
+
 
 TODO: Odstranit debugovací kód ze Steering.seek().
 
-TODO: Rotaci lodě říkat 'rotation', ne 'angle'
 
 TODO: DestinationMarker by se možná mohl jmenovat Waypoint
   (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
 - Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
 
-TODO: Vyřešit problém s odečítáním úhlů a cyklením po 2*PI.
-
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).
-
-TODO: Když jsou vektory mimo kontejner lodi, musí mí jinak z-order.
 
 Ok, co dál:
 - načítat data z Tiles editoru nepotřebuju, dokud nebudu řešit kolize,

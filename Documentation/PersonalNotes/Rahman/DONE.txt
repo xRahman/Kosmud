@@ -1,3 +1,12 @@
+TODO: Vyřešit problém s odečítáním úhlů a cyklením po 2*PI.
+[done]
+
+TODO: Když jsou vektory mimo kontejner lodi, musí mí jinak z-order.
+[done]
+
+TODO: Rotaci lodě říkat 'rotation', ne 'angle'
+[done]
+
 TODO: Možná ještě přece jen PhaserObject zdědit (nejspíš z CoordsTransform)
   a přesunout tam metody na transformaci koordinátů.
   (transformVector(), transformPolygon(), transformAngle()).

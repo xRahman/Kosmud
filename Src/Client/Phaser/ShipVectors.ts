@@ -1,4 +1,5 @@
 import { Ship } from "../../Client/Phaser/Ship";
+import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
 import { Graphics } from "../../Client/Phaser/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
 import { FlightScene } from "../../Client/Phaser/FlightScene";
@@ -34,6 +35,14 @@ export class ShipVectors
 
       this.needsRedraw = false;
     }
+  }
+
+  public updateVectors(update: SceneUpdate)
+  {
+    this.desiredVelocity = update.desiredVelocity;
+    this.steeringForce = update.steeringForce;
+    this.desiredSteeringForce = update.desiredSteeringForce;
+    this.needsRedraw = true;
   }
 
   public setDesiredVelocity(desiredVelocity: Vector)
