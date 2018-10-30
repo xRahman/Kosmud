@@ -25,7 +25,7 @@ export class SceneUpdate extends Shared.SceneUpdate
       ship.setPosition(this.shipPosition);
       ship.setRotation(this.shipRotation);
 
-      ship.updateVectors(this);
+      ship.setVectors(this);
     }
   }
 }

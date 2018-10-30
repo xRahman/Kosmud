@@ -4,6 +4,8 @@ import { Container } from "../../Client/Phaser/Container";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
+import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
+import { Ship } from "../Game/Ship";
 
 const Z_ORDER_SHIP_SPRITE = 0;
 
@@ -13,23 +15,26 @@ export class ShipGraphics
 {
   private container: Container;
   private sprite: Sprite;
+  private vectors: VectorGraphics;
 
   private shapeGraphics: ShapeGraphics;
 
   constructor
   (
-    private scene: Phaser.Scene,
+    scene: Phaser.Scene,
     shape: PhysicsBody.Shape,
   )
   {
     this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
-    this.sprite = createShipSprite(this.scene);
+    this.sprite = createShipSprite(scene);
     this.container.add(this.sprite);
 
     this.shapeGraphics = new ShapeGraphics(scene, shape);
     this.container.add(this.shapeGraphics);
+
+    this.vectors = new VectorGraphics(scene);
   }
 
   // ------------- Public static methods ----------------
@@ -40,6 +45,11 @@ export class ShipGraphics
   }
 
   // ---------------- Public methods --------------------
+
+  public update(shipPosition: Vector)
+  {
+    this.vectors.update(shipPosition);
+  }
 
   public setPosition(position: Vector)
   {
@@ -59,6 +69,11 @@ export class ShipGraphics
   public getRotation()
   {
     return this.container.getRotation();
+  }
+
+  public drawVectors(vectors: Ship.Vectors)
+  {
+    this.vectors.draw(vectors);
   }
 }
 

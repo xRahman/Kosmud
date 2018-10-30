@@ -2,12 +2,17 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
 import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
-import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
 
 export class Ship
 {
   private graphics: ShipGraphics;
-  private vectors: VectorGraphics;
+
+  private vectors: Ship.Vectors =
+  {
+    desiredVelocity: new Vector(),
+    steeringForce: new Vector(),
+    desiredSteeringForce: new Vector()
+  };
 
   constructor
   (
@@ -18,7 +23,6 @@ export class Ship
   )
   {
     this.graphics = new ShipGraphics(scene, shape);
-    this.vectors = new VectorGraphics(this, scene);
 
     this.setPosition(position);
     this.setRotation(rotation);
@@ -28,7 +32,7 @@ export class Ship
 
   public update()
   {
-    this.vectors.update();
+    this.graphics.update(this.getPosition());
   }
 
   public setPosition(position: Vector)
@@ -46,10 +50,24 @@ export class Ship
     return this.graphics.getPosition();
   }
 
-  public updateVectors(update: SceneUpdate)
+  public setVectors(vectors: Ship.Vectors)
   {
-    this.vectors.updateVectors(update);
-  }
+    this.vectors.desiredVelocity.set(vectors.desiredVelocity);
+    this.vectors.steeringForce.set(vectors.steeringForce);
+    this.vectors.desiredSteeringForce.set(vectors.desiredSteeringForce);
 
-  // ---------------- Private methods -------------------
+    this.graphics.drawVectors(this.vectors);
+  }
+}
+
+// ------------------ Type Declarations ----------------------
+
+export namespace Ship
+{
+  export interface Vectors
+  {
+    desiredVelocity: Vector;
+    steeringForce: Vector;
+    desiredSteeringForce: Vector;
+  }
 }

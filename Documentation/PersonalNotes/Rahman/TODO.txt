@@ -17,9 +17,11 @@ TODO: Asi budu potřebovat seekForward() a seekBackward()
 (protože v současném módu se couvat moc nedá).
 IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
 
-TODO: Přejmenovat GeometryGraphics na něco rozumnějšího
+
+TODO: Přejmenovat GeometryGraphics na něco rozumnějšího (ShapeGraphics)
 [done]
-  (a asi taky oddělit data od renderování).
+TODO: A taky oddělit data od renderování.
+[done]
 
 TODO:
 S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Ship)
@@ -28,6 +30,10 @@ S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Ship)
    prostě součást grafiky).
   Při renderování by se měly vektory předat do ShipGraphics jako parametr.
 A ShipGraphics tudíž může bejt ve Scene (respektive FlightScene).
+[done]
+
+TODO: Zvážit, jestli je rozumný tahat ship position z grafiky (spíš není).
+- tzn. pamatovat si ji v Ship.
 
 
 
