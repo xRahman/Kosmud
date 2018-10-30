@@ -18,7 +18,7 @@ export class MouseInput extends Shared.MouseInput
   // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
-    // Game.ship.seekPosition(this.mousePosition);
+    // Game.ship.setWaypoint(this.mousePosition);
   }
 }
 

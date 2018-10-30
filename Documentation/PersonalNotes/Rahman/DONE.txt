@@ -1,3 +1,11 @@
+TODO: DestinationMarker by se možná mohl jmenovat Waypoint
+  (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
+- Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
+[done]
+
+TODO: Všude přejmenovat Geometry na Shape.
+[done]
+
 TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
   Zbytek hodit do jiného adresáře
   (Engine? Potom ale PhaserEngine bude jinde...).

@@ -5,7 +5,7 @@ import { Vector } from "../../Shared/Physics/Vector";
 import { Mouse } from "../../Client/Phaser/Mouse";
 import { Sprite } from "../../Client/Phaser/Sprite";
 
-const DESTINATION_MARKER_SPRITE_ID = "destination_marker";
+const WAYPOINT_SPRITE_ID = "waypoint";
 
 export class Waypoint
 {
@@ -27,8 +27,8 @@ export class Waypoint
   {
     scene.load.image
     (
-      DESTINATION_MARKER_SPRITE_ID,
-      "/Graphics/Markers/destination_32x32.png"
+      WAYPOINT_SPRITE_ID,
+      "/Graphics/Markers/waypoint_32x32.png"
     );
   }
 
@@ -42,7 +42,7 @@ export class Waypoint
 
     this.sprite.setPosition(position);
 
-    sendDestination(position);
+    sendWaypoint(position);
   }
 
   public update(mouse: Mouse)
@@ -91,7 +91,7 @@ function createSprite(scene: Phaser.Scene, position: Vector)
     scene,
     position.x,
     position.y,
-    DESTINATION_MARKER_SPRITE_ID
+    WAYPOINT_SPRITE_ID
   );
 
   sprite.setDepth(FlightScene.Z_ORDER_WAYPOINTS);
@@ -99,7 +99,7 @@ function createSprite(scene: Phaser.Scene, position: Vector)
   return sprite;
 }
 
-function sendDestination(destination: Vector)
+function sendWaypoint(waypoint: Vector)
 {
-  Connection.send(new SetWaypoint(destination));
+  Connection.send(new SetWaypoint(waypoint));
 }

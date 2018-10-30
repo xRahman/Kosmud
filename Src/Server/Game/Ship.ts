@@ -11,7 +11,7 @@ import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private desiredPosition: Vector;
+  private waypoint: Vector;
   private desiredVelocity = new Vector();
   private steeringForce = new Vector();
   private desiredSteeringForce = new Vector();
@@ -20,7 +20,7 @@ export class Ship extends Shared.Ship
   {
     super(physicsBody.getPosition(), physicsBody.getRotation());
 
-    this.desiredPosition = physicsBody.getPosition();
+    this.waypoint = physicsBody.getPosition();
   }
 
   public getPosition() {  return this.physicsBody.getPosition(); }
@@ -33,9 +33,9 @@ export class Ship extends Shared.Ship
   public getSteeringForce() { return this.steeringForce; }
   public getDesiredSteeringForce() { return this.desiredSteeringForce; }
 
-  public seekPosition(position: Vector)
+  public setWaypoint(waypoint: Vector)
   {
-    this.desiredPosition = position;
+    this.waypoint = waypoint;
   }
 
   public startTurningLeft()
@@ -83,7 +83,7 @@ export class Ship extends Shared.Ship
     (
       this.getPosition(),
       this.physicsBody.getVelocity(),
-      this.desiredPosition,
+      this.waypoint,
       this.physicsBody.getRotation()
     );
 

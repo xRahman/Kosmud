@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Incoming request to set player ship destination.
+  Incoming request to set player ship waypoint.
 
   (Part of client-server communication protocol.)
 */
@@ -17,7 +17,7 @@ export class SetWaypoint extends Shared.SetWaypoint
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    Game.ship.seekPosition(this.destination);
+    Game.ship.setWaypoint(this.waypoint);
   }
 }
 

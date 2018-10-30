@@ -29,11 +29,6 @@ S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Ship)
   Při renderování by se měly vektory předat do ShipGraphics jako parametr.
 A ShipGraphics tudíž může bejt ve Scene (respektive FlightScene).
 
-TODO: DestinationMarker by se možná mohl jmenovat Waypoint
-  (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
-- Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
-
-TODO: Všude přejmenovat Geometry na Shape.
 
 
 

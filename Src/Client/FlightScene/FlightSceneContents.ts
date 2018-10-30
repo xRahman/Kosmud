@@ -14,7 +14,7 @@ export class FlightSceneContents extends SceneContents
 
     this.background = new Background(scene, canvasWidth, canvasHeight);
 
-    this.destinationMarker = new Waypoint
+    this.waypoint = new Waypoint
     (
       scene,
       new Vector({ x: 0, y: 0 })
@@ -24,7 +24,7 @@ export class FlightSceneContents extends SceneContents
   // ----------------- Public data ----------------------
 
   public background: Background;
-  public destinationMarker: Waypoint;
+  public waypoint: Waypoint;
   public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
   public static preload(scene: FlightScene)
@@ -44,7 +44,7 @@ export class FlightSceneContents extends SceneContents
 
   public update()
   {
-    this.destinationMarker.update(this.mouse);
+    this.waypoint.update(this.mouse);
 
     this.mouse.update();
     // this.camera.update();
