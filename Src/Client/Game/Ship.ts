@@ -18,8 +18,8 @@ export class Ship
   (
     private scene: Phaser.Scene,
     private shape: PhysicsBody.Shape,
-    position: Vector,
-    rotation: number
+    private position: Vector,
+    private rotation: number
   )
   {
     this.graphics = new ShipGraphics(scene, shape);
@@ -37,17 +37,26 @@ export class Ship
 
   public setPosition(position: Vector)
   {
-    this.graphics.setPosition(position);
-  }
+    this.position.set(position);
 
-  public setRotation(rotation: number)
-  {
-    this.graphics.setRotation(rotation);
+    this.graphics.setPosition(position);
   }
 
   public getPosition(): Vector
   {
-    return this.graphics.getPosition();
+    return this.position;
+  }
+
+  public setRotation(rotation: number)
+  {
+    this.rotation = rotation;
+
+    this.graphics.setRotation(rotation);
+  }
+
+  public getRotation(): number
+  {
+    return this.rotation;
   }
 
   public setVectors(vectors: Ship.Vectors)

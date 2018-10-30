@@ -56,19 +56,9 @@ export class ShipGraphics
     this.container.setPosition(position);
   }
 
-  public getPosition(): Vector
-  {
-    return this.container.getPosition();
-  }
-
   public setRotation(rotation: number)
   {
     this.container.setRotation(rotation);
-  }
-
-  public getRotation()
-  {
-    return this.container.getRotation();
   }
 
   public drawVectors(vectors: Ship.Vectors)

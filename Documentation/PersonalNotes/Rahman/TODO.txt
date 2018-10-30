@@ -1,7 +1,3 @@
-TODO: Výhledově Ship zdědit z Vehicle a přesunout tam věci, které by ship měla
-sdílet s jinými pohyblivými objekty.
-- pak je taky otázka, co s turretama a podobně. Brát je jako Vehicle? Uvidíme.
-
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
@@ -16,24 +12,6 @@ TODO: a možná bych mohl udělati "zrychlování" rotace, tj. aby to z 0 na ful
 TODO: Asi budu potřebovat seekForward() a seekBackward()
 (protože v současném módu se couvat moc nedá).
 IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
-
-
-TODO: Přejmenovat GeometryGraphics na něco rozumnějšího (ShapeGraphics)
-[done]
-TODO: A taky oddělit data od renderování.
-[done]
-
-TODO:
-S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Ship)
-  a příslušný Graphics oject (tedy renderování) by měl bejt v ShipGraphics
-  (to, že se renderuje nezávisle na containeru, na věci nic nemění. Je to
-   prostě součást grafiky).
-  Při renderování by se měly vektory předat do ShipGraphics jako parametr.
-A ShipGraphics tudíž může bejt ve Scene (respektive FlightScene).
-[done]
-
-TODO: Zvážit, jestli je rozumný tahat ship position z grafiky (spíš není).
-- tzn. pamatovat si ji v Ship.
 
 
 
@@ -149,6 +127,9 @@ TODO: Mrknout na:
   game.scale.scaleMode = Phaser.ScaleManager.RESIZE
 https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width-instead-of-content-width
 
+TODO: Výhledově Ship zdědit z Vehicle a přesunout tam věci, které by ship měla
+sdílet s jinými pohyblivými objekty.
+- pak je taky otázka, co s turretama a podobně. Brát je jako Vehicle? Uvidíme.
 
 -----------------------------------------------------------------------
 

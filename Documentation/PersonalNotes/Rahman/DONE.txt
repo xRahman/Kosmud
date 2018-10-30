@@ -1,3 +1,21 @@
+TODO: Zvážit, jestli je rozumný tahat ship position z grafiky (spíš není).
+- tzn. pamatovat si ji v Ship.
+[done]
+
+TODO: Přejmenovat GeometryGraphics na něco rozumnějšího (ShapeGraphics)
+[done]
+TODO: A taky oddělit data od renderování.
+[done]
+
+TODO:
+S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Ship)
+  a příslušný Graphics oject (tedy renderování) by měl bejt v ShipGraphics
+  (to, že se renderuje nezávisle na containeru, na věci nic nemění. Je to
+   prostě součást grafiky).
+  Při renderování by se měly vektory předat do ShipGraphics jako parametr.
+A ShipGraphics tudíž může bejt ve Scene (respektive FlightScene).
+[done]
+
 TODO: DestinationMarker by se možná mohl jmenovat Waypoint
   (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
 - Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
