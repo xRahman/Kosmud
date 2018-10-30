@@ -4,7 +4,7 @@ import { Graphics } from "../../Client/Phaser/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 
-export class ShipVectors
+export class VectorGraphics
 {
   private needsRedraw = false;
 

@@ -1,3 +1,44 @@
+TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
+  Zbytek hodit do jiného adresáře
+  (Engine? Potom ale PhaserEngine bude jinde...).
+  Navíc je Ship záležitost enginu nebo hry?
+    (ono na klientu asi hra moc smysl nedává tak jako tak).
+  I když... Na serveru je Ship taky v Game, takže by to aspoň bylo
+  konzistentní.
+.
+Phaser
+  Camera
+  Container
+  Scene
+  SceneContents (Sice to není wrapper Phaser objectu, ale patří to do Scene,
+    což wrapper je.)
+  Graphics
+  Keyboard
+  Mouse
+  phaser.d.ts
+  Renderer (do kterého je mergnutý PhaserEngine) [done]
+  PhaserObject
+  Sprite
+Game
+  Ship
+FlightScene
+  Background
+  DestinationMarker (Waypoint)
+  FlightScene
+  FlightSceneContents
+  GeometryGraphics (tohle by se mělo jmenovat jinak. PhysicsShape?
+    a stejně jako u ShipVectors - renderování by mělo bejt v ShipGraphics, ale
+    data by se měla držet v Ship (a předávat do ShipGraphics jako parametr)).
+  ShipGraphics? (to asi spíš do Scene než do Game)
+  ShipVectors?
+    (jako renderuje to, ale taky je to drží informace o lodi.
+    Takže možná spíš Game? Na druhou stranu by to asi mělo bejt obecnější,
+    vektory maj obecně všechny pohybující se objekty (tzn. Vehicles)
+[done]
+
+TODO: Přejmenovat SetDestination na SetWaypoint.
+[done]
+
 TODO: Sloučit PhaserEngine do Rendereru.
   Renderer (to už vůbec nevím kam. Scéna? Nerenderuje jen scénu...
     možná sloučit Renderer a PhaserEngine - to zní rozumně (asi pod Renderer)

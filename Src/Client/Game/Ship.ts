@@ -2,12 +2,12 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
 import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
-import { ShipVectors } from "../../Client/FlightScene/ShipVectors";
+import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
 
 export class Ship
 {
   private graphics: ShipGraphics;
-  private vectors: ShipVectors;
+  private vectors: VectorGraphics;
 
   constructor
   (
@@ -18,7 +18,7 @@ export class Ship
   )
   {
     this.graphics = new ShipGraphics(scene, geometry);
-    this.vectors = new ShipVectors(this, scene);
+    this.vectors = new VectorGraphics(this, scene);
 
     this.setPosition(position);
     this.setRotation(rotation);

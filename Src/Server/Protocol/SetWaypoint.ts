@@ -8,9 +8,9 @@
 
 import { Connection } from "../../Server/Net/Connection";
 import { Game } from "../../Server/Game/Game";
-import * as Shared from "../../Shared/Protocol/SetDestination";
+import * as Shared from "../../Shared/Protocol/SetWaypoint";
 
-export class SetDestination extends Shared.SetDestination
+export class SetWaypoint extends Shared.SetWaypoint
 {
   // ---------------- Public methods --------------------
 

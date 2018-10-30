@@ -3,7 +3,7 @@ import { Background } from "../../Client/FlightScene/Background";
 import { Ship } from "../../Client/Game/Ship";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 import { SceneContents } from "../../Client/Phaser/SceneContents";
-import { DestinationMarker } from "./DestinationMarker";
+import { Waypoint } from "../../Client/FlightScene/Waypoint";
 import { Vector } from "../../Shared/Physics/Vector";
 
 export class FlightSceneContents extends SceneContents
@@ -14,7 +14,7 @@ export class FlightSceneContents extends SceneContents
 
     this.background = new Background(scene, canvasWidth, canvasHeight);
 
-    this.destinationMarker = new DestinationMarker
+    this.destinationMarker = new Waypoint
     (
       scene,
       new Vector({ x: 0, y: 0 })
@@ -24,14 +24,14 @@ export class FlightSceneContents extends SceneContents
   // ----------------- Public data ----------------------
 
   public background: Background;
-  public destinationMarker: DestinationMarker;
+  public destinationMarker: Waypoint;
   public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
   public static preload(scene: FlightScene)
   {
     Background.preload(scene);
     ShipGraphics.preload(scene);
-    DestinationMarker.preload(scene);
+    Waypoint.preload(scene);
   }
 
   // ---------------- Public methods --------------------

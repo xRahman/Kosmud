@@ -3,7 +3,7 @@ import { Sprite } from "../../Client/Phaser/Sprite";
 import { Container } from "../../Client/Phaser/Container";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { GeometryGraphics } from "../../Client/FlightScene/GeometryGraphics";
+import { GeometryGraphics } from "../../Client/FlightScene/ShapeGraphics";
 
 const Z_ORDER_SHIP_SPRITE = 0;
 

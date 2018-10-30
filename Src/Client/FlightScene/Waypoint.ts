@@ -1,5 +1,5 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { SetDestination } from "../../Shared/Protocol/SetDestination";
+import { SetWaypoint } from "../../Shared/Protocol/SetWaypoint";
 import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Mouse } from "../../Client/Phaser/Mouse";
@@ -7,7 +7,7 @@ import { Sprite } from "../../Client/Phaser/Sprite";
 
 const DESTINATION_MARKER_SPRITE_ID = "destination_marker";
 
-export class DestinationMarker
+export class Waypoint
 {
   private visible = false;
   private sprite: Sprite;
@@ -101,5 +101,5 @@ function createSprite(scene: Phaser.Scene, position: Vector)
 
 function sendDestination(destination: Vector)
 {
-  Connection.send(new SetDestination(destination));
+  Connection.send(new SetWaypoint(destination));
 }

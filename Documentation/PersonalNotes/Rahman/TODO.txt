@@ -1,3 +1,7 @@
+TODO: Výhledově Ship zdědit z Vehicle a přesunout tam věci, které by ship měla
+sdílet s jinými pohyblivými objekty.
+- pak je taky otázka, co s turretama a podobně. Brát je jako Vehicle? Uvidíme.
+
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
@@ -13,60 +17,28 @@ TODO: Asi budu potřebovat seekForward() a seekBackward()
 (protože v současném módu se couvat moc nedá).
 IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
 
-TODO: Výhledově v Client/Phaser nechat jen wrappery Phaser objektů.
-  Zbytek hodit do jiného adresáře
-  (Engine? Potom ale PhaserEngine bude jinde...).
-  Navíc je Ship záležitost enginu nebo hry?
-    (ono na klientu asi hra moc smysl nedává tak jako tak).
-  I když... Na serveru je Ship taky v Game, takže by to aspoň bylo
-  konzistentní.
-
-Phaser
-  Camera
-  Container
-  Scene
-  SceneContents (Sice to není wrapper Phaser objectu, ale patří to do Scene,
-    což wrapper je.)
-  Graphics
-  Keyboard
-  Mouse
-  phaser.d.ts
-  Renderer (do kterého je mergnutý PhaserEngine)
-  PhaserObject
-  Sprite
-Game
-  Ship
-NevímKam (Scene? FlightScene?)
-  Background
-  DestinationMarker (Waypoint)
-  FlightScene
-  FlightSceneContents
-  GeometryGraphics (tohle by se mělo jmenovat jinak. PhysicsShape?
-    a stejně jako u ShipVectors - renderování by mělo bejt v ShipGraphics, ale
-    data by se měla držet v Ship (a předávat do ShipGraphics jako parametr)).
-  ShipGraphics? (to asi spíš do Scene než do Game)
-  ShipVectors?
-    (jako renderuje to, ale taky je to drží informace o lodi.
-    Takže možná spíš Game? Na druhou stranu by to asi mělo bejt obecnější,
-    vektory maj obecně všechny pohybující se objekty (tzn. Vehicles)
-
+TODO: Přejmenovat GeometryGraphics na něco rozumnějšího
+[done]
+  (a asi taky oddělit data od renderování).
 
 TODO:
-S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Game)
+S vektory v lodi by to mělo bejt tak, že data jsou zvlášť (v Ship)
   a příslušný Graphics oject (tedy renderování) by měl bejt v ShipGraphics
   (to, že se renderuje nezávisle na containeru, na věci nic nemění. Je to
    prostě součást grafiky).
   Při renderování by se měly vektory předat do ShipGraphics jako parametr.
 A ShipGraphics tudíž může bejt ve Scene (respektive FlightScene).
 
+TODO: DestinationMarker by se možná mohl jmenovat Waypoint
+  (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
+- Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
+
+TODO: Všude přejmenovat Geometry na Shape.
+
 
 
 TODO: Odstranit debugovací kód ze Steering.seek().
 
-
-TODO: DestinationMarker by se možná mohl jmenovat Waypoint
-  (waypointů může ostatně jít zadat i víc, pak by se to obzvlášť hodilo)
-- Server/Ship.seekPosition() by se mohla jmenovat setWaypoint().
 
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).

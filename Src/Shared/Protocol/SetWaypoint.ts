@@ -9,7 +9,7 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { Packet } from "../../Shared/Protocol/Packet";
 
-export class SetDestination extends Packet
+export class SetWaypoint extends Packet
 {
   constructor(protected destination: Vector)
   {
