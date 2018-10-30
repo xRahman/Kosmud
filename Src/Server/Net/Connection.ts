@@ -74,7 +74,7 @@ export class Connection extends Socket
 
     const packet = new ShipToScene
     (
-      shipInfo.geometry,
+      shipInfo.shape,
       shipInfo.position,
       shipInfo.rotation
     );

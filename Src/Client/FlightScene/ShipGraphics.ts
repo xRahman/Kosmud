@@ -3,7 +3,7 @@ import { Sprite } from "../../Client/Phaser/Sprite";
 import { Container } from "../../Client/Phaser/Container";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { GeometryGraphics } from "../../Client/FlightScene/ShapeGraphics";
+import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
 
 const Z_ORDER_SHIP_SPRITE = 0;
 
@@ -14,12 +14,12 @@ export class ShipGraphics
   private container: Container;
   private sprite: Sprite;
 
-  private geometryGraphics: GeometryGraphics;
+  private shapeGraphics: ShapeGraphics;
 
   constructor
   (
     private scene: Phaser.Scene,
-    private physicsGeometry: PhysicsBody.Geometry,
+    shape: PhysicsBody.Shape,
   )
   {
     this.container = new Container(scene, 0, 0);
@@ -28,8 +28,8 @@ export class ShipGraphics
     this.sprite = createShipSprite(this.scene);
     this.container.add(this.sprite);
 
-    this.geometryGraphics = new GeometryGraphics(scene, physicsGeometry);
-    this.container.add(this.geometryGraphics);
+    this.shapeGraphics = new ShapeGraphics(scene, shape);
+    this.container.add(this.shapeGraphics);
   }
 
   // ------------- Public static methods ----------------

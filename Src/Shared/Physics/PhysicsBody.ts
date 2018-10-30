@@ -88,9 +88,9 @@ export class PhysicsBody
     this.body.SetLinearVelocity(this.getVelocity());
   }
 
-  public getGeometry()
+  public getShape()
   {
-    const geometry: PhysicsBody.Geometry = [];
+    const shape: PhysicsBody.Shape = [];
 
     for
     (
@@ -112,11 +112,11 @@ export class PhysicsBody
           polygon.push({ x: vertex.x, y: vertex.y });
         }
 
-        geometry.push(polygon);
+        shape.push(polygon);
       }
     }
 
-    return geometry;
+    return shape;
   }
 }
 
@@ -132,5 +132,5 @@ export namespace PhysicsBody
 
   export type Polygon = Array<{ x: number; y: number }>;
 
-  export type Geometry = Array<Polygon>;
+  export type Shape = Array<Polygon>;
 }

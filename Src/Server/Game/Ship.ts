@@ -99,8 +99,8 @@ export class Ship extends Shared.Ship
     this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);
   }
 
-  public getGeometry()
+  public getShape()
   {
-    return this.physicsBody.getGeometry();
+    return this.physicsBody.getShape();
   }
 }

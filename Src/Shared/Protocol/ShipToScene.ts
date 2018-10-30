@@ -14,7 +14,7 @@ export class ShipToScene extends Packet
 {
   constructor
   (
-    public shipGeometry: PhysicsBody.Geometry,
+    public shipShape: PhysicsBody.Shape,
     public shipPosition: Vector,
     public shipRotation: number
   )

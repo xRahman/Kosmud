@@ -47,15 +47,15 @@ export class Graphics extends PhaserObject
     this.phaserObject.clear();
   }
 
-  public drawGeometry
+  public drawShape
   (
-    geometry: PhysicsBody.Geometry,
+    shape: PhysicsBody.Shape,
     lineWidth: number,
     color: number,
     alpha0to1: number
   )
   {
-    for (const polygon of geometry)
+    for (const polygon of shape)
     {
       this.drawPolygon(polygon, lineWidth, color, alpha0to1);
     }

@@ -12,12 +12,12 @@ export class Ship
   constructor
   (
     private scene: Phaser.Scene,
-    private geometry: PhysicsBody.Geometry,
+    private shape: PhysicsBody.Shape,
     position: Vector,
     rotation: number
   )
   {
-    this.graphics = new ShipGraphics(scene, geometry);
+    this.graphics = new ShipGraphics(scene, shape);
     this.vectors = new VectorGraphics(this, scene);
 
     this.setPosition(position);

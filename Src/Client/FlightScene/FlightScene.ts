@@ -109,7 +109,7 @@ export class FlightScene extends Scene
     return new Ship
     (
       this,
-      request.shipGeometry,
+      request.shipShape,
       request.shipPosition,
       request.shipRotation
     );

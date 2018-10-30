@@ -36,7 +36,7 @@ export namespace Game
     {
       rotation: ship.getRotation(),
       position: ship.getPosition(),
-      geometry: ship.getGeometry(),
+      shape: ship.getShape(),
     };
 
     return shipInfo;
