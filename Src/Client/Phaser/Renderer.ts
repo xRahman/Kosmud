@@ -1,43 +1,83 @@
+import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Body } from "../../Client/Gui/Body";
-import { PhaserEngine } from "../../Client/Phaser/PhaserEngine";
 
-let phaserEngine: PhaserEngine | "Doesn't exist" = "Doesn't exist";
+let flightScene: FlightScene | "Doesn't exist" = "Doesn't exist";
+let phaserGame: Phaser.Game | "Doesn't exist" = "Doesn't exist";
 
 export namespace Renderer
 {
   // ! Throws exception on error.
   export function init()
   {
-    if (phaserEngine !== "Doesn't exist")
-    {
-      throw new Error("Failed to init phaser engine"
-        + " because it already exists");
-    }
-
     const canvasWidth = Body.getCanvasDiv().getWidth();
     const canvasHeight = Body.getCanvasDiv().getHeight();
 
-    phaserEngine = new PhaserEngine(canvasWidth, canvasHeight);
+    flightScene = createFlightScene(canvasWidth, canvasHeight);
+    phaserGame = createPhaserGame(canvasWidth, canvasHeight, flightScene);
   }
 
   // ! Throws exception on error.
   export function resize(width: number, height: number)
   {
     // ! Throws exception on error.
-    getPhaserEngine().resize(width, height);
+    getPhaserGame().resize(width, height);
+
+    // ! Throws exception on error.
+    getFlightScene().resize(width, height);
   }
 
-  export function getFlightScene()
+  // ! Throws exception on error.
+  export function getFlightScene(): FlightScene
   {
-    return getPhaserEngine().getFlightScene();
-  }
+    if (flightScene === "Doesn't exist")
+      throw new Error("Flight scene doesn't exist");
 
-  /// Tohle zjevně nemusí bejt public.
-  export function getPhaserEngine(): PhaserEngine
-  {
-    if (phaserEngine === "Doesn't exist")
-      throw new Error("Phaser engine doesn't exist");
-
-    return phaserEngine;
+    return flightScene;
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+// ! Throws exception on error.
+function getPhaserGame(): Phaser.Game
+{
+  if (phaserGame === "Doesn't exist")
+    throw new Error("Phaser game doesn't exist");
+
+  return phaserGame;
+}
+
+// ! Throws exception on error.
+function createFlightScene(width: number, height: number): FlightScene
+{
+  if (flightScene !== "Doesn't exist")
+    throw new Error("Flight scene already exists");
+
+  return new FlightScene(width, height);
+}
+
+// ! Throws exception on error.
+function createPhaserGame
+(
+  width: number,
+  height: number,
+  scene: Phaser.Scene
+)
+: Phaser.Game
+{
+  if (phaserGame !== "Doesn't exist")
+    throw new Error("Flight scene already exists");
+
+  return new Phaser.Game
+  (
+    {
+      type: Phaser.AUTO,
+      width,
+      height,
+      disableContextMenu: true,
+      parent: CanvasDiv.ELEMENT_ID,
+      scene
+    }
+  );
 }

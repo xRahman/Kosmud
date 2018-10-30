@@ -1,3 +1,10 @@
+TODO: Sloučit PhaserEngine do Rendereru.
+  Renderer (to už vůbec nevím kam. Scéna? Nerenderuje jen scénu...
+    možná sloučit Renderer a PhaserEngine - to zní rozumně (asi pod Renderer)
+- Renderer.getPhaserEngine() nemusí bejt public
+  (může se to jmenovat getInstance).
+[done]
+
 TODO: Vyřešit problém s odečítáním úhlů a cyklením po 2*PI.
 [done]
 
