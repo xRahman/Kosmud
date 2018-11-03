@@ -15,8 +15,8 @@ export abstract class Socket extends Shared.Socket
   constructor
   (
     webSocket: WebSocket,
-    private ip: string,
-    private url: string
+    private readonly ip: string,
+    private readonly url: string
   )
   {
     super(webSocket);

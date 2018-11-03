@@ -6,14 +6,14 @@ export class Background
 {
   constructor
   (
-    private scene: Phaser.Scene,
+    scene: Phaser.Scene,
     canvasWidth: number,
     canvasHeight: number
   )
   {
     this.sprite = createBackgroundSprite
     (
-      this.scene,
+      scene,
       canvasWidth,
       canvasHeight
     );
@@ -22,7 +22,7 @@ export class Background
     this.resize(canvasWidth, canvasHeight);
   }
 
-  private sprite: Sprite;
+  private readonly sprite: Sprite;
 
   /// Preload je static, protože asset se pak odkazuje idčkem,
   /// takže se na něj nikde nedrží odkaz.
@@ -40,12 +40,6 @@ export class Background
   // ! Throws exception on error.
   public resize(canvasWidth: number, canvasHeight: number)
   {
-    if (!this.sprite)
-    {
-      throw new Error("Unable to resize background because"
-        + " background sprite doesn't exist");
-    }
-
     const imageWidth = this.sprite.getWidth();
     const imageHeight = this.sprite.getHeight();
 

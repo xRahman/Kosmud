@@ -16,7 +16,7 @@ export class Ship extends Shared.Ship
   private steeringForce = new Vector();
   private desiredSteeringForce = new Vector();
 
-  constructor(private physicsBody: PhysicsBody)
+  constructor(private readonly physicsBody: PhysicsBody)
   {
     super(physicsBody.getPosition(), physicsBody.getRotation());
 

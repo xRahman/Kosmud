@@ -122,6 +122,19 @@ export namespace Types
     return variable.constructor.name === "Object";
   }
 
+// /// Pokus udělat type guard funkci, které bude typescript rozumět.
+// /// Funguje to, ale použijí je poněkud clumsy...
+// export function asArray(variable: any): Array<any> | "Not an array"
+// {
+//   if (variable === null || variable === undefined || !variable.constructor)
+//     return "Not an array";
+
+//   if (variable.constructor.name !== "Array")
+//     return "Not an array";
+
+//   return (variable as Array<any>);
+// }
+
   export function isArray(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)

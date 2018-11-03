@@ -12,10 +12,10 @@ export class Entities
   // Note that we also inicialize 'Classes.entities' here.
   // (It's used to circumvent cyclic module dependancy
   // when importing Entities from Serializable.)
-  private static entities = Classes.entities = new Entities();
+  private static readonly entities = Classes.entities = new Entities();
 
   /// Zatím provizorně.
-  private entities: Array<Entity> = [];
+  private readonly entities: Array<Entity> = [];
 
   // ------------- Public static methods ----------------
 

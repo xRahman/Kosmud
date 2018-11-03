@@ -53,7 +53,7 @@ export namespace Classes
   {
     const Class = serializableClasses.get(className);
 
-    if (!Class)
+    if (Class === undefined)
     {
       throw new Error(`Failed to instantiate class '${className}'`
         + ` because it is not registered in Classes as a serializable`
@@ -64,10 +64,14 @@ export namespace Classes
 
     try
     {
+      // tslint:disable-next-line:no-unsafe-any
       instance = new Class();
     }
     catch (error)
     {
+      if (!(error instanceof Error))
+        throw new Error("Invalid error object");
+
       error.message += ")\n";
       error.message += `(Note: If you see something like "Cannot`
         + ` read property 'xy' of undefined" in the error message,`

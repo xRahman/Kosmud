@@ -23,7 +23,7 @@
     "@types/fs-extra": "^5.0.4",
     "@types/js-beautify": "^1.8.0",
     "@types/matter-js": "^0.10.1",
-    "@types/node": "^10.9.4",
+    "@types/node": "^10.12.2",
     "@types/source-map-support": "^0.4.1",
     "@types/ws": "^6.0.1",
     "express": "^4.16.3",

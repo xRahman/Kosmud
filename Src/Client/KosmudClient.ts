@@ -32,4 +32,5 @@ function start()
   }
 }
 
+// tslint:disable-next-line:no-floating-promises
 start();

@@ -35,13 +35,13 @@ export class HttpsServer
   // ----------------- Private data ---------------------
 
   // Use 'express' to handle security issues like directory traversing.
-  private static expressApp = express();
+  private static readonly expressApp = express();
 
   private static httpServer: (http.Server | "Not running") = "Not running";
   private static httpsServer: (https.Server | "Not running") = "Not running";
 
   // Websocket server runs inside a https server.
-  private static webSocketServer = new WebSocketServer();
+  private static readonly webSocketServer = new WebSocketServer();
 
   // ---------------- Public methods --------------------
 
@@ -52,12 +52,12 @@ export class HttpsServer
   )
   {
     // ! Throws exception on error.
-    this.startHttpServer(httpPort, this.expressApp);
+    await this.startHttpServer(httpPort, this.expressApp);
 
     redirectHttpToHttps(this.expressApp);
 
     // ! Throws exception on error.
-    this.startHttpsServer(httpsPort, this.expressApp);
+    await this.startHttpsServer(httpsPort, this.expressApp);
 
     serveStaticFiles(this.expressApp);
   }
@@ -158,8 +158,11 @@ export class HttpsServer
     Syslog.log("[HTTP_SERVER]", `Http error: {$error.message}`);
   }
 
-  private static onHttpsError(error: Error)
+  private static onHttpsError(error: any)
   {
+    if (!(error instanceof Error))
+      throw new Error("Invalid error object");
+
     Syslog.log("[HTTPS_SERVER]", `Https error: ${error.message}`);
   }
 }
@@ -181,7 +184,11 @@ async function readPrivateKey(): Promise<string>
   }
   catch (error)
   {
+    if (!(error instanceof Error))
+      throw new Error("Invalid error object");
+
     error.message = `Failed to read ssl private key: ${error.message}`;
+
     throw error;
   }
 }
@@ -195,7 +202,11 @@ async function readCertificate(): Promise<string>
   }
   catch (error)
   {
+    if (!(error instanceof Error))
+      throw new Error("Invalid error object");
+
     error.message = `Failed to read ssl certificate: ${error.message}`;
+
     throw error;
   }
 }

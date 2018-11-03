@@ -47,7 +47,10 @@ export class WebSocketServer
     this.webSocketServer.on
     (
       "connection",
-      (socket, request) => { this.onNewConnection(socket, request); }
+      async (socket, request) =>
+      {
+        await this.onNewConnection(socket, request);
+      }
     );
 
     // Unlike http server websocket server is up immediately so
@@ -75,7 +78,7 @@ export class WebSocketServer
 
     // Request.url is only valid for requests obtained from http.Server
     // (which should be our case).
-    if (!url)
+    if (url === undefined)
     {
       ERROR("Invalid 'request.url'. This probably means that"
         + " websocket server is used outside of http server."
@@ -106,7 +109,7 @@ export class WebSocketServer
 
 function parseAddress(request: http.IncomingMessage)
 {
-  if (!request.connection || !request.connection.remoteAddress)
+  if (request.connection.remoteAddress === undefined)
     return "Unknown ip address";
 
   return request.connection.remoteAddress;
@@ -142,7 +145,7 @@ function denyConnection
   url?: string
 )
 {
-  const address = url ? `(${url} [${ip}])` : `[${ip}]`;
+  const address = (url !== undefined) ? `(${url} [${ip}])` : `[${ip}]`;
 
   Syslog.log("[WEBSOCKET_SERVER]", `Denying`
     + ` connection ${address}: ${reason}`);

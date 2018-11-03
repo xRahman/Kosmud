@@ -37,4 +37,5 @@ async function start()
   Game.startLoop();
 }
 
+// tslint:disable-next-line:no-floating-promises
 start();

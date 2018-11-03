@@ -12,7 +12,7 @@ import { Types } from "../../Shared/Utils/Types";
 // (Generic type is used to ensure that 'defaults' parameter is
 //  of the same type as 'target' parameter).
 // -> Returns modified 'target'.
-export function applyDefaults<T>(target: T, defaults: T)
+export function applyDefaults<T>(target: T, defaults: T): T
 {
   if (!defaults)
     return target;

@@ -24,6 +24,7 @@
 
 import { applyDefaults } from "../../Shared/Utils/Object";
 import { Attributes, DEFAULT_ATTRIBUTES } from "../../Shared/Class/Attributes";
+import { Types } from "../../Shared/Utils/Types";
 
 const DEFAULT_ATTRIBUTES_PROPERTY = "defaultAttributes";
 
@@ -38,8 +39,6 @@ export class Attributable
 
   // -------------- Protected methods -------------------
 
-  // -> Returns object containing static attributes for a given class property,
-  //    Returns 'undefined' if 'property' doesn't have static attributes.
   // (Note that 'defaultAttributes' declared in the same class as the property
   //  are taken in effect, not possible override in a descendant class.)
   protected propertyAttributes(propertyName: string): Attributes
@@ -47,13 +46,26 @@ export class Attributable
     // If an Attributable class has a static property 'defaultValues', it
     // will serve as default values of attributes of all class properties.
     const classDefaultAttributes =
-      (this.constructor as any)[DEFAULT_ATTRIBUTES_PROPERTY];
+      ((this.constructor as any)[DEFAULT_ATTRIBUTES_PROPERTY] as object);
+
+    if (!Types.isPlainObject(classDefaultAttributes))
+    {
+      throw new Error(`Static propety ${DEFAULT_ATTRIBUTES_PROPERTY} in`
+        + ` class ${this.getClassName()} is not of type 'Attributes'`);
+    }
 
     // Any property of Attributable class can have specific attributes.
     // They are declared as a static class property with the same name.
-    const propertySpecificAttributes = (this.constructor as any)[propertyName];
+    const propertySpecificAttributes =
+      ((this.constructor as any)[propertyName] as object);
 
-    let attributes = {};
+    if (!Types.isPlainObject(propertySpecificAttributes))
+    {
+      throw new Error(`Static propety ${propertyName} in class`
+        + ` ${this.getClassName()} is not of type 'Attributes'`);
+    }
+
+    let attributes: Attributes = {};
     const globalDefaultAttibutes = Attributable.defaultAttributes;
 
     attributes = applyDefaults(attributes, propertySpecificAttributes);

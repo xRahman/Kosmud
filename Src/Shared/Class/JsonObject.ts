@@ -5,6 +5,7 @@
 */
 
 import { js_beautify as beautify } from "js-beautify";
+import { Types } from "../Utils/Types";
 
 export namespace JsonObject
 {
@@ -35,15 +36,28 @@ export namespace JsonObject
   // Same as JSON.parse() but with more informative error message.
   export function parse(jsonString: string, path?: string): object
   {
+    let result: object;
+
     try
     {
-      return JSON.parse(jsonString);
+      result = (JSON.parse(jsonString) as object);
     }
-    catch (e)
+    catch (error)
     {
+      if (!(error instanceof Error))
+        throw new Error("Invalid error object");
+
       throw new Error(`Syntax error in JSON data:`
-        + ` ${e.message}${fileInfo(path)}`);
+        + ` ${error.message}${fileInfo(path)}`);
     }
+
+    if (!Types.isPlainObject(result))
+    {
+      throw new Error(`Failed to parse JSON data${fileInfo(path)}`
+        + `: Parsed result is not an object`);
+    }
+
+    return result;
   }
 }
 
@@ -51,7 +65,7 @@ export namespace JsonObject
 
 function fileInfo(path?: string)
 {
-  if (!path)
+  if (path === undefined)
     return "";
 
   return ` in file ${path}`;

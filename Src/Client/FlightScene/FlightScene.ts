@@ -1,7 +1,7 @@
 import { ShipToScene } from "../../Client/Protocol/ShipToScene";
-import { Background } from "../../Client/FlightScene/Background";
+// import { Background } from "../../Client/FlightScene/Background";
 import { Ship } from "../../Client/Game/Ship";
-import { Waypoint } from "../../Client/FlightScene/Waypoint";
+// import { Waypoint } from "../../Client/FlightScene/Waypoint";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
@@ -24,7 +24,7 @@ export class FlightScene extends Scene
 
   // ----------------- Private data ---------------------
 
-  private addRequestQueue = new Array<ShipToScene>();
+  private readonly addRequestQueue = new Array<ShipToScene>();
 
   // --------------- Public accessors -------------------
 

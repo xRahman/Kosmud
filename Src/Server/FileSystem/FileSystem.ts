@@ -17,7 +17,7 @@ import * as FS from "fs-extra";
 
 const UTF8 = "utf8";
 const BINARY = "binary";
-const JSON = "json";
+// const JSON = "json";
 
 // Most Unix filesystems have this limit on file name length.
 const FILENAME_MAXIMUM_LENGTH_BYTES = 255;
@@ -56,14 +56,13 @@ const savingQueues = new Map<string, SavingQueue>();
 
 export namespace FileSystem
 {
-
   // ---------------- Public methods --------------------
 
   // -> Returns true if 'str' is a valid filename
   //    on both Windows and Linux.
   export function isValidFileName(str: string)
   {
-    if (!str || str.length > 255)
+    if (str.length === 0 || str.length > 255)
       return false;
 
     // Disallow characters < > : " / \ | ? *
@@ -102,10 +101,15 @@ export namespace FileSystem
     }
     catch (error)
     {
-      if (error.code === "ENOENT")
+      if (!error)
+        throw new Error("Invalid error object");
+
+      const errorCode = getErrorCode(error);
+
+      if (errorCode === "ENOENT")
         return "File doesn't exist";
 
-      throw new Error(`Unable to read file '${path}': ${error.code}`);
+      throw new Error(`Unable to read file '${path}': ${errorCode}`);
     }
 
     return { data };
@@ -121,7 +125,7 @@ export namespace FileSystem
   {
     const path = directory + fileName;
 
-    if (!FileSystem.isValidFileName(fileName))
+    if (!isValidFileName(fileName))
     {
       throw new Error(`Failed to write file because path "${path}"`
         + ` doesn't have a valid file name`);
@@ -170,7 +174,9 @@ export namespace FileSystem
     }
     catch (error)
     {
-      throw new Error(`Failed to delete file "${path}": ${error.code}`);
+      const errorCode = getErrorCode(error);
+
+      throw new Error(`Failed to delete file "${path}": ${errorCode}`);
     }
   }
 
@@ -195,8 +201,10 @@ export namespace FileSystem
     }
     catch (error)
     {
+      const errorCode = getErrorCode(error);
+
       throw new Error(`Unable to ensure existence of`
-        + ` directory "${directory}": ${error.code}`);
+        + ` directory "${directory}": ${errorCode}`);
     }
   }
 
@@ -232,8 +240,10 @@ export namespace FileSystem
     }
     catch (error)
     {
+      const errorCode = getErrorCode(error);
+
       throw new Error(`Unable to read contents of directory`
-        + ` "${path}": ${error.code}`);
+        + ` "${path}": ${errorCode}`);
     }
   }
 
@@ -284,7 +294,7 @@ function requestSaving
 {
   let queue = savingQueues.get(path);
 
-  if (!queue)
+  if (queue === undefined)
   {
     // Nobody is saving to the path yet.
     queue = new SavingQueue();
@@ -368,7 +378,9 @@ async function write(path: string, data: string)
   }
   catch (error)
   {
-    throw new Error (`Failed to save file "${path}": ${error.code}`);
+    const errorCode = getErrorCode(error);
+
+    throw new Error (`Failed to save file "${path}": ${errorCode}`);
   }
 }
 
@@ -377,7 +389,7 @@ async function write(path: string, data: string)
 // (This only makes sense if you also store resolve callback
 //  of the promise so you can call it to finish this awaiter.
 //  See SavingQueue.addRequest() for example how is it done.)
-function saveAwaiter(promise: Promise<{}>)
+async function saveAwaiter(promise: Promise<{}>)
 {
   return promise;
 }
@@ -394,7 +406,9 @@ async function statFile(path: string): Promise<FS.Stats>
   }
   catch (error)
   {
-    throw new Error(`Unable to stat file "${path}": ${error.code}`);
+    const errorCode = getErrorCode(error);
+
+    throw new Error(`Unable to stat file "${path}": ${errorCode}`);
   }
 }
 
@@ -402,7 +416,7 @@ async function statFile(path: string): Promise<FS.Stats>
 function getByteLength(str: string)
 {
   // This should work on node.js.
-  if (typeof Buffer === "undefined")
+  if (typeof (Buffer as any) === "undefined")
   {
     throw new Error("Unable to compute byte length of"
     + " a string because 'Buffer' object is supported.");
@@ -527,4 +541,18 @@ function encodeStringAsFileName(str: string)
   result = escapeTrailingCharacter(result, " ");
 
   return result;
+}
+
+// ! Throws exception on error.
+function getErrorCode(error: any)
+{
+  if (!error)
+    throw new Error("Invalid error object");
+
+  const code = (error as NodeJS.ErrnoException).code;
+
+  if (code === undefined)
+    throw new Error("Missing 'code' property on error object");
+
+  return code;
 }
