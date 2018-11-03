@@ -17,7 +17,7 @@
     // Unfortunaly this doesn't work very well in vs code.
     // 'baseUrl' points to Src so we don't have to use '../../..' in imports.
     // "baseUrl": "../",
-    "sourceMap": true
+    "sourceMap": true,
     // "sourceRoot": "../",
     // // Print names of generated files during the compilation.
     // "listFiles": true,
@@ -27,6 +27,7 @@
     // //  is passed to 'tsc', but the same functionality is turned on by
     // // '"isWatching": true' in tasks.json. We do it there.
     // "compileOnSave": true
+    "plugins": [{ "name": "typescript-lit-html-plugin" }]
   }//,
   // Not listing "files" means that every file in directory structure
   // beginning with tsconfig.json will be compiled, including all .d.ts

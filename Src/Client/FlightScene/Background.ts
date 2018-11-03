@@ -4,6 +4,8 @@ const BACKGROUND_SPRITE_ID = "background";
 
 export class Background
 {
+  private readonly sprite: Sprite;
+
   constructor
   (
     scene: Phaser.Scene,
@@ -21,8 +23,6 @@ export class Background
     // Update size and position to cover whole canvas.
     this.resize(canvasWidth, canvasHeight);
   }
-
-  private readonly sprite: Sprite;
 
   /// Preload je static, protože asset se pak odkazuje idčkem,
   /// takže se na něj nikde nedrží odkaz.
