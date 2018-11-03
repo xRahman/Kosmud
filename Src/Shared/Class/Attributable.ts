@@ -43,21 +43,31 @@ export class Attributable
   //  are taken in effect, not possible override in a descendant class.)
   protected propertyAttributes(propertyName: string): Attributes
   {
-    // If an Attributable class has a static property 'defaultValues', it
-    // will serve as default values of attributes of all class properties.
-    const classDefaultAttributes =
-      ((this.constructor as any)[DEFAULT_ATTRIBUTES_PROPERTY] as object);
+    let attributes: Attributes = {};
 
-    if (!Types.isPlainObject(classDefaultAttributes))
-    {
-      throw new Error(`Static propety ${DEFAULT_ATTRIBUTES_PROPERTY} in`
-        + ` class ${this.getClassName()} is not of type 'Attributes'`);
-    }
+    attributes = this.applyPropertyDefaults(attributes, propertyName);
+    attributes = this.applyClassDefaults(attributes);
+    attributes = this.applyGlobalDefaults(attributes);
 
+    return attributes;
+  }
+
+  // ---------------- Private methods -------------------
+
+  private applyPropertyDefaults
+  (
+    attributes: object,
+    propertyName: string
+  )
+  : object
+  {
     // Any property of Attributable class can have specific attributes.
     // They are declared as a static class property with the same name.
     const propertySpecificAttributes =
       ((this.constructor as any)[propertyName] as object);
+
+    if (propertySpecificAttributes === undefined)
+      return attributes;
 
     if (!Types.isPlainObject(propertySpecificAttributes))
     {
@@ -65,13 +75,33 @@ export class Attributable
         + ` ${this.getClassName()} is not of type 'Attributes'`);
     }
 
-    let attributes: Attributes = {};
-    const globalDefaultAttibutes = Attributable.defaultAttributes;
+    return applyDefaults(attributes, propertySpecificAttributes);
+  }
 
-    attributes = applyDefaults(attributes, propertySpecificAttributes);
-    attributes = applyDefaults(attributes, classDefaultAttributes);
-    attributes = applyDefaults(attributes, globalDefaultAttibutes);
+  private applyClassDefaults(attributes: object): object
+  {
+    // If an Attributable class has a static property 'defaultValues', it
+    // will serve as default values of attributes of all class properties.
+    const classDefaultAttributes =
+      ((this.constructor as any)[DEFAULT_ATTRIBUTES_PROPERTY] as object);
 
-    return attributes;
+    if (classDefaultAttributes === undefined)
+      return attributes;
+
+    if (!Types.isPlainObject(classDefaultAttributes))
+    {
+      throw new Error(`Static propety ${DEFAULT_ATTRIBUTES_PROPERTY} in`
+        + ` class ${this.getClassName()} is not of type 'Attributes'`);
+    }
+
+    return applyDefaults(attributes, classDefaultAttributes);
+  }
+
+  // tslint:disable-next-line:prefer-function-over-method
+  private applyGlobalDefaults(attributes: object): object
+  {
+    const globalDefaults = Attributable.defaultAttributes;
+
+    return applyDefaults(attributes, globalDefaults);
   }
 }

@@ -1,3 +1,13 @@
+Priority:
+1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
+   (couvání a strafování zatím netřeba).
+2) Lag simulátor a interpolace na clientu, aby se to netrhalo.
+3) Dát něco do scény.
+4) Vyhýbání (překážkám a jiným lodím).
+5) Efekty trysek (grafický a zvukový).
+
+
+
 TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
@@ -19,17 +29,6 @@ IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni
 TODO: Odstranit debugovací kód ze Steering.seek().
 
 
-TODO: Zamyslet se nad linter messagema se zapnutými type checky
-  (i když to třeba pak nechám vypnutý).
-  TODO: Výhledově ještě jednou zkusit zapnout "no-unsafe-any"
-    (teď už na to nemám sílu).
-  TODO: Výhledově ještě jednou zkusit zapnout "strict-boolean-expressions"
-    (teď už na to nemám sílu).
-    - IDEA je v Serializable nepovolit v serialize/deserialize paramu
-      typ any, ale nejspíš jen union některých typů.
-      (bude to nejspíš znamenat, že už při vytváření paramů budu muset ošetřit,
-       jestli tam neleze null nebo undefined, ale mělo by to pak dál
-       ušetřit některé testy).
 
 
 Ok, co dál:
@@ -145,6 +144,23 @@ sdílet s jinými pohyblivými objekty.
 
 Výhledové TODO:
 -----------------
+
+TODO: Nepovedlo se mi rozplazit tslint extension, kterej by lintoval
+  při psaní a zároveň nežral message reportnuté z buildu, které
+  vyžadují type info.
+    HINT: "problemMatcher": [ "$tslint5" ] je definovaný v tslint extensioně,
+    takže když zapnu nějakou jinou, přestane fungovat matchování tslintových
+    problémů při rebuildu.
+
+TODO: Výhledově ještě jednou zkusit zapnout "no-unsafe-any" v tslintu
+  (teď už na to nemám sílu).
+TODO: Výhledově ještě jednou zkusit zapnout "strict-boolean-expressions"
+  (teď už na to nemám sílu).
+  - IDEA je v Serializable nepovolit v serialize/deserialize paramu
+    typ any, ale nejspíš jen union některých typů.
+    (bude to nejspíš znamenat, že už při vytváření paramů budu muset ošetřit,
+      jestli tam neleze null nebo undefined, ale mělo by to pak dál
+      ušetřit některé testy).
 
 TODO: Tslint (co momentálně nejde v tslintu nastavit):
 - zakázat newline na konci souboru

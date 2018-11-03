@@ -57,7 +57,7 @@ export namespace Connections
       }
       catch (error)
       {
-        REPORT(`Failed to broadcast packet to connection`
+        REPORT(error, `Failed to broadcast packet to connection`
           + ` ${connection.getUserInfo()}`);
       }
     }
