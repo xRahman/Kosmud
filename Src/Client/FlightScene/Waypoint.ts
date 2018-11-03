@@ -10,12 +10,12 @@ const WAYPOINT_SPRITE_ID = "waypoint";
 export class Waypoint
 {
   private visible = false;
-  private sprite: Sprite;
+  private readonly sprite: Sprite;
 
   constructor
   (
     scene: Phaser.Scene,
-    private position: Vector,
+    private readonly position: Vector,
   )
   {
     this.sprite = createSprite(scene, position);

@@ -12,9 +12,11 @@ import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
 
 export class PhysicsBody
 {
+  private velocity = 0;
+
   constructor
   (
-    private body: b2Body
+    private readonly body: b2Body
     // private world: PhysicsWorld,
     // config: PhysicsBody.Config
   )
@@ -25,9 +27,6 @@ export class PhysicsBody
 
     // this.body = this.world.createBody(bodyDefinition);
   }
-
-  // Scalar value of velocity.
-  private velocity = 0;
 
   public getPosition()
   {

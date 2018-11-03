@@ -59,7 +59,7 @@ function initHtmlComponent()
   }
 
   // 'document.documentElement' is a direct reference to <html> element.
-  if (!document.documentElement)
+  if (document.documentElement === null)
   {
     throw new Error("Failed to init <html> component"
       + " because it doesn't exist in the DOM");

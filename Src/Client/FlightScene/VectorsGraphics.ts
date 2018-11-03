@@ -7,7 +7,7 @@ const origin = new Vector({ x: 0, y: 0 });
 
 export class VectorGraphics
 {
-  private graphics: Graphics;
+  private readonly graphics: Graphics;
 
   constructor(scene: Phaser.Scene)
   {

@@ -14,6 +14,7 @@ export abstract class Socket extends Shared.Socket
 
   protected static browserSupportsWebSockets(): boolean
   {
+    // tslint:disable-next-line:
     return typeof WebSocket !== "undefined";
   }
 

@@ -8,17 +8,9 @@ import { ERROR } from "../../Shared/Log/ERROR";
 
 export abstract class Component
 {
-  // -------------- Static class data -------------------
-
-  // ----------------- Private data ---------------------
-
-  private displayMode = "block";
-
-  // ---------------- Protected data --------------------
-
   protected abstract element: HTMLElement;
 
-  // ----------------- Public data ----------------------
+  private displayMode = "block";
 
   // ------------ Protected static methods --------------
 
@@ -73,7 +65,7 @@ export abstract class Component
 
       const value = css[property];
 
-      if (value)
+      if (value !== undefined)
         this.element.style[property] = value;
     }
   }
@@ -82,7 +74,7 @@ export abstract class Component
 
   private rememberDisplayMode()
   {
-    if (this.element.style.display)
+    if (this.element.style.display !== null)
     {
       this.displayMode = this.element.style.display;
     }
@@ -113,7 +105,7 @@ export namespace Component
 
 function clearHtmlContent(element: HTMLElement)
 {
-  while (element.lastChild)
+  while (element.lastChild !== null)
   {
     element.removeChild(element.lastChild);
   }

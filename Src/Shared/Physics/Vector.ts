@@ -14,14 +14,94 @@ import { b2Vec2 } from "../../Shared/Box2D/Box2D";
 
 export class Vector
 {
+  public x: number;
+  public y: number;
+
   constructor({ x, y }: { x: number; y: number } = { x: 0, y: 0 })
   {
     this.x = x;
     this.y = y;
   }
 
-  public x: number;
-  public y: number;
+  // ------------- Public static methods ----------------
+
+  public static v1PlusV2
+  (
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
+  )
+  : Vector
+  {
+    return new Vector({ x: v1.x + v2.x, y: v1.y + v2.y });
+  }
+
+  public static v1MinusV2
+  (
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
+  )
+  : Vector
+  {
+    return new Vector({ x: v1.x - v2.x, y: v1.y - v2.y });
+  }
+
+  public static scale({ x, y }: { x: number; y: number }, value: number)
+  {
+    return new Vector({ x: x * value, y: y * value });
+  }
+
+  public static v1DotV2
+  (
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
+  )
+  : number
+  {
+    return v1.x * v2.x + v1.y * v2.y;
+  }
+
+  public static v1CrossV2
+  (
+    v1: { x: number; y: number },
+    v2: { x: number; y: number }
+  )
+  : number
+  {
+    return v1.x * v2.y - v1.y * v2.x;
+  }
+
+  // Note that zero-length vector stays unchanged after Normalize().
+  public static normalize({ x, y }: { x: number; y: number }): Vector
+  {
+    return new Vector({ x, y }).normalize();
+  }
+
+  public static rotate
+  (
+    { x, y }: { x: number; y: number },
+    angle: number
+  )
+  : Vector
+  {
+    const cosine: number = Math.cos(angle);
+    const sine: number = Math.sin(angle);
+    const origX = x;
+
+    return new Vector
+    (
+      {
+        x: cosine * origX - sine * y,
+        y: sine * origX + cosine * y
+      }
+    );
+  }
+
+  public static negate({ x, y }: { x: number; y: number }): Vector
+  {
+    return new Vector({ x: -x, y: -y });
+  }
+
+  // ---------------- Public methods --------------------
 
   public set({ x, y }: { x: number; y: number })
   {
@@ -47,32 +127,12 @@ export class Vector
     return new b2Vec2(this.x, this.y);
   }
 
-  public static v1PlusV2
-  (
-    v1: { x: number; y: number },
-    v2: { x: number; y: number }
-  )
-  : Vector
-  {
-    return new Vector({ x: v1.x + v2.x, y: v1.y + v2.y });
-  }
-
   public add({ x, y }: { x: number; y: number }): this
   {
     this.x += x;
     this.y += y;
 
     return this;
-  }
-
-  public static v1MinusV2
-  (
-    v1: { x: number; y: number },
-    v2: { x: number; y: number }
-  )
-  : Vector
-  {
-    return new Vector({ x: v1.x - v2.x, y: v1.y - v2.y });
   }
 
   public subtract({ x, y }: { x: number; y: number }): this
@@ -83,11 +143,6 @@ export class Vector
     return this;
   }
 
-  public static scale({ x, y }: { x: number; y: number }, value: number)
-  {
-    return new Vector({ x: x * value, y: y * value });
-  }
-
   public scale(value: number): this
   {
     this.x *= value;
@@ -96,29 +151,9 @@ export class Vector
     return this;
   }
 
-  public static v1DotV2
-  (
-    v1: { x: number; y: number },
-    v2: { x: number; y: number }
-  )
-  : number
-  {
-    return v1.x * v2.x + v1.y * v2.y;
-  }
-
   public dot({ x, y }: { x: number; y: number }): number
   {
     return this.x * x + this.y * y;
-  }
-
-  public static v1CrossV2
-  (
-    v1: { x: number; y: number },
-    v2: { x: number; y: number }
-  )
-  : number
-  {
-    return v1.x * v2.y - v1.y * v2.x;
   }
 
   public cross({ x, y }: { x: number; y: number }): number
@@ -151,12 +186,6 @@ export class Vector
   }
 
   // Note that zero-length vector stays unchanged after Normalize().
-  public static normalize({ x, y }: { x: number; y: number }): Vector
-  {
-    return new Vector({ x, y }).normalize();
-  }
-
-  // Note that zero-length vector stays unchanged after Normalize().
   public normalize(): this
   {
     const length = this.length();
@@ -177,26 +206,6 @@ export class Vector
     this.scale(length);
 
     return this;
-  }
-
-  public static rotate
-  (
-    { x, y }: { x: number; y: number },
-    angle: number
-  )
-  : Vector
-  {
-    const cosine: number = Math.cos(angle);
-    const sine: number = Math.sin(angle);
-    const origX = x;
-
-    return new Vector
-    (
-      {
-        x: cosine * origX - sine * y,
-        y: sine * origX + cosine * y
-      }
-    );
   }
 
   public rotate(angle: number): this
@@ -220,11 +229,6 @@ export class Vector
   {
     return Math.abs(this.x - x) <= Number.EPSILON
         && Math.abs(this.y - y) <= Number.EPSILON;
-  }
-
-  public static negate({ x, y }: { x: number; y: number }): Vector
-  {
-    return new Vector({ x: -x, y: -y });
   }
 
   public negate(): this

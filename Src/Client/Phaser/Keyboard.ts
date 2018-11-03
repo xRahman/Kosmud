@@ -8,7 +8,7 @@ import { REPORT } from "../../Shared/Log/REPORT";
 
 export class Keyboard
 {
-  constructor(private keyboard: Phaser.Input.Keyboard.KeyboardPlugin)
+  constructor(private readonly keyboard: Phaser.Input.Keyboard.KeyboardPlugin)
   {
     keyboard.on
     (

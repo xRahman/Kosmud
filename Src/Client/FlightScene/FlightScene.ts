@@ -8,6 +8,11 @@ import { Scene } from "../../Client/Phaser/Scene";
 
 export class FlightScene extends Scene
 {
+  // ~ Overrides Scene.contents.
+  protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
+
+  private readonly addRequestQueue = new Array<ShipToScene>();
+
   constructor
   (
     width: number,
@@ -16,15 +21,6 @@ export class FlightScene extends Scene
   {
     super("Flight scene", width, height);
   }
-
-  // ---------------- Protected data --------------------
-
-  // ~ Overrides Scene.contents.
-  protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
-
-  // ----------------- Private data ---------------------
-
-  private readonly addRequestQueue = new Array<ShipToScene>();
 
   // --------------- Public accessors -------------------
 

@@ -15,7 +15,7 @@ const GRAVITY = new b2Vec2(0, 0);
 
 export class PhysicsWorld
 {
-  private world = new b2World(GRAVITY);
+  private readonly world = new b2World(GRAVITY);
 
   public createBody(): PhysicsBody
   {

@@ -11,6 +11,9 @@ import { Connection } from "../../Client/Net/Connection";
 
 export class Mouse
 {
+  private readonly mousePointer: Phaser.Input.Pointer;
+  private readonly mouseManager: Phaser.Input.Mouse.MouseManager;
+
   // private leftButtonDown = false;
   // private middleButtonDown = false;
   // private rightButtonDown = false;
@@ -40,9 +43,6 @@ export class Mouse
     //   (pointer: Phaser.Input.Pointer) => { this.onPointerMove(pointer); }
     // );
   }
-
-  private mousePointer: Phaser.Input.Pointer;
-  private mouseManager: Phaser.Input.Mouse.MouseManager;
 
   public isLeftButtonDown() { return this.mousePointer.leftButtonDown(); }
   public isMiddleButtonDown() { return this.mousePointer.middleButtonDown(); }

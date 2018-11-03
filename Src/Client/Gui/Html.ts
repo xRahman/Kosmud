@@ -8,6 +8,16 @@ import { Component } from "../../Client/Gui/Component";
 
 export class Html extends Component
 {
+  protected static css: Partial<CSSStyleDeclaration> =
+  {
+    height: "100%",
+    outline: "0 none",
+    margin: "0px",
+    padding: "0px"
+  };
+
+  protected element: HTMLElement;
+
   // ! Throws an exception on error.
   constructor(htmlElement: HTMLElement)
   {
@@ -18,20 +28,6 @@ export class Html extends Component
 
     window.addEventListener("resize", () => { onDocumentResize(); });
   }
-
-  // ------------- Protected static data ----------------
-
-  protected static css: Partial<CSSStyleDeclaration> =
-  {
-    height: "100%",
-    outline: "0 none",
-    margin: "0px",
-    padding: "0px"
-  };
-
-  // ---------------- Protected data --------------------
-
-  protected element: HTMLElement;
 }
 
 // ---------------- Event handlers --------------------

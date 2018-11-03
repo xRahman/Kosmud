@@ -10,19 +10,6 @@ import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 
 export class Body extends Component
 {
-  // ! Throws an exception on error.
-  constructor(bodyElement: HTMLElement)
-  {
-    super();
-
-    this.element = bodyElement;
-    this.setCss(Body.css);
-
-    this.canvasDiv = new CanvasDiv(this.element);
-  }
-
-  // ------------- Protected static data ----------------
-
   protected static css: Partial<CSSStyleDeclaration> =
   {
     outline: "0 none",
@@ -44,6 +31,22 @@ export class Body extends Component
     cursor: "default"
   };
 
+  protected element: HTMLElement;
+
+  /// TEMPORARY (CanvasDiv should be a window).
+  private readonly canvasDiv: CanvasDiv;
+
+  // ! Throws an exception on error.
+  constructor(bodyElement: HTMLElement)
+  {
+    super();
+
+    this.element = bodyElement;
+    this.setCss(Body.css);
+
+    this.canvasDiv = new CanvasDiv(this.element);
+  }
+
   // --------------- Static accessors -------------------
 
   /// TEMPORARY (CanvasDiv should be a window).
@@ -57,18 +60,4 @@ export class Body extends Component
   {
     return Gui.getBody().getElement();
   }
-
-  // ---------------- Protected data --------------------
-
-  protected element: HTMLElement;
-
-  // ----------------- Private data ---------------------
-
-  /// TEMPORARY (CanvasDiv should be a window).
-  private readonly canvasDiv: CanvasDiv;
-
-  // ---------------- Event handlers --------------------
-
-  // ---------------- Private methods -------------------
-
 }

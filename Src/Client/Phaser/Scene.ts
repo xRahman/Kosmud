@@ -2,6 +2,8 @@ import { SceneContents } from "../../Client/Phaser/SceneContents";
 
 export abstract class Scene extends Phaser.Scene
 {
+  protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
+
   constructor
   (
     protected name: string,
@@ -11,10 +13,6 @@ export abstract class Scene extends Phaser.Scene
   {
     super(name);
   }
-
-  // ---------------- Protected data --------------------
-
-  protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
 
   // ---------------- Public methods --------------------
 

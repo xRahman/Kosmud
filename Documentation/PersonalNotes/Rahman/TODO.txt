@@ -21,12 +21,15 @@ TODO: Odstranit debugovací kód ze Steering.seek().
 
 TODO: Zamyslet se nad linter messagema se zapnutými type checky
   (i když to třeba pak nechám vypnutý).
-
-TODO: Jedna z tslint extensionů, které jsem zkoušel, dost možná fungovala
-  (lintovala sice jen otevřené soubory, ale to je ok) - hromadný lint
-  při buildu s ní nefungoval proto, že problem matcher $tslint5 je definovaný
-  v extensioně tslint, která při tom byla vypnutá.
-
+  TODO: Výhledově ještě jednou zkusit zapnout "no-unsafe-any"
+    (teď už na to nemám sílu).
+  TODO: Výhledově ještě jednou zkusit zapnout "strict-boolean-expressions"
+    (teď už na to nemám sílu).
+    - IDEA je v Serializable nepovolit v serialize/deserialize paramu
+      typ any, ale nejspíš jen union některých typů.
+      (bude to nejspíš znamenat, že už při vytváření paramů budu muset ošetřit,
+       jestli tam neleze null nebo undefined, ale mělo by to pak dál
+       ušetřit některé testy).
 
 
 Ok, co dál:

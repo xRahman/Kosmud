@@ -6,7 +6,7 @@
 
 export function replaceCRLFwithLF(data: string)
 {
-  if (data && data.length > 0)
+  if (data.length > 0)
     return data.replace(/\r/gi, "");
 
   return data;

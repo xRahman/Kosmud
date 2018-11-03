@@ -13,23 +13,6 @@ export abstract class Syslog
   // This property needs to be inicialized in descendants.
   protected static instance: Syslog | "Doesn't exist" = "Doesn't exist";
 
-  // --------------- Static accessors -------------------
-
-  // ! Throws exception on error.
-  private static getInstance(): Syslog
-  {
-    if (this.instance === "Doesn't exist")
-    {
-      throw new Error
-      (
-        "Syslog.instance is not inicialized. It needs to be"
-        + " assigned in all descendant classes."
-      );
-    }
-
-    return this.instance;
-  }
-
   // ---------------- Static methods --------------------
 
   // ! Throws exception on error.
@@ -52,7 +35,11 @@ export abstract class Syslog
     }
     else
     {
-      this.reportException(new Error(error + uncaughtExceptionMessage), false);
+      this.reportException
+      (
+        new Error(`${error}${uncaughtExceptionMessage}`),
+        false
+      );
     }
   }
 
@@ -136,6 +123,21 @@ export abstract class Syslog
     Syslog.trimStackTrace(tmpErr, stackTop);
 
     return Syslog.removeErrorMessage(tmpErr.stack);
+  }
+
+  // ! Throws exception on error.
+  private static getInstance(): Syslog
+  {
+    if (this.instance === "Doesn't exist")
+    {
+      throw new Error
+      (
+        "Syslog.instance is not inicialized. It needs to be"
+        + " assigned in all descendant classes."
+      );
+    }
+
+    return this.instance;
   }
 
   // --------------- Protected methods ------------------

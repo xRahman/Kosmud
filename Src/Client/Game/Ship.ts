@@ -5,9 +5,9 @@ import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 
 export class Ship
 {
-  private graphics: ShipGraphics;
+  private readonly graphics: ShipGraphics;
 
-  private vectors: Ship.Vectors =
+  private readonly vectors: Ship.Vectors =
   {
     desiredVelocity: new Vector(),
     steeringForce: new Vector(),
@@ -16,9 +16,9 @@ export class Ship
 
   constructor
   (
-    private scene: Phaser.Scene,
-    private shape: PhysicsBody.Shape,
-    private position: Vector,
+    private readonly scene: Phaser.Scene,
+    private readonly shape: PhysicsBody.Shape,
+    private readonly position: Vector,
     private rotation: number
   )
   {

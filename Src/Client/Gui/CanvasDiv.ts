@@ -9,27 +9,6 @@ import { Renderer } from "../../Client/Phaser/Renderer";
 
 export class CanvasDiv extends Component
 {
-  // ! Throws an exception on error.
-  constructor(parent: HTMLElement)
-  {
-    super();
-
-    // ! Throws an exception on error.
-    this.element = Component.createDiv(parent);
-
-    /// TODO: Předělat na parametr funkce createDiv():
-    this.setCss(CanvasDiv.css);
-
-    /// TODO: Předělat na parametr funkce createDiv():
-    this.element.id = CanvasDiv.ELEMENT_ID;
-
-    window.addEventListener
-    (
-      "resize",
-      () => { this.onResize(); }
-    );
-  }
-
   protected static css: Partial<CSSStyleDeclaration> =
   {
     outline: "0 none",
@@ -51,13 +30,28 @@ export class CanvasDiv extends Component
     cursor: "default"
   };
 
-  // --------------- Static accessors -------------------
-
-  // ---------------- Protected data --------------------
-
   protected element: HTMLElement;
 
-  // ----------------- Private data ---------------------
+  // ! Throws an exception on error.
+  constructor(parent: HTMLElement)
+  {
+    super();
+
+    // ! Throws an exception on error.
+    this.element = Component.createDiv(parent);
+
+    /// TODO: Předělat na parametr funkce createDiv():
+    this.setCss(CanvasDiv.css);
+
+    /// TODO: Předělat na parametr funkce createDiv():
+    this.element.id = CanvasDiv.ELEMENT_ID;
+
+    window.addEventListener
+    (
+      "resize",
+      () => { this.onResize(); }
+    );
+  }
 
   // ---------------- Public methods --------------------
 

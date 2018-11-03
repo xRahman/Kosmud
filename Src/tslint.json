@@ -196,10 +196,17 @@
     "no-floating-promises": true,
     "no-for-in-array": true,
     "no-inferred-empty-object-type": true,
-    "no-unsafe-any": true,
+    // "no-unsafe-any": true,
+    "no-unsafe-any": false,
     "no-unused-variable": false,  // This is deprecated so we can't use it.
     "restrict-plus-operands": true,
-    "strict-boolean-expressions": [true, "allow-boolean-or-undefined"],
+    // "strict-boolean-expressions":
+    // [
+    //   true,
+    //   "allow-string",
+    //   "allow-boolean-or-undefined"
+    // ],
+    "strict-boolean-expressions": false,
     "use-default-type-parameter": true,
     "deprecation": true,
     "match-default-export-name": true,
@@ -207,8 +214,12 @@
     "no-unnecessary-type-assertion": true,
     "return-undefined": true,
     "no-void-expression": true,
-    // This would probably be useful.
-    "strict-type-predicates": true,
+    // This would probably be useful
+    // (it is, but it prevents us from checking 'null' or 'undefined'
+    //  if typescript thinks that a variable can't ever get those
+    //  values - which is not always true when deserializing data).
+    // "strict-type-predicates": true,
+    "strict-type-predicates": false,
     // This would proably be useful.
     "no-unbound-method": true,
     // This would proably be useful.

@@ -43,10 +43,10 @@ export function REPORT(error: any, catchMessage?: string)
       + " can show where the error occured rather than where it has"
       + " been caught");
 
-    exception = new Error(error);
+    exception = new Error(`${error}`);
   }
 
-  if (catchMessage)
+  if (catchMessage !== undefined)
     exception.message = `${catchMessage} (${exception.message$})`;
 
   Syslog.reportException(exception);

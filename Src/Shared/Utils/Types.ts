@@ -29,7 +29,7 @@ export namespace Types
     target: WebSocket;
   };
 
-  export type OpenEventHandler = (event: Types.OpenEvent) => void;
+  export type OpenEventHandler = (event: OpenEvent) => void;
 
   export type MessageEvent =
   {
@@ -38,7 +38,7 @@ export namespace Types
     target: WebSocket;
   };
 
-  export type MessageEventHandler = (event: Types.MessageEvent) => void;
+  export type MessageEventHandler = (event: MessageEvent) => void;
 
   export type ErrorEvent =
   {
@@ -48,7 +48,7 @@ export namespace Types
     target: WebSocket;
   };
 
-  export type ErrorEventHandler = (event: Types.ErrorEvent) => void;
+  export type ErrorEventHandler = (event: ErrorEvent) => void;
 
   export type CloseEvent =
   {
@@ -59,7 +59,7 @@ export namespace Types
     target: WebSocket;
   };
 
-  export type CloseEventHandler = (event: Types.CloseEvent) => void;
+  export type CloseEventHandler = (event: CloseEvent) => void;
 
   // If you exclaim "WTF!" loudly after reading the next two lines of
   // code, I absolutely aggree with you.
@@ -172,7 +172,7 @@ export namespace Types
 
   export class PriorityQueue<T>
   {
-    private queue = new FastPriorityQueue();
+    private readonly queue = new FastPriorityQueue();
 
     public get size() { return this.queue.size; }
 

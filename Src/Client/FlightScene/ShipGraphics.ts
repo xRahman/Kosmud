@@ -13,11 +13,11 @@ const SHIP_SPRITE_ID = "ship";
 
 export class ShipGraphics
 {
-  private container: Container;
-  private sprite: Sprite;
-  private vectors: VectorGraphics;
+  private readonly container: Container;
+  private readonly sprite: Sprite;
+  private readonly vectors: VectorGraphics;
 
-  private shapeGraphics: ShapeGraphics;
+  private readonly shapeGraphics: ShapeGraphics;
 
   constructor
   (

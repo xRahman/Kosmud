@@ -14,9 +14,6 @@ import { Types } from "../../Shared/Utils/Types";
 // -> Returns modified 'target'.
 export function applyDefaults<T>(target: T, defaults: T): T
 {
-  if (!defaults)
-    return target;
-
   for (const propertyName in defaults)
   {
     if (defaults.hasOwnProperty(propertyName))

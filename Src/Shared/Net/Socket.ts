@@ -16,31 +16,27 @@ import * as WebSocket from "isomorphic-ws";
 
 export abstract class Socket extends PacketHandler
 {
-  constructor(private webSocket: WebSocket)
-  {
-    super();
-
-    this.init();
-  }
-
-  // ---------------- Protected data --------------------
-
   // This is used to determine if a socket error means that
   // we have been disconnected or that connection couldn't
   // even be established.
   protected wasConnected = false;
 
-  // ----------------- Private data ---------------------
-
   // We remember event listeners so we can remove them
   // when the socket closes.
-  private listeners =
+  private readonly listeners =
   {
     onopen: "Not attached" as (Types.OpenEventHandler | "Not attached"),
     onmessage: "Not attached" as (Types.MessageEventHandler | "Not attached"),
     onerror: "Not attached" as (Types.ErrorEventHandler | "Not attached"),
     onclose: "Not attached" as (Types.CloseEventHandler | "Not attached")
   };
+
+  constructor(private readonly webSocket: WebSocket)
+  {
+    super();
+
+    this.init();
+  }
 
   // ---------------- Public methods --------------------
 
@@ -131,7 +127,10 @@ export abstract class Socket extends PacketHandler
 
   private registerMessageEvent()
   {
-     return this.webSocket.onmessage = (event) => { this.onMessage(event); };
+    return this.webSocket.onmessage = async (event) =>
+    {
+      await this.onMessage(event);
+    };
   }
 
   private registerErrorEvent()

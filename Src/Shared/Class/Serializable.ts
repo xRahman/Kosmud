@@ -985,12 +985,6 @@ function createSaver(className: string)
 // ! Throws exception on error.
 function createSetSaver(set: Set<any>)
 {
-  if (set === null)
-  {
-    throw new Error("Failed to create set saver because set"
-    + " which should be saved is 'null'");
-  }
-
   const saver = createSaver(SET_CLASS_NAME);
 
   // Set is saved as it's Array representation to property 'set'.
@@ -1002,12 +996,6 @@ function createSetSaver(set: Set<any>)
 // ! Throws exception on error.
 function createMapSaver(map: Map<any, any>)
 {
-  if (map === null)
-  {
-    throw new Error("Failed to create map saver because map"
-      + " which should be saved is 'null'");
-  }
-
   const saver = createSaver(MAP_CLASS_NAME);
 
   // Map is saved as it's Array representation to property 'map'.

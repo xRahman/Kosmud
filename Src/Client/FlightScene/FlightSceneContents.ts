@@ -8,6 +8,10 @@ import { Vector } from "../../Shared/Physics/Vector";
 
 export class FlightSceneContents extends SceneContents
 {
+  public background: Background;
+  public waypoint: Waypoint;
+  public ship: Ship | "Doesn't exist" = "Doesn't exist";
+
   constructor(scene: FlightScene, canvasWidth: number, canvasHeight: number)
   {
     super(scene, canvasWidth, canvasHeight);
@@ -20,12 +24,6 @@ export class FlightSceneContents extends SceneContents
       new Vector({ x: 0, y: 0 })
     );
   }
-
-  // ----------------- Public data ----------------------
-
-  public background: Background;
-  public waypoint: Waypoint;
-  public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
   public static preload(scene: FlightScene)
   {

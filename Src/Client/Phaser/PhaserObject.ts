@@ -16,11 +16,11 @@ import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 //   The solution is to declare the interface ourselves.
 interface PhaserGameObject extends Phaser.GameObjects.GameObject
 {
-  setX(x: number): void;
-  setY(y: number): void;
   x: number;
   y: number;
   rotation: number;
+  setX(x: number): void;
+  setY(y: number): void;
   setRotation(rotation: number): void;
   setDepth(depth: number): void;
   setScrollFactor(scrollFactor: number): void;

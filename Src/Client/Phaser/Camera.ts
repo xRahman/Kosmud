@@ -1,12 +1,12 @@
 
 export class Camera
 {
-  constructor(private scene: Phaser.Scene)
+  private readonly camera: Phaser.Cameras.Scene2D.Camera;
+
+  constructor(private readonly scene: Phaser.Scene)
   {
     this.camera = getMainCamera(scene);
   }
-
-  private camera: Phaser.Cameras.Scene2D.Camera;
 
   // public update()
   // {
@@ -25,13 +25,13 @@ export class Camera
 // ! Throws exception on error.
 function getMainCamera(scene: Phaser.Scene)
 {
-  if (!scene.cameras)
+  if (scene.cameras === undefined)
   {
     throw new Error("Failed to create camera because 'cameras'"
       + " don't exist in the scene");
   }
 
-  if (!scene.cameras.main)
+  if (scene.cameras.main === undefined)
   {
     throw new Error("Failed to create camera because 'main'"
       + " camera doesn't exist in the scene");
