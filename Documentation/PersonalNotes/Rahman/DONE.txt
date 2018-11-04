@@ -1,3 +1,15 @@
+TODO: To přetáčení budu muset přece jen ještě nějak stabilizovat...
+[done]
+
+TODO: Ehm, ona ta původní varianta se skládáním desiredSteeringForce
+  z forward a leftward složky byla asi dobře - jsou to přece jen dva
+  oddělené propulsion systémy, takže ve spolupráci opravdu dokáží
+  poskládat sílu v obdélníku.
+  - zase to zapnout a vyzkoušet (možná bude loď míň "plavat").
+Tak ne - je to sice asi technicky správně, ale loď pak "plave" mnohem víc.
+Revertuju zpět na novější verzi.
+[done]
+
 TODO: Vyzkoušet přece jen rotaci přes torque...
 - Funguje!
 [done]

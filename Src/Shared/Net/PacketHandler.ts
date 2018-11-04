@@ -25,8 +25,8 @@ export abstract class PacketHandler
     }
     catch (error)
     {
-      REPORT(error, "Failed to deserialize incoming packet."
-        + " Packet is not procesed");
+      REPORT(error, `Failed to deserialize incoming packet.`
+        + ` Packet data: "${data}"`);
       return;
     }
 

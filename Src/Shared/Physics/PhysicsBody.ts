@@ -4,6 +4,7 @@
   Rigid body.
 */
 
+import { validateNumber, validateVector } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
 
 // 3rd party modules.
@@ -30,59 +31,66 @@ export class PhysicsBody
 
   public getPosition()
   {
-    return new Vector(this.body.GetPosition());
+    return validateVector(this.body.GetPosition());
   }
 
   public getX()
   {
-    return this.body.GetPosition().x;
+    return validateNumber(this.body.GetPosition().x);
   }
 
   public getY()
   {
-    return this.body.GetPosition().y;
+    return validateNumber(this.body.GetPosition().y);
   }
 
   public getRotation()
   {
-    return this.body.GetAngle();
+    return validateNumber(this.body.GetAngle());
   }
 
   public getAngularVelocity()
   {
-    return this.body.GetAngularVelocity();
+    return validateNumber(this.body.GetAngularVelocity());
   }
 
+  // Inertia is resistance to torque.
   public getInertia()
   {
-    return this.body.GetInertia();
+    return validateNumber(this.body.GetInertia());
+  }
+
+  // Mass is resistance to linear force.
+  public getMass()
+  {
+    return validateNumber(this.body.GetMass());
   }
 
   public setVelocity(velocity: number)
   {
-    this.velocity = velocity;
+    this.velocity = validateNumber(velocity);
 
     this.updateVelocityDirection();
   }
 
   public setAngularVelocity(angularVelocity: number)
   {
-    this.body.SetAngularVelocity(angularVelocity);
+    this.body.SetAngularVelocity(validateNumber(angularVelocity));
   }
 
   public applyForce(force: Vector)
   {
-    this.body.ApplyForceToCenter(force);
+    this.body.ApplyForceToCenter(validateVector(force));
   }
 
   public applyTorque(torque: number)
   {
-    this.body.ApplyTorque(torque);
+    this.body.ApplyTorque(validateNumber(torque));
   }
 
   public getVelocity(): Vector
   {
-    return new Vector(this.body.GetLinearVelocity());
+    return validateVector(this.body.GetLinearVelocity());
   }
 
   // private getVelocityVector(velocity: number)
@@ -98,7 +106,6 @@ export class PhysicsBody
 
   public updateVelocityDirection()
   {
-    // this.body.SetLinearVelocity(this.getVelocityVector(this.velocity));
     this.body.SetLinearVelocity(this.getVelocity());
   }
 
@@ -123,7 +130,13 @@ export class PhysicsBody
 
         for (const vertex of vertices)
         {
-          polygon.push({ x: vertex.x, y: vertex.y });
+          polygon.push
+          (
+            {
+              x: validateNumber(vertex.x),
+              y: validateNumber(vertex.y)
+            }
+          );
         }
 
         shape.push(polygon);
@@ -148,3 +161,5 @@ export namespace PhysicsBody
 
   export type Shape = Array<Polygon>;
 }
+
+// ----------------- Auxiliary Functions ---------------------

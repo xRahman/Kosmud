@@ -94,33 +94,44 @@ export class Ship extends Shared.Ship
 
     const vehicleVelocity = this.physicsBody.getVelocity();
 
-    const steeringResult = Steering.seek
+    const steeringResult = Steering.arrive
     (
       this.getPosition(),
       vehicleVelocity,
+      this.physicsBody.getMass(),
       this.waypoint,
       this.physicsBody.getRotation(),
       this.physicsBody.getAngularVelocity(),
-      this.physicsBody.getInertia()
+      this.physicsBody.getInertia(),
     );
+
+    // const steeringResult = Steering.seek
+    // (
+    //   this.getPosition(),
+    //   vehicleVelocity,
+    //   this.waypoint,
+    //   this.physicsBody.getRotation(),
+    //   this.physicsBody.getAngularVelocity(),
+    //   this.physicsBody.getInertia(),
+    // );
 
     /// DEBUG:
     // console.log("Applying steering force"
     //   + " [" + steeringForce.x + ", " + steeringForce.y + "]");
 
-    this.desiredVelocity.set(steeringResult.desiredVelocity);
-    this.steeringForce.set(steeringResult.steeringForce);
-    this.desiredSteeringForce.set(steeringResult.desiredSteeringForce);
+    this.desiredVelocity.set(steeringResult.linear.desiredVelocity);
+    this.steeringForce.set(steeringResult.linear.steeringForce);
+    this.desiredSteeringForce.set(steeringResult.linear.desiredSteeringForce);
     this.desiredForwardSteeringForce.set
     (
-      steeringResult.desiredForwardSteeringForce
+      steeringResult.linear.desiredForwardSteeringForce
     );
     this.desiredLeftwardSteeringForce.set
     (
-      steeringResult.desiredLeftwardSteeringForce
+      steeringResult.linear.desiredLeftwardSteeringForce
     );
     this.velocity.set(vehicleVelocity);
-    this.torque = steeringResult.torque;
+    this.torque = steeringResult.angular.torque;
 
     this.physicsBody.applyForce(this.steeringForce);
     // this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);

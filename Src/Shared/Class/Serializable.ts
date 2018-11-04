@@ -1097,7 +1097,7 @@ function getProperty(param: DeserializeParam, propertyName: string)
   if (!param.sourceProperty)
   {
     throw new Error(`Failed to deserialize because source property`
-      + ` '${param.propertyName}'${inFile(param.path)} isn't valid"`);
+      + ` '${param.propertyName}'${inFile(param.path)} isn't valid`);
   }
 
   const property = param.sourceProperty[propertyName];

@@ -47,7 +47,7 @@ export function REPORT(error: any, catchMessage?: string)
   }
 
   if (catchMessage !== undefined)
-    exception.message = `${catchMessage} (${exception.message$})`;
+    exception.message = `${catchMessage} (${exception.message})`;
 
   Syslog.reportException(exception);
 }

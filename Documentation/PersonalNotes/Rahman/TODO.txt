@@ -1,23 +1,30 @@
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).
-2) Lag simulátor a interpolace na clientu, aby se to netrhalo.
-3) Dát něco do scény.
-4) Vyhýbání (překážkám a jiným lodím).
-5) Efekty trysek (grafický a zvukový).
+2) Efekty trysek (grafický a zvukový).
+3) Lag simulátor a interpolace na clientu, aby se to netrhalo.
+4) Dát něco do scény.
+5) Vyhýbání (překážkám a jiným lodím).
+6) Lepší physics body shape pro loď (a pro překážky taky).
 
 
 Ad 1:
 -----
 
-TODO: Ehm, ona ta původní varianta se skládáním desiredSteeringForce
-  z forward a leftward složky byla asi dobře - jsou to přece jen dva
-  oddělené propulsion systémy, takže ve spolupráci opravdu dokáží
-  poskládat sílu v obdélníku.
-  - zase to zapnout a vyzkoušet (možná bude loď míň "plavat").
-
 TODO: Arrive
+- ještě správně počítat breaking distance.
 
+TODO: Breaking distance se nepočítá spávně.
+TODO: Asi budu ji budu muset posílat na klient a zobrazovat.
+
+IDEA: Určit na tvrdo nějakou malou vzdálenost (10 třeba).
+- před ní bude desired speed dejme tomu 10% aktuální.
+- za ní bude gradual slowdown.
+
+Skoro!
+- ještě asi přidat, že když jsem fakt blízko cíli, tak se nebudu točit jak
+  čamrda.
+Bude to chtít hódně refactoringu, ale snad to funguje.
 
 Ad 5:
 -----
@@ -50,6 +57,8 @@ TODO: Odstranit debugovací kód ze Steering.seek().
 TODO: Refactoriiiing!
 TODO: Odchytávání výjimek ze Steeringu.
 
+
+// IDEA: Se shiftem loď strafuje/couvá.
 
 
 
