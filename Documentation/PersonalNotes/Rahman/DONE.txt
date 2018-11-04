@@ -1,3 +1,27 @@
+TODO: Vyzkoušet přece jen rotaci přes torque...
+- Funguje!
+[done]
+
+TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
+  nebudu angular velocity limitovat hned, ale až když bude zbývat jen
+  část mojí ANGULAR_VELOCITY (třeba desetina).
+[done]
+TODO: a možná bych mohl udělati "zrychlování" rotace, tj. aby to z 0 na full
+  neskočilo okamžitě.
+- tohle jsem vyřešil přes torque
+[done]
+
+TODO: Pořád je tam problém s výpočtem směru rotace, to musím opravit.
+[done]
+
+TODO: Opravit šílené zrychlování do boku.
+  Zjevně mám chybu v úvaze.
+  - Když totiž limituju složky zvlášť, tak se mi změní směr vektoru.
+  Tzn. musím:
+  - Zjistit, jakým faktorem se limituje v jednotlivých směrech.
+  - Menším z těch faktorům pronásobit původní vektor.
+[done]
+
 TODO: Zvážit, jestli je rozumný tahat ship position z grafiky (spíš není).
 - tzn. pamatovat si ji v Ship.
 [done]

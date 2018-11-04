@@ -7,26 +7,34 @@ Priority:
 5) Efekty trysek (grafický a zvukový).
 
 
-TODO: Pořád je tam problém s výpočtem směru rotace, to musím opravit.
-[done]
+Ad 1:
+-----
 
-TODO: Opravit šílené zrychlování do boku.
-  Zjevně mám chybu v úvaze.
-  - Když totiž limituju složky zvlášť, tak se mi změní směr vektoru.
-  Tzn. musím:
-  - Zjistit, jakým faktorem se limituje v jednotlivých směrech.
-  - Menším z těch faktorům pronásobit původní vektor.
+TODO: Ehm, ona ta původní varianta se skládáním desiredSteeringForce
+  z forward a leftward složky byla asi dobře - jsou to přece jen dva
+  oddělené propulsion systémy, takže ve spolupráci opravdu dokáží
+  poskládat sílu v obdélníku.
+  - zase to zapnout a vyzkoušet (možná bude loď míň "plavat").
 
-
-
-TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
-  nebudu angular velocity limitovat hned, ale až když bude zbývat jen
-  část mojí ANGULAR_VELOCITY (třeba desetina).
-TODO: a možná bych mohl udělati "zrychlování" rotace, tj. aby to z 0 na full
-  neskočilo okamžitě.
+TODO: Arrive
 
 
+Ad 5:
+-----
+TODO: Posílat na klienta, že brzdím rotaci (a jak moc).
+  (asi to bude muset vracet fce scaleSymetricInterval()).
+- obecně bude potřeba posílat aktuální thrusty (asi stačí číslama,
+  není nutný posílat vektory).
+Tohle by teď mohlo jít mnohem snáz, protože to je přímo torque
+  (a TORQUE je 100% výkon rotačních thrusterů)
 
+
+
+
+TODO: Vyzkoušet linear a angular drag (zapnout na physicsBody).
+- to by teoreticky mělo způsobit, že síla bude muset působit pořád,
+  abych udržel rychlost. Na druhou stranu...
+Tohle ale až časem (možná vůbec). Současná varianta je celkem ok.
 
 
 
@@ -36,6 +44,12 @@ IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni
 
 
 TODO: Odstranit debugovací kód ze Steering.seek().
+
+
+
+TODO: Refactoriiiing!
+TODO: Odchytávání výjimek ze Steeringu.
+
 
 
 

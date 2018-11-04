@@ -48,6 +48,16 @@ export class PhysicsBody
     return this.body.GetAngle();
   }
 
+  public getAngularVelocity()
+  {
+    return this.body.GetAngularVelocity();
+  }
+
+  public getInertia()
+  {
+    return this.body.GetInertia();
+  }
+
   public setVelocity(velocity: number)
   {
     this.velocity = velocity;
@@ -63,6 +73,11 @@ export class PhysicsBody
   public applyForce(force: Vector)
   {
     this.body.ApplyForceToCenter(force);
+  }
+
+  public applyTorque(torque: number)
+  {
+    this.body.ApplyTorque(torque);
   }
 
   public getVelocity(): Vector

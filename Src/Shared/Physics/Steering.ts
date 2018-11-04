@@ -13,10 +13,14 @@ const MAX_SPEED = 100;
 // const MAXIMUM_STEERING_FORCE_SQUARED =
 //   MAXIMUM_STEERING_FORCE * MAXIMUM_STEERING_FORCE;
 
-const FORWARD_THRUST = 10;
+const FORWARD_THRUST = 50;
 const BACKWARD_THRUST = 5;
 const STRAFE_THRUST = 5;
-const ANGULAR_VELOCITY = Math.PI / 2;
+const ANGULAR_VELOCITY = Math.PI * 2;
+// const ANGULAR_VELOCITY = Math.PI / 2;
+// const ANGULAR_ACCELERATION = 4;
+// TORQUE asi nahradí angular acceleration.
+const TORQUE = 3000;
 
 export namespace Steering
 {
@@ -28,14 +32,18 @@ export namespace Steering
     desiredForwardSteeringForce: Vector;
     desiredLeftwardSteeringForce: Vector;
     angularVelocity: number;
+    torque: number;
   };
 
+  // ! Throws exception on error.
   export function seek
   (
     vehiclePosition: Vector,
     vehicleVelocity: Vector,
     targetPosition: Vector,
-    vehicleRotation: number
+    vehicleRotation: number,
+    vehicleAngularVelocity: number,
+    vehicleInertia: number
   )
   : Result
   {
@@ -265,12 +273,37 @@ export namespace Steering
     if (desiredAngularVelocity < -Math.PI)
       desiredAngularVelocity += Math.PI * 2;
 
+    // // Limit to ANGULAR_VELOCITY.
+    // const angularVelocity = intervalBound
+    // (
+    //   // Apply the angular acceleration first.
+    //   desiredAngularVelocity * ANGULAR_ACCELERATION,
+    //   { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
+    // );
+
     // Limit to ANGULAR_VELOCITY.
     const angularVelocity = intervalBound
     (
       desiredAngularVelocity,
       { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
     );
+
+    let  torque = vehicleInertia * (angularVelocity - vehicleAngularVelocity);
+
+    torque = intervalBound(torque, { from: -TORQUE, to: TORQUE });
+
+    /// DEBUG:
+    console.log(torque);
+
+    /// Obsolete code (unecessarily complicated).
+    // // ! Throws exception on error.
+    // // Faster angular breaking - scale interval to a smaller one.
+    // angularVelocity = limitToSymmetricInterval
+    // (
+    //   angularVelocity,
+    //   ANGULAR_VELOCITY / 4,
+    //   ANGULAR_VELOCITY
+    // );
 
     // ------------------
 
@@ -286,7 +319,8 @@ export namespace Steering
       desiredSteeringForce,
       desiredForwardSteeringForce,
       desiredLeftwardSteeringForce,
-      angularVelocity
+      angularVelocity,
+      torque
     };
 
     return result;
@@ -357,3 +391,64 @@ export namespace Steering
 //   // pVehicle.rotation = vecReference.angle(pVehicle.body.velocity)
 // }
 }
+
+// ----------------- Auxiliary Functions ---------------------
+
+/// This can be done in a much more simpler way
+/// (scale by ANGULAR_ACCELERATION first, intervalBound() after that).
+// // ! Throws exception on error.
+// // This function does two things with 'value':
+// //   1. limits it to <-maximumValue, maximumValue>.
+// //   2. scales it so it reaches 'maximumValue' (or -maximumValue)
+// //      when it would have previously reached 'boundValue'.
+// //      (This effectively reduces or increases the rate of it's growth.)
+// function limitToSymmetricInterval
+// (
+//   value: number,
+//   boundValue: number,
+//   maximumValue: number
+// )
+// {
+//   if (boundValue < 0)
+//   {
+//     throw new Error(`Invalid 'boundValue' (${boundValue}.`
+//       + ` It must be non-negative)`);
+//   }
+
+//   if (maximumValue < 0)
+//   {
+//     throw new Error(`Invalid 'maximumValue' (${maximumValue}.`
+//       + ` It must be non-negative)`);
+//   }
+
+//   // Lets simplify our task a little bit - interval is symmetrical
+//   // so we can work just with absolute value. We will reapply
+//   // the sign (which represents direction) at the end.
+//   const direction = (value > 0) ? 1 : -1;
+//   let absoluteValue = Math.abs(value);
+
+//   if (absoluteValue > maximumValue)
+//   {
+//     absoluteValue = maximumValue;
+//   }
+
+//   if (boundValue === 0)
+//   {
+//     // If we are to remap to zero-length interval, we just
+//     // return the maximum possible value (which is oldBounds)
+//     return maximumValue * direction;
+//   }
+
+//   const ratio = maximumValue / boundValue;
+
+//   if (absoluteValue < boundValue)
+//   {
+//     // Scale to the new interval (positive or negative).
+//     return absoluteValue * ratio * direction;
+//   }
+//   else
+//   {
+//     // Return maximum possible (positive or negative) value.
+//     return maximumValue * direction;
+//   }
+// }

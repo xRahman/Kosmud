@@ -18,6 +18,7 @@ export class Ship extends Shared.Ship
   private readonly desiredSteeringForce = new Vector();
   private readonly desiredForwardSteeringForce = new Vector();
   private readonly desiredLeftwardSteeringForce = new Vector();
+  private torque = 0;
 
   constructor(private readonly physicsBody: PhysicsBody)
   {
@@ -98,7 +99,9 @@ export class Ship extends Shared.Ship
       this.getPosition(),
       vehicleVelocity,
       this.waypoint,
-      this.physicsBody.getRotation()
+      this.physicsBody.getRotation(),
+      this.physicsBody.getAngularVelocity(),
+      this.physicsBody.getInertia()
     );
 
     /// DEBUG:
@@ -117,9 +120,11 @@ export class Ship extends Shared.Ship
       steeringResult.desiredLeftwardSteeringForce
     );
     this.velocity.set(vehicleVelocity);
+    this.torque = steeringResult.torque;
 
     this.physicsBody.applyForce(this.steeringForce);
-    this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);
+    // this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);
+    this.physicsBody.applyTorque(this.torque);
   }
 
   public getShape()
