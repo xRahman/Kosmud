@@ -4,14 +4,22 @@
   Math-related utility functions.
 */
 
+const TWO_PI = Math.PI * 2;
+
 export function lowerBound(value: number, bound: number)
 {
-  return Math.max(value, bound);
+  if (value < bound)
+    return bound;
+
+  return value;
 }
 
 export function upperBound(value: number, bound: number)
 {
-  return Math.min(value, bound);
+  if (value > bound)
+    return bound;
+
+  return value;
 }
 
 export function intervalBound
@@ -20,5 +28,17 @@ export function intervalBound
   { from, to }: { from: number; to: number }
 )
 {
-  return Math.min(Math.max(value, from), to);
+  if (value < from)
+    return from;
+
+  if (value > to)
+    return to;
+
+  return value;
+}
+
+// Makes sure that 'angle' is between 0 and 2π.
+export function normalizeAngle(angle: number): number
+{
+  return (angle % TWO_PI + TWO_PI) % TWO_PI;
 }

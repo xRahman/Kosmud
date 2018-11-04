@@ -9,9 +9,12 @@ export class Ship
 
   private readonly vectors: Ship.Vectors =
   {
+    shipVelocity: new Vector(),
     desiredVelocity: new Vector(),
     steeringForce: new Vector(),
-    desiredSteeringForce: new Vector()
+    desiredSteeringForce: new Vector(),
+    desiredForwardSteeringForce: new Vector(),
+    desiredLeftwardSteeringForce: new Vector()
   };
 
   constructor
@@ -61,9 +64,18 @@ export class Ship
 
   public setVectors(vectors: Ship.Vectors)
   {
+    this.vectors.shipVelocity.set(vectors.shipVelocity);
     this.vectors.desiredVelocity.set(vectors.desiredVelocity);
     this.vectors.steeringForce.set(vectors.steeringForce);
     this.vectors.desiredSteeringForce.set(vectors.desiredSteeringForce);
+    this.vectors.desiredForwardSteeringForce.set
+    (
+      vectors.desiredForwardSteeringForce
+    );
+    this.vectors.desiredLeftwardSteeringForce.set
+    (
+      vectors.desiredLeftwardSteeringForce
+    );
 
     this.graphics.drawVectors(this.vectors);
   }
@@ -75,8 +87,11 @@ export namespace Ship
 {
   export interface Vectors
   {
+    shipVelocity: Vector;
     desiredVelocity: Vector;
     steeringForce: Vector;
     desiredSteeringForce: Vector;
+    desiredForwardSteeringForce: Vector;
+    desiredLeftwardSteeringForce: Vector;
   }
 }

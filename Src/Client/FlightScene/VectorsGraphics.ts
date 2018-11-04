@@ -29,12 +29,29 @@ export class VectorGraphics
 
     this.graphics.drawVector
     (
+      vectors.shipVelocity, origin, 1, Graphics.rgb(255, 0, 255), 1
+    );
+
+    this.graphics.drawVector
+    (
       vectors.desiredVelocity, origin, 1, Graphics.rgb(0, 0, 255), 1
     );
 
     this.graphics.drawVector
     (
       vectors.desiredSteeringForce, origin, 1, Graphics.rgb(160, 160, 0), 1
+    );
+
+    this.graphics.drawVector
+    (
+      vectors.desiredForwardSteeringForce,
+      origin, 1, Graphics.rgb(110, 110, 0), 1
+    );
+
+    this.graphics.drawVector
+    (
+      vectors.desiredLeftwardSteeringForce,
+      origin, 1, Graphics.rgb(60, 60, 0), 1
     );
 
     this.graphics.drawVector

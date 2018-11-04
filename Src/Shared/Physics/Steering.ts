@@ -4,20 +4,19 @@
   Steering behavior of autonomous vehicles.
 */
 
-import { intervalBound } from "../../Shared/Utils/Math";
+import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
 
 /// Zatím natvrdo.
 const MAX_SPEED = 100;
-const MAXIMUM_STEERING_FORCE = 10;
-const MAXIMUM_STEERING_FORCE_SQUARED =
-  MAXIMUM_STEERING_FORCE * MAXIMUM_STEERING_FORCE;
+// const MAXIMUM_STEERING_FORCE = 10;
+// const MAXIMUM_STEERING_FORCE_SQUARED =
+//   MAXIMUM_STEERING_FORCE * MAXIMUM_STEERING_FORCE;
 
-const FORWARD_THRUST = 20;
-const BARKWARD_THRUST = 10;
+const FORWARD_THRUST = 10;
+const BACKWARD_THRUST = 5;
 const STRAFE_THRUST = 5;
-// const MAXIMUM_ANGULAR_VELOCITY = Math.PI / 20;
-const ANGULAR_VELOCITY = Math.PI / 20;
+const ANGULAR_VELOCITY = Math.PI / 2;
 
 export namespace Steering
 {
@@ -26,6 +25,8 @@ export namespace Steering
     steeringForce: Vector;
     desiredVelocity: Vector;
     desiredSteeringForce: Vector;
+    desiredForwardSteeringForce: Vector;
+    desiredLeftwardSteeringForce: Vector;
     angularVelocity: number;
   };
 
@@ -34,10 +35,14 @@ export namespace Steering
     vehiclePosition: Vector,
     vehicleVelocity: Vector,
     targetPosition: Vector,
-    currentRotation: number
+    vehicleRotation: number
   )
   : Result
   {
+    // Rotation in Box2D can be negative or even greater than 2π.
+    // We need to fix that so we can correcly subtract angles.
+    const currentRotation = normalizeAngle(vehicleRotation);
+
     // IDEA: Se shiftem loď strafuje/couvá.
 
     // IDEA: Desired force rozložit do složek, ty nezávisle capnout a zase
@@ -56,20 +61,128 @@ export namespace Steering
       vehicleVelocity
     );
 
-    let steeringForce: Vector;
+    // 3.5 Split desiredSteeringForce to it's Forward/Barkward and
+    // Left/Right part.
 
-    // 4. Limit the magnitude of vector(steering force) to maximum force.
-    if (desiredSteeringForce.lengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
+    // Math guide:
+    // https://math.oregonstate.edu/home/programs/undergrad/
+    //   CalculusQuestStudyGuides/vcalc/dotprod/dotprod.html
+
+    const leftwardRotation = normalizeAngle(currentRotation + Math.PI / 2);
+    const forwardUnitVector = Vector.rotate({ x: 1, y: 0 }, currentRotation);
+    const leftwardUnitVector = Vector.rotate({ x: 1, y: 0 }, leftwardRotation);
+
+    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
+    /// ale jednotkový, takže lomeno 1.
+    const desiredForwardComponentMagnitude = Vector.v1DotV2
+    (
+      desiredSteeringForce,
+      forwardUnitVector
+    );
+
+    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
+    /// ale jednotkový, takže lomeno 1.
+    const desiredLeftwardComponentMagnitude = Vector.v1DotV2
+    (
+      desiredSteeringForce,
+      leftwardUnitVector
+    );
+
+    const desiredForwardSteeringForce = Vector.scale
+    (
+      forwardUnitVector,
+      desiredForwardComponentMagnitude
+    );
+
+    const desiredLeftwardSteeringForce = Vector.scale
+    (
+      leftwardUnitVector,
+      desiredLeftwardComponentMagnitude
+    );
+
+    /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
+    /// a tímhle poměrem pak pronásobím desiredSteeringForce.
+    // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
+    let forwardLimitRatio = 1;
+    if (desiredForwardComponentMagnitude > FORWARD_THRUST)
     {
-      steeringForce = new Vector(desiredSteeringForce).setLength
-      (
-        MAXIMUM_STEERING_FORCE
-      );
+      forwardLimitRatio = FORWARD_THRUST / desiredForwardComponentMagnitude;
     }
-    else
+    else if (desiredForwardComponentMagnitude < -BACKWARD_THRUST)
     {
-      steeringForce = new Vector(desiredSteeringForce);
+      forwardLimitRatio = -BACKWARD_THRUST / desiredForwardComponentMagnitude;
     }
+    let strafeLimitRatio = 1;
+    if (desiredLeftwardComponentMagnitude > STRAFE_THRUST)
+    {
+      strafeLimitRatio = STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+    }
+    else if (desiredLeftwardComponentMagnitude < -STRAFE_THRUST)
+    {
+      strafeLimitRatio = -STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+    }
+    const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
+    // console.log("------------------");
+    // console.log(forwardLimitRatio);
+    // console.log(strafeLimitRatio);
+    // console.log(steeringLimitRatio);
+    if (steeringLimitRatio < 0 || steeringLimitRatio > 1)
+      throw new Error(`Invalid steeringLimitRatio (${steeringLimitRatio})`);
+    ///
+
+    const forwardForceMagnitude = intervalBound
+    (
+      desiredForwardComponentMagnitude,
+      { from: -BACKWARD_THRUST, to: FORWARD_THRUST }
+    );
+
+    const leftwardForceMagnitude = intervalBound
+    (
+      desiredLeftwardComponentMagnitude,
+      { from: -STRAFE_THRUST, to: STRAFE_THRUST }
+    );
+
+    const forwardSteeringForce = Vector.scale
+    (
+      forwardUnitVector,
+      forwardForceMagnitude
+    );
+
+    const leftwardSteeringForce = Vector.scale
+    (
+      leftwardUnitVector,
+      leftwardForceMagnitude
+    );
+
+    // const steeringForce = new Vector(forwardSteeringForce);
+    // const steeringForce = Vector.v1PlusV2
+    // (
+    //   forwardSteeringForce,
+    //   leftwardSteeringForce
+    // );
+    /// Nově:
+    const steeringForce = Vector.scale
+    (
+      desiredSteeringForce,
+      steeringLimitRatio
+    );
+    ///
+
+  /// Original code:
+  // let steeringForce: Vector;
+
+  // // 4. Limit the magnitude of vector(steering force) to maximum force.
+  // if (desiredSteeringForce.lengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
+  // {
+  //   steeringForce = new Vector(desiredSteeringForce).setLength
+  //   (
+  //     MAXIMUM_STEERING_FORCE
+  //   );
+  // }
+  // else
+  // {
+  //   steeringForce = new Vector(desiredSteeringForce);
+  // }
 
     // ------------------
 
@@ -129,17 +242,14 @@ export namespace Steering
     // - Spočítám desiredRotation
     // - k tomu se budu točit.
 
-    //
-
-    // des 350
-    // cur 10
-    // ------
-    // -20
-
-    // des - cur = 340, -360 = -20
-
     const desiredRotation = desiredVelocity.getRotation();
     let desiredAngularVelocity = desiredRotation - currentRotation;
+
+    if (currentRotation < 0 || currentRotation > Math.PI * 2)
+      throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
+
+    if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
+      throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
 
     /// DEBUG:
     // console.log("Desired velocity:");
@@ -149,27 +259,17 @@ export namespace Steering
     // console.log("Desired rotation:");
     // console.log(desiredRotation);
 
-    // Make sure that we make a turn the shorter way.
+    // Make sure that we turn the shorter way.
     if (desiredAngularVelocity > Math.PI)
       desiredAngularVelocity -= Math.PI * 2;
-
-    /// Tímhle jsem vlastně ale nevyřešil zastavení na požadovaném směru
-    /// (leda bych se na něm zastavil náhodou), protože angular velocity je
-    /// "za sekundu", ne za tik.
-    /// - i když možná vyřešil - angularVelocity by se měla při přibližování
-    ///  snižovat... Každopádně to nefunguje.
-
-    /// Proč se mi to po dosažení směru přetáčí?
-    /// - no, angularVelocity je buď +max nebo -max
+    if (desiredAngularVelocity < -Math.PI)
+      desiredAngularVelocity += Math.PI * 2;
 
     // Limit to ANGULAR_VELOCITY.
     const angularVelocity = intervalBound
     (
       desiredAngularVelocity,
-      {
-        from: -ANGULAR_VELOCITY,
-        to: ANGULAR_VELOCITY
-      }
+      { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
     );
 
     // ------------------
@@ -184,6 +284,8 @@ export namespace Steering
       steeringForce,
       desiredVelocity,
       desiredSteeringForce,
+      desiredForwardSteeringForce,
+      desiredLeftwardSteeringForce,
       angularVelocity
     };
 

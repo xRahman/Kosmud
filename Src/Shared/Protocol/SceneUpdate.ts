@@ -15,9 +15,12 @@ export class SceneUpdate extends Packet
   (
     public shipPosition: Vector,
     public shipRotation: number,
+    public shipVelocity: Vector,
     public desiredVelocity: Vector,
     public steeringForce: Vector,
-    public desiredSteeringForce: Vector
+    public desiredSteeringForce: Vector,
+    public desiredForwardSteeringForce: Vector,
+    public desiredLeftwardSteeringForce: Vector
   )
   {
     super();

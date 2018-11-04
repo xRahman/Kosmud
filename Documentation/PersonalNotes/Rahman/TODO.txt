@@ -7,11 +7,17 @@ Priority:
 5) Efekty trysek (grafický a zvukový).
 
 
+TODO: Pořád je tam problém s výpočtem směru rotace, to musím opravit.
+[done]
 
-TODO: Možná by stálo za to transofrmaci souřadnic ještě upravit, aby [0, 0]
-  bylo uprostřed obrazovky.
-  (protože typicky budu chtít loď uprostřed obrazovky...)
-  - i když, to možná bude lepší vyřešit kamerou.
+TODO: Opravit šílené zrychlování do boku.
+  Zjevně mám chybu v úvaze.
+  - Když totiž limituju složky zvlášť, tak se mi změní směr vektoru.
+  Tzn. musím:
+  - Zjistit, jakým faktorem se limituje v jednotlivých směrech.
+  - Menším z těch faktorům pronásobit původní vektor.
+
+
 
 TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
   nebudu angular velocity limitovat hned, ale až když bude zbývat jen
@@ -19,11 +25,14 @@ TODO: "Dobržďování" při rotaci by možná šlo zrychlit tím, že
 TODO: a možná bych mohl udělati "zrychlování" rotace, tj. aby to z 0 na full
   neskočilo okamžitě.
 
+
+
+
+
+
 TODO: Asi budu potřebovat seekForward() a seekBackward()
 (protože v současném módu se couvat moc nedá).
 IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
-
-
 
 
 TODO: Odstranit debugovací kód ze Steering.seek().
@@ -94,6 +103,11 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 Odložené TODO:
 ---------------
 
+TODO: Možná by stálo za to transformaci souřadnic ještě upravit, aby [0, 0]
+  bylo uprostřed obrazovky.
+  (protože typicky budu chtít loď uprostřed obrazovky...)
+  - i když, to možná bude lepší vyřešit kamerou.
+
 TODO: Zapínání a vypínání debug grafiky.
 - flaga na zapnutí debug view by asi měla bejt na serveru (v accountu?)
       (bude přepínat, jestli se ve SceneUpdate bude nebo nebude
@@ -103,8 +117,8 @@ TODO: Zapínání a vypínání debug grafiky.
          se neposílají v každém paketu
          - asi se přepínání bude muset posílat taky).
 
-TODO: SetDestination by se asi mělo posílat z něčeho jinýho než
-  z DestinationMarkeru.
+TODO: SetWaypoint by se asi mělo posílat z něčeho jinýho než
+  z Waypointu.
   - ani scéna by to neměla dělat. Možná engine?
 
 TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964

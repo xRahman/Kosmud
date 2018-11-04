@@ -11,10 +11,13 @@ import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private waypoint: Vector;
-  private desiredVelocity = new Vector();
-  private steeringForce = new Vector();
-  private desiredSteeringForce = new Vector();
+  private readonly waypoint: Vector;
+  private readonly velocity = new Vector();
+  private readonly desiredVelocity = new Vector();
+  private readonly steeringForce = new Vector();
+  private readonly desiredSteeringForce = new Vector();
+  private readonly desiredForwardSteeringForce = new Vector();
+  private readonly desiredLeftwardSteeringForce = new Vector();
 
   constructor(private readonly physicsBody: PhysicsBody)
   {
@@ -32,10 +35,19 @@ export class Ship extends Shared.Ship
   public getDesiredVelocity() { return this.desiredVelocity; }
   public getSteeringForce() { return this.steeringForce; }
   public getDesiredSteeringForce() { return this.desiredSteeringForce; }
+  public getDesiredForwardSteeringForce()
+  {
+    return this.desiredForwardSteeringForce;
+  }
+  public getDesiredLeftwardSteeringForce()
+  {
+    return this.desiredLeftwardSteeringForce;
+  }
+  public getVelocity() { return this.velocity; }
 
   public setWaypoint(waypoint: Vector)
   {
-    this.waypoint = waypoint;
+    this.waypoint.set(waypoint);
   }
 
   public startTurningLeft()
@@ -79,10 +91,12 @@ export class Ship extends Shared.Ship
     // console.log("Steering to position"
     //   + " [" + this.targetPosition.x + ", " + this.targetPosition.y + "]");
 
+    const vehicleVelocity = this.physicsBody.getVelocity();
+
     const steeringResult = Steering.seek
     (
       this.getPosition(),
-      this.physicsBody.getVelocity(),
+      vehicleVelocity,
       this.waypoint,
       this.physicsBody.getRotation()
     );
@@ -91,9 +105,18 @@ export class Ship extends Shared.Ship
     // console.log("Applying steering force"
     //   + " [" + steeringForce.x + ", " + steeringForce.y + "]");
 
-    this.desiredVelocity = steeringResult.desiredVelocity;
-    this.steeringForce = steeringResult.steeringForce;
-    this.desiredSteeringForce = steeringResult.desiredSteeringForce;
+    this.desiredVelocity.set(steeringResult.desiredVelocity);
+    this.steeringForce.set(steeringResult.steeringForce);
+    this.desiredSteeringForce.set(steeringResult.desiredSteeringForce);
+    this.desiredForwardSteeringForce.set
+    (
+      steeringResult.desiredForwardSteeringForce
+    );
+    this.desiredLeftwardSteeringForce.set
+    (
+      steeringResult.desiredLeftwardSteeringForce
+    );
+    this.velocity.set(vehicleVelocity);
 
     this.physicsBody.applyForce(this.steeringForce);
     this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);
