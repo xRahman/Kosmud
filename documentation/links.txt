@@ -70,6 +70,24 @@ sprite.setTint(0x7878ff);
 sprite.clearTint();
 https://labs.phaser.io/edit.html?src=src\input\mouse\circle%20hit%20area.js
 
+
+==============================================================
+
+Texture packer
+---------------
+
+How to create sprite sheets for Phaser 3 with TexturePacker (+ animations)
+https://www.codeandweb.com/texturepacker/tutorials/how-to-create-sprite-sheets-for-phaser3
+
+download:
+https://www.codeandweb.com/texturepacker/download
+
+
+Sprite Sheet Packer (free)
+---------------------------
+
+https://www.codeandweb.com/free-sprite-sheet-packer
+
 ==============================================================
 
 matter.js physics engine
