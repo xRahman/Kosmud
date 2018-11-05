@@ -7,6 +7,10 @@ Priority:
 5) Vyhýbání (překážkám a jiným lodím).
 6) Lepší physics body shape pro loď (a pro překážky taky).
 
+TODO: "Skákající animace": Možná je to buglé:
+  https://github.com/photonstorm/phaser/issues/3288
+
+TODO: Přejmenovat adresáře v /Client (na PascalCase).
 
 Ad 1:
 -----

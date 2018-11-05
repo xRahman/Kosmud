@@ -27,6 +27,13 @@ export class FlightSceneContents extends SceneContents
 
   public static preload(scene: FlightScene)
   {
+    scene.load.multiatlas
+    (
+      "Exhausts00",
+      "/graphics/Effects/Exhausts/Exhausts00.json",
+      "/graphics/Effects/Exhausts"
+    );
+
     Background.preload(scene);
     ShipGraphics.preload(scene);
     Waypoint.preload(scene);
@@ -38,6 +45,43 @@ export class FlightSceneContents extends SceneContents
   {
     /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
     this.ship = ship;
+  }
+
+  // tslint:disable-next-line:prefer-function-over-method
+  public create(scene: FlightScene)
+  {
+    const exhaust = scene.add.sprite
+    (
+      /// Souřadnice jsou invertovaný, protože nepoužívám wrapper object,
+      /// kterej by je přeložil.
+      200,
+      200,
+      "Exhausts00",
+      // "EngineExhausts/ExhaustYellowRectangular/001.png"
+      "ExhaustYellowRectangular/001.png"
+    );
+
+    const frameNames = scene.anims.generateFrameNames
+    (
+      "Exhausts00",
+      {
+        start: 1, end: 8, zeroPad: 3,
+        prefix: "ExhaustYellowRectangular/", suffix: ".png"
+      }
+    );
+
+    scene.anims.create
+    (
+      {
+        key: "Exhausts00",
+        frames: frameNames,
+        // frameRate: 10,
+        frameRate: 25,
+        repeat: -1
+      }
+    );
+
+    exhaust.anims.play("Exhausts00");
   }
 
   public update()
