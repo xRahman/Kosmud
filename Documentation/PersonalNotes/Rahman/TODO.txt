@@ -12,6 +12,9 @@ TODO: "Skákající animace": Možná je to buglé:
 
 TODO: Přejmenovat adresáře v /Client (na PascalCase).
 
+TODO: Export/import animation to/from json.
+https://phaser.io/phaser3/devlog/76
+
 Ad 1:
 -----
 
