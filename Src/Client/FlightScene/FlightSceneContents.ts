@@ -55,7 +55,7 @@ export class FlightSceneContents extends SceneContents
       /// Souřadnice jsou invertovaný, protože nepoužívám wrapper object,
       /// kterej by je přeložil.
       200,
-      200,
+      0,
       "Exhausts00",
       // "EngineExhausts/ExhaustYellowRectangular/001.png"
       "ExhaustYellowRectangular/001.png"
@@ -69,6 +69,8 @@ export class FlightSceneContents extends SceneContents
         prefix: "ExhaustYellowRectangular/", suffix: ".png"
       }
     );
+
+    console.log(frameNames);
 
     scene.anims.create
     (

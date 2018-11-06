@@ -7,10 +7,23 @@ Priority:
 5) Vyhýbání (překážkám a jiným lodím).
 6) Lepší physics body shape pro loď (a pro překážky taky).
 
-TODO: "Skákající animace": Možná je to buglé:
-  https://github.com/photonstorm/phaser/issues/3288
 
 TODO: Přejmenovat adresáře v /Client (na PascalCase).
+- Huh, v práci začíná všechno velkým.
+
+
+TODO: Vymyslet lepší adresářovou strukturu pro TexturePacker
+- output určitě rovnou do /Client, ať to nemusím překopírovávat
+  a nemám to dvakrát.
+
+Jak pojmenovávat texture atlasy?
+- mám několik efektů v jenom atlasu
+- Adresář v TexturePackeru by se asi měl jmenovat stejně jako výsledný atlas
+  (tj. Exhausts00).
+  - což je vlastně vstupní adresář.
+- Zjevně potřebuju nějakej adresář na "raw data". Možná SrcData?
+- Kam patří tps file? (Texture packer project?)
+
 
 Ad 1:
 -----

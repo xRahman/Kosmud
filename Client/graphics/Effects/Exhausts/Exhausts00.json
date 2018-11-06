@@ -4,264 +4,64 @@
 			"image": "Exhausts00.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 597,
-				"h": 123
+				"w": 232,
+				"h": 406
 			},
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "ExhaustBlueConical/001.png",
+					"filename": "ExhaustYellowConical/007.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 73,
-						"h": 120
+						"w": 32,
+						"h": 59
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 73,
-						"h": 120
+						"w": 32,
+						"h": 59
 					},
 					"frame": {
 						"x": 1,
 						"y": 1,
-						"w": 73,
-						"h": 120
+						"w": 32,
+						"h": 59
 					},
 					"anchor": {
 						"x": 0.5,
-						"y": 0.25
+						"y": 0.15
 					}
 				},
 				{
-					"filename": "ExhaustBlueConical/003.png",
+					"filename": "ExhaustYellowConical/001.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 73,
-						"h": 115
+						"w": 32,
+						"h": 59
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 73,
-						"h": 115
+						"w": 32,
+						"h": 59
 					},
 					"frame": {
-						"x": 76,
+						"x": 35,
 						"y": 1,
-						"w": 73,
-						"h": 115
+						"w": 32,
+						"h": 59
 					},
 					"anchor": {
 						"x": 0.5,
-						"y": 0.25
+						"y": 0.15
 					}
 				},
 				{
-					"filename": "ExhaustBlueConical/004.png",
+					"filename": "ExhaustYellowConical/006.png",
 					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 65,
-						"h": 106
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 65,
-						"h": 106
-					},
-					"frame": {
-						"x": 151,
-						"y": 1,
-						"w": 65,
-						"h": 106
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.25
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/001.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 91
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 91
-					},
-					"frame": {
-						"x": 218,
-						"y": 1,
-						"w": 28,
-						"h": 91
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/002.png",
-					"rotated": true,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 91
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 91
-					},
-					"frame": {
-						"x": 218,
-						"y": 94,
-						"w": 28,
-						"h": 91
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/003.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 91
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 91
-					},
-					"frame": {
-						"x": 248,
-						"y": 1,
-						"w": 28,
-						"h": 91
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/004.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 91
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 91
-					},
-					"frame": {
-						"x": 278,
-						"y": 1,
-						"w": 28,
-						"h": 91
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/005.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 91
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 91
-					},
-					"frame": {
-						"x": 308,
-						"y": 1,
-						"w": 28,
-						"h": 91
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/006.png",
-					"rotated": true,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 79
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 79
-					},
-					"frame": {
-						"x": 311,
-						"y": 94,
-						"w": 28,
-						"h": 79
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustBlueConical/002.png",
-					"rotated": true,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 87,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 87,
-						"h": 128
-					},
-					"frame": {
-						"x": 338,
-						"y": 1,
-						"w": 87,
-						"h": 128
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.25
-					}
-				},
-				{
-					"filename": "ExhaustYellowConical/002.png",
-					"rotated": true,
 					"trimmed": false,
 					"sourceSize": {
 						"w": 32,
@@ -274,8 +74,8 @@
 						"h": 60
 					},
 					"frame": {
-						"x": 392,
-						"y": 90,
+						"x": 69,
+						"y": 1,
 						"w": 32,
 						"h": 60
 					},
@@ -285,8 +85,8 @@
 					}
 				},
 				{
-					"filename": "ExhaustYellowConical/006.png",
-					"rotated": true,
+					"filename": "ExhaustYellowConical/002.png",
+					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
 						"w": 32,
@@ -299,8 +99,8 @@
 						"h": 60
 					},
 					"frame": {
-						"x": 392,
-						"y": 90,
+						"x": 103,
+						"y": 1,
 						"w": 32,
 						"h": 60
 					},
@@ -311,98 +111,23 @@
 				},
 				{
 					"filename": "ExhaustYellowConical/008.png",
-					"rotated": true,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 32,
-						"h": 60
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 32,
-						"h": 60
-					},
-					"frame": {
-						"x": 454,
-						"y": 90,
-						"w": 32,
-						"h": 60
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.15
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/008.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 28,
-						"h": 79
+						"w": 32,
+						"h": 60
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 28,
-						"h": 79
+						"w": 32,
+						"h": 60
 					},
 					"frame": {
-						"x": 468,
+						"x": 137,
 						"y": 1,
-						"w": 28,
-						"h": 79
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowRectangular/007.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 75
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 75
-					},
-					"frame": {
-						"x": 498,
-						"y": 1,
-						"w": 28,
-						"h": 75
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0
-					}
-				},
-				{
-					"filename": "ExhaustYellowConical/003.png",
-					"rotated": true,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 34,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 34,
-						"h": 64
-					},
-					"frame": {
-						"x": 516,
-						"y": 78,
-						"w": 34,
-						"h": 64
+						"w": 32,
+						"h": 60
 					},
 					"anchor": {
 						"x": 0.5,
@@ -411,7 +136,7 @@
 				},
 				{
 					"filename": "ExhaustYellowConical/005.png",
-					"rotated": true,
+					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
 						"w": 34,
@@ -424,8 +149,8 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 516,
-						"y": 78,
+						"x": 171,
+						"y": 1,
 						"w": 34,
 						"h": 64
 					},
@@ -449,8 +174,8 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 528,
-						"y": 1,
+						"x": 1,
+						"y": 67,
 						"w": 34,
 						"h": 64
 					},
@@ -460,24 +185,24 @@
 					}
 				},
 				{
-					"filename": "ExhaustYellowConical/001.png",
+					"filename": "ExhaustYellowConical/003.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 32,
-						"h": 59
+						"w": 34,
+						"h": 64
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 32,
-						"h": 59
+						"w": 34,
+						"h": 64
 					},
 					"frame": {
-						"x": 564,
-						"y": 1,
-						"w": 32,
-						"h": 59
+						"x": 37,
+						"y": 67,
+						"w": 34,
+						"h": 64
 					},
 					"anchor": {
 						"x": 0.5,
@@ -485,28 +210,303 @@
 					}
 				},
 				{
-					"filename": "ExhaustYellowConical/007.png",
+					"filename": "ExhaustYellowRectangular/007.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 32,
-						"h": 59
+						"w": 28,
+						"h": 75
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 32,
-						"h": 59
+						"w": 28,
+						"h": 75
 					},
 					"frame": {
-						"x": 564,
-						"y": 1,
-						"w": 32,
-						"h": 59
+						"x": 73,
+						"y": 67,
+						"w": 28,
+						"h": 75
 					},
 					"anchor": {
 						"x": 0.5,
-						"y": 0.15
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/006.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 79
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 79
+					},
+					"frame": {
+						"x": 103,
+						"y": 67,
+						"w": 28,
+						"h": 79
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/008.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 79
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 79
+					},
+					"frame": {
+						"x": 133,
+						"y": 67,
+						"w": 28,
+						"h": 79
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/003.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 163,
+						"y": 67,
+						"w": 28,
+						"h": 91
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/005.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 193,
+						"y": 67,
+						"w": 28,
+						"h": 91
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/002.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 1,
+						"y": 160,
+						"w": 28,
+						"h": 91
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/004.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 31,
+						"y": 160,
+						"w": 28,
+						"h": 91
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/001.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 61,
+						"y": 160,
+						"w": 28,
+						"h": 91
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0
+					}
+				},
+				{
+					"filename": "ExhaustBlueConical/004.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 65,
+						"h": 106
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 65,
+						"h": 106
+					},
+					"frame": {
+						"x": 91,
+						"y": 160,
+						"w": 65,
+						"h": 106
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.25
+					}
+				},
+				{
+					"filename": "ExhaustBlueConical/003.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 73,
+						"h": 115
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 73,
+						"h": 115
+					},
+					"frame": {
+						"x": 158,
+						"y": 160,
+						"w": 73,
+						"h": 115
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.25
+					}
+				},
+				{
+					"filename": "ExhaustBlueConical/001.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 73,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 73,
+						"h": 120
+					},
+					"frame": {
+						"x": 1,
+						"y": 277,
+						"w": 73,
+						"h": 120
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.25
+					}
+				},
+				{
+					"filename": "ExhaustBlueConical/002.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 87,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 87,
+						"h": 128
+					},
+					"frame": {
+						"x": 76,
+						"y": 277,
+						"w": 87,
+						"h": 128
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.25
 					}
 				}
 			]
@@ -515,6 +515,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:e8478a75a6c90b73f1ee90fe01c5713a:d9c2bf2fd28e9364f61f07563e9e0399:74ed4a5d864d8265f0c1acaa82724cc7$"
+		"smartupdate": "$TexturePacker:SmartUpdate:199806883bc5995aaa6b8b6bca1d0fe6:d9c2bf2fd28e9364f61f07563e9e0399:74ed4a5d864d8265f0c1acaa82724cc7$"
 	}
 }
