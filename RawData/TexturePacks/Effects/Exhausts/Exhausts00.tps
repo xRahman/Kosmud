@@ -26,7 +26,7 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <true/>
+        <false/>
         <key>shapeDebug</key>
         <false/>
         <key>dpi</key>
@@ -132,7 +132,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../DataFiles/Exhausts00.json</filename>
+                <filename>../../../../Client/Textures/Effects/Exhausts/Exhausts00.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -181,10 +181,10 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../Effects/EngineExhausts/ExhaustBlueConical/001.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustBlueConical/001.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.25</point_f>
+                <point_f>0.5,0.1</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -194,10 +194,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustBlueConical/002.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustBlueConical/002.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.25</point_f>
+                <point_f>0.5,0.1</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -207,10 +207,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustBlueConical/003.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustBlueConical/003.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.25</point_f>
+                <point_f>0.5,0.1</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -220,10 +220,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustBlueConical/004.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustBlueConical/004.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.25</point_f>
+                <point_f>0.5,0.1</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -233,11 +233,11 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/001.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/007.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/001.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/007.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.15</point_f>
+                <point_f>0.5,2.77556e-17</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -247,12 +247,12 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/002.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/006.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/008.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/002.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/006.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/008.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.15</point_f>
+                <point_f>0.5,2.77556e-17</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -262,12 +262,12 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/003.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/004.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowConical/005.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/003.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/004.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowConical/005.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.15</point_f>
+                <point_f>0.5,2.77556e-17</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -277,14 +277,14 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/001.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/002.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/003.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/004.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/005.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/002.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/003.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/004.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/005.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0</point_f>
+                <point_f>0.5,2.77556e-17</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -294,11 +294,11 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/006.png</key>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/008.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/006.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/008.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0</point_f>
+                <point_f>0.5,2.77556e-17</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -308,10 +308,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../Effects/EngineExhausts/ExhaustYellowRectangular/007.png</key>
+            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/007.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0</point_f>
+                <point_f>0.5,2.77556e-17</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -324,7 +324,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>../Effects/EngineExhausts</filename>
+            <filename>../../../Textures/Effects/Exhausts</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -41,7 +41,7 @@ export class ShipGraphics
 
   public static preload(scene: Phaser.Scene)
   {
-    scene.load.image(SHIP_SPRITE_ID, "/Graphics/Ships/hecate.png");
+    scene.load.image(SHIP_SPRITE_ID, "/Textures/Ships/hecate.png");
   }
 
   // ---------------- Public methods --------------------

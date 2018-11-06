@@ -31,7 +31,7 @@ export class Background
     scene.load.image
     (
       BACKGROUND_SPRITE_ID,
-      "/graphics/background/deep_space0.jpg"
+      "/Textures/Background/deep_space0.jpg"
     );
   }
 

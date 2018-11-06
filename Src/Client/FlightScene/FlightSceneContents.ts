@@ -30,8 +30,8 @@ export class FlightSceneContents extends SceneContents
     scene.load.multiatlas
     (
       "Exhausts00",
-      "/graphics/Effects/Exhausts/Exhausts00.json",
-      "/graphics/Effects/Exhausts"
+      "/Textures/Effects/Exhausts/Exhausts00.json",
+      "/Textures/Effects/Exhausts"
     );
 
     Background.preload(scene);

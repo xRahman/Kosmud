@@ -37,7 +37,9 @@ Jak pojmenovávat texture atlasy?
   spis vsechny textury k jedne lokaci/scene.
   - tzn. atlasy by mely mit nezavislou strukturu:
 
-  /RawData/TextureAtlases/Effects/Exhausts/Exhausts00.tps
+  - Spíš TexturePacks (atlas je to až vyexportované).
+
+  /RawData/TexturePacks/Effects/Exhausts/Exhausts00.tps
 
   A textury taky:
 

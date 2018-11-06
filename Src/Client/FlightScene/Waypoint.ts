@@ -28,7 +28,7 @@ export class Waypoint
     scene.load.image
     (
       WAYPOINT_SPRITE_ID,
-      "/Graphics/Markers/waypoint_32x32.png"
+      "/Textures/Markers/waypoint_32x32.png"
     );
   }
 
