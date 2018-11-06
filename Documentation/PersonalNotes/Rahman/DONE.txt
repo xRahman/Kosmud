@@ -1,3 +1,9 @@
+TODO: "Skákající animace": Možná je to buglé:
+  https://github.com/photonstorm/phaser/issues/3288
+- tak je to tím, že je v texture packeru povolená rotation
+  Nenašel jsem na to vypínátko, ale pomohlo přepnout Algorithm na "basic".
+[done]
+
 TODO: To přetáčení budu muset přece jen ještě nějak stabilizovat...
 [done]
 
