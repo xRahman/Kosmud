@@ -1,4 +1,5 @@
 import { Sprite } from "../../Client/Phaser/Sprite";
+import { Vector } from "../../Shared/Physics/Vector";
 
 const BACKGROUND_SPRITE_ID = "background";
 
@@ -31,7 +32,7 @@ export class Background
     scene.load.image
     (
       BACKGROUND_SPRITE_ID,
-      "/Textures/Background/deep_space0.jpg"
+      "Textures/Background/deep_space0.jpg"
     );
   }
 
@@ -124,18 +125,22 @@ function createBackgroundSprite
   canvasHeight: number
 )
 {
+  const position =
+  {
+    x: canvasWidth / 2,
+    // Topleft is [0, 0] but y axis points so 'y' needs to
+    // be negative to be in the middle of canvas.
+    y: -canvasHeight / 2
+  };
+  const rotation = 0;
+
   // Display origin of the sprite is in the middle but origin
   // of canvas coords is at the bottom right. We want to center
   // the background in the canvas so we need to place it
   // to [canvasWidth / 2, canvasHeight / 2] coordinates.
   const backgroundSprite = new Sprite
   (
-    scene,
-    canvasWidth / 2,
-    // Topleft is [0, 0] but y axis points so 'y' needs to
-    // be negative to be in the middle of canvas.
-    -canvasHeight / 2,
-    BACKGROUND_SPRITE_ID
+    scene, position, rotation, BACKGROUND_SPRITE_ID
   );
 
   // 'scrollFactor' 0 means that the background won't move

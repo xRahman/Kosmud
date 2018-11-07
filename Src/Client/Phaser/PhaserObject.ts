@@ -35,17 +35,6 @@ export abstract class PhaserObject
 
   // ---------------- Public methods --------------------
 
-  // public setX(x: number)
-  // {
-  //   this.phaserObject.setX(x);
-  // }
-
-  // public setY(y: number)
-  // {
-  //   // Note: Coordinates transform ('y' axis is inverted).
-  //   this.phaserObject.setY(-y);
-  // }
-
   public setRotation(rotation: number)
   {
     this.phaserObject.setRotation(CoordsTransform.transformAngle(rotation));

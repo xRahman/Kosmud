@@ -16,9 +16,10 @@ export class Waypoint
   (
     scene: Phaser.Scene,
     private readonly position: Vector,
+    private readonly rotation: number
   )
   {
-    this.sprite = createSprite(scene, position);
+    this.sprite = createSprite(scene, position, rotation);
 
     this.hide();
   }
@@ -28,7 +29,7 @@ export class Waypoint
     scene.load.image
     (
       WAYPOINT_SPRITE_ID,
-      "/Textures/Markers/waypoint_32x32.png"
+      "Textures/Markers/waypoint_32x32.png"
     );
   }
 
@@ -84,13 +85,13 @@ export class Waypoint
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createSprite(scene: Phaser.Scene, position: Vector)
+function createSprite(scene: Phaser.Scene, position: Vector, rotation: number)
 {
   const sprite = new Sprite
   (
     scene,
-    position.x,
-    position.y,
+    position,
+    rotation,
     WAYPOINT_SPRITE_ID
   );
 

@@ -21,19 +21,13 @@ export class FlightSceneContents extends SceneContents
     this.waypoint = new Waypoint
     (
       scene,
-      new Vector({ x: 0, y: 0 })
+      new Vector({ x: 0, y: 0 }),
+      0
     );
   }
 
   public static preload(scene: FlightScene)
   {
-    scene.load.multiatlas
-    (
-      "Exhausts00",
-      "/Textures/Effects/Exhausts/Exhausts00.json",
-      "/Textures/Effects/Exhausts"
-    );
-
     Background.preload(scene);
     ShipGraphics.preload(scene);
     Waypoint.preload(scene);
@@ -47,44 +41,42 @@ export class FlightSceneContents extends SceneContents
     this.ship = ship;
   }
 
-  // tslint:disable-next-line:prefer-function-over-method
-  public create(scene: FlightScene)
-  {
-    const exhaust = scene.add.sprite
-    (
-      /// Souřadnice jsou invertovaný, protože nepoužívám wrapper object,
-      /// kterej by je přeložil.
-      200,
-      0,
-      "Exhausts00",
-      // "EngineExhausts/ExhaustYellowRectangular/001.png"
-      "ExhaustYellowRectangular/001.png"
-    );
+  // // tslint:disable-next-line:prefer-function-over-method
+  // public create(scene: FlightScene)
+  // {
+  //   const exhaust = scene.add.sprite
+  //   (
+  //     /// Souřadnice jsou invertovaný, protože nepoužívám wrapper object,
+  //     /// kterej by je přeložil.
+  //     200,
+  //     0,
+  //     "Exhausts00",
+  //     // "EngineExhausts/ExhaustYellowRectangular/001.png"
+  //     "ExhaustYellowRectangular/001.png"
+  //   );
 
-    const frameNames = scene.anims.generateFrameNames
-    (
-      "Exhausts00",
-      {
-        start: 1, end: 8, zeroPad: 3,
-        prefix: "ExhaustYellowRectangular/", suffix: ".png"
-      }
-    );
+  //   const frameNames = scene.anims.generateFrameNames
+  //   (
+  //     "Exhausts00",
+  //     {
+  //       start: 1, end: 8, zeroPad: 3,
+  //       prefix: "ExhaustYellowRectangular/", suffix: ".png"
+  //     }
+  //   );
 
-    console.log(frameNames);
+  //   scene.anims.create
+  //   (
+  //     {
+  //       key: "animation_exhausts00",
+  //       frames: frameNames,
+  //       // frameRate: 10,
+  //       frameRate: 25,
+  //       repeat: -1
+  //     }
+  //   );
 
-    scene.anims.create
-    (
-      {
-        key: "Exhausts00",
-        frames: frameNames,
-        // frameRate: 10,
-        frameRate: 25,
-        repeat: -1
-      }
-    );
-
-    exhaust.anims.play("Exhausts00");
-  }
+  //   exhaust.anims.play("animation_exhausts00");
+  // }
 
   public update()
   {

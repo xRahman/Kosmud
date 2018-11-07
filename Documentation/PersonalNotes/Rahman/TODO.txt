@@ -1,3 +1,14 @@
+Dnešní TODO:
+- Dát lodi všechny exhausty (a na správná místa)
+  - 2 velké dozadu
+  - 2 malé dopředu
+  - 2 doleva
+  - 2 doprava
+  [done]
+- Posílat na klienta thrusty a torque
+- Scalovat je a zapínat/vypínat podle thrustů a torque
+
+
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).
@@ -6,6 +17,7 @@ Priority:
 4) Dát něco do scény.
 5) Vyhýbání (překážkám a jiným lodím).
 6) Lepší physics body shape pro loď (a pro překážky taky).
+7) Anchor pointy (pro exhausty, časem pro zbraně).
 
 
 TODO: Přejmenovat adresáře v /Client (na PascalCase).

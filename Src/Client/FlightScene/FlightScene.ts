@@ -64,7 +64,7 @@ export class FlightScene extends Scene
 
     this.contents = new FlightSceneContents(this, this.width, this.height);
 
-    this.contents.create(this);
+    // this.contents.create(this);
 
     this.createBufferedShips(this.contents);
   }
