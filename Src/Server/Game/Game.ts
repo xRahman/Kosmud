@@ -76,6 +76,9 @@ function updateClients()
     Game.ship.getDesiredSteeringForce(),
     Game.ship.getDesiredForwardSteeringForce(),
     Game.ship.getDesiredLeftwardSteeringForce(),
+    Game.ship.getForwardThrustRatio(),
+    Game.ship.getLeftwardThrustRatio(),
+    Game.ship.getTorqueRatio()
   );
 
   // TODO: Sent all scene update data, not just one ship.

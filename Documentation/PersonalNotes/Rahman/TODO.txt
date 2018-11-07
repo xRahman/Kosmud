@@ -8,6 +8,11 @@ Dnešní TODO:
 - Posílat na klienta thrusty a torque
 - Scalovat je a zapínat/vypínat podle thrustů a torque
 
+TODO: Zdědit Ship ze Steering (tedy z Vehicle),
+  ať nemusím do steeringových funkcí předávat takový stohy parametrů.
+
+TODO: SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
+ (konstruktor s 20 parametry už je trochu přes míru...)
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu

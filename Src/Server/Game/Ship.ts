@@ -46,6 +46,23 @@ export class Ship extends Shared.Ship
   }
   public getVelocity() { return this.velocity; }
 
+  public getForwardThrustRatio()
+  {
+    /// TODO.
+    return 0;
+  }
+  public getLeftwardThrustRatio()
+  {
+    /// TODO.
+    return 0;
+  }
+  public getTorqueRatio()
+  {
+    /// TODO.
+    return 0;
+    // return this.torque / Ship.maximumTorque;
+  }
+
   public setWaypoint(waypoint: Vector)
   {
     this.waypoint.set(waypoint);

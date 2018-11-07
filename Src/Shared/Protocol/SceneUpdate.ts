@@ -20,7 +20,10 @@ export class SceneUpdate extends Packet
     public steeringForce: Vector,
     public desiredSteeringForce: Vector,
     public desiredForwardSteeringForce: Vector,
-    public desiredLeftwardSteeringForce: Vector
+    public desiredLeftwardSteeringForce: Vector,
+    public forwardThrustRatio: number,
+    public leftwardThrustRatio: number,
+    public torqueRatio: number
   )
   {
     super();
