@@ -10,17 +10,10 @@ import { PhysicsWorld } from "./PhysicsWorld";
 
 /// Zatím natvrdo.
 const MAX_SPEED = 200;
-// const MAXIMUM_STEERING_FORCE = 10;
-// const MAXIMUM_STEERING_FORCE_SQUARED =
-//   MAXIMUM_STEERING_FORCE * MAXIMUM_STEERING_FORCE;
-
 const FORWARD_THRUST = 100;
 const BACKWARD_THRUST = 20;
 const STRAFE_THRUST = 5;
 const ANGULAR_VELOCITY = Math.PI * 2;
-// const ANGULAR_VELOCITY = Math.PI / 2;
-// const ANGULAR_ACCELERATION = 4;
-// TORQUE asi nahradí angular acceleration.
 const TORQUE = 3000;
 
 const FPS = 60;
@@ -28,35 +21,18 @@ const FPS = 60;
 const STOPPING_DISTANCE = 20;
 const STOPPING_SPEED = MAX_SPEED / 100;
 
-type LinearForces =
-{
-  steeringForce: Vector;
-  desiredVelocity: Vector;
-  desiredSteeringForce: Vector;
-  desiredForwardSteeringForce: Vector;
-  desiredLeftwardSteeringForce: Vector;
-};
-
-type AngularForces =
-{
-  torque: number;
-};
-
-type SteeringResult =
-{
-  linear: LinearForces;
-  angular: AngularForces;
-};
-
 export class Vehicle
 {
   protected readonly waypoint = new Vector();
-  protected readonly velocity = new Vector();
   protected readonly desiredVelocity = new Vector();
   protected readonly steeringForce = new Vector();
+  protected readonly forwardSteeringForce = new Vector();
+  protected readonly leftwardSteeringForce = new Vector();
   protected readonly desiredSteeringForce = new Vector();
   protected readonly desiredForwardSteeringForce = new Vector();
   protected readonly desiredLeftwardSteeringForce = new Vector();
+  protected forwardThrust = 0;
+  protected leftwardThrust = 0;
   protected torque = 0;
 
   private readonly physicsBody = PhysicsWorld.createBody();
@@ -85,24 +61,21 @@ export class Vehicle
   {
     return this.desiredLeftwardSteeringForce;
   }
-  public getVelocity() { return this.velocity; }
+  public getVelocity() { return this.physicsBody.getVelocity(); }
 
-  // tslint:disable-next-line:prefer-function-over-method
   public getForwardThrustRatio()
   {
-    const forwardThrust = this.getForwardThrust();
-
-    if (forwardThrust >= 0)
-      return forwardThrust / FORWARD_THRUST;
+    if (this.forwardThrust >= 0)
+      return this.forwardThrust / FORWARD_THRUST;
     else
-      return forwardThrust / BACKWARD_THRUST;
+      return this.forwardThrust / BACKWARD_THRUST;
   }
-  // tslint:disable-next-line:prefer-function-over-method
+
   public getLeftwardThrustRatio()
   {
-    return this.getLeftwardThrust() / STRAFE_THRUST;
+    return this.leftwardThrust / STRAFE_THRUST;
   }
-  // tslint:disable-next-line:prefer-function-over-method
+
   public getTorqueRatio()
   {
     return this.torque / TORQUE;
@@ -138,52 +111,20 @@ export class Vehicle
 
   public steer()
   {
-    /// DEBUG:
-    // console.log("Steering to position"
-    //   + " [" + this.targetPosition.x + ", " + this.targetPosition.y + "]");
+    this.arrive();
 
-    const vehicleVelocity = this.physicsBody.getVelocity();
-
-    const steeringResult = this.arrive(vehicleVelocity);
-
-    // const steeringResult = Steering.seek
-    // (
-    //   this.getPosition(),
-    //   vehicleVelocity,
-    //   this.waypoint,
-    //   this.physicsBody.getRotation(),
-    //   this.physicsBody.getAngularVelocity(),
-    //   this.physicsBody.getInertia(),
-    // );
-
-    /// DEBUG:
-    // console.log("Applying steering force"
-    //   + " [" + steeringForce.x + ", " + steeringForce.y + "]");
-
-    this.desiredVelocity.set(steeringResult.linear.desiredVelocity);
-    this.steeringForce.set(steeringResult.linear.steeringForce);
-    this.desiredSteeringForce.set(steeringResult.linear.desiredSteeringForce);
-    this.desiredForwardSteeringForce.set
-    (
-      steeringResult.linear.desiredForwardSteeringForce
-    );
-    this.desiredLeftwardSteeringForce.set
-    (
-      steeringResult.linear.desiredLeftwardSteeringForce
-    );
-    this.velocity.set(vehicleVelocity);
-    this.torque = steeringResult.angular.torque;
+    // this.seek();
 
     this.physicsBody.applyForce(this.steeringForce);
-    // this.physicsBody.setAngularVelocity(steeringResult.angularVelocity);
     this.physicsBody.applyTorque(this.torque);
   }
 
   // --------------- Protected methods ------------------
 
   // ! Throws exception on error.
-  protected arrive(vehicleVelocity: Vector): SteeringResult
+  protected arrive()
   {
+    const vehicleVelocity = this.physicsBody.getVelocity();
     const vehiclePosition = this.getPosition();
     const vehicleMass = this.physicsBody.getMass();
     const targetPosition = this.waypoint;
@@ -255,30 +196,26 @@ export class Vehicle
       desiredRotation = currentRotation;
     }
 
-    const result: SteeringResult =
-    {
-      linear: computeLinearForces
-      (
-        desiredVelocity,
-        vehicleVelocity,
-        vehicleRotation
-      ),
-      angular: computeAngularForces
-      (
-        desiredVelocity,
-        vehicleAngularVelocity,
-        vehicleInertia,
-        currentRotation,
-        desiredRotation
-      )
-    };
+    this.computeLinearForces
+    (
+      desiredVelocity,
+      vehicleVelocity,
+      vehicleRotation
+    );
 
-    return result;
+    this.computeAngularForces
+    (
+      vehicleAngularVelocity,
+      vehicleInertia,
+      currentRotation,
+      desiredRotation
+    );
   }
 
   // ! Throws exception on error.
-  protected seek(vehicleVelocity: Vector): SteeringResult
+  protected seek()
   {
+    const vehicleVelocity = this.physicsBody.getVelocity();
     const vehiclePosition = this.getPosition();
     const targetPosition = this.waypoint;
     const vehicleRotation = this.getRotation();
@@ -295,233 +232,221 @@ export class Vehicle
     // We need to fix that so we can correcly subtract angles.
     const currentRotation = normalizeAngle(vehicleRotation);
 
-    const result: SteeringResult =
-    {
-      linear: computeLinearForces
-      (
-        desiredVelocity,
-        vehicleVelocity,
-        vehicleRotation
-      ),
-      angular: computeAngularForces
-      (
-        desiredVelocity,
-        vehicleRotation,
-        vehicleAngularVelocity,
-        vehicleInertia,
-        currentRotation
-      )
-    };
+    this.computeLinearForces
+    (
+      desiredVelocity,
+      vehicleVelocity,
+      vehicleRotation
+    );
 
-    return result;
+    this.computeAngularForces
+    (
+      vehicleRotation,
+      vehicleAngularVelocity,
+      vehicleInertia,
+      currentRotation
+    );
   }
 
   // ---------------- Private methods -------------------
 
-  // tslint:disable-next-line:prefer-function-over-method
-  private getForwardThrust()
+  // ! Throws exception on error.
+  private computeLinearForces
+  (
+    desiredVelocity: Vector,
+    vehicleVelocity: Vector,
+    vehicleRotation: number,
+  )
   {
-    /// TODO
-    return 0;
+    // Rotation in Box2D can be negative or even greater than 2π.
+    // We need to fix that so we can correcly subtract angles.
+    const currentRotation = normalizeAngle(vehicleRotation);
+
+    // 3. 'steering force' = 'desired velocity' - 'current velocity'.
+    const desiredSteeringForce = Vector.v1MinusV2
+    (
+      desiredVelocity,
+      vehicleVelocity
+    );
+
+    // 3.5 Split desiredSteeringForce to it's Forward/Backward and
+    // Left/Right part.
+
+    // Math guide:
+    // https://math.oregonstate.edu/home/programs/undergrad/
+    //   CalculusQuestStudyGuides/vcalc/dotprod/dotprod.html
+
+    const leftwardRotation = normalizeAngle(currentRotation + Math.PI / 2);
+    const forwardUnitVector = Vector.rotate({ x: 1, y: 0 }, currentRotation);
+    const leftwardUnitVector = Vector.rotate({ x: 1, y: 0 }, leftwardRotation);
+
+    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
+    /// ale jednotkový, takže lomeno 1.
+    const desiredForwardComponentMagnitude = Vector.v1DotV2
+    (
+      desiredSteeringForce,
+      forwardUnitVector
+    );
+
+    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
+    /// ale jednotkový, takže lomeno 1.
+    const desiredLeftwardComponentMagnitude = Vector.v1DotV2
+    (
+      desiredSteeringForce,
+      leftwardUnitVector
+    );
+
+    const desiredForwardSteeringForce = Vector.scale
+    (
+      forwardUnitVector,
+      desiredForwardComponentMagnitude
+    );
+
+    const desiredLeftwardSteeringForce = Vector.scale
+    (
+      leftwardUnitVector,
+      desiredLeftwardComponentMagnitude
+    );
+
+    /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
+    /// a tímhle poměrem pak pronásobím desiredSteeringForce.
+    // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
+    let forwardLimitRatio = 1;
+    if (desiredForwardComponentMagnitude > FORWARD_THRUST)
+    {
+      forwardLimitRatio = FORWARD_THRUST / desiredForwardComponentMagnitude;
+    }
+    else if (desiredForwardComponentMagnitude < -BACKWARD_THRUST)
+    {
+      forwardLimitRatio = -BACKWARD_THRUST / desiredForwardComponentMagnitude;
+    }
+    let strafeLimitRatio = 1;
+    if (desiredLeftwardComponentMagnitude > STRAFE_THRUST)
+    {
+      strafeLimitRatio = STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+    }
+    else if (desiredLeftwardComponentMagnitude < -STRAFE_THRUST)
+    {
+      strafeLimitRatio = -STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+    }
+    const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
+    // console.log("------------------");
+    // console.log(forwardLimitRatio);
+    // console.log(strafeLimitRatio);
+    // console.log(steeringLimitRatio);
+    if (steeringLimitRatio < 0 || steeringLimitRatio > 1)
+      throw new Error(`Invalid steeringLimitRatio (${steeringLimitRatio})`);
+
+    const steeringForce = Vector.scale
+    (
+      desiredSteeringForce,
+      steeringLimitRatio
+    );
+    ///
+
+    // 4. Split steeringForce to it's Forward/Backward and Left/Right part.
+
+    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
+    /// ale jednotkový, takže lomeno 1.
+    this.forwardThrust = Vector.v1DotV2
+    (
+      desiredSteeringForce,
+      forwardUnitVector
+    );
+
+    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
+    /// ale jednotkový, takže lomeno 1.
+    this.leftwardThrust = Vector.v1DotV2
+    (
+      desiredSteeringForce,
+      leftwardUnitVector
+    );
+
+    this.desiredVelocity.set(desiredVelocity);
+    this.steeringForce.set(steeringForce);
+    this.desiredSteeringForce.set(desiredSteeringForce);
+    this.desiredForwardSteeringForce.set(desiredForwardSteeringForce);
+    this.desiredLeftwardSteeringForce.set(desiredLeftwardSteeringForce);
   }
 
-  // tslint:disable-next-line:prefer-function-over-method
-  private getLeftwardThrust()
+    // ! Throws exception on error.
+  private computeAngularForces
+  (
+    vehicleAngularVelocity: number,
+    vehicleInertia: number,
+    currentRotation: number,
+    desiredRotation: number
+  )
   {
-    /// TODO
-    return 0;
+    let desiredAngularVelocity = desiredRotation - currentRotation;
+
+    if (currentRotation < 0 || currentRotation > Math.PI * 2)
+      throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
+
+    if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
+      throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
+
+    // Make sure that we turn the shorter way.
+    if (desiredAngularVelocity > Math.PI)
+      desiredAngularVelocity -= Math.PI * 2;
+    if (desiredAngularVelocity < -Math.PI)
+      desiredAngularVelocity += Math.PI * 2;
+
+    // Limit to ANGULAR_VELOCITY.
+    const angularVelocity = intervalBound
+    (
+      desiredAngularVelocity,
+      { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
+    );
+
+    let torque = vehicleInertia * (angularVelocity - vehicleAngularVelocity);
+
+    // This prevents overturnign the desired angle
+    // (and it probably should be here according to Box2D example).
+    torque *= FPS;
+
+    torque = intervalBound(torque, { from: -TORQUE, to: TORQUE });
+
+    this.torque = torque;
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-// ! Throws exception on error.
-function computeLinearForces
-(
-  desiredVelocity: Vector,
-  vehicleVelocity: Vector,
-  vehicleRotation: number,
-)
-: LinearForces
+/*
+Backup kódu (z computeLinearForces()):
+  (varianta, kdy se desiredForce rozložila na forward a leftward
+  složku, ty se každá zvlášť ořezaly podle thrustu do příslušného
+  směru a výsledek se složil zpět)
 {
-  // Rotation in Box2D can be negative or even greater than 2π.
-  // We need to fix that so we can correcly subtract angles.
-  const currentRotation = normalizeAngle(vehicleRotation);
-
-  // 3. 'steering force' = 'desired velocity' - 'current velocity'.
-  const desiredSteeringForce = Vector.v1MinusV2
+  const forwardForceMagnitude = intervalBound
   (
-    desiredVelocity,
-    vehicleVelocity
+    desiredForwardComponentMagnitude,
+    { from: -BACKWARD_THRUST, to: FORWARD_THRUST }
   );
 
-  // 3.5 Split desiredSteeringForce to it's Forward/Barkward and
-  // Left/Right part.
-
-  // Math guide:
-  // https://math.oregonstate.edu/home/programs/undergrad/
-  //   CalculusQuestStudyGuides/vcalc/dotprod/dotprod.html
-
-  const leftwardRotation = normalizeAngle(currentRotation + Math.PI / 2);
-  const forwardUnitVector = Vector.rotate({ x: 1, y: 0 }, currentRotation);
-  const leftwardUnitVector = Vector.rotate({ x: 1, y: 0 }, leftwardRotation);
-
-  /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
-  /// ale jednotkový, takže lomeno 1.
-  const desiredForwardComponentMagnitude = Vector.v1DotV2
+  const leftwardForceMagnitude = intervalBound
   (
-    desiredSteeringForce,
-    forwardUnitVector
+    desiredLeftwardComponentMagnitude,
+    { from: -STRAFE_THRUST, to: STRAFE_THRUST }
   );
 
-  /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
-  /// ale jednotkový, takže lomeno 1.
-  const desiredLeftwardComponentMagnitude = Vector.v1DotV2
-  (
-    desiredSteeringForce,
-    leftwardUnitVector
-  );
-
-  const desiredForwardSteeringForce = Vector.scale
+  const forwardSteeringForce = Vector.scale
   (
     forwardUnitVector,
-    desiredForwardComponentMagnitude
+    forwardForceMagnitude
   );
 
-  const desiredLeftwardSteeringForce = Vector.scale
+  const leftwardSteeringForce = Vector.scale
   (
     leftwardUnitVector,
-    desiredLeftwardComponentMagnitude
+    leftwardForceMagnitude
   );
 
-  /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
-  /// a tímhle poměrem pak pronásobím desiredSteeringForce.
-  // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
-  let forwardLimitRatio = 1;
-  if (desiredForwardComponentMagnitude > FORWARD_THRUST)
-  {
-    forwardLimitRatio = FORWARD_THRUST / desiredForwardComponentMagnitude;
-  }
-  else if (desiredForwardComponentMagnitude < -BACKWARD_THRUST)
-  {
-    forwardLimitRatio = -BACKWARD_THRUST / desiredForwardComponentMagnitude;
-  }
-  let strafeLimitRatio = 1;
-  if (desiredLeftwardComponentMagnitude > STRAFE_THRUST)
-  {
-    strafeLimitRatio = STRAFE_THRUST / desiredLeftwardComponentMagnitude;
-  }
-  else if (desiredLeftwardComponentMagnitude < -STRAFE_THRUST)
-  {
-    strafeLimitRatio = -STRAFE_THRUST / desiredLeftwardComponentMagnitude;
-  }
-  const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
-  // console.log("------------------");
-  // console.log(forwardLimitRatio);
-  // console.log(strafeLimitRatio);
-  // console.log(steeringLimitRatio);
-  if (steeringLimitRatio < 0 || steeringLimitRatio > 1)
-    throw new Error(`Invalid steeringLimitRatio (${steeringLimitRatio})`);
-  ///
-
-  // const forwardForceMagnitude = intervalBound
-  // (
-  //   desiredForwardComponentMagnitude,
-  //   { from: -BACKWARD_THRUST, to: FORWARD_THRUST }
-  // );
-
-  // const leftwardForceMagnitude = intervalBound
-  // (
-  //   desiredLeftwardComponentMagnitude,
-  //   { from: -STRAFE_THRUST, to: STRAFE_THRUST }
-  // );
-
-  // const forwardSteeringForce = Vector.scale
-  // (
-  //   forwardUnitVector,
-  //   forwardForceMagnitude
-  // );
-
-  // const leftwardSteeringForce = Vector.scale
-  // (
-  //   leftwardUnitVector,
-  //   leftwardForceMagnitude
-  // );
-
-  /// Původně (nezávislý limit na forward a leftward složky).
-  // const steeringForce = new Vector(forwardSteeringForce);
-  // const steeringForce = Vector.v1PlusV2
-  // (
-  //   forwardSteeringForce,
-  //   leftwardSteeringForce
-  // );
-  /// Nově:
-  const steeringForce = Vector.scale
+  const steeringForce = Vector.v1PlusV2
   (
-    desiredSteeringForce,
-    steeringLimitRatio
+    forwardSteeringForce,
+    leftwardSteeringForce
   );
-  ///
-
-  const result =
-  {
-    steeringForce,
-    desiredVelocity,
-    desiredSteeringForce,
-    desiredForwardSteeringForce,
-    desiredLeftwardSteeringForce
-  };
-
-  return result;
 }
-
-// ! Throws exception on error.
-function computeAngularForces
-(
-  desiredVelocity: Vector,
-  vehicleAngularVelocity: number,
-  vehicleInertia: number,
-  currentRotation: number,
-  desiredRotation: number
-)
-: AngularForces
-{
-  let desiredAngularVelocity = desiredRotation - currentRotation;
-
-  if (currentRotation < 0 || currentRotation > Math.PI * 2)
-    throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
-
-  if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
-    throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
-
-  // Make sure that we turn the shorter way.
-  if (desiredAngularVelocity > Math.PI)
-    desiredAngularVelocity -= Math.PI * 2;
-  if (desiredAngularVelocity < -Math.PI)
-    desiredAngularVelocity += Math.PI * 2;
-
-  // // Limit to ANGULAR_VELOCITY.
-  // const angularVelocity = intervalBound
-  // (
-  //   // Apply the angular acceleration first.
-  //   desiredAngularVelocity * ANGULAR_ACCELERATION,
-  //   { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
-  // );
-
-  // Limit to ANGULAR_VELOCITY.
-  const angularVelocity = intervalBound
-  (
-    desiredAngularVelocity,
-    { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
-  );
-
-  let torque = vehicleInertia * (angularVelocity - vehicleAngularVelocity);
-
-  // This prevents overturnign the desired angle
-  // (and it probably should be here according to Box2D example).
-  torque *= FPS;
-
-  torque = intervalBound(torque, { from: -TORQUE, to: TORQUE });
-
-  return { torque };
-}
+*/

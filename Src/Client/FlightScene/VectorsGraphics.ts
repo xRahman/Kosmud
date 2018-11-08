@@ -51,7 +51,7 @@ export class VectorGraphics
     this.graphics.drawVector
     (
       vectors.desiredLeftwardSteeringForce,
-      origin, 1, Graphics.rgb(60, 60, 0), 1
+      origin, 1, Graphics.rgb(110, 110, 0), 1
     );
 
     this.graphics.drawVector
