@@ -8,10 +8,6 @@ Dnešní TODO:
 - Posílat na klienta thrusty a torque
 - Scalovat je a zapínat/vypínat podle thrustů a torque
 
-TODO: Fixnout errory v konzoli na klientu
-  "Texture.frame missing: 1"
-  "Invalid Animation Key, or Key already in use: animation_exhausts_00"
-
 TODO: Zdědit Ship ze Steering (tedy z Vehicle),
   ať nemusím do steeringových funkcí předávat takový stohy parametrů.
 
@@ -134,6 +130,10 @@ TODO: Odchytávání výjimek ze Steeringu.
 
 
 // IDEA: Se shiftem loď strafuje/couvá.
+
+
+TODO: Místo Phaser.Scene všude předávat Scene
+  (což je z ní beztak zděděné, ale je to můj interní typ).
 
 
 

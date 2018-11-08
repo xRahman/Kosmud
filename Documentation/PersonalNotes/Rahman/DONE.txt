@@ -1,3 +1,8 @@
+TODO: Fixnout errory v konzoli na klientu
+  "Texture.frame missing: 1"
+  "Invalid Animation Key, or Key already in use: animation_exhausts_00"
+[done]
+
 TODO: "Skákající animace": Možná je to buglé:
   https://github.com/photonstorm/phaser/issues/3288
 - tak je to tím, že je v texture packeru povolená rotation

@@ -108,106 +108,71 @@ function createShipSprite(scene: Phaser.Scene, container: Container)
   return shipSprite;
 }
 
-function createExhaustSprites(scene: Phaser.Scene, container: Container)
+function createExhaustSprite
+(
+  animationNumber: string,
+  x: number,
+  y: number,
+  rotation: number,
+  scene: Phaser.Scene,
+  container: Container
+)
 {
-  const ANIMATION_NAME = "animation_exhausts_00";
   const texture = TEXTURE_EXHAUSTS_00;
 
   const animation: Sprite.Animation =
   {
-    name: ANIMATION_NAME,
+    name: `animation_exhausts_${animationNumber}`,
     // Path inside a texture atlas.
     pathInTextureAtlas: "ExhaustYellowRectangular/",
     numberOfFrames: 8,
     frameRate: 25
   };
 
+  return new Sprite
+  (
+    scene,
+    { x, y },
+    rotation,
+    texture,
+    { animation, container }
+  );
+}
+
+function createExhaustSprites(scene: Phaser.Scene, container: Container)
+{
   const exhaustSprites: ExhaustSprites =
   {
     front:
     [
-      new Sprite
-      (
-        scene,
-        { x: 120, y: -65 },
-        -Math.PI / 2,
-        texture,
-        { animation, container }
-      ),
-      new Sprite
-      (
-        scene,
-        { x: 120, y: 65 },
-        -Math.PI / 2,
-        texture,
-        { animation, container }
-      ),
+      createExhaustSprite("0", 120, -65, -Math.PI / 2, scene, container),
+      createExhaustSprite("1", 120, 65, -Math.PI / 2, scene, container)
     ],
     frontLeft:
     [
-      new Sprite
-      (
-        scene,
-        { x: 100, y: -67},
-        Math.PI,
-        texture,
-        { animation, container }
-      ),
+      createExhaustSprite("2", 100, -67, Math.PI, scene, container)
     ],
     backLeft:
     [
-      new Sprite
-      (
-        scene,
-        { x: -95, y: -120},
-        Math.PI,
-        texture,
-        { animation, container }
-      ),
+      createExhaustSprite("3", -95, -120, Math.PI, scene, container)
     ],
     frontRight:
     [
-      new Sprite
-      (
-        scene,
-        { x: 100, y: 67},
-        0,
-        texture,
-        { animation, container }
-      ),
+      createExhaustSprite("4", 100, 67, 0, scene, container)
     ],
     backRight:
     [
-      new Sprite
-      (
-        scene,
-        { x: -95, y: 120},
-        0,
-        texture,
-        { animation, container }
-      ),
+      createExhaustSprite("5", -95, 120, 0, scene, container)
     ],
     rear:
     [
-      new Sprite
-      (
-        scene,
-        { x: -190, y: -50},
-        Math.PI / 2,
-        texture,
-        { animation, container }
-      ),
-      new Sprite
-      (
-        scene,
-        { x: -190, y: 50},
-        Math.PI / 2,
-        texture,
-        { animation, container }
-      ),
+      createExhaustSprite("6", -190, -50, Math.PI / 2, scene, container),
+      createExhaustSprite("7", -190, 50, Math.PI / 2, scene, container)
     ]
   };
 
+  // TODO: Tohle hodit rovnou jako parametr createExhaustSprite()
+  // (beztak to budu muset nějak vymyslet s prodlužováním exhaustu).
   for (const sprite of exhaustSprites.rear)
   {
     sprite.setScale(2);

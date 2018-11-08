@@ -29,12 +29,7 @@ export class Sprite extends PhaserObject
 
     if (animation !== undefined)
     {
-      const INITIAL_FRAME = 1;
-
-      this.phaserObject = createSprite
-      (
-        scene, position, rotation, textureId, INITIAL_FRAME
-      );
+      this.phaserObject = createSprite(scene, position, rotation, textureId);
 
       createAnimation(scene, textureId, animation);
 
@@ -85,16 +80,14 @@ function createSprite
   scene: Phaser.Scene,
   position: { x: number; y: number },
   rotation: number,
-  textureId: string,
-  initialFrame?: number
+  textureId: string
 )
 {
   const sprite = scene.add.sprite
   (
     position.x,
     position.y,
-    textureId,
-    initialFrame
+    textureId
   );
 
   sprite.setRotation(rotation);

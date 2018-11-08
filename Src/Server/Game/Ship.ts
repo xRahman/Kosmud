@@ -46,16 +46,19 @@ export class Ship extends Shared.Ship
   }
   public getVelocity() { return this.velocity; }
 
+  // tslint:disable-next-line:prefer-function-over-method
   public getForwardThrustRatio()
   {
     /// TODO.
     return 0;
   }
+  // tslint:disable-next-line:prefer-function-over-method
   public getLeftwardThrustRatio()
   {
     /// TODO.
     return 0;
   }
+  // tslint:disable-next-line:prefer-function-over-method
   public getTorqueRatio()
   {
     /// TODO.
