@@ -124,64 +124,27 @@ export class Vehicle
   // ! Throws exception on error.
   protected arrive()
   {
-    const vehicleVelocity = this.physicsBody.getVelocity();
     const vehiclePosition = this.getPosition();
-    const vehicleMass = this.physicsBody.getMass();
     const targetPosition = this.waypoint;
+    const oldVelocity = this.physicsBody.getVelocity();
     const vehicleRotation = this.physicsBody.getRotation();
-    const vehicleAngularVelocity = this.physicsBody.getAngularVelocity();
-    const vehicleInertia = this.physicsBody.getInertia();
 
-    // 1. Calculate breaking distance.
-    // d = (1/2 * m * v^2) / Force;
-    const v = vehicleVelocity.length();
-    const brakingDistance = STOPPING_DISTANCE
-      + (vehicleMass * v * v) / (BACKWARD_THRUST * 2);
+    const targetVector = Vector.v1MinusV2(targetPosition, vehiclePosition);
+    const distance = targetVector.length();
 
-    // 1. 'desired velocity' = 'target position' - 'vehicle position'.
-    const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
-    const distance = desiredVelocity.length();
+    const desiredVelocity = this.computeArriveDesiredVelocity
+    (
+      targetVector,
+      oldVelocity,
+      distance
+    );
 
-    if (distance > brakingDistance)
-    {
-      // 2. Scale 'desired velocity' to maximum speed.
-      desiredVelocity.setLength(MAX_SPEED);
-    }
-    else if (distance > STOPPING_DISTANCE)
-    {
-      // console.log("braking...");
-
-      // Graduální zpomalování je hezké, ale asi blbě - zabrzdit chci
-      // co nejrychlejš, ne pozvolně.
-      /// - Možná bych to ale mohl zas udělat nějak tak, že úplně na konci
-      /// se dobrzdí pozvolně.
-      // if (brakingDistance <= Number.EPSILON)
-      //   desiredVelocity.setLength(0);
-      // else
-      //   desiredVelocity.setLength(MAX_SPEED * distance / brakingDistance);
-
-      /// Shodit velocity úplně na 0 asi není dobrej nápad, protože tím přijdu
-      /// o směr.
-      // desiredVelocity.setLength(Number.EPSILON);
-      desiredVelocity.setLength(STOPPING_SPEED);
-    }
-    else
-    {
-      // console.log("stopping...");
-
-      // Na posledních 10 metrech gradual approach.
-      if (brakingDistance <= 1)
-      {
-        desiredVelocity.setLength(0);
-      }
-      else
-      {
-        desiredVelocity.setLength
-        (
-          STOPPING_SPEED * distance / STOPPING_DISTANCE
-        );
-      }
-    }
+    this.computeLinearForces
+    (
+      desiredVelocity,
+      oldVelocity,
+      vehicleRotation
+    );
 
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
@@ -196,20 +159,7 @@ export class Vehicle
       desiredRotation = currentRotation;
     }
 
-    this.computeLinearForces
-    (
-      desiredVelocity,
-      vehicleVelocity,
-      vehicleRotation
-    );
-
-    this.computeAngularForces
-    (
-      vehicleAngularVelocity,
-      vehicleInertia,
-      currentRotation,
-      desiredRotation
-    );
+    this.computeAngularForces(currentRotation, desiredRotation);
   }
 
   // ! Throws exception on error.
@@ -219,18 +169,12 @@ export class Vehicle
     const vehiclePosition = this.getPosition();
     const targetPosition = this.waypoint;
     const vehicleRotation = this.getRotation();
-    const vehicleAngularVelocity = this.physicsBody.getAngularVelocity();
-    const vehicleInertia = this.physicsBody.getInertia();
 
     // 1. 'desired velocity' = 'target position' - 'vehicle position'.
     const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
 
     // 2. Scale 'desired velocity' to maximum speed.
     desiredVelocity.setLength(MAX_SPEED);
-
-    // Rotation in Box2D can be negative or even greater than 2π.
-    // We need to fix that so we can correcly subtract angles.
-    const currentRotation = normalizeAngle(vehicleRotation);
 
     this.computeLinearForces
     (
@@ -239,16 +183,88 @@ export class Vehicle
       vehicleRotation
     );
 
-    this.computeAngularForces
-    (
-      vehicleRotation,
-      vehicleAngularVelocity,
-      vehicleInertia,
-      currentRotation
-    );
+    // Rotation in Box2D can be negative or even greater than 2π.
+    // We need to fix that so we can correcly subtract angles.
+    const currentRotation = normalizeAngle(vehicleRotation);
+    const desiredRotation = desiredVelocity.getRotation();
+
+    this.computeAngularForces(currentRotation, desiredRotation);
   }
 
   // ---------------- Private methods -------------------
+
+  private computeArriveDesiredVelocity
+  (
+    targetVector: Vector,
+    oldVelocity: Vector,
+    distance: number
+  )
+  {
+    const brakingDistance = this.computeBrakingDistance(oldVelocity);
+    const desiredVelocity = new Vector(targetVector);
+
+    if (distance > brakingDistance)
+    {
+      // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
+      desiredVelocity.setLength(MAX_SPEED);
+    }
+    else if (distance > STOPPING_DISTANCE)
+    {
+      // Break almost to zero velocity
+      // (zero velocity is not a good idea because zero vector
+      //  has undefined direction).
+      desiredVelocity.setLength(STOPPING_SPEED);
+    }
+    else
+    {
+      // console.log("stopping...");
+
+      if (brakingDistance <= 1)
+      {
+        desiredVelocity.setLength(0);
+      }
+      else
+      {
+        // Use gradual approach at STOPPING_DISTANCE.
+        desiredVelocity.setLength
+        (
+          STOPPING_SPEED * distance / STOPPING_DISTANCE
+        );
+      }
+    }
+
+    return desiredVelocity;
+  }
+
+  private updateForwardThrust
+  (
+    steeringForce: Vector,
+    forwardUnitVector: Vector
+  )
+  {
+    // The formula includes division by magnitude of vector we are projecting
+    // into - but that is a unit vector so we don't have to do that.
+    this.forwardThrust = Vector.v1DotV2
+    (
+      steeringForce,
+      forwardUnitVector
+    );
+  }
+
+  private updateLeftwardThrust
+  (
+    steeringForce: Vector,
+    leftwardUnitVector: Vector
+  )
+  {
+    // The formula includes division by magnitude of vector we are projecting
+    // into - but that is a unit vector so we don't have to do that.
+    this.leftwardThrust = Vector.v1DotV2
+    (
+      steeringForce,
+      leftwardUnitVector
+    );
+  }
 
   // ! Throws exception on error.
   private computeLinearForces
@@ -330,10 +346,7 @@ export class Vehicle
       strafeLimitRatio = -STRAFE_THRUST / desiredLeftwardComponentMagnitude;
     }
     const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
-    // console.log("------------------");
-    // console.log(forwardLimitRatio);
-    // console.log(strafeLimitRatio);
-    // console.log(steeringLimitRatio);
+
     if (steeringLimitRatio < 0 || steeringLimitRatio > 1)
       throw new Error(`Invalid steeringLimitRatio (${steeringLimitRatio})`);
 
@@ -342,25 +355,9 @@ export class Vehicle
       desiredSteeringForce,
       steeringLimitRatio
     );
-    ///
 
-    // 4. Split steeringForce to it's Forward/Backward and Left/Right part.
-
-    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
-    /// ale jednotkový, takže lomeno 1.
-    this.forwardThrust = Vector.v1DotV2
-    (
-      desiredSteeringForce,
-      forwardUnitVector
-    );
-
-    /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
-    /// ale jednotkový, takže lomeno 1.
-    this.leftwardThrust = Vector.v1DotV2
-    (
-      desiredSteeringForce,
-      leftwardUnitVector
-    );
+    this.updateForwardThrust(steeringForce, forwardUnitVector);
+    this.updateLeftwardThrust(steeringForce, leftwardUnitVector);
 
     this.desiredVelocity.set(desiredVelocity);
     this.steeringForce.set(steeringForce);
@@ -372,13 +369,11 @@ export class Vehicle
     // ! Throws exception on error.
   private computeAngularForces
   (
-    vehicleAngularVelocity: number,
-    vehicleInertia: number,
     currentRotation: number,
     desiredRotation: number
   )
   {
-    let desiredAngularVelocity = desiredRotation - currentRotation;
+    const oldAngularVelocity = this.physicsBody.getAngularVelocity();
 
     if (currentRotation < 0 || currentRotation > Math.PI * 2)
       throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
@@ -386,32 +381,57 @@ export class Vehicle
     if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
       throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
 
-    // Make sure that we turn the shorter way.
-    if (desiredAngularVelocity > Math.PI)
-      desiredAngularVelocity -= Math.PI * 2;
-    if (desiredAngularVelocity < -Math.PI)
-      desiredAngularVelocity += Math.PI * 2;
+    const inertia = this.physicsBody.getInertia();
 
-    // Limit to ANGULAR_VELOCITY.
-    const angularVelocity = intervalBound
+    const desiredAngularVelocity = computeDesiredAngularVelocity
+    (
+      desiredRotation, currentRotation
+    );
+
+    const newAngularVelocity = intervalBound
     (
       desiredAngularVelocity,
       { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
     );
 
-    let torque = vehicleInertia * (angularVelocity - vehicleAngularVelocity);
-
-    // This prevents overturnign the desired angle
-    // (and it probably should be here according to Box2D example).
-    torque *= FPS;
+    // Multiplication by 'FPS' prevents overturning the desired angle
+    // (as suggested by Box2D example).
+    let torque = inertia * (newAngularVelocity - oldAngularVelocity) * FPS;
 
     torque = intervalBound(torque, { from: -TORQUE, to: TORQUE });
 
     this.torque = torque;
   }
+
+  private computeBrakingDistance(velocity: Vector)
+  {
+    const mass = this.physicsBody.getMass();
+    const v = velocity.length();
+
+    // d = (1/2 * mass * v^2) / Force;
+    return STOPPING_DISTANCE + (mass * v * v) / (BACKWARD_THRUST * 2);
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+function computeDesiredAngularVelocity
+(
+  desiredRotation: number,
+  currentRotation: number
+)
+: number
+{
+  let desiredAngularVelocity = desiredRotation - currentRotation;
+
+  // Make sure that we turn the shorter way.
+  if (desiredAngularVelocity > Math.PI)
+    desiredAngularVelocity -= Math.PI * 2;
+  if (desiredAngularVelocity < -Math.PI)
+    desiredAngularVelocity += Math.PI * 2;
+
+  return desiredAngularVelocity;
+}
 
 /*
 Backup kódu (z computeLinearForces()):
