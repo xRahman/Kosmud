@@ -8,68 +8,15 @@
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 
 // 3rd party modules.
-import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
-         b2FixtureDef } from "../../Shared/Box2D/Box2D";
+// import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
+//          b2FixtureDef } from "../../Shared/Box2D/Box2D";
 
-export class Physics
+export namespace Physics
 {
-  /// Výhledově bude světů víc (pro různé zóny/scény)
-  public world = new PhysicsWorld();
-
-  // constructor()
-  // {
-  //   /// Test.
-  //   const gravity = new b2Vec2(0, 0);
-
-  //   let world = new b2World(gravity);
-  // }
-
-  // constructor()
-  // {
-  //   this.engine = Matter.Engine.create();
-  //   this.disableGravity();
-  // }
-
-  // private engine: Matter.Engine;
-
-  public tick(miliseconds: number)
+  /// Výhledově nejspíš bude physics worldů víc,
+  /// takže si tu zatím to provolávání nechám.
+  export function tick(miliseconds: number)
   {
-    this.world.tick(miliseconds);
-    // Matter.Engine.update(this.engine, miliseconds);
+    PhysicsWorld.tick(miliseconds);
   }
-
-  /// Tohle má dělat world.
-  // public createBody(x: number, y: number): PhysicsBody
-  // {
-  //   // /// Prozatím natvrdo čtverec.
-  //   // return new PhysicsBody(this.createSquareBody(x, y, 100));
-  //   return new PhysicsBody();
-  // }
-
-  // /// Only squares atm.
-  // private createSquareBody(x: number, y: number, size: number)
-  // {
-  //   let squareBody = Matter.Bodies.rectangle
-  //   (
-  //     x,
-  //     y,
-  //     size,
-  //     size,
-  //     {
-  //       // Nonzero friction would mean that object would slow down
-  //       // to stop after velocity is set to it.
-  //       frictionAir: 0
-  //     }
-  //   );
-
-  //   // Add 'squareBody' to physics world.
-  //   Matter.World.add(this.engine.world, [ squareBody ]);
-
-  //   return squareBody;
-  // }
-
-  // private disableGravity()
-  // {
-  //   this.engine.world.gravity.y = 0;
-  // }
 }

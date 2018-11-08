@@ -75,6 +75,8 @@ Možná zrušit Graphics a nahradit to rovnou podadresářema (Textures, atp?)
 
 To samé v RawData (tj. /Textures/...)
 
+TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
+
 
 TODO: Export/import animation to/from json.
 https://phaser.io/phaser3/devlog/76

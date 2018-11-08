@@ -12,12 +12,10 @@ import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 
 const GAME_TICK_MILISECONDS = 1000 / 60;
 
-const physics = new Physics();
-
 export namespace Game
 {
   /// Test:
-  export let ship = new Ship(physics.world.createBody());
+  export let ship = new Ship();
 
   export function startLoop()
   {
@@ -61,7 +59,7 @@ function tick(tickDuration: number)
 function updatePhysics(tickDuration: number)
 {
   updateVelocity();
-  physics.tick(tickDuration);
+  Physics.tick(tickDuration);
 }
 
 function updateClients()

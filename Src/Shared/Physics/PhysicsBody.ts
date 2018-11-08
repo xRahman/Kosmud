@@ -5,6 +5,7 @@
 */
 
 import { validateNumber, validateVector } from "../../Shared/Utils/Math";
+import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Vector } from "../../Shared/Physics/Vector";
 
 // 3rd party modules.
@@ -14,19 +15,33 @@ import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
 export class PhysicsBody
 {
   private velocity = 0;
+  private readonly body: b2Body;
 
-  constructor
-  (
-    private readonly body: b2Body
-    // private world: PhysicsWorld,
-    // config: PhysicsBody.Config
-  )
+  constructor(world: b2World)
   {
     const bodyDefinition = new b2BodyDef();
 
     bodyDefinition.position.Set(0, 0);
+    bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
-    // this.body = this.world.createBody(bodyDefinition);
+    this.body = world.CreateBody(bodyDefinition);
+
+    const shape = new b2PolygonShape();
+
+    /// Zatím natvrdo.
+    shape.SetAsBox(100, 100);
+
+    const fixtureDefinition = new b2FixtureDef();
+
+    fixtureDefinition.shape = shape;
+    // density * area = mass
+    fixtureDefinition.density = 0.00001;
+    // 0 - no friction, 1 - maximum friction
+    fixtureDefinition.friction = 0.5;
+    // 0 - almost no bouncing, 1 - maximum bouncing.
+    fixtureDefinition.restitution = 1;
+
+    this.body.CreateFixture(fixtureDefinition);
   }
 
   public getPosition()
