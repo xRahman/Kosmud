@@ -58,6 +58,16 @@ export class Sprite extends PhaserObject
   {
     this.phaserObject.setScale(scale);
   }
+
+  public setScaleX(scale: number)
+  {
+    this.phaserObject.scaleX = scale;
+  }
+
+  public setScaleY(scale: number)
+  {
+    this.phaserObject.scaleY = scale;
+  }
 }
 
 // ------------------ Type Declarations ----------------------

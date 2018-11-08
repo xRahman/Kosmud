@@ -1,5 +1,6 @@
 Dnešní TODO:
 - Posílat na klienta thrusty a torque
+  [done]
 - Scalovat je a zapínat/vypínat podle thrustů a torque
 
 Priority:
@@ -26,21 +27,20 @@ TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 Ad 2:
 -----
 
-  
-
-TODO: posílat aktuální thrusty
-  (asi stačí číslama, není nutný posílat vektory).
-- implementovat getForwardThrustRatio(),
-  getLeftwardThrustRatio(),
-  getTorqueRatio()
-  [done]
-- 
+TODO: Nastavovat scale a visibility exhaustů podle thrustu/torque.
 
 Ad 4:
 ------
 TODO: načíst výstup z Tiled editoru.
 - na serveru do fyziky, na klientu do grafiky
 
+
+
+TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
+
+
+TODO: Steering by se možná choval líp, kdyby se prostě loď nejdřív otočila
+  do požadovaného směru a pak se aplikoval jen forward/backward thrust.
 
 
 TODO: Refactoriiiing!

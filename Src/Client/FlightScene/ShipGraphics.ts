@@ -1,3 +1,4 @@
+import { lowerBound } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Phaser/Sprite";
 import { Container } from "../../Client/Phaser/Container";
@@ -84,6 +85,48 @@ export class ShipGraphics
   public drawVectors(vectors: Ship.Vectors)
   {
     this.vectors.draw(vectors);
+  }
+
+  public updateExhausts
+  (
+    forwardThrustRatio: number,
+    leftwardThrustRatio: number,
+    torqueRatio: number
+  )
+  {
+    const frontExhaustsScale = lowerBound(-forwardThrustRatio, 0);
+    for (const sprite of this.exhaustSprites.front)
+      sprite.setScaleY(frontExhaustsScale);
+
+    let rearExhaustsScale = lowerBound(forwardThrustRatio, 0.05);
+    rearExhaustsScale *= 2;
+    for (const sprite of this.exhaustSprites.rear)
+      sprite.setScaleY(rearExhaustsScale);
+
+    // The idea is that side thrusters get 50% of their length from
+    // left-right thrust and another 50% from torque thrust
+    // (it's probably not matematically correct but it's for display
+    //  purposes only).
+
+    let frontLeftExhaustScale = lowerBound(leftwardThrustRatio / 2, 0);
+    frontLeftExhaustScale += lowerBound(-torqueRatio / 2, 0);
+    for (const sprite of this.exhaustSprites.frontLeft)
+      sprite.setScaleY(frontLeftExhaustScale);
+
+    let frontRightExhaustScale = lowerBound(-leftwardThrustRatio / 2, 0);
+    frontRightExhaustScale += lowerBound(torqueRatio / 2, 0);
+    for (const sprite of this.exhaustSprites.frontRight)
+      sprite.setScaleY(frontRightExhaustScale);
+
+    let backLeftExhaustScale = lowerBound(leftwardThrustRatio / 2, 0);
+    backLeftExhaustScale += lowerBound(torqueRatio / 2, 0);
+    for (const sprite of this.exhaustSprites.backLeft)
+      sprite.setScaleY(backLeftExhaustScale);
+
+    let backRightExhaustScale = lowerBound(-leftwardThrustRatio / 2, 0);
+    backRightExhaustScale += lowerBound(-torqueRatio / 2, 0);
+    for (const sprite of this.exhaustSprites.backRight)
+      sprite.setScaleY(backRightExhaustScale);
   }
 }
 

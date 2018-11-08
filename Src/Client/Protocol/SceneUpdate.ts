@@ -26,6 +26,13 @@ export class SceneUpdate extends Shared.SceneUpdate
       ship.setRotation(this.shipRotation);
 
       ship.setVectors(this);
+
+      ship.updateExhausts
+      (
+        this.forwardThrustRatio,
+        this.leftwardThrustRatio,
+        this.torqueRatio
+      );
     }
   }
 }

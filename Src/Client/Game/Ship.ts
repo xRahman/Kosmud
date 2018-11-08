@@ -79,6 +79,21 @@ export class Ship
 
     this.graphics.drawVectors(this.vectors);
   }
+
+  public updateExhausts
+  (
+    forwardThrustRatio: number,
+    leftwardThrustRatio: number,
+    torqueRatio: number
+  )
+  {
+    this.graphics.updateExhausts
+    (
+      forwardThrustRatio,
+      leftwardThrustRatio,
+      torqueRatio
+    );
+  }
 }
 
 // ------------------ Type Declarations ----------------------

@@ -1,3 +1,10 @@
+TODO: posílat aktuální thrusty
+  (asi stačí číslama, není nutný posílat vektory).
+- implementovat getForwardThrustRatio(),
+  getLeftwardThrustRatio(),
+  getTorqueRatio()
+[done]
+
 TODO: Arrive
 - ještě správně počítat breaking distance.
 TODO: Breaking distance se nepočítá spávně.
