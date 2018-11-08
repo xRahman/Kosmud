@@ -16,10 +16,6 @@ Priority:
 7) Anchor pointy (pro exhausty, časem pro zbraně).
 
 
-TODO: Přejmenovat adresáře v /Client (na PascalCase).
-- Huh, v práci začíná všechno velkým.
-- v práci je to každopádně dobře, ještě to checknout doma.
-
 
 TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 

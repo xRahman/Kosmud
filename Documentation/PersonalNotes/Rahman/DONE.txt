@@ -1,3 +1,8 @@
+TODO: Přejmenovat adresáře v /Client (na PascalCase).
+- Huh, v práci začíná všechno velkým.
+- v práci je to každopádně dobře, ještě to checknout doma.
+[done]
+
 TODO: posílat aktuální thrusty
   (asi stačí číslama, není nutný posílat vektory).
 - implementovat getForwardThrustRatio(),

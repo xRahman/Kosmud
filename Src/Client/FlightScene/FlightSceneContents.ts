@@ -28,6 +28,9 @@ export class FlightSceneContents extends SceneContents
 
   public static preload(scene: FlightScene)
   {
+    scene.load.audio("Sound_ShipEngine1", "Sound/Ship/Engine/ShipEngine1.mp3");
+    scene.load.audio("Sound_ShipEngine2", "Sound/Ship/Engine/ShipEngine2.mp3");
+
     Background.preload(scene);
     ShipGraphics.preload(scene);
     Waypoint.preload(scene);
@@ -41,42 +44,21 @@ export class FlightSceneContents extends SceneContents
     this.ship = ship;
   }
 
-  // // tslint:disable-next-line:prefer-function-over-method
-  // public create(scene: FlightScene)
-  // {
-  //   const exhaust = scene.add.sprite
-  //   (
-  //     /// Souřadnice jsou invertovaný, protože nepoužívám wrapper object,
-  //     /// kterej by je přeložil.
-  //     200,
-  //     0,
-  //     "Exhausts00",
-  //     // "EngineExhausts/ExhaustYellowRectangular/001.png"
-  //     "ExhaustYellowRectangular/001.png"
-  //   );
+  // tslint:disable-next-line:prefer-function-over-method
+  public create(scene: FlightScene)
+  {
+    // const engineSound1 = scene.sound.add("Sound_ShipEngine1");
+    // const engineSound2 = scene.sound.add("Sound_ShipEngine2");
+    const engineSound = scene.sound.add("Sound_ShipEngine2");
 
-  //   const frameNames = scene.anims.generateFrameNames
-  //   (
-  //     "Exhausts00",
-  //     {
-  //       start: 1, end: 8, zeroPad: 3,
-  //       prefix: "ExhaustYellowRectangular/", suffix: ".png"
-  //     }
-  //   );
-
-  //   scene.anims.create
-  //   (
-  //     {
-  //       key: "animation_exhausts00",
-  //       frames: frameNames,
-  //       // frameRate: 10,
-  //       frameRate: 25,
-  //       repeat: -1
-  //     }
-  //   );
-
-  //   exhaust.anims.play("animation_exhausts00");
-  // }
+    // engineSound1.play("", { loop: true });
+    engineSound.play("", { loop: true, volume: 1 });
+    if ("volume" in engineSound)
+    {
+      // tslint:disable-next-line:no-string-literal
+      (engineSound as any)["volume"] = 0.05;
+    }
+  }
 
   public update()
   {
