@@ -1,3 +1,78 @@
+TODO: Arrive
+- ještě správně počítat breaking distance.
+TODO: Breaking distance se nepočítá spávně.
+TODO: Asi budu ji budu muset posílat na klient a zobrazovat.
+(jakž takž)
+[done]
+
+IDEA: Určit na tvrdo nějakou malou vzdálenost (10 třeba).
+- před ní bude desired speed dejme tomu 10% aktuální.
+- za ní bude gradual slowdown.
+Skoro!
+- ještě asi přidat, že když jsem fakt blízko cíli, tak se nebudu točit jak
+  čamrda.
+Bude to chtít hódně refactoringu, ale snad to funguje.
+[done]
+
+TODO: Jak pojmenovávat texture atlasy?
+- mám několik efektů v jenom atlasu
+- Adresář v TexturePackeru by se asi měl jmenovat stejně jako výsledný atlas
+  (tj. Exhausts00).
+  - což je vlastně vstupní adresář.
+- Zjevně potřebuju nějakej adresář na "raw data". Možná SrcData?
+  - raději RawData, ať se to nebije se /Src
+- Kam patří tps file? (Texture packer project?)
+  - Taky do RawData. Možná přímo do Textures - vždycky tam, kde je adresář,
+    ze kterého je atlas udělanej.
+  Tzn.:
+  /RawData/Textures/Effects/Exhausts/Exhausts00.tps
+  /RawData/Textures/Effects/Exhausts/Exhausts00/ExhaustBlueConical
+  /RawData/Textures/Effects/Exhausts/Exhausts00/ExhaustYellowConical
+  /RawData/Textures/Effects/Exhausts/Exhausts00/ExhaustYellowRectangular
+.
+- i kdyz to mozna není uplně chytrý, protože bych mohl chtít dělat
+  atlasy napříč logickým rozdělením. Tzn. ne vsechny exhausty, ale
+  spis vsechny textury k jedne lokaci/scene.
+  - tzn. atlasy by mely mit nezavislou strukturu:
+.
+  - Spíš TexturePacks (atlas je to až vyexportované).
+.
+  /RawData/TexturePacks/Effects/Exhausts/Exhausts00.tps
+.
+  A textury taky:
+.
+  /RawData/Textures/Effects/Exhausts/ExhaustBlueConical
+  /RawData/Textures/Effects/Exhausts/ExhaustYellowConical
+  /RawData/Textures/Effects/Exhausts/ExhaustYellowRectangular
+.
+Možná zrušit Graphics a nahradit to rovnou podadresářema (Textures, atp?)
+- asi nemusím rozlišovat texture atlasy a jiné textury
+  (atlas má prostě u sebe ještě json)
+.
+/Client/Textures/Background
+/Client/Textures/Effects/Exhausts
+/Client/Textures/Markers
+/Client/Textures/Ships
+.
+To samé v RawData (tj. /Textures/...)
+[done]
+
+TODO: Vymyslet lepší adresářovou strukturu pro TexturePacker
+- output určitě rovnou do /Client, ať to nemusím překopírovávat
+  a nemám to dvakrát.
+[done]
+
+TODO: Dát lodi všechny exhausty (a na správná místa)
+- 2 velké dozadu
+- 2 malé dopředu
+- 2 doleva
+- 2 doprava
+[done]
+
+TODO: Zdědit Ship ze Steering (tedy z Vehicle),
+  ať nemusím do steeringových funkcí předávat takový stohy parametrů.
+[done]
+
 TODO: Fixnout errory v konzoli na klientu
   "Texture.frame missing: 1"
   "Invalid Animation Key, or Key already in use: animation_exhausts_00"

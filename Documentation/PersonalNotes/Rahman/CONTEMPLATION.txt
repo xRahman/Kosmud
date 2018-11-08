@@ -67,6 +67,17 @@ To zní asi jako nejlepší řešení, protože:
 - flipovat to někde v komunikačním protokolu by bylo dost na pěst,
   při přidání každé nové packet classy bych na to musel myslet.
 
+Texture animace v Phaseru
+--------------------------
+
+Export/import animation to/from json.
+https://phaser.io/phaser3/devlog/76
+
+- zatím se na to vykašlu, animace se specifikuje dvěma číslama
+  (počet framů a framerate), což klidně můžu zatím někam dávat
+  ručně.
+  - základ je každopádně dělat to přes texture atlas, což dělám.
+
 
 -----------------------------------------------------------------------
 

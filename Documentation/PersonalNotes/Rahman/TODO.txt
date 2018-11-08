@@ -1,22 +1,12 @@
 Dnešní TODO:
-- Dát lodi všechny exhausty (a na správná místa)
-  - 2 velké dozadu
-  - 2 malé dopředu
-  - 2 doleva
-  - 2 doprava
-  [done]
 - Posílat na klienta thrusty a torque
 - Scalovat je a zapínat/vypínat podle thrustů a torque
-
-TODO: Zdědit Ship ze Steering (tedy z Vehicle),
-  ať nemusím do steeringových funkcí předávat takový stohy parametrů.
-
-TODO: SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
- (konstruktor s 20 parametry už je trochu přes míru...)
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).
+   - ještě to není úplně ok, ale prozatím se dá.
+   [done]
 2) Efekty trysek (grafický a zvukový).
 3) Lag simulátor a interpolace na clientu, aby se to netrhalo.
 4) Dát něco do scény.
@@ -27,146 +17,33 @@ Priority:
 
 TODO: Přejmenovat adresáře v /Client (na PascalCase).
 - Huh, v práci začíná všechno velkým.
+- v práci je to každopádně dobře, ještě to checknout doma.
 
-
-TODO: Vymyslet lepší adresářovou strukturu pro TexturePacker
-- output určitě rovnou do /Client, ať to nemusím překopírovávat
-  a nemám to dvakrát.
-
-Jak pojmenovávat texture atlasy?
-- mám několik efektů v jenom atlasu
-- Adresář v TexturePackeru by se asi měl jmenovat stejně jako výsledný atlas
-  (tj. Exhausts00).
-  - což je vlastně vstupní adresář.
-- Zjevně potřebuju nějakej adresář na "raw data". Možná SrcData?
-  - raději RawData, ať se to nebije se /Src
-- Kam patří tps file? (Texture packer project?)
-  - Taky do RawData. Možná přímo do Textures - vždycky tam, kde je adresář,
-    ze kterého je atlas udělanej.
-  Tzn.:
-  /RawData/Textures/Effects/Exhausts/Exhausts00.tps
-  /RawData/Textures/Effects/Exhausts/Exhausts00/ExhaustBlueConical
-  /RawData/Textures/Effects/Exhausts/Exhausts00/ExhaustYellowConical
-  /RawData/Textures/Effects/Exhausts/Exhausts00/ExhaustYellowRectangular
-
-- i kdyz to mozna není uplně chytrý, protože bych mohl chtít dělat
-  atlasy napříč logickým rozdělením. Tzn. ne vsechny exhausty, ale
-  spis vsechny textury k jedne lokaci/scene.
-  - tzn. atlasy by mely mit nezavislou strukturu:
-
-  - Spíš TexturePacks (atlas je to až vyexportované).
-
-  /RawData/TexturePacks/Effects/Exhausts/Exhausts00.tps
-
-  A textury taky:
-
-  /RawData/Textures/Effects/Exhausts/ExhaustBlueConical
-  /RawData/Textures/Effects/Exhausts/ExhaustYellowConical
-  /RawData/Textures/Effects/Exhausts/ExhaustYellowRectangular
-
-Možná zrušit Graphics a nahradit to rovnou podadresářema (Textures, atp?)
-- asi nemusím rozlišovat texture atlasy a jiné textury
-  (atlas má prostě u sebe ještě json)
-
-/Client/Textures/Background
-/Client/Textures/Effects/Exhausts
-/Client/Textures/Markers
-/Client/Textures/Ships
-
-To samé v RawData (tj. /Textures/...)
 
 TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 
 
-TODO: Export/import animation to/from json.
-https://phaser.io/phaser3/devlog/76
-
-Ad 1:
+Ad 2:
 -----
 
-TODO: Arrive
-- ještě správně počítat breaking distance.
-
-TODO: Breaking distance se nepočítá spávně.
-TODO: Asi budu ji budu muset posílat na klient a zobrazovat.
-
-IDEA: Určit na tvrdo nějakou malou vzdálenost (10 třeba).
-- před ní bude desired speed dejme tomu 10% aktuální.
-- za ní bude gradual slowdown.
-
-Skoro!
-- ještě asi přidat, že když jsem fakt blízko cíli, tak se nebudu točit jak
-  čamrda.
-Bude to chtít hódně refactoringu, ale snad to funguje.
-
-Ad 5:
------
-TODO: Posílat na klienta, že brzdím rotaci (a jak moc).
-  (asi to bude muset vracet fce scaleSymetricInterval()).
-- obecně bude potřeba posílat aktuální thrusty (asi stačí číslama,
-  není nutný posílat vektory).
-Tohle by teď mohlo jít mnohem snáz, protože to je přímo torque
-  (a TORQUE je 100% výkon rotačních thrusterů)
+TODO: posílat aktuální thrusty
+  (asi stačí číslama, není nutný posílat vektory).
 
 
-
-
-TODO: Vyzkoušet linear a angular drag (zapnout na physicsBody).
-- to by teoreticky mělo způsobit, že síla bude muset působit pořád,
-  abych udržel rychlost. Na druhou stranu...
-Tohle ale až časem (možná vůbec). Současná varianta je celkem ok.
-
-
-
-TODO: Asi budu potřebovat seekForward() a seekBackward()
-(protože v současném módu se couvat moc nedá).
-IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
-
-
-TODO: Odstranit debugovací kód ze Steering.seek().
+Ad 4:
+------
+TODO: načíst výstup z Tiled editoru.
+- na serveru do fyziky, na klientu do grafiky
 
 
 
 TODO: Refactoriiiing!
-TODO: Odchytávání výjimek ze Steeringu.
-
-
-// IDEA: Se shiftem loď strafuje/couvá.
-
-
-TODO: Místo Phaser.Scene všude předávat Scene
+- Místo Phaser.Scene všude předávat Scene
   (což je z ní beztak zděděné, ale je to můj interní typ).
+- SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
+ (konstruktor s 20 parametry už je trochu přes míru...)
 
-
-
-
-Ok, co dál:
-- načítat data z Tiles editoru nepotřebuju, dokud nebudu řešit kolize,
-  vyhýbání se překážkám a tak.
-
-Potřebuju vyzkoušet steering behaviours (obecně si ujasnit, jak se bude
-  ovládat loď).
-  - follow by asi mohlo stačit.
-  - a close nejspíš (zastavování).
-    - zatím vůči jednomu bodu (mouse click).
-    - časem vůči nejbližšímu vertexu od všech překážek v určité vzdálensoti.
-
-
-
-TODO:
-  7. update vehicle rotation according to the angle of the vehicle velocity
-  (Vůbec jsem na pár kroků seek() zapomněl).
-
-TODO: Omezit ve Steering.seek() rotaci a vracet ji jako další return value.
-
-TODO: Aplikovat rotaci ze Steering.seek()
-  (asi ne přes Torque Force ale rovnou přes SetAngularVelocity()).
-  - což je ok, protože steering se volá v dalším tiku znova, takže se
-    angular velocity bude průběžně updatovat.
-
-
-Výhledově budu potřebovat načíst výstup z Tiled editoru.
-- na serveru do fyziky, na klientu do grafiky
+TODO: Odchytávání výjimek ze Steeringu.
 
 
 -----------------------------------------------------------------------
@@ -227,7 +104,6 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 
 
-
 TODO: Výhledově zrušit posílání ShipToScene
   z WebSocketServer.acceptConnection()
   a posílat ho až po nalogování playera do hry.
@@ -253,6 +129,18 @@ https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width
 TODO: Výhledově Ship zdědit z Vehicle a přesunout tam věci, které by ship měla
 sdílet s jinými pohyblivými objekty.
 - pak je taky otázka, co s turretama a podobně. Brát je jako Vehicle? Uvidíme.
+
+
+TODO: Vyzkoušet linear a angular drag (zapnout na physicsBody).
+- to by teoreticky mělo způsobit, že síla bude muset působit pořád,
+  abych udržel rychlost. Na druhou stranu...
+Tohle ale až časem (možná vůbec). Současná varianta je celkem ok.
+
+
+TODO: Asi budu potřebovat seekForward() a seekBackward()
+(protože v současném módu se couvat moc nedá).
+IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
+// IDEA: Se shiftem loď strafuje/couvá.
 
 -----------------------------------------------------------------------
 
