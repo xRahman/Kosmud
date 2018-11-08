@@ -4,8 +4,6 @@
   TEST - a ship.
 */
 
-import { Vector } from "../../Shared/Physics/Vector";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vehicle } from "../../Shared/Physics/Vehicle";
 
 export class Ship extends Vehicle

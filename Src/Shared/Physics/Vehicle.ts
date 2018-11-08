@@ -90,21 +90,22 @@ export class Vehicle
   // tslint:disable-next-line:prefer-function-over-method
   public getForwardThrustRatio()
   {
-    /// TODO.
-    return 0;
+    const forwardThrust = this.getForwardThrust();
+
+    if (forwardThrust >= 0)
+      return forwardThrust / FORWARD_THRUST;
+    else
+      return forwardThrust / BACKWARD_THRUST;
   }
   // tslint:disable-next-line:prefer-function-over-method
   public getLeftwardThrustRatio()
   {
-    /// TODO.
-    return 0;
+    return this.getLeftwardThrust() / STRAFE_THRUST;
   }
   // tslint:disable-next-line:prefer-function-over-method
   public getTorqueRatio()
   {
-    /// TODO.
-    return 0;
-    // return this.torque / Ship.maximumTorque;
+    return this.torque / TORQUE;
   }
 
   public setWaypoint(waypoint: Vector)
@@ -241,13 +242,18 @@ export class Vehicle
       }
     }
 
-    /// FIXME: Tohle jsem nějak strašně nahackoval.
-    /// (smysl je, passnout currentRotation stejnou jako desiredRotation,
-    ///  abych se netočil na místě.)
-    const currentRotation = (distance > STOPPING_DISTANCE) ?
-      // Rotation in Box2D can be negative or even greater than 2π.
-      // We need to fix that so we can correcly subtract angles.
-      normalizeAngle(vehicleRotation) : desiredVelocity.getRotation();
+    // Rotation in Box2D can be negative or even greater than 2π.
+    // We need to fix that so we can correcly subtract angles.
+    const currentRotation = normalizeAngle(vehicleRotation);
+    let desiredRotation = desiredVelocity.getRotation();
+
+    if (distance <= STOPPING_DISTANCE)
+    {
+      // If we are in final "braking down" phase, pass current
+      // rotation as desired rotation to prevent tuning in-place
+      // (it doesn't work wery well but it helps a bit).
+      desiredRotation = currentRotation;
+    }
 
     const result: SteeringResult =
     {
@@ -260,10 +266,10 @@ export class Vehicle
       angular: computeAngularForces
       (
         desiredVelocity,
-        vehicleRotation,
         vehicleAngularVelocity,
         vehicleInertia,
-        currentRotation
+        currentRotation,
+        desiredRotation
       )
     };
 
@@ -312,57 +318,19 @@ export class Vehicle
 
   // ---------------- Private methods -------------------
 
-// export function seek
-// (
-//   vehiclePosition: Vector,
-//   vehicleVelocity: Vector,
-//   targetPosition: Vector
-// )
-// : Result
-// {
-//   // 1. 'desired velocity' = 'target position' - 'vehicle position'.
-//   const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
+  // tslint:disable-next-line:prefer-function-over-method
+  private getForwardThrust()
+  {
+    /// TODO
+    return 0;
+  }
 
-//   // 2. Scale 'desired velocity' to maximum speed.
-//   desiredVelocity.setLength(MAX_SPEED);
-
-//   // 3. 'steering force' = 'desired velocity' - 'current velocity'.
-//   const desiredSteeringForce = Vector.v1MinusV2
-//   (
-//     desiredVelocity,
-//     vehicleVelocity
-//   );
-
-//   let steeringForce: Vector;
-
-//   // 4. Limit the magnitude of vector(steering force) to maximum force.
-//   if (desiredSteeringForce.lengthSquared() > MAXIMUM_STEERING_FORCE_SQUARED)
-//   {
-//     steeringForce = new Vector(desiredSteeringForce).setLength
-//     (
-//       MAXIMUM_STEERING_FORCE
-//     );
-//   }
-//   else
-//   {
-//     steeringForce = new Vector(desiredSteeringForce);
-//   }
-
-//   return { steeringForce, desiredVelocity, desiredSteeringForce };
-
-//   // // 5. vector(new velocity) =
-//   // //    vector(current velocity) + vector(steering force)
-//   // pVehicle.body.velocity.add(vecSteer.x, vecSteer.y);
-
-//   // // 6. limit the magnitude of vector(new velocity) to maximum speed
-//   // if (pVehicle.body.velocity.getMagnitudeSq() > pVehicle.MAX_SPEED_SQ){
-//   // 	pVehicle.body.velocity.setMagnitude(pVehicle.MAX_SPEED);
-//   // }
-
-//   // // 7. update vehicle rotation according to the angle of the
-//   // //    vehicle velocity
-//   // pVehicle.rotation = vecReference.angle(pVehicle.body.velocity)
-// }
+  // tslint:disable-next-line:prefer-function-over-method
+  private getLeftwardThrust()
+  {
+    /// TODO
+    return 0;
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
@@ -511,14 +479,13 @@ function computeLinearForces
 function computeAngularForces
 (
   desiredVelocity: Vector,
-  vehicleRotation: number,
   vehicleAngularVelocity: number,
   vehicleInertia: number,
-  currentRotation: number
+  currentRotation: number,
+  desiredRotation: number
 )
 : AngularForces
 {
-  const desiredRotation = desiredVelocity.getRotation();
   let desiredAngularVelocity = desiredRotation - currentRotation;
 
   if (currentRotation < 0 || currentRotation > Math.PI * 2)

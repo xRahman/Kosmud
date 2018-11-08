@@ -26,9 +26,15 @@ TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 Ad 2:
 -----
 
+  
+
 TODO: posílat aktuální thrusty
   (asi stačí číslama, není nutný posílat vektory).
-
+- implementovat getForwardThrustRatio(),
+  getLeftwardThrustRatio(),
+  getTorqueRatio()
+  [done]
+- 
 
 Ad 4:
 ------
@@ -38,6 +44,7 @@ TODO: načíst výstup z Tiled editoru.
 
 
 TODO: Refactoriiiing!
+- Učesat steering kód.
 - Místo Phaser.Scene všude předávat Scene
   (což je z ní beztak zděděné, ale je to můj interní typ).
 - SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
@@ -45,6 +52,7 @@ TODO: Refactoriiiing!
 
 TODO: Odchytávání výjimek ze Steeringu.
 
+TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
 
 -----------------------------------------------------------------------
 
