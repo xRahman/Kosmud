@@ -1,3 +1,14 @@
+TODO: Zjevně potřebuju classu Sound.
+[done]
+
+TODO: Exhausts by asi mohly být v samostatné classe.
+- sprity ale pořád musej přidávat do ShipGraphics, tedy do containeru.
+  - čili class ShipExhausts by měla mít taky referenci na ShipGraphics?
+[done]
+
+TODO: Udělat strafing thrustery mnohem menší.
+[done]
+
 TODO: Přidat do spritu baseScale, který se bude přinásobovat při setScale().
 [done]
 

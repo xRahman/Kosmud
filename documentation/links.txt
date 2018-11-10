@@ -75,6 +75,11 @@ Animated tiles plugin:
 ------------------------
 https://github.com/nkholski/phaser-animated-tiles
 
+
+Phaser 3 examples in typescript
+--------------------------------
+https://github.com/digitsensitive/phaser3-typescript
+
 ==============================================================
 
 Texture packer

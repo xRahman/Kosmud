@@ -1,12 +1,14 @@
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
-import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
+import { ShipSound } from "../../Client/FlightScene/ShipSound";
+import { ShipExhausts } from "../../Client/Game/ShipExhausts";
 
 export class Ship
 {
+  private readonly exhausts: ShipExhausts;
   private readonly graphics: ShipGraphics;
-
+  private readonly sound: ShipSound;
   private readonly vectors: Ship.Vectors =
   {
     shipVelocity: new Vector(),
@@ -26,6 +28,9 @@ export class Ship
   )
   {
     this.graphics = new ShipGraphics(scene, shape);
+    this.sound = new ShipSound(scene);
+
+    this.exhausts = new ShipExhausts(this.graphics, this.sound);
 
     this.setPosition(position);
     this.setRotation(rotation);
@@ -87,7 +92,7 @@ export class Ship
     torqueRatio: number
   )
   {
-    this.graphics.updateExhausts
+    this.exhausts.updateExhausts
     (
       forwardThrustRatio,
       leftwardThrustRatio,

@@ -18,11 +18,9 @@ Priority:
 8) Bullets (railgun a tak)
 9) Rakety!
 
+TODO: Přidat classu ShipSound
 
-TODO: Udělat strafing thrustery mnohem menší.
-
-TODO: Opravit "backslash" při zastavování.
-
+TODO: přidat baseSound do Sound.
 
 Ad 2:
 -----
@@ -67,6 +65,8 @@ TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 
 TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
   je vidět, jak se to občas chová divně.
+
+TODO: Opravit "backlash" při zastavování.
 
 -----------------------------------------------------------------------
 
@@ -163,6 +163,8 @@ TODO: Asi budu potřebovat seekForward() a seekBackward()
 (protože v současném módu se couvat moc nedá).
 IDEA: Dozadu by se mohlo jet tak, že kliknu před loď a dragnu skrz loď za ni.
 // IDEA: Se shiftem loď strafuje/couvá.
+
+TODO: Odhackovat Client/Phaser/Sound.setVolume();
 
 -----------------------------------------------------------------------
 

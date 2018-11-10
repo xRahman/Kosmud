@@ -5,6 +5,7 @@ import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 import { SceneContents } from "../../Client/Phaser/SceneContents";
 import { Waypoint } from "../../Client/FlightScene/Waypoint";
 import { Vector } from "../../Shared/Physics/Vector";
+import { ShipSound } from "../../Client/FlightScene/ShipSound";
 
 export class FlightSceneContents extends SceneContents
 {
@@ -28,11 +29,9 @@ export class FlightSceneContents extends SceneContents
 
   public static preload(scene: FlightScene)
   {
-    scene.load.audio("Sound_ShipEngine1", "Sound/Ship/Engine/ShipEngine1.mp3");
-    scene.load.audio("Sound_ShipEngine2", "Sound/Ship/Engine/ShipEngine2.mp3");
-
     Background.preload(scene);
     ShipGraphics.preload(scene);
+    ShipSound.preload(scene);
     Waypoint.preload(scene);
   }
 

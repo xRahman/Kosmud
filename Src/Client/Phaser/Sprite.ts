@@ -47,9 +47,7 @@ export class Sprite extends PhaserObject
       container.add(this);
 
     if (baseScale !== undefined)
-    {
       this.setBaseScale(baseScale);
-    }
   }
 
   // ---------------- Public methods --------------------
@@ -66,6 +64,8 @@ export class Sprite extends PhaserObject
   {
     // Prevent possible division by zero.
     const oldBaseScale = (this.baseScale !== 0) ? this.baseScale : 1;
+
+    this.baseScale = baseScale;
 
     this.phaserObject.scaleX *= baseScale / oldBaseScale;
     this.phaserObject.scaleY *= baseScale / oldBaseScale;
