@@ -132,12 +132,43 @@ export class Vehicle
     const targetVector = Vector.v1MinusV2(targetPosition, vehiclePosition);
     const distance = targetVector.length();
 
-    const desiredVelocity = this.computeArriveDesiredVelocity
-    (
-      targetVector,
-      oldVelocity,
-      distance
-    );
+    const brakingDistance = this.computeBrakingDistance(oldVelocity);
+    const desiredVelocity = new Vector(targetVector);
+
+    let rotationFlip = 0;
+
+    if (distance > brakingDistance)
+    {
+      // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
+      desiredVelocity.setLength(MAX_SPEED);
+
+      rotationFlip = 0;
+    }
+    else if (distance > STOPPING_DISTANCE)
+    {
+      rotationFlip = Math.PI;
+
+      // Break almost to zero velocity
+      // (zero velocity is not a good idea because zero vector
+      //  has undefined direction).
+      desiredVelocity.setLength(STOPPING_SPEED);
+    }
+    else if (brakingDistance > 1)
+    {
+      // console.log("stopping...");
+
+      rotationFlip = Math.PI;
+      // Use gradual approach at STOPPING_DISTANCE.
+      desiredVelocity.setLength
+      (
+        STOPPING_SPEED * distance / STOPPING_DISTANCE
+      );
+    }
+    else
+    {
+      rotationFlip = 0;
+      desiredVelocity.setLength(0);
+    }
 
     this.computeLinearForces
     (
@@ -149,7 +180,16 @@ export class Vehicle
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
     const currentRotation = normalizeAngle(vehicleRotation);
-    let desiredRotation = desiredVelocity.getRotation();
+
+    /// Zkusím se točit k desiredSteeringForce místo k desiredRotation.
+    // let desiredRotation = desiredVelocity.getRotation();
+    let desiredRotation = normalizeAngle
+    (
+      /// 'rotationFlip' je 0 při zrychlování a PI při zpomalování,
+      /// protože při brždění musí čumák koukat na opačnou stranu než
+      /// kam směřuje desiredSteeringForce.
+      this.desiredSteeringForce.getRotation() + rotationFlip
+    );
 
     if (distance <= STOPPING_DISTANCE)
     {
@@ -193,48 +233,48 @@ export class Vehicle
 
   // ---------------- Private methods -------------------
 
-  private computeArriveDesiredVelocity
-  (
-    targetVector: Vector,
-    oldVelocity: Vector,
-    distance: number
-  )
-  {
-    const brakingDistance = this.computeBrakingDistance(oldVelocity);
-    const desiredVelocity = new Vector(targetVector);
+// private computeArriveDesiredVelocity
+// (
+//   targetVector: Vector,
+//   oldVelocity: Vector,
+//   distance: number
+// )
+// {
+//   const brakingDistance = this.computeBrakingDistance(oldVelocity);
+//   const desiredVelocity = new Vector(targetVector);
 
-    if (distance > brakingDistance)
-    {
-      // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
-      desiredVelocity.setLength(MAX_SPEED);
-    }
-    else if (distance > STOPPING_DISTANCE)
-    {
-      // Break almost to zero velocity
-      // (zero velocity is not a good idea because zero vector
-      //  has undefined direction).
-      desiredVelocity.setLength(STOPPING_SPEED);
-    }
-    else
-    {
-      // console.log("stopping...");
+//   if (distance > brakingDistance)
+//   {
+//     // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
+//     desiredVelocity.setLength(MAX_SPEED);
+//   }
+//   else if (distance > STOPPING_DISTANCE)
+//   {
+//     // Break almost to zero velocity
+//     // (zero velocity is not a good idea because zero vector
+//     //  has undefined direction).
+//     desiredVelocity.setLength(STOPPING_SPEED);
+//   }
+//   else
+//   {
+//     // console.log("stopping...");
 
-      if (brakingDistance <= 1)
-      {
-        desiredVelocity.setLength(0);
-      }
-      else
-      {
-        // Use gradual approach at STOPPING_DISTANCE.
-        desiredVelocity.setLength
-        (
-          STOPPING_SPEED * distance / STOPPING_DISTANCE
-        );
-      }
-    }
+//     if (brakingDistance <= 1)
+//     {
+//       desiredVelocity.setLength(0);
+//     }
+//     else
+//     {
+//       // Use gradual approach at STOPPING_DISTANCE.
+//       desiredVelocity.setLength
+//       (
+//         STOPPING_SPEED * distance / STOPPING_DISTANCE
+//       );
+//     }
+//   }
 
-    return desiredVelocity;
-  }
+//   return desiredVelocity;
+// }
 
   private updateForwardThrust
   (

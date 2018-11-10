@@ -2,6 +2,7 @@ Dnešní TODO:
 - Posílat na klienta thrusty a torque
   [done]
 - Scalovat je a zapínat/vypínat podle thrustů a torque
+[done]
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
@@ -14,16 +15,35 @@ Priority:
 5) Vyhýbání (překážkám a jiným lodím).
 6) Lepší physics body shape pro loď (a pro překážky taky).
 7) Anchor pointy (pro exhausty, časem pro zbraně).
+8) Bullets (railgun a tak)
+9) Rakety!
 
 
 
 TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
+
+TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
+  je vidět, jak se to občas chová divně.
+- Natáčel loď bych měl směrem k desiredSteeringForce, nikoliv směrem
+  k desiredVelocity.
+  Tím se bude trochu "přetáčet".
+  - tohle můžu dělat jen při seeku. Jakmile začnu brzdit, tak se tímhle
+    točím do protisměru - tzn. je potřeba točit k -desiredSteeringForce.
+
+TODO: Přidat do spritu baseScale, který se bude přinásobovat při setScale().
+TODO: Udělat strafing thrustery mnohem menší.
+
+TODO: Opravit "backslash" při zastavování.
+
+TODO: Proč mám na začátku loď otočenou o 180°?
+- asi se bere, že je ve fázi brždění, takže se aplikuje rotationFlip...
 
 
 Ad 2:
 -----
 
 TODO: Nastavovat scale a visibility exhaustů podle thrustu/torque.
+[done, sort of]
 
 Ad 4:
 ------
@@ -45,6 +65,14 @@ TODO: Refactoriiiing!
   (což je z ní beztak zděděné, ale je to můj interní typ).
 - SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
  (konstruktor s 20 parametry už je trochu přes míru...)
+
+ Refactorovat steering
+- různá chování počítají jen desired velocity
+  I když, to je otázka.
+  - Za prvé nevím, jestli bude fungovat skládání behaviourů přes rychlosti
+    (nejspíš je nějakej důvod, proč se skládaj až výsledné steering forces)
+  - Za druhé nevím, co složitější behaviours s těma silama dělaj...
+Ok, asi se raději budu držet skládání sil.
 
 TODO: Odchytávání výjimek ze Steeringu.
 
