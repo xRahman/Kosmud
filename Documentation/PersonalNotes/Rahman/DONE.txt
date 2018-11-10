@@ -1,3 +1,16 @@
+TODO: přidat baseVolume do Sound.
+[done]
+
+TODO: Nastavovat zvukům thrusterů volume podle thrustu.
+[done]
+
+
+TODO:
+- Posílat na klienta thrusty a torque
+  [done]
+- Scalovat je a zapínat/vypínat podle thrustů a torque
+[done]
+
 TODO: Přidat classu ShipSound
 [done]
 

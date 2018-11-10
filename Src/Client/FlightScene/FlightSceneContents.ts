@@ -46,17 +46,17 @@ export class FlightSceneContents extends SceneContents
   // tslint:disable-next-line:prefer-function-over-method
   public create(scene: FlightScene)
   {
-    // const engineSound1 = scene.sound.add("Sound_ShipEngine1");
-    // const engineSound2 = scene.sound.add("Sound_ShipEngine2");
-    const engineSound = scene.sound.add("Sound_ShipEngine2");
+    // // const engineSound1 = scene.sound.add("Sound_ShipEngine1");
+    // // const engineSound2 = scene.sound.add("Sound_ShipEngine2");
+    // const engineSound = scene.sound.add("Sound_ShipEngine2");
 
-    // engineSound1.play("", { loop: true });
-    engineSound.play("", { loop: true, volume: 1 });
-    if ("volume" in engineSound)
-    {
-      // tslint:disable-next-line:no-string-literal
-      (engineSound as any)["volume"] = 0.05;
-    }
+    // // engineSound1.play("", { loop: true });
+    // engineSound.play("", { loop: true, volume: 1 });
+    // if ("volume" in engineSound)
+    // {
+    //   // tslint:disable-next-line:no-string-literal
+    //   (engineSound as any)["volume"] = 0.05;
+    // }
   }
 
   public update()

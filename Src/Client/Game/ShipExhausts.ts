@@ -92,7 +92,7 @@ export class ShipExhausts
 
   // ---------------- Public methods --------------------
 
-  public updateExhausts
+  public update
   (
     forwardThrustRatio: number,
     leftwardThrustRatio: number,
@@ -102,10 +102,12 @@ export class ShipExhausts
     const frontExhaustsScale = lowerBound(-forwardThrustRatio, 0);
     for (const sprite of this.front.sprites)
       sprite.setScaleY(frontExhaustsScale);
+    this.front.sound.setVolume(frontExhaustsScale);
 
     const rearExhaustsScale = lowerBound(forwardThrustRatio, 0.05);
     for (const sprite of this.rear.sprites)
       sprite.setScaleY(rearExhaustsScale);
+    this.rear.sound.setVolume(rearExhaustsScale);
 
     // The idea is that side thrusters get 50% of their length from
     // left-right thrust and another 50% from torque thrust
@@ -116,21 +118,25 @@ export class ShipExhausts
     frontLeftExhaustScale += lowerBound(-torqueRatio / 2, 0);
     for (const sprite of this.frontLeft.sprites)
       sprite.setScaleY(frontLeftExhaustScale);
+    this.frontLeft.sound.setVolume(frontLeftExhaustScale);
 
     let frontRightExhaustScale = lowerBound(-leftwardThrustRatio / 2, 0);
     frontRightExhaustScale += lowerBound(torqueRatio / 2, 0);
     for (const sprite of this.frontRight.sprites)
       sprite.setScaleY(frontRightExhaustScale);
+    this.frontRight.sound.setVolume(frontRightExhaustScale);
 
     let backLeftExhaustScale = lowerBound(leftwardThrustRatio / 2, 0);
     backLeftExhaustScale += lowerBound(torqueRatio / 2, 0);
     for (const sprite of this.backLeft.sprites)
       sprite.setScaleY(backLeftExhaustScale);
+    this.backLeft.sound.setVolume(backLeftExhaustScale);
 
     let backRightExhaustScale = lowerBound(-leftwardThrustRatio / 2, 0);
     backRightExhaustScale += lowerBound(-torqueRatio / 2, 0);
     for (const sprite of this.backRight.sprites)
       sprite.setScaleY(backRightExhaustScale);
+    this.backRight.sound.setVolume(backRightExhaustScale);
   }
 }
 

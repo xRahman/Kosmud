@@ -51,7 +51,7 @@ export class Sound
     if ("volume" in this.phaserSound)
     {
       // tslint:disable-next-line:no-string-literal
-      (this.phaserSound as any)["volume"] = volume0to1;
+      (this.phaserSound as any)["volume"] = volume0to1 * this.baseVolume0to1;
     }
   }
 

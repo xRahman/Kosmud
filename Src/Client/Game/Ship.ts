@@ -92,7 +92,7 @@ export class Ship
     torqueRatio: number
   )
   {
-    this.exhausts.updateExhausts
+    this.exhausts.update
     (
       forwardThrustRatio,
       leftwardThrustRatio,
