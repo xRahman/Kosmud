@@ -35,9 +35,6 @@ TODO: Udělat strafing thrustery mnohem menší.
 
 TODO: Opravit "backslash" při zastavování.
 
-TODO: Proč mám na začátku loď otočenou o 180°?
-- asi se bere, že je ve fázi brždění, takže se aplikuje rotationFlip...
-
 
 Ad 2:
 -----

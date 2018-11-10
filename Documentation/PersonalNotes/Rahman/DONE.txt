@@ -1,3 +1,9 @@
+TODO: Proč mám na začátku loď otočenou o 180°?
+- asi se bere, že je ve fázi brždění, takže se aplikuje rotationFlip...
+- vrátil jsem tam zpět zákaz točení při malé vzdálenosti, to to prozatím
+  pořešilo
+[done]
+
 TODO: Přejmenovat adresáře v /Client (na PascalCase).
 - Huh, v práci začíná všechno velkým.
 - v práci je to každopádně dobře, ještě to checknout doma.
