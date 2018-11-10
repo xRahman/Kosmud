@@ -19,14 +19,6 @@ Priority:
 9) Rakety!
 
 
-
-TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
-
-TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
-  je vidět, jak se to občas chová divně.
-
-
-TODO: Přidat do spritu baseScale, který se bude přinásobovat při setScale().
 TODO: Udělat strafing thrustery mnohem menší.
 
 TODO: Opravit "backslash" při zastavování.
@@ -70,6 +62,11 @@ Ok, asi se raději budu držet skládání sil.
 TODO: Odchytávání výjimek ze Steeringu.
 
 TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
+
+TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
+
+TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
+  je vidět, jak se to občas chová divně.
 
 -----------------------------------------------------------------------
 

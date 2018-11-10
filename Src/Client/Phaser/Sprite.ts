@@ -7,6 +7,7 @@ import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
 export class Sprite extends PhaserObject
 {
+  protected baseScale = 1;
   protected phaserObject: Phaser.GameObjects.Sprite;
 
   constructor
@@ -16,10 +17,12 @@ export class Sprite extends PhaserObject
     rotation: number,
     textureId: string,
     {
+      baseScale,
       animation,
       container
     }:
     {
+      baseScale?: number;
       animation?: Sprite.Animation;
       container?: Container;
     } = {}
@@ -42,6 +45,11 @@ export class Sprite extends PhaserObject
 
     if (container !== undefined)
       container.add(this);
+
+    if (baseScale !== undefined)
+    {
+      this.setBaseScale(baseScale);
+    }
   }
 
   // ---------------- Public methods --------------------
@@ -54,19 +62,30 @@ export class Sprite extends PhaserObject
     this.phaserObject.setDisplaySize(width, height);
   }
 
+  public setBaseScale(baseScale: number)
+  {
+    // Prevent possible division by zero.
+    const oldBaseScale = (this.baseScale !== 0) ? this.baseScale : 1;
+
+    this.phaserObject.scaleX *= baseScale / oldBaseScale;
+    this.phaserObject.scaleY *= baseScale / oldBaseScale;
+  }
+
+  public getBaseScale() { return this.baseScale; }
+
   public setScale(scale: number)
   {
-    this.phaserObject.setScale(scale);
+    this.phaserObject.setScale(scale * this.baseScale);
   }
 
   public setScaleX(scale: number)
   {
-    this.phaserObject.scaleX = scale;
+    this.phaserObject.scaleX = scale * this.baseScale;
   }
 
   public setScaleY(scale: number)
   {
-    this.phaserObject.scaleY = scale;
+    this.phaserObject.scaleY = scale * this.baseScale;
   }
 }
 

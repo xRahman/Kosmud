@@ -1,3 +1,6 @@
+TODO: Přidat do spritu baseScale, který se bude přinásobovat při setScale().
+[done]
+
 TODO: Natáčel loď bych měl směrem k desiredSteeringForce, nikoliv směrem
   k desiredVelocity.
   Tím se bude trochu "přetáčet".
