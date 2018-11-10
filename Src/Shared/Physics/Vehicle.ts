@@ -153,7 +153,7 @@ export class Vehicle
       //  has undefined direction).
       desiredVelocity.setLength(STOPPING_SPEED);
     }
-    else if (brakingDistance > 1)
+    else if (distance > 1)
     {
       // console.log("stopping...");
 
