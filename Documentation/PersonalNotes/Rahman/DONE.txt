@@ -1,3 +1,6 @@
+TODO: Přidat classu ShipSound
+[done]
+
 TODO: Zjevně potřebuju classu Sound.
 [done]
 

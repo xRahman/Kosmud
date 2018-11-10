@@ -8,6 +8,10 @@ const FRONT_SCALE = 1;
 const SIDE_SCALE = 0.4;
 const REAR_SCALE = 2;
 
+const FRONT_VOLUME = 0.1;
+const SIDE_VOLUME = 0.04;
+const REAR_VOLUME = 0.2;
+
 type Exhaust =
 {
   sprites: Array<Sprite>;
@@ -36,7 +40,7 @@ export class ShipExhausts
         graphics.createExhaustSprite("0", 120, -65, -Math.PI / 2, FRONT_SCALE),
         graphics.createExhaustSprite("1", 120, 65, -Math.PI / 2, FRONT_SCALE)
       ],
-      sound: sound.createExhaustSound()
+      sound: sound.createExhaustSound(FRONT_VOLUME)
     };
 
     this.frontLeft =
@@ -45,7 +49,7 @@ export class ShipExhausts
       [
         graphics.createExhaustSprite("2", 100, -67, Math.PI, SIDE_SCALE)
       ],
-      sound: sound.createExhaustSound()
+      sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
     this.backLeft =
@@ -54,7 +58,7 @@ export class ShipExhausts
       [
         graphics.createExhaustSprite("3", -95, -120, Math.PI, SIDE_SCALE)
       ],
-      sound: sound.createExhaustSound()
+      sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
     this.frontRight =
@@ -63,7 +67,7 @@ export class ShipExhausts
       [
         graphics.createExhaustSprite("4", 100, 67, 0, SIDE_SCALE)
       ],
-      sound: sound.createExhaustSound()
+      sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
     this.backRight =
@@ -72,7 +76,7 @@ export class ShipExhausts
       [
         graphics.createExhaustSprite("5", -95, 120, 0, SIDE_SCALE)
       ],
-      sound: sound.createExhaustSound()
+      sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
     this.rear =
@@ -82,7 +86,7 @@ export class ShipExhausts
         graphics.createExhaustSprite("6", -190, -50, Math.PI / 2, REAR_SCALE),
         graphics.createExhaustSprite("7", -190, 50, Math.PI / 2, REAR_SCALE)
       ],
-      sound: sound.createExhaustSound()
+      sound: sound.createExhaustSound(REAR_VOLUME)
     };
   }
 

@@ -18,9 +18,9 @@ Priority:
 8) Bullets (railgun a tak)
 9) Rakety!
 
-TODO: Přidat classu ShipSound
+TODO: přidat baseVolume do Sound.
 
-TODO: přidat baseSound do Sound.
+TODO: Nastavovat zvukům thrusterů volume podle thrustu.
 
 Ad 2:
 -----

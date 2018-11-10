@@ -14,8 +14,12 @@ export class ShipSound
 
   // ---------------- Public methods --------------------
 
-  public createExhaustSound()
+  public createExhaustSound(baseVolume0to1: number)
   {
-    return new Sound(this.scene, "Sound_ShipEngine2");
+    const sound = new Sound(this.scene, "Sound_ShipEngine2", baseVolume0to1);
+
+    sound.play(true, 1);
+
+    return sound;
   }
 }

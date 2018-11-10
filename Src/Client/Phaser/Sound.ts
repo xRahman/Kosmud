@@ -5,15 +5,20 @@
 
 export class Sound
 {
+  protected baseVolume0to1 = 1;
+
   private readonly phaserSound: Phaser.Sound.BaseSound;
 
   constructor
   (
     scene: Phaser.Scene,
-    soundId: string
+    soundId: string,
+    baseVolume0to1 = 1
   )
   {
     this.phaserSound = createSound(scene, soundId);
+
+    this.setBaseVolume(baseVolume0to1);
   }
 
   // ---------------- Public methods --------------------
@@ -28,6 +33,17 @@ export class Sound
     this.phaserSound.stop();
   }
 
+  public setBaseVolume(baseVolume0to1: number)
+  {
+    // Prevent possible division by zero.
+    const oldbaseVolume =
+      (this.baseVolume0to1 !== 0) ? this.baseVolume0to1 : 1;
+
+    this.baseVolume0to1 = baseVolume0to1;
+
+    this.setVolume(this.getVolume() * baseVolume0to1 / oldbaseVolume);
+  }
+
   public setVolume(volume0to1: number)
   {
     /// Tohle je hack - v Phaser.Sound.BaseSound není property
@@ -37,6 +53,19 @@ export class Sound
       // tslint:disable-next-line:no-string-literal
       (this.phaserSound as any)["volume"] = volume0to1;
     }
+  }
+
+  public getVolume()
+  {
+    /// Tohle je hack - v Phaser.Sound.BaseSound není property
+    /// volume, ale používáme nejspíš webaudio, kde ta property je.
+    if ("volume" in this.phaserSound)
+    {
+      // tslint:disable-next-line:no-string-literal
+      return ((this.phaserSound as any)["volume"] as number);
+    }
+
+    return 1;
   }
 }
 
