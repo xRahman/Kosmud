@@ -1,3 +1,6 @@
+TODO: Nastavovat scale a visibility exhaustů podle thrustu/torque.
+[done, sort of]
+
 TODO: přidat baseVolume do Sound.
 [done]
 

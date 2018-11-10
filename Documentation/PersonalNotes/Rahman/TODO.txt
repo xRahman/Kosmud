@@ -4,6 +4,7 @@ Priority:
    - ještě to není úplně ok, ale prozatím se dá.
    [done]
 2) Efekty trysek (grafický a zvukový).
+   [done]
 3) Lag simulátor a interpolace na clientu, aby se to netrhalo.
 4) Dát něco do scény.
 5) Vyhýbání (překážkám a jiným lodím).
@@ -12,11 +13,10 @@ Priority:
 8) Bullets (railgun a tak)
 9) Rakety!
 
+TODO: Exhausts možná přejmenovat na Thrusters?
+
 Ad 2:
 -----
-
-TODO: Nastavovat scale a visibility exhaustů podle thrustu/torque.
-[done, sort of]
 
 Ad 4:
 ------
