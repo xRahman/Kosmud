@@ -24,11 +24,7 @@ TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 
 TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
   je vidět, jak se to občas chová divně.
-- Natáčel loď bych měl směrem k desiredSteeringForce, nikoliv směrem
-  k desiredVelocity.
-  Tím se bude trochu "přetáčet".
-  - tohle můžu dělat jen při seeku. Jakmile začnu brzdit, tak se tímhle
-    točím do protisměru - tzn. je potřeba točit k -desiredSteeringForce.
+
 
 TODO: Přidat do spritu baseScale, který se bude přinásobovat při setScale().
 TODO: Udělat strafing thrustery mnohem menší.
