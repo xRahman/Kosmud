@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="380" tileheight="380" infinite="0" nextlayerid="6" nextobjectid="27">
+ <tileset firstgid="1" name="rogue" tilewidth="380" tileheight="380" tilecount="1" columns="1">
+  <image source="../../../Client/Textures/Ships/rogue.png" width="380" height="380"/>
+  <tile id="0">
+   <objectgroup draworder="index">
+    <object id="1" x="13.125" y="39">
+     <polygon points="-1.33333,-0.333333 16.5,-0.125 131.208,95.3333 169.208,96.3333 203.208,125.667 341.542,134 353.875,147.667 354.208,156.333 344.208,169.333 204.542,180 169.208,207.333 125.208,209.333 16.5417,303.667 -0.458333,302.667 29.875,265.333 20.5417,255.667 55.2083,216 8.875,191.667 7.875,170.667 24.875,168.667 36.5417,152.667 25.2083,133.667 8.54167,132.667 8.875,112.333 55.5417,91 21.5417,48 30.875,37.3333"/>
+    </object>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="2" name="exhaust" tilewidth="28" tileheight="91" tilecount="1" columns="1">
+  <image source="../../Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png" width="28" height="91"/>
+ </tileset>
+ <layer id="1" name="graphics" width="1" height="1">
+  <data encoding="base64">
+   AQAAAA==
+  </data>
+ </layer>
+ <objectgroup id="3" name="shape">
+  <object id="1" name="physicsShape" x="13.5" y="40">
+   <polygon points="0,0 15,-0.75 131.167,95.6667 167.833,96.6667 194.5,124 339.5,135 353.5,148.5 353.5,153.5 343,168.5 195,178 166,205.5 129,207 15,301 0.5,300 30.5,264.5 21,253 54.5,212.5 7.5,189 8,169 27,167.5 33.5,154.5 33,145 24,132.5 8,131 8,111.5 55.5,91.5 21,47 31,37.5"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="thrusters">
+  <object id="18" name="rearThruster1" type="rear" gid="2" x="-108.14" y="198.643" width="40.359" height="131.167" rotation="90"/>
+  <object id="17" name="rearThruster0" type="rear" gid="2" x="-108.14" y="140.643" width="40.359" height="131.167" rotation="90"/>
+  <object id="10" name="rearRightThruster" type="rearRight" gid="2" x="13.875" y="387" width="13.5385" height="44"/>
+  <object id="12" name="rearLeftThruster" type="rearLeft" gid="1073741826" x="15.6932" y="38.1818" width="13.5385" height="44"/>
+  <object id="13" name="frontLeftThruster" type="frontLeft" gid="1073741826" x="329.027" y="170.848" width="13.5385" height="44"/>
+  <object id="14" name="frontRightThruster" type="frontRight" gid="2" x="329.027" y="257.848" width="13.5385" height="44"/>
+  <object id="16" name="frontThruster1" type="front" gid="1073741826" x="94.3598" y="285.182" width="16.8205" height="54.6667" rotation="90"/>
+  <object id="15" name="frontThruster0" type="front" gid="1073741826" x="94.3598" y="78.1818" width="16.8205" height="54.6667" rotation="90"/>
+ </objectgroup>
+</map>

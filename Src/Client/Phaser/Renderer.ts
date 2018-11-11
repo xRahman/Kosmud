@@ -72,7 +72,11 @@ function createPhaserGame
   return new Phaser.Game
   (
     {
-      type: Phaser.AUTO,
+      // type: Phaser.AUTO,
+      /// Ve WEBGL nefungují rotace tilemap layerů a vkládání
+      /// tilemap layerů do containeru.
+      /// (V canvasu teda asi taky tak docela ne...)
+      type: Phaser.CANVAS,
       width,
       height,
       disableContextMenu: true,

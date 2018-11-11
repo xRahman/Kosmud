@@ -13,8 +13,13 @@ const SHIP_SPRITE_ID = "ship";
 
 const TEXTURE_EXHAUSTS_00 = "Exhausts00";
 
+const SHIP_ROGUE = "ship_rogue";
+const IMAGE_ROGUE = "image_rogue";
+
 export class ShipGraphics
 {
+  private readonly tmp: any;
+
   private readonly container: Container;
   private readonly shipSprite: Sprite;
   private readonly vectors: VectorGraphics;
@@ -30,11 +35,27 @@ export class ShipGraphics
     this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
+    /// TileMaps test.
+    const map = scene.make.tilemap({ key: SHIP_ROGUE });
+    const tileset = map.addTilesetImage("rogue", IMAGE_ROGUE);
+    const layer = map.createStaticLayer("graphics", tileset, -190, -190);
+    this.container.addLayer(layer);
+
     this.shipSprite = createShipSprite(scene, this.container);
     this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
     // this.exhaustSprites = createExhaustSprites(scene, this.container);
 
     this.vectors = new VectorGraphics(scene);
+
+    // // layer.setRotation(Math.PI / 6);
+    // const tmpSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
+    // this.tmp = scene.add.container(0, 0);
+    // this.tmp.add(layer);
+    // this.tmp.add(tmpSprite);
+
+    // layer.rotation = Math.PI / 6;
+    // layer.x = 200;
+    // layer.
   }
 
   // ------------- Public static methods ----------------
@@ -51,6 +72,14 @@ export class ShipGraphics
       // Directory where textures are located.
       "Textures/Effects/Exhausts"
     );
+
+    /// TileMaps test.
+    scene.load.tilemapTiledJSON
+    (
+      SHIP_ROGUE,
+      "TileMaps/Ships/rogue.json"
+    );
+    scene.load.image(IMAGE_ROGUE, "Textures/Ships/rogue.png");
   }
 
   // ---------------- Public methods --------------------
@@ -58,6 +87,9 @@ export class ShipGraphics
   public update(shipPosition: Vector)
   {
     this.vectors.update(shipPosition);
+
+    // this.tmp.setRotation(this.tmp.rotation + Math.PI / 120);
+    // this.tmp.setX(this.tmp.x + 1);
   }
 
   public setPosition(position: Vector)

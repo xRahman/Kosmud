@@ -26,4 +26,10 @@ export class Container extends PhaserObject
   {
     phaserObject.addToContainer(this.phaserObject);
   }
+
+  // Dočasný hack.
+  public addLayer(layer: Phaser.Tilemaps.StaticTilemapLayer)
+  {
+    this.phaserObject.add(layer);
+  }
 }

@@ -23,6 +23,8 @@ Ad 4:
 TODO: načíst výstup z Tiled editoru.
 - na serveru do fyziky, na klientu do grafiky
 
+https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+
 
 
 TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
