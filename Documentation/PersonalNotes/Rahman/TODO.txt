@@ -14,12 +14,22 @@ Priority:
 9) Rakety!
 
 TODO: vyzkoušet https://github.com/nkholski/phaser-animated-tiles
+- nefunguje kvůli bugu, viz:
+  https://github.com/nkholski/phaser-animated-tiles/issues/2
+- a je otázka, jestli vůbec funguje na sprity vytvořené z object layeru
+  (spíš asi ne).
+TODO: Každopádně vyzkoušet sprite animaci aspoň na tiles layeru.
+- a možná bych si pak ten converter mohl napsat...
 
 TODO: Exhausts možná přejmenovat na Thrusters?
 - každopádně se pro něco rozhodnout a používat to všude (včetně tilemapy lodi).
 
 TODO: Konzistentně dávat do klíčů, názvů layerů a podobně příponu, co to je.
   tzn: "thrusters_layer", "exhaust_animation"
+
+TODO: Časem udělat (pre)loadovací scénu.
+- to pak znamená jinak loadovat pluginy, viz:
+  https://github.com/photonstorm/phaser3-plugin-template
 
 Ad 2:
 -----
