@@ -412,16 +412,53 @@
          "tilewidth":380
         }, 
         {
-         "columns":1,
+         "columns":8,
          "firstgid":2,
-         "image":"..\/..\/..\/RawData\/Textures\/Effects\/Exhausts\/ExhaustYellowRectangular\/001.png",
+         "image":"..\/..\/Textures\/Effects\/Exhausts\/ExhaustYellowRectangular.png",
          "imageheight":91,
-         "imagewidth":28,
+         "imagewidth":224,
          "margin":0,
          "name":"exhaust",
          "spacing":0,
-         "tilecount":1,
+         "tilecount":8,
          "tileheight":91,
+         "tiles":[
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":6
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":7
+                        }],
+                 "id":0
+                }],
          "tilewidth":28
         }],
  "tilewidth":380,

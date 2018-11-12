@@ -10,8 +10,20 @@
    </objectgroup>
   </tile>
  </tileset>
- <tileset firstgid="2" name="exhaust" tilewidth="28" tileheight="91" tilecount="1" columns="1">
-  <image source="../../Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png" width="28" height="91"/>
+ <tileset firstgid="2" name="exhaust" tilewidth="28" tileheight="91" tilecount="8" columns="8">
+  <image source="../../../Client/Textures/Effects/Exhausts/ExhaustYellowRectangular.png" width="224" height="91"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+   </animation>
+  </tile>
  </tileset>
  <layer id="1" name="graphics" width="1" height="1">
   <data encoding="base64">

@@ -9,7 +9,10 @@ import { Ship } from "../Game/Ship";
 
 const Z_ORDER_SHIP_SPRITE = 0;
 
-const SHIP_SPRITE_ID = "ship";
+/// TODO: Tohle by mělo být spíš SHIP_TEXTURE
+/// (není to sprite, je to textura).
+const SHIP_SPRITE_ID = "ship_sprite";
+const EXHAUST_SPRITE_ID = "exhaust_00_sprite";
 
 const TEXTURE_EXHAUSTS_00 = "Exhausts00";
 
@@ -38,8 +41,30 @@ export class ShipGraphics
     /// TileMaps test.
     const map = scene.make.tilemap({ key: SHIP_ROGUE });
     const tileset = map.addTilesetImage("rogue", IMAGE_ROGUE);
-    const layer = map.createStaticLayer("graphics", tileset, -190, -190);
-    this.container.addLayer(layer);
+    const shipLayer = map.createStaticLayer("graphics", tileset, -190, -190);
+    this.container.addLayer(shipLayer);
+    // const thrusterLayer =
+    //   map.createStaticLayer("thrusters", tileset, -190, -190);
+
+    const rearRightThrusters = map.createFromObjects
+    (
+      /// Jméno object layeru.
+      "thrusters",
+      /// Jméno objektu v tiled editoru.
+      "rearRightThruster",
+      /// Tohle je id textury, která se má použít.
+      { key: EXHAUST_SPRITE_ID }
+    );
+    console.log(rearRightThrusters);
+    for (const thruster of rearRightThrusters)
+    {
+      /// Origin spritu v Phaseru je uprostřed, ale v Tiled vlevo nahoře.
+      /// TODO: Vymyslet, odkud ta čísla brát
+      ///   (jsou to asi půlky rozměrů ship layeru)
+      thruster.setX(thruster.x - 190);
+      thruster.setY(thruster.y - 190);
+      this.container.addSprite(thruster);
+    }
 
     this.shipSprite = createShipSprite(scene, this.container);
     this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
@@ -80,6 +105,10 @@ export class ShipGraphics
       "TileMaps/Ships/rogue.json"
     );
     scene.load.image(IMAGE_ROGUE, "Textures/Ships/rogue.png");
+    scene.load.image
+    (
+      EXHAUST_SPRITE_ID,
+      "Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png");
   }
 
   // ---------------- Public methods --------------------

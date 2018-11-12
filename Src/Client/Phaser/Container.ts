@@ -32,4 +32,8 @@ export class Container extends PhaserObject
   {
     this.phaserObject.add(layer);
   }
+  public addSprite(sprite: Phaser.GameObjects.Sprite)
+  {
+    this.phaserObject.add(sprite);
+  }
 }
