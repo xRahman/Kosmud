@@ -13,6 +13,8 @@ Priority:
 8) Bullets (railgun a tak)
 9) Rakety!
 
+TODO: vyzkoušet https://github.com/nkholski/phaser-animated-tiles
+
 TODO: Exhausts možná přejmenovat na Thrusters?
 - každopádně se pro něco rozhodnout a používat to všude (včetně tilemapy lodi).
 
