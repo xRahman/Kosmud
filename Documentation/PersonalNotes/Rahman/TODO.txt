@@ -13,12 +13,47 @@ Priority:
 8) Bullets (railgun a tak)
 9) Rakety!
 
+TODO: Než se pustím do následujícího, tak přece jen ještě
+  vyzkoušet texture atlas animaci na exhaust.
+Ok, TODO: Vyrobit celou loď úplně znova.
+- vymyslet lepší název než "rogue"
+- pojmenvávat důsledně layery ("layer_"), tilesety ("tileset_").
+- zmenšit loď na půlku.
+- v Tiled editoru ji dát do object layeru
+  - ve hře z ní pak udělat spritu
+- vyrobit texturu s exhausty v TexturePackeru
+  + vyexportovat texture atlas
+- naimportovat ji do Tiled editoru, vyrobit z ní tilesy
+
+
+IDEA: Ještě bych možná mohl zkusit, že místo vyrábění spritů z object layeru
+  vyrobím nové tilesy do tile layeru.
+- Hmm, vlastně bych ty thrustery rovnou mohl udělat jako static layer,
+  teda až na to, že pak nepůjde scalovat velikost...
+Problém trochu je, že tilesy jsou velikostí nastavené na loď a všechny
+layery zjevně musej mít tilesy stejné.
+  Takže asi leda udělat v mapě lodě základní tilesy podle animace exhaustů
+  (loď holt bude přes víc tilesů) - to je dost pitomý, protože to pak
+  bude fungovat jen na tuhle konkrétní animaci.
+
+IDEA: Nejjednodušší asi bude, vyrobit tu animaci znova v texture packeru
+  s tím, že sprity nechám poskládat jednu vedle druhý, tzn. tu textutu
+  budu moct beze změny využít jako tileset v Tiled editoru.
+- a můžu zkusit requestnout tile animaci spritů vyrobených z object layerů
+  v tile animation pluginu...
+
+TODO: Vytáhnout info o animaci z tilemapy,
+  vyrobit tuhle animaci ručně a přidělit ji na exhaust spritu vytvořenou
+  z object layeru v tilemapě.
+- vůbec nejdřív tu animaci prostě vytvořit ručně (ať mám představu).
+
 TODO: vyzkoušet https://github.com/nkholski/phaser-animated-tiles
 - nefunguje kvůli bugu, viz:
   https://github.com/nkholski/phaser-animated-tiles/issues/2
 - a je otázka, jestli vůbec funguje na sprity vytvořené z object layeru
   (spíš asi ne).
 TODO: Každopádně vyzkoušet sprite animaci aspoň na tiles layeru.
+[done]
 - a možná bych si pak ten converter mohl napsat...
 
 TODO: Exhausts možná přejmenovat na Thrusters?
@@ -107,6 +142,15 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 
 -----------------------------------------------------------------------
 
+Bugfixy phaseru:
+-------------------
+
+TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
+  (momentálně mám hacknutou client-side opravu v 'up: function (event, time)').
+  https://github.com/photonstorm/phaser/issues/3779
+
+
+
 Odložené TODO:
 ---------------
 
@@ -127,10 +171,6 @@ TODO: Zapínání a vypínání debug grafiky.
 TODO: SetWaypoint by se asi mělo posílat z něčeho jinýho než
   z Waypointu.
   - ani scéna by to neměla dělat. Možná engine?
-
-TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
-  (momentálně mám hacknutou client-side opravu v 'up: function (event, time)').
-  https://github.com/photonstorm/phaser/issues/3779
 
 
 

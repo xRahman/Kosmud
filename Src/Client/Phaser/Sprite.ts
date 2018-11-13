@@ -137,10 +137,8 @@ function createAnimation
   scene.anims.create
   (
     {
-      // key: "animation_exhausts00",
       key: animation.name,
       frames: frameNames,
-      // frameRate: 10,
       frameRate: animation.frameRate,
       repeat: INFINITE
     }

@@ -1,0 +1,188 @@
+{
+	"textures": [
+		{
+			"image": "ExhaustYellowRectangular.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 224,
+				"h": 91
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "ExhaustYellowRectangular/001",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/002",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 28,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/003",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 56,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/004",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 84,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/005",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 112,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/006",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 140,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/007",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 168,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				},
+				{
+					"filename": "ExhaustYellowRectangular/008",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					},
+					"frame": {
+						"x": 196,
+						"y": 0,
+						"w": 28,
+						"h": 91
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:698e49330946894146603c233c8d9227:539c3bce86458c28a9bb04c7c53f59fc:7e7e0bcddd74ac35e30b67d11d33395f$"
+	}
+}

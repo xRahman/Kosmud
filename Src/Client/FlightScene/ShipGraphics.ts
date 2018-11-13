@@ -40,6 +40,7 @@ export class ShipGraphics
 
     /// TileMaps test.
     const map = scene.make.tilemap({ key: SHIP_ROGUE });
+    console.log(map);
     const tilesetRogue = map.addTilesetImage("rogue", IMAGE_ROGUE);
     const shipLayer = map.createStaticLayer
     (
@@ -75,7 +76,7 @@ export class ShipGraphics
       /// Tohle je id textury, která se má použít.
       { key: EXHAUST_SPRITE_ID }
     );
-    console.log(rearRightThrusters);
+    // console.log(rearRightThrusters);
     for (const thruster of rearRightThrusters)
     {
       /// Origin spritu v Phaseru je uprostřed, ale v Tiled vlevo nahoře.
