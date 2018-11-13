@@ -6,8 +6,22 @@ import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
 
+// declare const AnimatedTilesPlugin:
+// {
+//   init(map: Phaser.Tilemaps.Tilemap): void;
+// };
+interface AnimatedTilesPlugin
+{
+  init(map: Phaser.Tilemaps.Tilemap): void;
+}
+
+const FLIGHT_SCENE = "Flight scene";
+
 export class FlightScene extends Scene
 {
+  public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
+    "Not loaded";
+
   // ~ Overrides Scene.contents.
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
 
@@ -19,7 +33,7 @@ export class FlightScene extends Scene
     height: number
   )
   {
-    super("Flight scene", width, height);
+    super(FLIGHT_SCENE, width, height);
   }
 
   // --------------- Public accessors -------------------
@@ -49,6 +63,16 @@ export class FlightScene extends Scene
   // This method is run by Phaser.
   public preload()
   {
+    /// AnimatedTiles plugin load test.
+    this.load.scenePlugin
+    (
+      {
+        key: "AnimatedTiles",
+        url: "js/phaser/AnimatedTiles.js",
+        sceneKey: "animatedTilesPlugin"
+      }
+    );
+
     FlightSceneContents.preload(this);
   }
 

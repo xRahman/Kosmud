@@ -31,7 +31,7 @@ export class ShipGraphics
 
   constructor
   (
-    private readonly scene: Phaser.Scene,
+    private readonly scene: FlightScene,
     shape: PhysicsBody.Shape,
   )
   {
@@ -59,6 +59,12 @@ export class ShipGraphics
     // this.container.addLayer(testLayer);
     // const thrusterLayer =
     //   map.createStaticLayer("thrusters", tileset, -190, -190);
+
+    if (scene.animatedTilesPlugin !== "Not loaded")
+    {
+      scene.animatedTilesPlugin.init(map);
+      // console.log(scene.animatedTilesPlugin);
+    }
 
     const rearRightThrusters = map.createFromObjects
     (

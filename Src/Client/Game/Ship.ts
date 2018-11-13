@@ -1,3 +1,4 @@
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
@@ -21,7 +22,7 @@ export class Ship
 
   constructor
   (
-    private readonly scene: Phaser.Scene,
+    private readonly scene: FlightScene,
     private readonly shape: PhysicsBody.Shape,
     private readonly position: Vector,
     private rotation: number
