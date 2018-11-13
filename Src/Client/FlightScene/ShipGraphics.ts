@@ -40,9 +40,23 @@ export class ShipGraphics
 
     /// TileMaps test.
     const map = scene.make.tilemap({ key: SHIP_ROGUE });
-    const tileset = map.addTilesetImage("rogue", IMAGE_ROGUE);
-    const shipLayer = map.createStaticLayer("graphics", tileset, -190, -190);
+    const tilesetRogue = map.addTilesetImage("rogue", IMAGE_ROGUE);
+    const shipLayer = map.createStaticLayer
+    (
+      "graphics", tilesetRogue, -190, -190
+    );
     this.container.addLayer(shipLayer);
+    const tilesetTest = map.addTilesetImage
+    (
+      /// Tohle je jméno tilesetu v tiled editoru.
+      "exhaust",
+      "test_animation_texture"
+    );
+    const testLayer = map.createDynamicLayer
+    (
+      "animation_test", tilesetTest, 200, 200
+    );
+    // this.container.addLayer(testLayer);
     // const thrusterLayer =
     //   map.createStaticLayer("thrusters", tileset, -190, -190);
 
@@ -105,6 +119,11 @@ export class ShipGraphics
       "TileMaps/Ships/rogue.json"
     );
     scene.load.image(IMAGE_ROGUE, "Textures/Ships/rogue.png");
+    scene.load.image
+    (
+      "test_animation_texture",
+      "Textures/Effects/Exhausts/ExhaustYellowRectangular.png"
+    );
     scene.load.image
     (
       EXHAUST_SPRITE_ID,

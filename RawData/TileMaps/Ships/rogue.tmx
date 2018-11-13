@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="380" tileheight="380" infinite="0" nextlayerid="6" nextobjectid="27">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="380" tileheight="380" infinite="0" nextlayerid="7" nextobjectid="27">
  <tileset firstgid="1" name="rogue" tilewidth="380" tileheight="380" tilecount="1" columns="1">
   <image source="../../../Client/Textures/Ships/rogue.png" width="380" height="380"/>
   <tile id="0">
@@ -28,6 +28,11 @@
  <layer id="1" name="graphics" width="1" height="1">
   <data encoding="base64">
    AQAAAA==
+  </data>
+ </layer>
+ <layer id="6" name="animation_test" width="1" height="1">
+  <data encoding="base64">
+   AgAAAA==
   </data>
  </layer>
  <objectgroup id="3" name="shape">
