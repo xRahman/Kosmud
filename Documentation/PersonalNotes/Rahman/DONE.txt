@@ -1,3 +1,15 @@
+TODO:
+  Uncaught Error: Failed to resize scene 'Flight scene' because scene contents doesn't exist
+    at FlightScene.resize (FlightScene.ts:113)
+    at Object.resize (Renderer.ts:27)
+    at CanvasDiv.onResize (CanvasDiv.ts:72)
+    at CanvasDiv.window.addEventListener (CanvasDiv.ts:52)
+- dlouho se loadovalo (v browseru) a do toho jsem otevřel konzoli v Chromu,
+  takže došlo k resize okna. Nejspíš ještě scéna nebyla vytvořena.
+- asi prostě jen neházet error - když scéna nemá contents,
+  tak není co resizovat.
+[done]
+
 TODO: Nastavovat scale a visibility exhaustů podle thrustu/torque.
 [done, sort of]
 

@@ -108,11 +108,12 @@ export class FlightScene extends Scene
   {
     super.resize(width, height);
 
+    // If scene contents isn't created yet, there is nothing
+    // to resize (this can happen when loading takes a long time
+    // and user toggles Chrome debug console, resizes browser
+    // window or something like that).
     if (this.contents === "Doesn't exist")
-    {
-      throw new Error(`Failed to resize scene '${this.name}'`
-        + ` because scene contents doesn't exist`);
-    }
+      return;
 
     this.contents.background.resize(width, height);
 
