@@ -710,3 +710,122 @@ RESULT: Mixiny jsou clumsy, kód je pak složitej a nepřehlednej. Asi se raděj
 zkusím obejít bez vícenásobné dědičnosti.
 
 -----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Test animovancýh tilesů
+------------------------
+
+ShipGraphics.ts
+----------------
+
+class ShipGraphics
+{
+  constructor
+  (
+    private readonly scene: FlightScene,
+    shape: PhysicsBody.Shape,
+  )
+  {
+    this.container = new Container(scene, 0, 0);
+    this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
+
+    // /// TileMaps test.
+    // const map = scene.make.tilemap({ key: SHIP_ROGUE });
+    // console.log(map);
+    // const tilesetRogue = map.addTilesetImage("rogue", IMAGE_ROGUE);
+    // const shipLayer = map.createStaticLayer
+    // (
+    //   "graphics", tilesetRogue, -190, -190
+    // );
+    // this.container.addLayer(shipLayer);
+    // const tilesetTest = map.addTilesetImage
+    // (
+    //   /// Tohle je jméno tilesetu v tiled editoru.
+    //   "exhaust",
+    //   "test_animation_texture"
+    // );
+    // const testLayer = map.createDynamicLayer
+    // (
+    //   "animation_test", tilesetTest, 200, 200
+    // );
+    // // this.container.addLayer(testLayer);
+    // // const thrusterLayer =
+    // //   map.createStaticLayer("thrusters", tileset, -190, -190);
+
+    // if (scene.animatedTilesPlugin !== "Not loaded")
+    // {
+    //   scene.animatedTilesPlugin.init(map);
+    //   // console.log(scene.animatedTilesPlugin);
+    // }
+
+    // const rearRightThrusters = map.createFromObjects
+    // (
+    //   /// Jméno object layeru.
+    //   "thrusters",
+    //   /// Jméno objektu v tiled editoru.
+    //   "rearRightThruster",
+    //   /// Tohle je id textury, která se má použít.
+    //   { key: EXHAUST_SPRITE_ID }
+    // );
+    // // console.log(rearRightThrusters);
+    // for (const thruster of rearRightThrusters)
+    // {
+    //   /// Origin spritu v Phaseru je uprostřed, ale v Tiled vlevo nahoře.
+    //   /// TODO: Vymyslet, odkud ta čísla brát
+    //   ///   (jsou to asi půlky rozměrů ship layeru)
+    //   thruster.setX(thruster.x - 190);
+    //   thruster.setY(thruster.y - 190);
+    //   this.container.addSprite(thruster);
+    // }
+
+    this.shipSprite = createShipSprite(scene, this.container);
+    this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
+    // this.exhaustSprites = createExhaustSprites(scene, this.container);
+
+    this.vectors = new VectorGraphics(scene);
+
+    // // layer.setRotation(Math.PI / 6);
+    // const tmpSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
+    // this.tmp = scene.add.container(0, 0);
+    // this.tmp.add(layer);
+    // this.tmp.add(tmpSprite);
+
+    // layer.rotation = Math.PI / 6;
+    // layer.x = 200;
+    // layer.
+  }
+
+  public static preload(scene: Phaser.Scene)
+  {
+    /// TileMaps test.
+    scene.load.tilemapTiledJSON
+    (
+      SHIP_ROGUE,
+      "TileMaps/Ships/rogue.json"
+    );
+    scene.load.image(IMAGE_ROGUE, "Textures/Ships/rogue.png");
+    scene.load.image
+    (
+      "test_animation_texture",
+      "Textures/Effects/Exhausts/ExhaustYellowRectangular.png"
+    );
+    scene.load.image
+    (
+      EXHAUST_SPRITE_ID,
+      "Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png");
+  }
+}
+
+FlightScene.ts
+---------------
+
+interface AnimatedTilesPlugin
+{
+  init(map: Phaser.Tilemaps.Tilemap): void;
+}
+
+class FlightScene
+{
+  public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
+    "Not loaded";
+}

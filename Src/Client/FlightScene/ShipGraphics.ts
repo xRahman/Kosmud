@@ -16,13 +16,14 @@ const EXHAUST_SPRITE_ID = "exhaust_00_sprite";
 
 const TEXTURE_EXHAUSTS_00 = "Exhausts00";
 
-const SHIP_ROGUE = "ship_rogue";
-const IMAGE_ROGUE = "image_rogue";
+const ATLAS_EXHAUST_YELLOW_RECTANGULAR = "atlas_exhaust_yellow_rectangular";
+
+// /// TileMaps test.
+const TILEMAP_FIGHTER = "tilemap_fighter";
+const TEXTURE_ROGUE = "texture_rogue";
 
 export class ShipGraphics
 {
-  private readonly tmp: any;
-
   private readonly container: Container;
   private readonly shipSprite: Sprite;
   private readonly vectors: VectorGraphics;
@@ -38,35 +39,46 @@ export class ShipGraphics
     this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
-    /// TileMaps test.
-    const map = scene.make.tilemap({ key: SHIP_ROGUE });
-    console.log(map);
-    const tilesetRogue = map.addTilesetImage("rogue", IMAGE_ROGUE);
+    // /// TileMaps test.
+    const map = scene.make.tilemap({ key: TILEMAP_FIGHTER });
+    // console.log(map);
+    const tilesetRogue = map.addTilesetImage
+    (
+      /// Tohle je nejspíš jméno tilesetu v Tiled editoru.
+      "rogue",
+      TEXTURE_ROGUE
+    );
     const shipLayer = map.createStaticLayer
     (
       "graphics", tilesetRogue, -190, -190
     );
     this.container.addLayer(shipLayer);
-    const tilesetTest = map.addTilesetImage
-    (
-      /// Tohle je jméno tilesetu v tiled editoru.
-      "exhaust",
-      "test_animation_texture"
-    );
-    const testLayer = map.createDynamicLayer
-    (
-      "animation_test", tilesetTest, 200, 200
-    );
-    // this.container.addLayer(testLayer);
-    // const thrusterLayer =
-    //   map.createStaticLayer("thrusters", tileset, -190, -190);
+    /// Potřebuju já vůbec tileset image? Budu z toho stejně dělat
+    /// sprite (ale ta si asi bere texturu z tilesetu...)
+    // const tilesetExhaust = map.addTilesetImage
+    // (
+    //   /// Tohle je jméno tilesetu v tiled editoru.
+    //   "exhaust",
+    //   ATLAS_EXHAUST_YELLOW_RECTANGULAR
+    //   // "ExhaustYellowRectangular/001"
+    // );
 
-    if (scene.animatedTilesPlugin !== "Not loaded")
-    {
-      scene.animatedTilesPlugin.init(map);
-      // console.log(scene.animatedTilesPlugin);
-    }
+    // const testLayer = map.createDynamicLayer
+    // (
+    //   "animation_test", tilesetTest, 200, 200
+    // );
+    // // this.container.addLayer(testLayer);
+    // // const thrusterLayer =
+    // //   map.createStaticLayer("thrusters", tileset, -190, -190);
 
+    // if (scene.animatedTilesPlugin !== "Not loaded")
+    // {
+    //   scene.animatedTilesPlugin.init(map);
+    //   // console.log(scene.animatedTilesPlugin);
+    // }
+
+    //////////////////////////////////////////
+    /// Test of atlas animated sprite created from object layer.
     const rearRightThrusters = map.createFromObjects
     (
       /// Jméno object layeru.
@@ -74,7 +86,10 @@ export class ShipGraphics
       /// Jméno objektu v tiled editoru.
       "rearRightThruster",
       /// Tohle je id textury, která se má použít.
-      { key: EXHAUST_SPRITE_ID }
+      // { key: EXHAUST_SPRITE_ID }
+      // { key: "ExhaustYellowRectangular/001" }
+      /// Id texture atlasu zdá se funguje! - teď to ještě rozanimovat.
+      { key: ATLAS_EXHAUST_YELLOW_RECTANGULAR }
     );
     // console.log(rearRightThrusters);
     for (const thruster of rearRightThrusters)
@@ -85,7 +100,36 @@ export class ShipGraphics
       thruster.setX(thruster.x - 190);
       thruster.setY(thruster.y - 190);
       this.container.addSprite(thruster);
+
+      const frameNames = scene.anims.generateFrameNames
+      (
+        ATLAS_EXHAUST_YELLOW_RECTANGULAR,
+        {
+          start: 1,
+          end: 8, // animation.numberOfFrames,
+          zeroPad: 3, // THREE_PLACES,
+          prefix: "ExhaustYellowRectangular/", // animation.pathInTextureAtlas,
+          /// Aha, já jsem asi v texture packeru vypnul přidávání suffixu
+          /// - to možná nebyl úplně dobrej nápad.
+          // suffix: ".png"
+          suffix: ""
+        }
+      );
+
+      console.log(frameNames);
+
+      scene.anims.create
+      (
+        {
+          key: "animation_rear_right_thrusters", // animation.name,
+          frames: frameNames,
+          frameRate: 25, // animation.frameRate,
+          repeat: -1 // INFINITE
+        }
+      );
+      thruster.anims.play("animation_rear_right_thrusters"/*animation.name*/);
     }
+    //////////////////////////////////////////
 
     this.shipSprite = createShipSprite(scene, this.container);
     this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
@@ -119,22 +163,33 @@ export class ShipGraphics
       "Textures/Effects/Exhausts"
     );
 
-    /// TileMaps test.
+    /// Test of atlas animated sprite created from object layer.
+    scene.load.multiatlas
+    (
+      ATLAS_EXHAUST_YELLOW_RECTANGULAR,
+      // Location of texture atlas in /Client.
+      "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
+      // Directory where textures are located in /Client.
+      "Textures/Effects/Exhausts"
+    );
+
+    // /// TileMaps test.
     scene.load.tilemapTiledJSON
     (
-      SHIP_ROGUE,
-      "TileMaps/Ships/rogue.json"
+      TILEMAP_FIGHTER,
+      "TileMaps/Ships/fighter.json"
     );
-    scene.load.image(IMAGE_ROGUE, "Textures/Ships/rogue.png");
-    scene.load.image
-    (
-      "test_animation_texture",
-      "Textures/Effects/Exhausts/ExhaustYellowRectangular.png"
-    );
-    scene.load.image
-    (
-      EXHAUST_SPRITE_ID,
-      "Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png");
+    scene.load.image(TEXTURE_ROGUE, "Textures/Ships/rogue.png");
+    // scene.load.image
+    // (
+    //   "test_animation_texture",
+    //   "Textures/Effects/Exhausts/ExhaustYellowRectangular.png"
+    // );
+    // scene.load.image
+    // (
+    //   EXHAUST_SPRITE_ID,
+    //   "Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png"
+    // );
   }
 
   // ---------------- Public methods --------------------
@@ -142,9 +197,6 @@ export class ShipGraphics
   public update(shipPosition: Vector)
   {
     this.vectors.update(shipPosition);
-
-    // this.tmp.setRotation(this.tmp.rotation + Math.PI / 120);
-    // this.tmp.setX(this.tmp.x + 1);
   }
 
   public setPosition(position: Vector)
@@ -182,7 +234,7 @@ export class ShipGraphics
       frameRate: 25
     };
 
-    const sprite =  new Sprite
+    const sprite = new Sprite
     (
       this.scene,
       { x, y },

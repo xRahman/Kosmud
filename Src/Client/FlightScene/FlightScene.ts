@@ -6,10 +6,6 @@ import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
 
-// declare const AnimatedTilesPlugin:
-// {
-//   init(map: Phaser.Tilemaps.Tilemap): void;
-// };
 interface AnimatedTilesPlugin
 {
   init(map: Phaser.Tilemaps.Tilemap): void;
@@ -19,8 +15,9 @@ const FLIGHT_SCENE = "Flight scene";
 
 export class FlightScene extends Scene
 {
-  public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
-    "Not loaded";
+  // /// TileMaps test.
+  // public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
+  //   "Not loaded";
 
   // ~ Overrides Scene.contents.
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";

@@ -1,3 +1,12 @@
+TODO:
+  Uncaught Error: Failed to resize scene 'Flight scene' because scene contents doesn't exist
+    at FlightScene.resize (FlightScene.ts:113)
+    at Object.resize (Renderer.ts:27)
+    at CanvasDiv.onResize (CanvasDiv.ts:72)
+    at CanvasDiv.window.addEventListener (CanvasDiv.ts:52)
+- dlouho se loadovalo (v browseru) a do toho jsem otevřel konzoli v Chromu,
+  takže došlo k resize okna. Nejspíš ještě scéna nebyla vytvořena.
+
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).
@@ -17,7 +26,11 @@ TODO: Než se pustím do následujícího, tak přece jen ještě
   vyzkoušet texture atlas animaci na exhaust.
 Ok, TODO: Vyrobit celou loď úplně znova.
 - vymyslet lepší název než "rogue"
+  - missile_ship, railgun_ship,
+  - fighter, bomber, support, assault
 - pojmenvávat důsledně layery ("layer_"), tilesety ("tileset_").
+  (tohle asi stačí pro názvy konstant v kódu - v editoru to může
+   bejt bez přípony, tam to je přehlednější).
 - zmenšit loď na půlku.
 - v Tiled editoru ji dát do object layeru
   - ve hře z ní pak udělat spritu
