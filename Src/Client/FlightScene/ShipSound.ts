@@ -8,9 +8,7 @@ export class ShipSound
 
   public static preload(scene: Phaser.Scene)
   {
-// scene.load.audio("Sound_ShipEngine1", "Sound/Ship/Engine/ShipEngine1.mp3");
-// scene.load.audio("Sound_ShipEngine2", "Sound/Ship/Engine/ShipEngine2.mp3");
-    scene.load.audio("Sound_ShipEngine3", "Sound/Ship/Engine/ShipEngine3.mp3");
+    scene.load.audio("Sound_ShipEngine", "Sound/Ship/Engine/ShipEngine.mp3");
   }
 
   // ---------------- Public methods --------------------

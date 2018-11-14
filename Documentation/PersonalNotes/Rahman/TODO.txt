@@ -1,3 +1,5 @@
+TODO: Doma si pročistit font cache GIMPu, ať nestartuje 100 let.
+
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).
@@ -13,9 +15,28 @@ Priority:
 8) Bullets (railgun a tak)
 9) Rakety!
 
+TODO: Rozhodnout defaultní orientaci spritů.
+  Asi by to mělo bejt tak, že nulová 'rotation' odpovídá defaultní
+  pozici, takže orientace "doprava" je dobře.
+  (to bude mít i fajn side effect, že to bude texture packer nativně
+   skládat správně. Zas to ale možná bude divně v Tiled editoru... Co už).
+   Budiž to "doprava"
+[done]
+- a pak ji všude dodržovat (u lodi, u exhaustů)...
+TODO: Předělat exhausty "doprava" místo "dolů)
+  
+
 TODO: Pročistit data.
 TODO: Vyrobit znova data pro ship_fighter
 - jen object layery
+
+TODO: Hmm, textura pro lodě (a nejspíš i exhausty) by zřejmě neměla
+  být jen jedna a ne pro každou loď zvlášť.
+  - a tile-size by zřejmě měla bejt něco malýho (tzn. že loď bude přes více
+    tilů). To možná dost zkomplikuje editaci shapu (u lodí ho asi nechci mít
+    složený z X tilů, nebo jo?)
+- asi se na to vykašlu a nechám 1 ship per tile (ovšem i tak jich můžu dát
+  na texturu víc).
 
 
 Ok, TODO: Vyrobit celou loď úplně znova.

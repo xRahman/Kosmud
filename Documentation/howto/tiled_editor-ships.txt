@@ -1,0 +1,35 @@
+﻿How to create ship tileset in Tiled editor
+===========================================
+
+1) New map...
+- Orientation: orthogonal
+- Tile layer format: Base64 (uncompressed)
+- Tile render order: Right Down
+
+2) New tileset...
+  "Ships", "Exhausts"
+  - Type: Based on Tileset image
+  - Check "Embed in map" (this is important)
+
+3) Edit tileset "Exhausts"
+-> Tile animation editor
+
+4) Delete tile layer (we will only use oject layers)
+
+5) New Object layer "Basic Fighter"
+  Insert tile (ship)
+  - name: "Ship Hull"
+  Insert tile (exhaust)
+  - names: "Front Exhaust", "Rear Exhaust", "Front Left Exhaust",
+    "Front Right Exhaust", "Rear Left Exhaust", "Rear Right Exhaust"
+  // Objects are loaded based on name property and if you name more
+  // exhausts "front", all of them will be loaded and threated as front
+  // exhausts.
+  //   You can keep aspect ratio while scaling by holding down 'Ctrl'.
+
+6) Edit tileset "Ships"
+- Tile collision editor
+    (edit physics shape)
+  - all polygons must be convex
+
+7) File -> Export as -> .json map file

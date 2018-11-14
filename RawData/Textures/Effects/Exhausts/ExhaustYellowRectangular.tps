@@ -88,9 +88,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>128</int>
             <key>height</key>
-            <int>256</int>
+            <int>2048</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -151,7 +151,7 @@
         <key>autoAliasEnabled</key>
         <false/>
         <key>trimSpriteNames</key>
-        <true/>
+        <false/>
         <key>prependSmartFolderName</key>
         <true/>
         <key>autodetectAnimations</key>
@@ -181,30 +181,30 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/001.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/002.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/003.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/004.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/005.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/006.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/007.png</key>
-            <key type="filename">../../../Textures/Effects/Exhausts/ExhaustYellowRectangular/008.png</key>
+            <key type="filename">ExhaustYellowRectangular/001.png</key>
+            <key type="filename">ExhaustYellowRectangular/002.png</key>
+            <key type="filename">ExhaustYellowRectangular/003.png</key>
+            <key type="filename">ExhaustYellowRectangular/004.png</key>
+            <key type="filename">ExhaustYellowRectangular/005.png</key>
+            <key type="filename">ExhaustYellowRectangular/006.png</key>
+            <key type="filename">ExhaustYellowRectangular/007.png</key>
+            <key type="filename">ExhaustYellowRectangular/008.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>7,23,14,45</rect>
+                <rect>23,7,45,14</rect>
                 <key>scale9Paddings</key>
-                <rect>7,23,14,45</rect>
+                <rect>23,7,45,14</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>../../../Textures/Effects/Exhausts/ExhaustYellowRectangular</filename>
+            <filename>ExhaustYellowRectangular</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
