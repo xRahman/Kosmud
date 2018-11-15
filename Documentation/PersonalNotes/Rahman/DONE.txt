@@ -1,3 +1,45 @@
+Ok, TODO: Vyrobit celou loď úplně znova.
+- vymyslet lepší název než "rogue"
+  - missile_ship, railgun_ship,
+  + fighter, bomber, support, assault (zatím takhle)
+  [done]
+- zmenšit loď na půlku.
+  [done]
+- v Tiled editoru ji dát do object layeru
+  [done]
+  - ve hře z ní pak udělat spritu
+- vyrobit texturu s exhausty v TexturePackeru
+  + vyexportovat texture atlas
+  [done]
+- naimportovat ji do Tiled editoru, vyrobit z ní tilesy
+  [done]
+
+TODO: Hmm, textura pro lodě (a nejspíš i exhausty) by zřejmě neměla
+  být jen jedna a ne pro každou loď zvlášť.
+  - a tile-size by zřejmě měla bejt něco malýho (tzn. že loď bude přes více
+    tilů). To možná dost zkomplikuje editaci shapu (u lodí ho asi nechci mít
+    složený z X tilů, nebo jo?)
+- asi se na to vykašlu a nechám 1 ship per tile (ovšem i tak jich můžu dát
+  na texturu víc).
+[zatím nechám 1 tile per ship]
+
+TODO: Rozhodnout defaultní orientaci spritů.
+  Asi by to mělo bejt tak, že nulová 'rotation' odpovídá defaultní
+  pozici, takže orientace "doprava" je dobře.
+  (to bude mít i fajn side effect, že to bude texture packer nativně
+   skládat správně. Zas to ale možná bude divně v Tiled editoru... Co už).
+   Budiž to "doprava"
+[done]
+- a pak ji všude dodržovat (u lodi, u exhaustů)...
+TODO: Předělat exhausty "doprava" místo "dolů)
+[done]
+
+TODO: Pročistit data.
+[done]
+TODO: Vyrobit znova data pro ship_fighter
+- jen object layery
+[done]
+
 TODO: vyzkoušet https://github.com/nkholski/phaser-animated-tiles
 - nefunguje kvůli bugu, viz:
   https://github.com/nkholski/phaser-animated-tiles/issues/2
