@@ -27,6 +27,7 @@
     // some imports are doomed to be longer.
     "import-spacing": false,
     "ban": false,
+    "prefer-conditional-expression": false,
     // This doesn't work along with 'baseUrl' in tsconfig.json.
     "no-implicit-dependencies": true,
     // This doesn't work along with 'baseUrl' in tsconfig.json.

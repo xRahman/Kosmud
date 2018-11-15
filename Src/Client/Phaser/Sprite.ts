@@ -2,14 +2,51 @@
   Wraps Phaser.GameObjects.Sprite
 */
 
+import { Scene } from "../../Client/Phaser/Scene";
 import { Container } from "../../Client/Phaser/Container";
 import { PhaserObject } from "../../Client/Phaser/PhaserObject";
+
+interface SpriteConfig
+{
+  position: { x: number; y: number };
+  rotation: number;
+  textureOrAtlasId: string;
+}
+
+interface SpriteOptions
+{
+  baseScale?: number;
+  animation?: Sprite.Animation;
+  container?: Container;
+}
 
 export class Sprite extends PhaserObject
 {
   protected baseScale = 1;
   protected phaserObject: Phaser.GameObjects.Sprite;
 
+  constructor
+  (
+    scene: Scene,
+    spriteOrConfig: Phaser.GameObjects.Sprite | SpriteConfig,
+    options: SpriteOptions = {}
+  )
+  {
+    super(scene);
+
+    if (spriteOrConfig instanceof Phaser.GameObjects.Sprite)
+    {
+      this.phaserObject = spriteOrConfig;
+    }
+    else
+    {
+      this.phaserObject = createSprite(scene, spriteOrConfig);
+    }
+
+    this.applyOptions(scene, options);
+  }
+
+/*
   constructor
   (
     scene: Phaser.Scene,
@@ -30,17 +67,13 @@ export class Sprite extends PhaserObject
   {
     super(scene);
 
+    this.phaserObject = createSprite(scene, position, rotation, textureId);
+
     if (animation !== undefined)
     {
-      this.phaserObject = createSprite(scene, position, rotation, textureId);
-
       createAnimation(scene, textureId, animation);
 
       this.phaserObject.anims.play(animation.name);
-    }
-    else
-    {
-      this.phaserObject = createSprite(scene, position, rotation, textureId);
     }
 
     if (container !== undefined)
@@ -49,6 +82,7 @@ export class Sprite extends PhaserObject
     if (baseScale !== undefined)
       this.setBaseScale(baseScale);
   }
+*/
 
   // ---------------- Public methods --------------------
 
@@ -87,6 +121,42 @@ export class Sprite extends PhaserObject
   {
     this.phaserObject.scaleY = scale * this.baseScale;
   }
+
+  // ---------------- Private methods -------------------
+
+  private playAnimation(animationName: string)
+  {
+    this.phaserObject.anims.play(animationName);
+  }
+
+  private applyOptions
+  (
+    scene: Scene,
+    {
+      baseScale,
+      animation,
+      container
+    }:
+    {
+      baseScale?: number;
+      animation?: Sprite.Animation;
+      container?: Container;
+    }
+  )
+  {
+    if (animation !== undefined)
+    {
+      createAnimation(scene, animation);
+
+      this.playAnimation(animation.name);
+    }
+
+    if (container !== undefined)
+      container.add(this);
+
+    if (baseScale !== undefined)
+      this.setBaseScale(baseScale);
+  }
 }
 
 // ------------------ Type Declarations ----------------------
@@ -96,6 +166,7 @@ export namespace Sprite
   export type Animation =
   {
     name: string;
+    textureAtlasId: string;
     pathInTextureAtlas: string;
     numberOfFrames: number;
     frameRate: number;
@@ -107,19 +178,17 @@ export namespace Sprite
 function createSprite
 (
   scene: Phaser.Scene,
-  position: { x: number; y: number },
-  rotation: number,
-  textureId: string
+  config: SpriteConfig
 )
 {
   const sprite = scene.add.sprite
   (
-    position.x,
-    position.y,
-    textureId
+    config.position.x,
+    config.position.y,
+    config.textureOrAtlasId
   );
 
-  sprite.setRotation(rotation);
+  sprite.setRotation(config.rotation);
 
   return sprite;
 }
@@ -127,12 +196,11 @@ function createSprite
 function createAnimation
 (
   scene: Phaser.Scene,
-  textureId: string,
   animation: Sprite.Animation
 )
 {
   const INFINITE = -1;
-  const frameNames = generateFrameNames(scene, textureId, animation);
+  const frameNames = generateFrameNames(scene, animation);
 
   scene.anims.create
   (
@@ -145,19 +213,14 @@ function createAnimation
   );
 }
 
-function generateFrameNames
-(
-  scene: Phaser.Scene,
-  textureId: string,
-  animation: Sprite.Animation
-)
+function generateFrameNames(scene: Phaser.Scene, animation: Sprite.Animation)
 {
   // Use names like "001.png"
   const THREE_PLACES = 3;
 
   return scene.anims.generateFrameNames
   (
-    textureId,
+    animation.textureAtlasId,
     {
       start: 1,
       end: animation.numberOfFrames,

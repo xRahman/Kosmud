@@ -1,6 +1,8 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Phaser/Sprite";
 import { Container } from "../../Client/Phaser/Container";
+import { Scene } from "../../Client/Phaser/Scene";
+import { Tilemap } from "../../Client/Phaser/Tilemap";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
@@ -9,26 +11,32 @@ import { Ship } from "../Game/Ship";
 
 const Z_ORDER_SHIP_SPRITE = 0;
 
-/// TODO: Tohle by mělo být spíš SHIP_TEXTURE
-/// (není to sprite, je to textura).
-const SHIP_SPRITE_ID = "ship_sprite";
-const EXHAUST_SPRITE_ID = "exhaust_00_sprite";
+const BASIC_SHIPS_TEXTURE = "BasicShips texture";
+const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS =
+  "ExhaustYellowRectangular texture atlas";
+const BASIC_SHIPS_TILEMAP_JSON_DATA = "BasicShips tilemap JSON data";
 
-const TEXTURE_EXHAUSTS_00 = "Exhausts00";
-
-const ATLAS_EXHAUST_YELLOW_RECTANGULAR = "atlas_exhaust_yellow_rectangular";
-
-// /// TileMaps test.
-const TILEMAP_FIGHTER = "tilemap_fighter";
-const TEXTURE_ROGUE = "texture_rogue";
+/// To be deleted.
+// /// TODO: Tohle by mělo být spíš SHIP_TEXTURE
+// /// (není to sprite, je to textura).
+// const SHIP_SPRITE_ID = "ship_sprite";
+// const EXHAUST_SPRITE_ID = "exhaust_00_sprite";
+// const TEXTURE_EXHAUSTS_00 = "Exhausts00";
+// const ATLAS_EXHAUST_YELLOW_RECTANGULAR = "atlas_exhaust_yellow_rectangular";
+// // /// TileMaps test.
+// const TILEMAP_FIGHTER = "tilemap_fighter";
+// const TEXTURE_ROGUE = "texture_rogue";
 
 export class ShipGraphics
 {
   private readonly container: Container;
-  private readonly shipSprite: Sprite;
+  private readonly basicShipsTilemap: Tilemap;
   private readonly vectors: VectorGraphics;
 
   private readonly shapeGraphics: ShapeGraphics;
+
+  /// To be deleted.
+  // private readonly shipSprite: Sprite;
 
   constructor
   (
@@ -39,20 +47,23 @@ export class ShipGraphics
     this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
-    // /// TileMaps test.
-    const map = scene.make.tilemap({ key: TILEMAP_FIGHTER });
-    // console.log(map);
-    const tilesetRogue = map.addTilesetImage
-    (
-      /// Tohle je nejspíš jméno tilesetu v Tiled editoru.
-      "rogue",
-      TEXTURE_ROGUE
-    );
-    const shipLayer = map.createStaticLayer
-    (
-      "graphics", tilesetRogue, -190, -190
-    );
-    this.container.addLayer(shipLayer);
+    this.basicShipsTilemap = new Tilemap(scene, BASIC_SHIPS_TILEMAP_JSON_DATA);
+
+    /// To be deleted.
+    // // /// TileMaps test.
+    // const map = scene.make.tilemap({ key: TILEMAP_FIGHTER });
+    // // console.log(map);
+    // const tilesetRogue = map.addTilesetImage
+    // (
+    //   /// Tohle je nejspíš jméno tilesetu v Tiled editoru.
+    //   "rogue",
+    //   TEXTURE_ROGUE
+    // );
+    // const shipLayer = map.createStaticLayer
+    // (
+    //   "graphics", tilesetRogue, -190, -190
+    // );
+    // this.container.addLayer(shipLayer);
     /// Potřebuju já vůbec tileset image? Budu z toho stejně dělat
     /// sprite (ale ta si asi bere texturu z tilesetu...)
     // const tilesetExhaust = map.addTilesetImage
@@ -116,7 +127,7 @@ export class ShipGraphics
         }
       );
 
-      console.log(frameNames);
+      // console.log(frameNames);
 
       scene.anims.create
       (
@@ -136,50 +147,59 @@ export class ShipGraphics
     // this.exhaustSprites = createExhaustSprites(scene, this.container);
 
     this.vectors = new VectorGraphics(scene);
-
-    // // layer.setRotation(Math.PI / 6);
-    // const tmpSprite = scene.add.sprite(0, 0, SHIP_SPRITE_ID);
-    // this.tmp = scene.add.container(0, 0);
-    // this.tmp.add(layer);
-    // this.tmp.add(tmpSprite);
-
-    // layer.rotation = Math.PI / 6;
-    // layer.x = 200;
-    // layer.
   }
 
   // ------------- Public static methods ----------------
 
-  public static preload(scene: Phaser.Scene)
+  public static preload(scene: Scene)
   {
-    scene.load.image(SHIP_SPRITE_ID, "Textures/Ships/hecate.png");
+    scene.load.image(BASIC_SHIPS_TEXTURE, "Textures/Ships/basic_ships.png");
 
     scene.load.multiatlas
     (
-      TEXTURE_EXHAUSTS_00,
-      // Location of texture atlas.
-      "Textures/Effects/Exhausts/Exhausts00.json",
-      // Directory where textures are located.
-      "Textures/Effects/Exhausts"
-    );
-
-    /// Test of atlas animated sprite created from object layer.
-    scene.load.multiatlas
-    (
-      ATLAS_EXHAUST_YELLOW_RECTANGULAR,
+      EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS,
       // Location of texture atlas in /Client.
       "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
       // Directory where textures are located in /Client.
       "Textures/Effects/Exhausts"
     );
 
-    // /// TileMaps test.
     scene.load.tilemapTiledJSON
     (
-      TILEMAP_FIGHTER,
-      "TileMaps/Ships/fighter.json"
+      BASIC_SHIPS_TILEMAP_JSON_DATA,
+      // Path relative to /Client.
+      "TileMaps/Ships/basic_ships.json"
     );
-    scene.load.image(TEXTURE_ROGUE, "Textures/Ships/rogue.png");
+
+    /// To be delted.
+    // scene.load.image(SHIP_SPRITE_ID, "Textures/Ships/hecate.png");
+
+    // scene.load.multiatlas
+    // (
+    //   TEXTURE_EXHAUSTS_00,
+    //   // Location of texture atlas.
+    //   "Textures/Effects/Exhausts/Exhausts00.json",
+    //   // Directory where textures are located.
+    //   "Textures/Effects/Exhausts"
+    // );
+
+    // /// Test of atlas animated sprite created from object layer.
+    // scene.load.multiatlas
+    // (
+    //   ATLAS_EXHAUST_YELLOW_RECTANGULAR,
+    //   // Location of texture atlas in /Client.
+    //   "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
+    //   // Directory where textures are located in /Client.
+    //   "Textures/Effects/Exhausts"
+    // );
+
+    // /// TileMaps test.
+    // scene.load.tilemapTiledJSON
+    // (
+    //   TILEMAP_FIGHTER,
+    //   "TileMaps/Ships/fighter.json"
+    // );
+    // scene.load.image(TEXTURE_ROGUE, "Textures/Ships/rogue.png");
     // scene.load.image
     // (
     //   "test_animation_texture",
@@ -293,24 +313,26 @@ export class ShipGraphics
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createShipSprite(scene: Phaser.Scene, container: Container)
-{
-  const position = { x: 0, y: 0 };
-  const rotation = 0;
+/// To be deleted
+/// (ship sprite se vyrábět bude, ale z object layeru tilesetu).
+// function createShipSprite(scene: Phaser.Scene, container: Container)
+// {
+//   const position = { x: 0, y: 0 };
+//   const rotation = 0;
 
-  const shipSprite = new Sprite
-  (
-    scene, position, rotation, SHIP_SPRITE_ID, { container }
-  );
+//   const shipSprite = new Sprite
+//   (
+//     scene, position, rotation, SHIP_SPRITE_ID, { container }
+//   );
 
-  // shipSprite.setScrollFactor(0.5);
+//   // shipSprite.setScrollFactor(0.5);
 
-  shipSprite.setDepth(Z_ORDER_SHIP_SPRITE);
+//   shipSprite.setDepth(Z_ORDER_SHIP_SPRITE);
 
-  container.add(shipSprite);
+//   container.add(shipSprite);
 
-  return shipSprite;
-}
+//   return shipSprite;
+// }
 
 // function createExhaustSprites(scene: Phaser.Scene, container: Container)
 // {

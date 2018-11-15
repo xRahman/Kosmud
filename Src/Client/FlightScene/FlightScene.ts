@@ -15,9 +15,8 @@ const FLIGHT_SCENE = "Flight scene";
 
 export class FlightScene extends Scene
 {
-  // /// TileMaps test.
-  // public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
-  //   "Not loaded";
+  public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
+    "Not loaded";
 
   // ~ Overrides Scene.contents.
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
@@ -60,15 +59,7 @@ export class FlightScene extends Scene
   // This method is run by Phaser.
   public preload()
   {
-    /// AnimatedTiles plugin load test.
-    this.load.scenePlugin
-    (
-      {
-        key: "AnimatedTiles",
-        url: "js/phaser/AnimatedTiles.js",
-        sceneKey: "animatedTilesPlugin"
-      }
-    );
+    this.preloadAnimatedTilesPlugin();
 
     FlightSceneContents.preload(this);
   }
@@ -137,9 +128,6 @@ export class FlightScene extends Scene
 
   private queueAddShipRequest(request: ShipToScene)
   {
-    /// DEBUG:
-    // console.log("Queueing ship add request");
-
     this.addRequestQueue.push(request);
   }
 
@@ -147,11 +135,25 @@ export class FlightScene extends Scene
   {
     for (const request of this.addRequestQueue)
     {
-      /// DEBUG:
-      // console.log("Creating ship based on queued request");
-
       contents.addShip(this.createShip(request));
     }
+  }
+
+  private preloadAnimatedTilesPlugin()
+  {
+    this.load.scenePlugin
+    (
+      {
+        // Key is not used anywhere (we let loader assign the plugin
+        // directly to property of FlightScene) but it is required
+        // parameter so we make something up to make loader happy.
+        key: "AnimatedTiles",
+        // Path relative to /Client where plugin code is located.
+        url: "js/phaser/AnimatedTiles.js",
+        // Name of the property of FlightScene to assign the plugin to.
+        sceneKey: "animatedTilesPlugin"
+      }
+    );
   }
 }
 
