@@ -48,7 +48,9 @@ export class Sound
   {
     /// Tohle je hack - v Phaser.Sound.BaseSound není property
     /// volume, ale používáme nejspíš webaudio, kde ta property je.
-    if ("volume" in this.phaserSound)
+    ///   Zrada: "volume" je setter, takže i když existuje, může to
+    /// spadnout na přístupu na "volumeNode".
+    if ("volume" in this.phaserSound && "volumeNode" in this.phaserSound)
     {
       // tslint:disable-next-line:no-string-literal
       (this.phaserSound as any)["volume"] = volume0to1 * this.baseVolume0to1;
@@ -59,7 +61,9 @@ export class Sound
   {
     /// Tohle je hack - v Phaser.Sound.BaseSound není property
     /// volume, ale používáme nejspíš webaudio, kde ta property je.
-    if ("volume" in this.phaserSound)
+    ///   Zrada: "volume" je getter, takže i když existuje, může to
+    /// spadnout na přístupu na "volumeNode".
+    if ("volume" in this.phaserSound && "volumeNode" in this.phaserSound)
     {
       // tslint:disable-next-line:no-string-literal
       return ((this.phaserSound as any)["volume"] as number);

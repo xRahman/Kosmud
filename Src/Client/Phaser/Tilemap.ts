@@ -4,7 +4,6 @@
 
 import { Scene } from "../../Client/Phaser/Scene";
 import { Sprite } from "../../Client/Phaser/Sprite";
-import { Container } from "../../Client/Phaser/Container";
 
 export class Tilemap
 {
@@ -12,7 +11,8 @@ export class Tilemap
 
   constructor
   (
-    private scene: Scene,
+    private readonly scene: Scene,
+    private readonly name: string,
     // String id of preloaded tilemap json data.
     tilemapJsonDataId: string
   )
@@ -22,70 +22,85 @@ export class Tilemap
 
   // ---------------- Public methods --------------------
 
-  public createSpritesFromObjectLayer
+  // ! Throws exception on error.
+  public createSprites
   (
     // Object layer name in Tiled editor.
-    objectLayerName: string,
+    tilemapObjectLayerName: string,
     // Object name in Tiled editor.
-    objectName: string,
+    tilemapObjectName: string,
     // Id of texture or texture atlas to be used.
     textureOrAtlasId: string,
-    container?: Container
+    options: Sprite.Options
   )
+  : Array<Sprite>
   {
     const phaserSprites = this.tilemap.createFromObjects
     (
-      objectLayerName,
-      // Object name in Tiled editor.
-      objectName,
+      tilemapObjectLayerName,
+      tilemapObjectName,
       { key: textureOrAtlasId }
     );
 
-    /// TODO: Nějak z těch spritů navyrábat Sprite objekty...
-    /// - asi budu muset přetížit parametry konstruktoru ve Sprite.
+    const result: Array<Sprite> = [];
 
     for (const phaserSprite of phaserSprites)
     {
-      /// TODO: Animation bych možná měl dostat jako argument.
-      const animation: Sprite.Animation =
-      {
-        name: "TODO",
-        textureAtlasId
-        pathInTextureAtlas: "TODO";
-        numberOfFrames: number;
-        frameRate: number;
-      };
+      // /// TODO: Animation bych možná měl dostat jako argument
+      // ///   (taky se to nemusí vůbec animovat).
+      // const animation: Sprite.Animation =
+      // {
+      //   name: "TODO",
+      //   textureAtlasId: textureOrAtlasId,
+      //   pathInTextureAtlas: "TODO";
+      //   numberOfFrames: number;
+      //   frameRate: number;
+      // };
+
+      /// Tohle jsem vyřešil tím, že jsem to posunul v Tiled editoru
+      /// na [-100, 100];
+      // Phaser sprites have origin in the middle, Tiled tiles at top left.
+      // So we need to correct it.
+      // phaserSprite.setX(phaserSprite.x - this.tilemap.tileWidth / 2);
+      // phaserSprite.setY(phaserSprite.y - this.tilemap.tileHeight / 2);
+
+      console.log(phaserSprite);
 
       const sprite = new Sprite
       (
         this.scene,
         phaserSprite,
-        {
-          animation,
-          container
-        }
+        options
       );
 
-      /// Origin spritu v Phaseru je uprostřed, ale v Tiled vlevo nahoře.
-      /// TODO: Vymyslet, odkud ta čísla brát
-      ///   (jsou to asi půlky rozměrů ship layeru)
-      phaserSprite.setX(phaserSprite.x - 190);
-      phaserSprite.setY(phaserSprite.y - 190);
-      this.container.addSprite(phaserSprite);
+      result.push(sprite);
 
-      const frameNames = scene.anims.generateFrameNames
-      (
-        ATLAS_EXHAUST_YELLOW_RECTANGULAR,
-        {
-          start: 1,
-          end: 8, // animation.numberOfFrames,
-          zeroPad: 3, // THREE_PLACES,
-          prefix: "ExhaustYellowRectangular/", // animation.pathInTextureAtlas,
-          /// Aha, já jsem asi v texture packeru vypnul přidávání suffixu
-          /// - to možná nebyl úplně dobrej nápad.
-          // suffix: ".png"
-          suffix: ""
-        }
-      );
+      // /// Tohle teď snad dělá konstructor Sprite classy.
+  // this.container.addSprite(phaserSprite);
+
+  // const frameNames = scene.anims.generateFrameNames
+  // (
+  //   ATLAS_EXHAUST_YELLOW_RECTANGULAR,
+  //   {
+  //     start: 1,
+  //     end: 8, // animation.numberOfFrames,
+  //     zeroPad: 3, // THREE_PLACES,
+  //     prefix: "ExhaustYellowRectangular/", // animation.pathInTextureAtlas,
+  //     /// Aha, já jsem asi v texture packeru vypnul přidávání suffixu
+  //     /// - to možná nebyl úplně dobrej nápad.
+  //     // suffix: ".png"
+  //     suffix: ""
+  //   }
+  // );
+    }
+
+    if (result.length === 0)
+    {
+      throw new Error(`No sprites based on object name '${tilemapObjectName}'`
+        + ` have been found in object layer '${tilemapObjectLayerName}' of`
+        + ` tilemap '${this.name}'`);
+    }
+
+    return result;
   }
 }

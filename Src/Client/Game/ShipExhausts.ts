@@ -4,13 +4,20 @@ import { Sprite } from "../../Client/Phaser/Sprite";
 import { ShipSound } from "../../Client/FlightScene/ShipSound";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 
-const FRONT_SCALE = 1;
-const SIDE_SCALE = 0.4;
-const REAR_SCALE = 2;
+// const FRONT_SCALE = 1;
+// const SIDE_SCALE = 0.4;
+// const REAR_SCALE = 2;
 
 const FRONT_VOLUME = 0.1;
 const SIDE_VOLUME = 0.04;
 const REAR_VOLUME = 0.2;
+
+const FRONT_EXHAUST_TILEMAP_OBJECT = "Front Exhaust";
+const FRONT_LEFT_EXHAUST_TILEMAP_OBJECT = "Front Left Exhaust";
+const FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT = "Front Right Exhaust";
+const REAR_LEFT_EXHAUST_TILEMAP_OBJECT = "Rear Left Exhaust";
+const REAR_RIGHT_EXHAUST_TILEMAP_OBJECT = "Rear Right Exhaust";
+const REAR_EXHAUST_TILEMAP_OBJECT = "Rear Exhaust";
 
 type Exhaust =
 {
@@ -22,70 +29,79 @@ export class ShipExhausts
 {
   private readonly front: Exhaust;
   private readonly frontLeft: Exhaust;
-  private readonly backLeft: Exhaust;
   private readonly frontRight: Exhaust;
-  private readonly backRight: Exhaust;
+  private readonly rearLeft: Exhaust;
+  private readonly rearRight: Exhaust;
   private readonly rear: Exhaust;
 
+  // ! Throws exception on error.
   constructor
   (
     graphics: ShipGraphics,
     sound: ShipSound
   )
   {
+    const animationName = "Exhaust Yellow Rectangular Animation";
+
+    graphics.createExhaustSpriteAnimation(animationName);
+
     this.front =
     {
-      sprites:
-      [
-        graphics.createExhaustSprite("0", 120, -65, -Math.PI / 2, FRONT_SCALE),
-        graphics.createExhaustSprite("1", 120, 65, -Math.PI / 2, FRONT_SCALE)
-      ],
+      sprites: graphics.createExhaustSprites
+      (
+        FRONT_EXHAUST_TILEMAP_OBJECT,
+        animationName
+      ),
       sound: sound.createExhaustSound(FRONT_VOLUME)
     };
 
     this.frontLeft =
     {
-      sprites:
-      [
-        graphics.createExhaustSprite("2", 100, -67, Math.PI, SIDE_SCALE)
-      ],
-      sound: sound.createExhaustSound(SIDE_VOLUME)
-    };
-
-    this.backLeft =
-    {
-      sprites:
-      [
-        graphics.createExhaustSprite("3", -95, -120, Math.PI, SIDE_SCALE)
-      ],
+      sprites: graphics.createExhaustSprites
+      (
+        FRONT_LEFT_EXHAUST_TILEMAP_OBJECT,
+        animationName
+      ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
     this.frontRight =
     {
-      sprites:
-      [
-        graphics.createExhaustSprite("4", 100, 67, 0, SIDE_SCALE)
-      ],
+      sprites: graphics.createExhaustSprites
+      (
+        FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT,
+        animationName
+      ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
-    this.backRight =
+    this.rearLeft =
     {
-      sprites:
-      [
-        graphics.createExhaustSprite("5", -95, 120, 0, SIDE_SCALE)
-      ],
+      sprites: graphics.createExhaustSprites
+      (
+        REAR_LEFT_EXHAUST_TILEMAP_OBJECT,
+        animationName
+      ),
+      sound: sound.createExhaustSound(SIDE_VOLUME)
+    };
+
+    this.rearRight =
+    {
+      sprites: graphics.createExhaustSprites
+      (
+        REAR_RIGHT_EXHAUST_TILEMAP_OBJECT,
+        animationName
+      ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
     };
 
     this.rear =
     {
-      sprites:
-      [
-        graphics.createExhaustSprite("6", -190, -50, Math.PI / 2, REAR_SCALE),
-        graphics.createExhaustSprite("7", -190, 50, Math.PI / 2, REAR_SCALE)
-      ],
+      sprites: graphics.createExhaustSprites
+      (
+        REAR_EXHAUST_TILEMAP_OBJECT,
+        animationName
+      ),
       sound: sound.createExhaustSound(REAR_VOLUME)
     };
   }
@@ -120,13 +136,13 @@ export class ShipExhausts
 
     updateExhaust
     (
-      this.backLeft,
+      this.rearLeft,
       lowerBound(leftwardThrustRatio / 2, 0) + lowerBound(torqueRatio / 2, 0)
     );
 
     updateExhaust
     (
-      this.backRight,
+      this.rearRight,
       lowerBound(-leftwardThrustRatio / 2, 0) + lowerBound(-torqueRatio / 2, 0)
     );
 
@@ -140,7 +156,8 @@ function updateExhaust(exhaust: Exhaust, scale: number)
 {
   for (const sprite of exhaust.sprites)
   {
-    sprite.setScaleY(scale);
+    sprite.setScaleX(scale);
+    // sprite.setLengthwiseScale(scale);
   }
 
   exhaust.sound.setVolume(scale);

@@ -20,6 +20,7 @@ export class Ship
     desiredLeftwardSteeringForce: new Vector()
   };
 
+  // ! Throws exception on error.
   constructor
   (
     private readonly scene: FlightScene,
@@ -28,9 +29,11 @@ export class Ship
     private rotation: number
   )
   {
+    // ! Throws exception on error.
     this.graphics = new ShipGraphics(scene, shape);
     this.sound = new ShipSound(scene);
 
+    // ! Throws exception on error.
     this.exhausts = new ShipExhausts(this.graphics, this.sound);
 
     this.setPosition(position);

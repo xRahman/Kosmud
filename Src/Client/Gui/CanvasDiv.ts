@@ -6,6 +6,7 @@
 
 import { Component } from "../../Client/Gui/Component";
 import { Renderer } from "../../Client/Phaser/Renderer";
+import { REPORT } from "../../Shared/Log/REPORT";
 
 export class CanvasDiv extends Component
 {
@@ -69,7 +70,14 @@ export class CanvasDiv extends Component
 
   private onResize()
   {
-    Renderer.resize(this.getWidth(), this.getHeight());
+    try
+    {
+      Renderer.resize(this.getWidth(), this.getHeight());
+    }
+    catch (error)
+    {
+      REPORT(error, "Failed to resize the renderer");
+    }
   }
 
   // ---------------- Private methods -------------------

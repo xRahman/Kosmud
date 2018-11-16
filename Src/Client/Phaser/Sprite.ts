@@ -6,30 +6,20 @@ import { Scene } from "../../Client/Phaser/Scene";
 import { Container } from "../../Client/Phaser/Container";
 import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
-interface SpriteConfig
-{
-  position: { x: number; y: number };
-  rotation: number;
-  textureOrAtlasId: string;
-}
-
-interface SpriteOptions
-{
-  baseScale?: number;
-  animation?: Sprite.Animation;
-  container?: Container;
-}
+const INFINITE_REPEAT = -1;
 
 export class Sprite extends PhaserObject
 {
-  protected baseScale = 1;
+  protected baseScaleX = 1;
+  protected baseScaleY = 1;
+
   protected phaserObject: Phaser.GameObjects.Sprite;
 
   constructor
   (
     scene: Scene,
-    spriteOrConfig: Phaser.GameObjects.Sprite | SpriteConfig,
-    options: SpriteOptions = {}
+    spriteOrConfig: Phaser.GameObjects.Sprite | Sprite.Config,
+    options: Sprite.Options = {}
   )
   {
     super(scene);
@@ -37,52 +27,39 @@ export class Sprite extends PhaserObject
     if (spriteOrConfig instanceof Phaser.GameObjects.Sprite)
     {
       this.phaserObject = spriteOrConfig;
+
+      this.baseScaleX = this.getScaleX();
+      this.baseScaleY = this.getScaleY();
     }
     else
     {
-      this.phaserObject = createSprite(scene, spriteOrConfig);
+      this.phaserObject = this.createPhaserSprite(spriteOrConfig);
     }
 
-    this.applyOptions(scene, options);
+    this.applyOptions(options);
   }
 
-/*
-  constructor
+  // ------------- Public static methods ----------------
+
+  public static createAnimation
   (
     scene: Phaser.Scene,
-    position: { x: number; y: number },
-    rotation: number,
-    textureId: string,
-    {
-      baseScale,
-      animation,
-      container
-    }:
-    {
-      baseScale?: number;
-      animation?: Sprite.Animation;
-      container?: Container;
-    } = {}
+    animation: Sprite.Animation,
+    repeat = INFINITE_REPEAT
   )
   {
-    super(scene);
+    const frameNames = generateFrameNames(scene, animation);
 
-    this.phaserObject = createSprite(scene, position, rotation, textureId);
-
-    if (animation !== undefined)
-    {
-      createAnimation(scene, textureId, animation);
-
-      this.phaserObject.anims.play(animation.name);
-    }
-
-    if (container !== undefined)
-      container.add(this);
-
-    if (baseScale !== undefined)
-      this.setBaseScale(baseScale);
+    scene.anims.create
+    (
+      {
+        key: animation.name,
+        frames: frameNames,
+        frameRate: animation.frameRate,
+        repeat
+      }
+    );
   }
-*/
 
   // ---------------- Public methods --------------------
 
@@ -94,33 +71,36 @@ export class Sprite extends PhaserObject
     this.phaserObject.setDisplaySize(width, height);
   }
 
-  public setBaseScale(baseScale: number)
-  {
-    // Prevent possible division by zero.
-    const oldBaseScale = (this.baseScale !== 0) ? this.baseScale : 1;
-
-    this.baseScale = baseScale;
-
-    this.phaserObject.scaleX *= baseScale / oldBaseScale;
-    this.phaserObject.scaleY *= baseScale / oldBaseScale;
-  }
-
-  public getBaseScale() { return this.baseScale; }
+  public getScaleX() { return this.phaserObject.scaleX; }
+  public getScaleY() { return this.phaserObject.scaleY; }
 
   public setScale(scale: number)
   {
-    this.phaserObject.setScale(scale * this.baseScale);
+    this.phaserObject.scaleX = scale * this.baseScaleX;
+    this.phaserObject.scaleY = scale * this.baseScaleY;
   }
 
   public setScaleX(scale: number)
   {
-    this.phaserObject.scaleX = scale * this.baseScale;
+    this.phaserObject.scaleX = scale * this.baseScaleX;
   }
 
   public setScaleY(scale: number)
   {
-    this.phaserObject.scaleY = scale * this.baseScale;
+    this.phaserObject.scaleY = scale * this.baseScaleY;
   }
+
+  // public setLengthwiseScale(scale: number)
+  // {
+  //   const rotation = this.getRotation();
+
+  //   if (rotation === 0)
+  //     this.setScaleX(scale);
+  // }
+
+  // public setCrosswiseScale(scale: number)
+  // {
+  // }
 
   // ---------------- Private methods -------------------
 
@@ -129,89 +109,55 @@ export class Sprite extends PhaserObject
     this.phaserObject.anims.play(animationName);
   }
 
-  private applyOptions
-  (
-    scene: Scene,
-    {
-      baseScale,
-      animation,
-      container
-    }:
-    {
-      baseScale?: number;
-      animation?: Sprite.Animation;
-      container?: Container;
-    }
-  )
+  private applyOptions(options: Sprite.Options)
   {
-    if (animation !== undefined)
-    {
-      createAnimation(scene, animation);
+    if (options.animationName !== undefined)
+      this.playAnimation(options.animationName);
 
-      this.playAnimation(animation.name);
-    }
+    if (options.container !== undefined)
+      options.container.add(this);
 
-    if (container !== undefined)
-      container.add(this);
+    if (options.origin)
+      this.setOrigin(options.origin);
+  }
 
-    if (baseScale !== undefined)
-      this.setBaseScale(baseScale);
+  // tslint:disable-next-line:prefer-function-over-method
+  private setOrigin({ x, y }: { x: number; y: number })
+  {
+// this.phaserObject.displayOriginX = this.phaserObject.displayWidth * x;
+// this.phaserObject.displayOriginY = this.phaserObject.displayHeight * y;
+
+// const oldOriginX = this.phaserObject.originX;
+// const oldOriginY = this.phaserObject.originY;
+
+// this.phaserObject.x -= (oldOriginX - x) * this.phaserObject.displayWidth;
+// this.phaserObject.y -= (oldOriginY - y) * this.phaserObject.displayHeight;
+
+    this.phaserObject.setOrigin(x, y);
+  }
+
+  private createPhaserSprite(config: Sprite.Config)
+  {
+    const sprite = this.scene.add.sprite
+    (
+      config.position.x,
+      config.position.y,
+      config.textureOrAtlasId
+    );
+
+    sprite.setRotation(config.rotation);
+
+    if (config.baseScaleX !== undefined)
+      this.baseScaleX = config.baseScaleX;
+
+    if (config.baseScaleY !== undefined)
+      this.baseScaleY = config.baseScaleY;
+
+    return sprite;
   }
 }
 
-// ------------------ Type Declarations ----------------------
-
-export namespace Sprite
-{
-  export type Animation =
-  {
-    name: string;
-    textureAtlasId: string;
-    pathInTextureAtlas: string;
-    numberOfFrames: number;
-    frameRate: number;
-  };
-}
-
 // ----------------- Auxiliary Functions ---------------------
-
-function createSprite
-(
-  scene: Phaser.Scene,
-  config: SpriteConfig
-)
-{
-  const sprite = scene.add.sprite
-  (
-    config.position.x,
-    config.position.y,
-    config.textureOrAtlasId
-  );
-
-  sprite.setRotation(config.rotation);
-
-  return sprite;
-}
-
-function createAnimation
-(
-  scene: Phaser.Scene,
-  animation: Sprite.Animation
-)
-{
-  const INFINITE = -1;
-  const frameNames = generateFrameNames(scene, animation);
-
-  scene.anims.create
-  (
-    {
-      key: animation.name,
-      frames: frameNames,
-      frameRate: animation.frameRate,
-      repeat: INFINITE
-    }
-  );
-}
 
 function generateFrameNames(scene: Phaser.Scene, animation: Sprite.Animation)
 {
@@ -229,4 +175,34 @@ function generateFrameNames(scene: Phaser.Scene, animation: Sprite.Animation)
       suffix: ".png"
     }
   );
+}
+
+// ------------------ Type Declarations ----------------------
+
+export namespace Sprite
+{
+  export interface Animation
+  {
+    name: string;
+    textureAtlasId: string;
+    pathInTextureAtlas: string;
+    numberOfFrames: number;
+    frameRate: number;
+  }
+
+  export interface Config
+  {
+    position: { x: number; y: number };
+    rotation: number;
+    textureOrAtlasId: string;
+    baseScaleX?: number;
+    baseScaleY?: number;
+  }
+
+  export interface Options
+  {
+    animationName?: string;
+    container?: Container;
+    origin?: { x: number; y: number };
+  }
 }

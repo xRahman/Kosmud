@@ -5,6 +5,8 @@ import { Ship } from "../../Client/Game/Ship";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
+import { REPORT } from "../../Shared/Log/REPORT";
+import { ERROR } from "../../Shared/Log/ERROR";
 
 interface AnimatedTilesPlugin
 {
@@ -64,13 +66,12 @@ export class FlightScene extends Scene
     FlightSceneContents.preload(this);
   }
 
-  // ! Throws exception on error.
   // This method is run by Phaser.
   public create()
   {
     if (this.contents !== "Doesn't exist")
     {
-      throw new Error(`Failed to create scene '${this.name}'`
+      ERROR(`Failed to create scene '${this.name}'`
         + ` because scene contents already exist`);
     }
 
@@ -78,7 +79,14 @@ export class FlightScene extends Scene
 
     this.contents.create(this);
 
-    this.createBufferedShips(this.contents);
+    try
+    {
+      this.createBufferedShips(this.contents);
+    }
+    catch (error)
+    {
+      REPORT(error, "Failed to add ships to flight scene");
+    }
   }
 
   // This method is run periodically by Phaser.
@@ -86,8 +94,9 @@ export class FlightScene extends Scene
   {
     if (this.contents === "Doesn't exist")
     {
-      throw new Error(`Failed to update scene '${this.name}'`
+      ERROR(`Failed to update scene '${this.name}'`
         + ` because scene contents doesn't exist`);
+      return;
     }
 
     this.contents.update();
@@ -106,6 +115,7 @@ export class FlightScene extends Scene
     if (this.contents === "Doesn't exist")
       return;
 
+    // ! Throws exception on error.
     this.contents.background.resize(width, height);
 
     /// (Musí se tohle volat?)
@@ -115,8 +125,10 @@ export class FlightScene extends Scene
 
   // ---------------- Private methods -------------------
 
+  // ! Throws exception on error.
   private createShip(request: ShipToScene): Ship
   {
+    // ! Throws exception on error.
     return new Ship
     (
       this,
@@ -131,11 +143,16 @@ export class FlightScene extends Scene
     this.addRequestQueue.push(request);
   }
 
+  // ! Throws exception on error.
   private createBufferedShips(contents: FlightSceneContents)
   {
     for (const request of this.addRequestQueue)
     {
-      contents.addShip(this.createShip(request));
+      contents.addShip
+      (
+        // ! Throws exception on error.
+        this.createShip(request)
+      );
     }
   }
 

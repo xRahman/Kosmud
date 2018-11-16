@@ -9,12 +9,18 @@ import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
 import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
 import { Ship } from "../Game/Ship";
 
-const Z_ORDER_SHIP_SPRITE = 0;
+// const Z_ORDER_SHIP_SPRITE = 0;
 
 const BASIC_SHIPS_TEXTURE = "BasicShips texture";
 const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS =
   "ExhaustYellowRectangular texture atlas";
-const BASIC_SHIPS_TILEMAP_JSON_DATA = "BasicShips tilemap JSON data";
+const BASIC_SHIPS_TILEMAP = "Basic Ships";
+const BASIC_SHIPS_TILEMAP_JSON_DATA = "Basic Ships tilemap JSON data";
+
+const BASIC_FIGHTER_HULL_LAYER = "Basic Fighter Hull";
+const SHIP_HULL_OBJECT = "Ship Hull";
+
+const BASIC_FIGHTER_EXHAUSTS_TILEMAP_LAYER = "Basic Fighter Exhausts";
 
 /// To be deleted.
 // /// TODO: Tohle by mělo být spíš SHIP_TEXTURE
@@ -31,6 +37,7 @@ export class ShipGraphics
 {
   private readonly container: Container;
   private readonly basicShipsTilemap: Tilemap;
+  private readonly shipSprites: Array<Sprite>;
   private readonly vectors: VectorGraphics;
 
   private readonly shapeGraphics: ShapeGraphics;
@@ -38,6 +45,7 @@ export class ShipGraphics
   /// To be deleted.
   // private readonly shipSprite: Sprite;
 
+  // ! Throws exception on error.
   constructor
   (
     private readonly scene: FlightScene,
@@ -47,7 +55,18 @@ export class ShipGraphics
     this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
-    this.basicShipsTilemap = new Tilemap(scene, BASIC_SHIPS_TILEMAP_JSON_DATA);
+    this.basicShipsTilemap = new Tilemap
+    (
+      scene,
+      BASIC_SHIPS_TILEMAP,
+      BASIC_SHIPS_TILEMAP_JSON_DATA
+    );
+
+    // ! Throws exception on error.
+    this.shipSprites = this.createShipSprites();
+    this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
+
+    this.vectors = new VectorGraphics(scene);
 
     /// To be deleted.
     // // /// TileMaps test.
@@ -90,63 +109,57 @@ export class ShipGraphics
 
     //////////////////////////////////////////
     /// Test of atlas animated sprite created from object layer.
-    const rearRightThrusters = map.createFromObjects
-    (
-      /// Jméno object layeru.
-      "thrusters",
-      /// Jméno objektu v tiled editoru.
-      "rearRightThruster",
-      /// Tohle je id textury, která se má použít.
-      // { key: EXHAUST_SPRITE_ID }
-      // { key: "ExhaustYellowRectangular/001" }
-      /// Id texture atlasu zdá se funguje! - teď to ještě rozanimovat.
-      { key: ATLAS_EXHAUST_YELLOW_RECTANGULAR }
-    );
-    // console.log(rearRightThrusters);
-    for (const thruster of rearRightThrusters)
-    {
-      /// Origin spritu v Phaseru je uprostřed, ale v Tiled vlevo nahoře.
-      /// TODO: Vymyslet, odkud ta čísla brát
-      ///   (jsou to asi půlky rozměrů ship layeru)
-      thruster.setX(thruster.x - 190);
-      thruster.setY(thruster.y - 190);
-      this.container.addSprite(thruster);
+// const rearRightThrusters = map.createFromObjects
+// (
+//   /// Jméno object layeru.
+//   "thrusters",
+//   /// Jméno objektu v tiled editoru.
+//   "rearRightThruster",
+//   /// Tohle je id textury, která se má použít.
+//   // { key: EXHAUST_SPRITE_ID }
+//   // { key: "ExhaustYellowRectangular/001" }
+//   /// Id texture atlasu zdá se funguje! - teď to ještě rozanimovat.
+//   { key: ATLAS_EXHAUST_YELLOW_RECTANGULAR }
+// );
+// // console.log(rearRightThrusters);
+// for (const thruster of rearRightThrusters)
+// {
+//   /// Origin spritu v Phaseru je uprostřed, ale v Tiled vlevo nahoře.
+//   /// TODO: Vymyslet, odkud ta čísla brát
+//   ///   (jsou to asi půlky rozměrů ship layeru)
+//   thruster.setX(thruster.x - 190);
+//   thruster.setY(thruster.y - 190);
+//   this.container.addSprite(thruster);
 
-      const frameNames = scene.anims.generateFrameNames
-      (
-        ATLAS_EXHAUST_YELLOW_RECTANGULAR,
-        {
-          start: 1,
-          end: 8, // animation.numberOfFrames,
-          zeroPad: 3, // THREE_PLACES,
-          prefix: "ExhaustYellowRectangular/", // animation.pathInTextureAtlas,
-          /// Aha, já jsem asi v texture packeru vypnul přidávání suffixu
-          /// - to možná nebyl úplně dobrej nápad.
-          // suffix: ".png"
-          suffix: ""
-        }
-      );
+//   const frameNames = scene.anims.generateFrameNames
+//   (
+//     ATLAS_EXHAUST_YELLOW_RECTANGULAR,
+//     {
+//       start: 1,
+//       end: 8, // animation.numberOfFrames,
+//       zeroPad: 3, // THREE_PLACES,
+//       prefix: "ExhaustYellowRectangular/", // animation.pathInTextureAtlas,
+//       /// Aha, já jsem asi v texture packeru vypnul přidávání suffixu
+//       /// - to možná nebyl úplně dobrej nápad.
+//       // suffix: ".png"
+//       suffix: ""
+//     }
+//   );
 
-      // console.log(frameNames);
+//   // console.log(frameNames);
 
-      scene.anims.create
-      (
-        {
-          key: "animation_rear_right_thrusters", // animation.name,
-          frames: frameNames,
-          frameRate: 25, // animation.frameRate,
-          repeat: -1 // INFINITE
-        }
-      );
-      thruster.anims.play("animation_rear_right_thrusters"/*animation.name*/);
-    }
+//   scene.anims.create
+//   (
+//     {
+//       key: "animation_rear_right_thrusters", // animation.name,
+//       frames: frameNames,
+//       frameRate: 25, // animation.frameRate,
+//       repeat: -1 // INFINITE
+//     }
+//   );
+//   thruster.anims.play("animation_rear_right_thrusters"/*animation.name*/);
+// }
     //////////////////////////////////////////
-
-    this.shipSprite = createShipSprite(scene, this.container);
-    this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
-    // this.exhaustSprites = createExhaustSprites(scene, this.container);
-
-    this.vectors = new VectorGraphics(scene);
   }
 
   // ------------- Public static methods ----------------
@@ -234,39 +247,75 @@ export class ShipGraphics
     this.vectors.draw(vectors);
   }
 
-  public createExhaustSprite
-  (
-    animationNumber: string,
-    x: number,
-    y: number,
-    rotation: number,
-    baseScale: number
-  )
+  public createExhaustSpriteAnimation(name: string)
   {
-    const texture = TEXTURE_EXHAUSTS_00;
-
     const animation: Sprite.Animation =
     {
-      name: `animation_exhausts_${animationNumber}`,
-      // Path inside a texture atlas.
+      name,
+      textureAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS,
       pathInTextureAtlas: "ExhaustYellowRectangular/",
       numberOfFrames: 8,
       frameRate: 25
     };
 
-    const sprite = new Sprite
-    (
-      this.scene,
-      { x, y },
-      rotation,
-      texture,
-      { animation, container: this.container }
-    );
-
-    sprite.setBaseScale(baseScale);
-
-    return sprite;
+    Sprite.createAnimation(this.scene, animation);
   }
+
+  // ! Throws exception on error.
+  public createExhaustSprites
+  (
+    tilemapObjectName: string,
+    animationName: string
+  )
+  : Array<Sprite>
+  {
+    // ! Throws exception on error.
+    return this.basicShipsTilemap.createSprites
+    (
+      BASIC_FIGHTER_EXHAUSTS_TILEMAP_LAYER,
+      tilemapObjectName,
+      EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS,
+      {
+        animationName,
+        container: this.container,
+        origin: { x: 0, y: 0.5 }
+      }
+    );
+  }
+
+  // public createExhaustSprite
+  // (
+  //   animationNumber: string,
+  //   x: number,
+  //   y: number,
+  //   rotation: number,
+  //   baseScale: number
+  // )
+  // {
+  //   const texture = TEXTURE_EXHAUSTS_00;
+
+  //   const animation: Sprite.Animation =
+  //   {
+  //     name: `animation_exhausts_${animationNumber}`,
+  //     // Path inside a texture atlas.
+  //     pathInTextureAtlas: "ExhaustYellowRectangular/",
+  //     numberOfFrames: 8,
+  //     frameRate: 25
+  //   };
+
+  //   const sprite = new Sprite
+  //   (
+  //     this.scene,
+  //     { x, y },
+  //     rotation,
+  //     texture,
+  //     { animation, container: this.container }
+  //   );
+
+  //   sprite.setBaseScale(baseScale);
+
+  //   return sprite;
+  // }
 
 //   public updateExhausts
 //   (
@@ -309,6 +358,21 @@ export class ShipGraphics
 //     for (const sprite of this.exhaustSprites.backRight)
 //       sprite.setScaleY(backRightExhaustScale);
 //   }
+
+  // ! Throws exception on error.
+  private createShipSprites()
+  {
+    // ! Throws exception on error.
+    return this.basicShipsTilemap.createSprites
+    (
+      BASIC_FIGHTER_HULL_LAYER,
+      SHIP_HULL_OBJECT,
+      BASIC_SHIPS_TEXTURE,
+      {
+        container: this.container
+      }
+    );
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------

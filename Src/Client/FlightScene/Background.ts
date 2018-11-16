@@ -1,7 +1,7 @@
 import { Sprite } from "../../Client/Phaser/Sprite";
-import { Vector } from "../../Shared/Physics/Vector";
+import { Scene } from "../../Client/Phaser/Scene";
 
-const BACKGROUND_SPRITE_ID = "background";
+const BACKGROUND_TEXTURE_ID = "Background Texture";
 
 export class Background
 {
@@ -9,7 +9,7 @@ export class Background
 
   constructor
   (
-    scene: Phaser.Scene,
+    scene: Scene,
     canvasWidth: number,
     canvasHeight: number
   )
@@ -31,7 +31,7 @@ export class Background
   {
     scene.load.image
     (
-      BACKGROUND_SPRITE_ID,
+      BACKGROUND_TEXTURE_ID,
       "Textures/Background/deep_space0.jpg"
     );
   }
@@ -120,7 +120,7 @@ export class Background
 
 function createBackgroundSprite
 (
-  scene: Phaser.Scene,
+  scene: Scene,
   canvasWidth: number,
   canvasHeight: number
 )
@@ -140,7 +140,12 @@ function createBackgroundSprite
   // to [canvasWidth / 2, canvasHeight / 2] coordinates.
   const backgroundSprite = new Sprite
   (
-    scene, position, rotation, BACKGROUND_SPRITE_ID
+    scene,
+    {
+      position,
+      rotation,
+      textureOrAtlasId: BACKGROUND_TEXTURE_ID
+    }
   );
 
   // 'scrollFactor' 0 means that the background won't move

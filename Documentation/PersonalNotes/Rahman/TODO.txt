@@ -1,3 +1,6 @@
+TODO: Zprovoznit debugování
+  (abych mohl debugnout thruster backlash při dobržďování).
+
 TODO: Doma si pročistit font cache GIMPu, ať nestartuje 100 let.
 
 Priority:
@@ -15,6 +18,19 @@ Priority:
 8) Rakety!
 9) Lag simulátor a interpolace na clientu, aby se to netrhalo.
    - zatím asi až tak moc nespěchá, hratelný to bude i bez toho.
+
+TODO: Rozdělit Sprite.baseScale na  Sprite.baseScaleX a Sprite.baseScaleY
+- nastavovat to při vyrábění spritů v Tilemap.createSprites.
+TODO: Pak by asi fakt bylo nejlepší v Tiled editoru nastavovat display origin.
+
+TODO: Ještě líp by se baseScale mělo zapamatovávat až v konstruktoru Spritu,
+  když dostane jako parametry Sprite místo configu.
+  - a ostatně baseScale by mělo být jen ve Sprite.Config, ne ve Sprite.Options.
+
+TODO: Opravit pozice a scalování exhaustů.
+Ha, phaserSprite.originX a phaserSprite.originY jsou ratia,
+  ne absolutní hodnoty!
+
 
 TODO: Výroba spritů z tilemap object layeru.
   - asi statická metoda Sprity?
@@ -61,6 +77,10 @@ TODO:
 
 TODO: Konzistentně dávat do klíčů, názvů layerů a podobně příponu, co to je.
   tzn: "thrusters_layer", "exhaust_animation"
+
+TODO: Zamyslet se nad konvencí stringových jmen a idček
+  (mohou tam být mezery - mělo by se to normálně číst. Otázka je, jestli
+   Všechna Písmena Velká nebo jak (to moc jako normální čtení nezní)...)
 
 Ad 2:
 -----

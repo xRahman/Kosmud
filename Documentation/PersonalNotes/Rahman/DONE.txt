@@ -1,3 +1,12 @@
+TODO: Že bych vůbec texturovou animaci nevyráběl automaticky při vytváření
+  spritu, ale vždycky mimo?
+  - pak bych mohl do konstruktoru spritu předat prostě jen jméno animace.
+TODO: Má být createAnimation statická metoda Sprity?
+- kde jinde by měla bejt?
+  Je to přece jen sprite animation (tilové animace se zatím dělají jinak),
+  takže to asi dává smysl.
+[je to ok]
+
 Ok, TODO: Vyrobit celou loď úplně znova.
 - vymyslet lepší název než "rogue"
   - missile_ship, railgun_ship,

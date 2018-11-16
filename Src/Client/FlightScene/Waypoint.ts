@@ -4,8 +4,9 @@ import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Mouse } from "../../Client/Phaser/Mouse";
 import { Sprite } from "../../Client/Phaser/Sprite";
+import { Scene } from "../../Client/Phaser/Scene";
 
-const WAYPOINT_SPRITE_ID = "waypoint";
+const WAYPOINT_TEXTURE_ID = "Waypoint Texture";
 
 export class Waypoint
 {
@@ -14,7 +15,7 @@ export class Waypoint
 
   constructor
   (
-    scene: Phaser.Scene,
+    scene: Scene,
     private readonly position: Vector,
     private readonly rotation: number
   )
@@ -28,7 +29,7 @@ export class Waypoint
   {
     scene.load.image
     (
-      WAYPOINT_SPRITE_ID,
+      WAYPOINT_TEXTURE_ID,
       "Textures/Markers/waypoint_32x32.png"
     );
   }
@@ -85,14 +86,16 @@ export class Waypoint
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createSprite(scene: Phaser.Scene, position: Vector, rotation: number)
+function createSprite(scene: Scene, position: Vector, rotation: number)
 {
   const sprite = new Sprite
   (
     scene,
-    position,
-    rotation,
-    WAYPOINT_SPRITE_ID
+    {
+      position,
+      rotation,
+      textureOrAtlasId: WAYPOINT_TEXTURE_ID
+    }
   );
 
   sprite.setDepth(FlightScene.Z_ORDER_WAYPOINTS);

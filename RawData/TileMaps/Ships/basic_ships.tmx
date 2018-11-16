@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="200" tileheight="200" infinite="1" nextlayerid="4" nextobjectid="11">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="200" tileheight="200" infinite="1" nextlayerid="4" nextobjectid="11">
  <tileset firstgid="1" name="Ships" tilewidth="200" tileheight="200" tilecount="1" columns="1">
   <image source="../../../Client/Textures/Ships/basic_ships.png" width="200" height="200"/>
   <tile id="0">
@@ -37,17 +37,17 @@
    </animation>
   </tile>
  </tileset>
- <objectgroup id="3" name="Basic Fighter Exhausts" offsetx="-56" offsety="-15">
-  <object id="6" name="Rear Exhaust" gid="1073741826" x="74" y="119" width="72" height="22.1538" rotation="180"/>
-  <object id="5" name="Rear Exhaust" gid="1073741826" x="74" y="89" width="72" height="22.1538" rotation="180"/>
-  <object id="8" name="Rear Right Exhaust" gid="1073741826" x="69" y="191.5" width="19.5" height="6" rotation="90"/>
-  <object id="10" name="Front Right Exhaust" gid="1073741826" x="200" y="128.5" width="19.5" height="6" rotation="90"/>
-  <object id="7" name="Rear Left Exhaust" gid="2" x="75" y="40" width="19.5" height="6" rotation="-90"/>
-  <object id="9" name="Front Left Exhaust" gid="2" x="206" y="103" width="19.5" height="6" rotation="-90"/>
-  <object id="4" name="Front Exhaust" gid="2" x="102" y="173" width="35.75" height="11"/>
-  <object id="3" name="Front Exhaust" gid="2" x="102" y="68" width="35.75" height="11"/>
+ <objectgroup id="3" name="Basic Fighter Exhausts">
+  <object id="6" name="Rear Exhaust" gid="2" x="-83" y="4" width="72" height="22.1538" rotation="180"/>
+  <object id="5" name="Rear Exhaust" gid="2" x="-83" y="-26" width="72" height="22.1538" rotation="180"/>
+  <object id="8" name="Rear Right Exhaust" gid="2" x="-87" y="77" width="19.5" height="6" rotation="90"/>
+  <object id="7" name="Rear Left Exhaust" gid="2" x="-81" y="-76" width="19.5" height="6" rotation="-90"/>
+  <object id="10" name="Front Right Exhaust" gid="2" x="44" y="14" width="19.5" height="6" rotation="90"/>
+  <object id="9" name="Front Left Exhaust" gid="2" x="50" y="-12" width="19.5" height="6" rotation="-90"/>
+  <object id="4" name="Front Exhaust" gid="2" x="-53" y="58" width="35.75" height="11"/>
+  <object id="3" name="Front Exhaust" gid="2" x="-53" y="-47" width="35.75" height="11"/>
  </objectgroup>
  <objectgroup id="2" name="Basic Fighter Hull">
-  <object id="2" name="Ship Hull" gid="1" x="0" y="200" width="200" height="200"/>
+  <object id="2" name="Ship Hull" gid="1" x="-100" y="100" width="200" height="200"/>
  </objectgroup>
 </map>

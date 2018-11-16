@@ -7,31 +7,31 @@
          "name":"Basic Fighter Exhausts",
          "objects":[
                 {
-                 "gid":1073741826,
-                 "height":22.1538461538462,
+                 "gid":2,
+                 "height":22.1538,
                  "id":6,
                  "name":"Rear Exhaust",
                  "rotation":180,
                  "type":"",
                  "visible":true,
                  "width":72,
-                 "x":74,
-                 "y":119
+                 "x":-83,
+                 "y":4
                 }, 
                 {
-                 "gid":1073741826,
-                 "height":22.1538461538462,
+                 "gid":2,
+                 "height":22.1538,
                  "id":5,
                  "name":"Rear Exhaust",
                  "rotation":180,
                  "type":"",
                  "visible":true,
                  "width":72,
-                 "x":74,
-                 "y":89
+                 "x":-83,
+                 "y":-26
                 }, 
                 {
-                 "gid":1073741826,
+                 "gid":2,
                  "height":6,
                  "id":8,
                  "name":"Rear Right Exhaust",
@@ -39,20 +39,8 @@
                  "type":"",
                  "visible":true,
                  "width":19.5,
-                 "x":69,
-                 "y":191.5
-                }, 
-                {
-                 "gid":1073741826,
-                 "height":6,
-                 "id":10,
-                 "name":"Front Right Exhaust",
-                 "rotation":90,
-                 "type":"",
-                 "visible":true,
-                 "width":19.5,
-                 "x":200,
-                 "y":128.5
+                 "x":-87,
+                 "y":77
                 }, 
                 {
                  "gid":2,
@@ -63,8 +51,20 @@
                  "type":"",
                  "visible":true,
                  "width":19.5,
-                 "x":75,
-                 "y":40
+                 "x":-81,
+                 "y":-76
+                }, 
+                {
+                 "gid":2,
+                 "height":6,
+                 "id":10,
+                 "name":"Front Right Exhaust",
+                 "rotation":90,
+                 "type":"",
+                 "visible":true,
+                 "width":19.5,
+                 "x":44,
+                 "y":14
                 }, 
                 {
                  "gid":2,
@@ -75,8 +75,8 @@
                  "type":"",
                  "visible":true,
                  "width":19.5,
-                 "x":206,
-                 "y":103
+                 "x":50,
+                 "y":-12
                 }, 
                 {
                  "gid":2,
@@ -87,8 +87,8 @@
                  "type":"",
                  "visible":true,
                  "width":35.75,
-                 "x":102,
-                 "y":173
+                 "x":-53,
+                 "y":58
                 }, 
                 {
                  "gid":2,
@@ -99,11 +99,9 @@
                  "type":"",
                  "visible":true,
                  "width":35.75,
-                 "x":102,
-                 "y":68
+                 "x":-53,
+                 "y":-47
                 }],
-         "offsetx":-56,
-         "offsety":-15,
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -124,8 +122,8 @@
                  "type":"",
                  "visible":true,
                  "width":200,
-                 "x":0,
-                 "y":200
+                 "x":-100,
+                 "y":100
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -137,7 +135,7 @@
  "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.0",
+ "tiledversion":"1.2.1",
  "tileheight":200,
  "tilesets":[
         {
