@@ -1,3 +1,48 @@
+TODO: Když vyrábím sprity z object layeru, tak se jim nenastavuje
+  base scale.
+- pokud to nebude fungovat samo, tak musím baseScale spočítat
+  jako poměr stávající velikosti a velikosti v textuře.
+[done]
+
+TODO: Nějak budu muset pořešit preload tilemapy
+- možná zdědit FlightSceneTilemap z TileMap?
+  nebo udělat FlightSceneTilemaps jako container TileMap
+  (protože zatím je sice jen jedna, ale bude jich určitě víc).
+Hmm, FlightSceneTilemaps asi nebyl dobrej nápad, to asi může dělat
+  rovnou ShipGraphics. Tilemapy nesouvisející s lodí budu beztak
+  chtít dát někam samostatně.
+[done]
+
+TODO: Udělat ve Sprite víc konstruktorů
+  (možnost předat rovnou vyrobenou spritu, nejspíš bez animace).
+- udělal jsem to přes union type, ale asi done.
+[done]
+
+TODO: Výroba spritů z tilemap object layeru.
+  - asi statická metoda Sprity? Ee, Tilemapy.
+    Nebo možná udělat classu na tilemapu, která tohle bude dělat
+    (to je lepší).
+  - vrátí Array<Sprite>
+  - jako parametr bere pole jmen objektů v layeru.
+  - rovnou posune sprity aby byl origin uprostřed
+  - rovnou na ně přiřadí a pustí texturovou animaci
+    (to by měl zvládnout konstruktor spritu).
+[done]
+
+TODO: Rozdělit Sprite.baseScale na  Sprite.baseScaleX a Sprite.baseScaleY
+- nastavovat to při vyrábění spritů v Tilemap.createSprites.
+[done]
+
+TODO: Ještě líp by se baseScale mělo zapamatovávat až v konstruktoru Spritu,
+  když dostane jako parametry Sprite místo configu.
+  - a ostatně baseScale by mělo být jen ve Sprite.Config, ne ve Sprite.Options.
+[done]
+
+TODO: Opravit pozice a scalování exhaustů.
+Ha, phaserSprite.originX a phaserSprite.originY jsou ratia,
+  ne absolutní hodnoty!
+[done]
+
 TODO: Že bych vůbec texturovou animaci nevyráběl automaticky při vytváření
   spritu, ale vždycky mimo?
   - pak bych mohl do konstruktoru spritu předat prostě jen jméno animace.

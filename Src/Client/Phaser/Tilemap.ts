@@ -64,7 +64,7 @@ export class Tilemap
       // phaserSprite.setX(phaserSprite.x - this.tilemap.tileWidth / 2);
       // phaserSprite.setY(phaserSprite.y - this.tilemap.tileHeight / 2);
 
-      console.log(phaserSprite);
+      // console.log(phaserSprite);
 
       const sprite = new Sprite
       (

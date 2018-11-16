@@ -2,6 +2,7 @@
   Wraps Phaser.GameObjects.Sprite
 */
 
+import { Vector } from "../../Shared/Physics/Vector";
 import { Scene } from "../../Client/Phaser/Scene";
 import { Container } from "../../Client/Phaser/Container";
 import { PhaserObject } from "../../Client/Phaser/PhaserObject";
@@ -124,16 +125,25 @@ export class Sprite extends PhaserObject
   // tslint:disable-next-line:prefer-function-over-method
   private setOrigin({ x, y }: { x: number; y: number })
   {
-// this.phaserObject.displayOriginX = this.phaserObject.displayWidth * x;
-// this.phaserObject.displayOriginY = this.phaserObject.displayHeight * y;
+    const oldDisplayOriginX = this.phaserObject.displayOriginX;
+    const oldDisplayOriginY = this.phaserObject.displayOriginY;
 
-// const oldOriginX = this.phaserObject.originX;
-// const oldOriginY = this.phaserObject.originY;
-
-// this.phaserObject.x -= (oldOriginX - x) * this.phaserObject.displayWidth;
-// this.phaserObject.y -= (oldOriginY - y) * this.phaserObject.displayHeight;
-
+    // Changing display origin visually translates the sprite.
     this.phaserObject.setOrigin(x, y);
+
+    let diffX = this.phaserObject.displayOriginX - oldDisplayOriginX;
+    let diffY = this.phaserObject.displayOriginY - oldDisplayOriginY;
+
+    diffX *= this.getScaleX();
+    diffY *= this.getScaleY();
+
+    const offset = new Vector({ x: diffX, y: diffY });
+
+    offset.rotate(this.phaserObject.rotation);
+
+    // Translate the sprite back to original position.
+    this.phaserObject.x += offset.x;
+    this.phaserObject.y += offset.y;
   }
 
   private createPhaserSprite(config: Sprite.Config)
