@@ -222,6 +222,13 @@ Cyclic dependencies
 http://blog.cloudmineinc.com/managing-cyclic-dependencies-in-node.js?hsFormKey=ae1b2c3916d0a2be7aafb5d841ce24c0
 
 
+==============================================================
+
+Procedural generation:
+------------------------
+
+http://tracery.io/
+
 
 ==============================================================
 

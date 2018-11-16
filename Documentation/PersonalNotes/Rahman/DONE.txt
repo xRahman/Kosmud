@@ -1,3 +1,11 @@
+TODO: Zprovoznit debugování
+  (abych mohl debugnout thruster backlash při dobržďování).
+- ono to kupodivu v server kódu funuje.
+[done]
+
+TODO: Doma si pročistit font cache GIMPu, ať nestartuje 100 let.
+[done]
+
 TODO: Když vyrábím sprity z object layeru, tak se jim nenastavuje
   base scale.
 - pokud to nebude fungovat samo, tak musím baseScale spočítat
