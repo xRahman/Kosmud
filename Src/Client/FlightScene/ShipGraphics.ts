@@ -71,7 +71,7 @@ export class ShipGraphics
     scene.loadTilemapData
     (
       BASIC_SHIPS_TILEMAP_DATA_ID,
-      "TileMaps/Ships/basic_ships.json"
+      "Tilemaps/Ships/basic_ships.json"
     );
   }
 
