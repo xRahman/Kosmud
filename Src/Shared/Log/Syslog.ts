@@ -177,5 +177,3 @@ export namespace Syslog
     // Player has connected etc.
   | "[CONNECTION_INFO]";
 }
-
-// ----------------- Auxiliary Functions ---------------------

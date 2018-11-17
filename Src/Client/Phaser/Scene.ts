@@ -30,6 +30,26 @@ export abstract class Scene extends Phaser.Scene
     this.width = width;
     this.height = height;
   }
+
+  public loadTexture(textureId: string, textureFilePath: string)
+  {
+    this.load.image(textureId, textureFilePath);
+  }
+
+  public loadTextureAtlas
+  (
+    atlasId: string,
+    atlasJsonFilePath: string,
+    texturesDirectory: string
+  )
+  {
+    this.load.multiatlas(atlasId, atlasJsonFilePath, texturesDirectory);
+  }
+
+  public loadTilemapData(tilemapDataId: string, tilemapJsonFilePath: string)
+  {
+    this.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
+  }
 }
 
 // ------------------ Type Declarations ----------------------
@@ -38,5 +58,3 @@ export namespace Scene
 {
   export const Z_ORDER_DEFAULT = 0;
 }
-
-// ----------------- Auxiliary Functions ---------------------

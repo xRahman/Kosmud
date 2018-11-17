@@ -862,33 +862,6 @@ export class Serializable extends Attributable
   }
 }
 
-// ------------------ Type declarations ----------------------
-
-interface DeserializeParam
-{
-  propertyName: string;
-  sourceProperty: any;
-  targetProperty: any;
-  path?: string;
-}
-
-interface SerializeParam
-{
-  property: any;
-  description: string; // Used for error messages.
-  className: string;
-  mode: Serializable.Mode;
-}
-
-export namespace Serializable
-{
-  export type Mode =
-    "Save to File"
-  | "Send to Client"
-  | "Send to Server"
-  | "Send to Editor";
-}
-
 // ----------------- Auxiliary Functions ---------------------
 
 // -> Returns 'true' if 'variable' has own (not just inherited) value.
@@ -1269,4 +1242,31 @@ function getEntityId(entity: ObjectType, param: SerializeParam)
   }
 
   return id;
+}
+
+// ------------------ Type declarations ----------------------
+
+interface DeserializeParam
+{
+  propertyName: string;
+  sourceProperty: any;
+  targetProperty: any;
+  path?: string;
+}
+
+interface SerializeParam
+{
+  property: any;
+  description: string; // Used for error messages.
+  className: string;
+  mode: Serializable.Mode;
+}
+
+export namespace Serializable
+{
+  export type Mode =
+    "Save to File"
+  | "Send to Client"
+  | "Send to Server"
+  | "Send to Editor";
 }

@@ -17,6 +17,12 @@ Priority:
 
 TODO: Načíst physics shape lodi.
 
+TODO: Scene by asi měla wrappovat Phaser.Scene, ne extendovat
+  (všude mám wrappery jen scéna je potomek).
+
+TODO: doladit vizuály exhaustů
+- úlně je schovávat, když nejsou aktivní.
+- dát jim nějakou minimální délku (jako u zadních).
 
 TODO: Tilemap by pak asi mohla ještě vytvářet StaticLayery a DynamicLayery.
 - asi to můžu připravit, tj. classy StaticLayer a DynamicLayer zděděné klasicky
@@ -40,6 +46,8 @@ TODO: Konzistentně dávat do klíčů, názvů layerů a podobně příponu, co
 TODO: Zamyslet se nad konvencí stringových jmen a idček
   (mohou tam být mezery - mělo by se to normálně číst. Otázka je, jestli
    Všechna Písmena Velká nebo jak (to moc jako normální čtení nezní)...)
+
+TODO: Dát návrh na rozvoj tile animation pluginu.
 
 Ad 2:
 -----
@@ -129,6 +137,9 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 Odložené TODO:
 ---------------
+
+TODO: Výhledově místo atlas animací používat tile animace vytvořené v Tiled
+  editoru a číst je z dat tilemapy.
 
 TODO: Časem udělat (pre)loadovací scénu.
 - to pak znamená jinak loadovat pluginy, viz:

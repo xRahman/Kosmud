@@ -17,7 +17,6 @@ export class ShipSound
 
   public createExhaustSound(baseVolume0to1: number)
   {
-    // return new Sound(this.scene, "Sound_ShipEngine2", baseVolume0to1);
     const sound = new Sound(this.scene, SHIP_ENGINE_SOUND, baseVolume0to1);
 
     sound.play(true, 1);

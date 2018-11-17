@@ -4,20 +4,16 @@ import { Sprite } from "../../Client/Phaser/Sprite";
 import { ShipSound } from "../../Client/FlightScene/ShipSound";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 
-// const FRONT_SCALE = 1;
-// const SIDE_SCALE = 0.4;
-// const REAR_SCALE = 2;
-
 const FRONT_VOLUME = 0.1;
 const SIDE_VOLUME = 0.04;
 const REAR_VOLUME = 0.2;
 
-const FRONT_EXHAUST_TILEMAP_OBJECT = "Front Exhaust";
-const FRONT_LEFT_EXHAUST_TILEMAP_OBJECT = "Front Left Exhaust";
-const FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT = "Front Right Exhaust";
-const REAR_LEFT_EXHAUST_TILEMAP_OBJECT = "Rear Left Exhaust";
-const REAR_RIGHT_EXHAUST_TILEMAP_OBJECT = "Rear Right Exhaust";
-const REAR_EXHAUST_TILEMAP_OBJECT = "Rear Exhaust";
+const FRONT_EXHAUST_TILEMAP_OBJECT_NAME = "Front exhaust";
+const FRONT_LEFT_EXHAUST_TILEMAP_OBJECT_NAME = "Front left exhaust";
+const FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME = "Front right exhaust";
+const REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME = "Rear left exhaust";
+const REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME = "Rear right exhaust";
+const REAR_EXHAUST_TILEMAP_OBJECT_NAME = "Rear exhaust";
 
 type Exhaust =
 {
@@ -41,15 +37,17 @@ export class ShipExhausts
     sound: ShipSound
   )
   {
-    const animationName = "Exhaust Yellow Rectangular Animation";
+    const animationName = "Exhaust yellow rectangular Animation";
 
+    // ! Throws exception on error.
     graphics.createExhaustSpriteAnimation(animationName);
 
     this.front =
     {
+      // ! Throws exception on error.
       sprites: graphics.createExhaustSprites
       (
-        FRONT_EXHAUST_TILEMAP_OBJECT,
+        FRONT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
       sound: sound.createExhaustSound(FRONT_VOLUME)
@@ -57,9 +55,10 @@ export class ShipExhausts
 
     this.frontLeft =
     {
+      // ! Throws exception on error.
       sprites: graphics.createExhaustSprites
       (
-        FRONT_LEFT_EXHAUST_TILEMAP_OBJECT,
+        FRONT_LEFT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
@@ -67,9 +66,10 @@ export class ShipExhausts
 
     this.frontRight =
     {
+      // ! Throws exception on error.
       sprites: graphics.createExhaustSprites
       (
-        FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT,
+        FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
@@ -77,9 +77,10 @@ export class ShipExhausts
 
     this.rearLeft =
     {
+      // ! Throws exception on error.
       sprites: graphics.createExhaustSprites
       (
-        REAR_LEFT_EXHAUST_TILEMAP_OBJECT,
+        REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
@@ -87,9 +88,10 @@ export class ShipExhausts
 
     this.rearRight =
     {
+      // ! Throws exception on error.
       sprites: graphics.createExhaustSprites
       (
-        REAR_RIGHT_EXHAUST_TILEMAP_OBJECT,
+        REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
       sound: sound.createExhaustSound(SIDE_VOLUME)
@@ -97,9 +99,10 @@ export class ShipExhausts
 
     this.rear =
     {
+      // ! Throws exception on error.
       sprites: graphics.createExhaustSprites
       (
-        REAR_EXHAUST_TILEMAP_OBJECT,
+        REAR_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
       sound: sound.createExhaustSound(REAR_VOLUME)
@@ -117,10 +120,8 @@ export class ShipExhausts
   {
     updateExhaust(this.front, lowerBound(-forwardThrustRatio, 0));
 
-    // The idea is that side thrusters get 50% of their length from
-    // left-right thrust and another 50% from torque thrust
-    // (that's probably not matematically correct but it's for display
-    //  purposes only).
+    // Side thrusters get 50% of their length from left-right
+    // thrust and another 50% from torque thrust.
 
     updateExhaust
     (
@@ -157,7 +158,6 @@ function updateExhaust(exhaust: Exhaust, scale: number)
   for (const sprite of exhaust.sprites)
   {
     sprite.setScaleX(scale);
-    // sprite.setLengthwiseScale(scale);
   }
 
   exhaust.sound.setVolume(scale);

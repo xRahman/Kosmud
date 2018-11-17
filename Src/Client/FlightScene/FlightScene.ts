@@ -1,7 +1,5 @@
 import { ShipToScene } from "../../Client/Protocol/ShipToScene";
-// import { Background } from "../../Client/FlightScene/Background";
 import { Ship } from "../../Client/Game/Ship";
-// import { Waypoint } from "../../Client/FlightScene/Waypoint";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Phaser/Scene";
@@ -77,7 +75,8 @@ export class FlightScene extends Scene
 
     this.contents = new FlightSceneContents(this, this.width, this.height);
 
-    this.contents.create(this);
+    /// TEST
+    // this.contents.create(this);
 
     try
     {

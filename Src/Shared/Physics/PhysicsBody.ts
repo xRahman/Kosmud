@@ -176,5 +176,3 @@ export namespace PhysicsBody
 
   export type Shape = Array<Polygon>;
 }
-
-// ----------------- Auxiliary Functions ---------------------

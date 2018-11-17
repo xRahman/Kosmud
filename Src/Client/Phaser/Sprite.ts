@@ -1,5 +1,5 @@
 /*
-  Wraps Phaser.GameObjects.Sprite
+  Wraps Phaser.GameObjects.Sprite.
 */
 
 import { Vector } from "../../Shared/Physics/Vector";
@@ -42,6 +42,7 @@ export class Sprite extends PhaserObject
 
   // ------------- Public static methods ----------------
 
+  // ! Throws exception on error.
   public static createAnimation
   (
     scene: Phaser.Scene,
@@ -49,6 +50,7 @@ export class Sprite extends PhaserObject
     repeat = INFINITE_REPEAT
   )
   {
+    // ! Throws exception on error.
     const frameNames = generateFrameNames(scene, animation);
 
     scene.anims.create
@@ -91,18 +93,6 @@ export class Sprite extends PhaserObject
     this.phaserObject.scaleY = scale * this.baseScaleY;
   }
 
-  // public setLengthwiseScale(scale: number)
-  // {
-  //   const rotation = this.getRotation();
-
-  //   if (rotation === 0)
-  //     this.setScaleX(scale);
-  // }
-
-  // public setCrosswiseScale(scale: number)
-  // {
-  // }
-
   // ---------------- Private methods -------------------
 
   private playAnimation(animationName: string)
@@ -122,13 +112,12 @@ export class Sprite extends PhaserObject
       this.setOrigin(options.origin);
   }
 
-  // tslint:disable-next-line:prefer-function-over-method
   private setOrigin({ x, y }: { x: number; y: number })
   {
     const oldDisplayOriginX = this.phaserObject.displayOriginX;
     const oldDisplayOriginY = this.phaserObject.displayOriginY;
 
-    // Changing display origin visually translates the sprite.
+    // Note that changing display origin visually translates the sprite.
     this.phaserObject.setOrigin(x, y);
 
     let diffX = this.phaserObject.displayOriginX - oldDisplayOriginX;
@@ -141,7 +130,7 @@ export class Sprite extends PhaserObject
 
     offset.rotate(this.phaserObject.rotation);
 
-    // Translate the sprite back to original position.
+    // Translate the sprite back to original visual position.
     this.phaserObject.x += offset.x;
     this.phaserObject.y += offset.y;
   }
@@ -169,8 +158,15 @@ export class Sprite extends PhaserObject
 
 // ----------------- Auxiliary Functions ---------------------
 
+// ! Throws exception on error.
 function generateFrameNames(scene: Phaser.Scene, animation: Sprite.Animation)
 {
+  if (animation.pathInTextureAtlas.slice(-1) !== "/")
+  {
+    throw new Error(`Failed to generate animation frame names because`
+      + ` path '${animation.pathInTextureAtlas}' doesn't end with '/'`);
+  }
+
   // Use names like "001.png"
   const THREE_PLACES = 3;
 

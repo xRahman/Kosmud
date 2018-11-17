@@ -86,21 +86,6 @@ export abstract class Component
   }
 }
 
-// ------------------ Type Declarations ----------------------
-
-export namespace Component
-{
-  export enum InsertMode
-  {
-    // Insert as the last child (default).
-    APPEND,
-    // Insert as the first child.
-    PREPEND,
-    // Html contents of $parent is cleared first.
-    REPLACE
-  }
-}
-
 // ----------------- Auxiliary Functions ---------------------
 
 function clearHtmlContent(element: HTMLElement)
@@ -136,5 +121,20 @@ function insertToParent
     default:
       ERROR("Unknown insert mode. Element is not inserted to parent");
       break;
+  }
+}
+
+// ------------------ Type Declarations ----------------------
+
+export namespace Component
+{
+  export enum InsertMode
+  {
+    // Insert as the last child (default).
+    APPEND,
+    // Insert as the first child.
+    PREPEND,
+    // Html contents of $parent is cleared first.
+    REPLACE
   }
 }

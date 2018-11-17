@@ -89,5 +89,3 @@ export namespace CanvasDiv
 {
   export const ELEMENT_ID = "canvas_div";
 }
-
-// ----------------- Auxiliary Functions ---------------------
