@@ -1,3 +1,12 @@
+TODO: .tmx formát tilemap asi vůbec není potřeba - Tiled editor by měl
+  umět načítat rovnou JSON.
+- cesty k texturám jsou relativní, takže záleží na tom, kde je soubor
+  savnutej. Jinak je ten save stejne jako export.
+  - tzn. asi budu editovat rovnou z /Client. Aspoň nebudu muset nic
+    exportovat.
+TODO: Tzn /RawData/TileMaps kompletně zrušit.
+[done]
+
 TODO: Zprovoznit debugování
   (abych mohl debugnout thruster backlash při dobržďování).
 - ono to kupodivu v server kódu funuje.
