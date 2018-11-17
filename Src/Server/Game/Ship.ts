@@ -4,9 +4,9 @@
   TEST - a ship.
 */
 
-import { Vehicle } from "../../Shared/Physics/Vehicle";
+import * as Shared from "../../Shared/Game/Ship";
 
-export class Ship extends Vehicle
+export class Ship extends Shared.Ship
 {
   public startTurningLeft()
   {

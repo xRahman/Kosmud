@@ -180,7 +180,7 @@ async function readPrivateKey(): Promise<string>
 {
   try
   {
-    return await readFile(PRIVATE_KEY_FILE);
+    return await FileSystem.readExistingFile(PRIVATE_KEY_FILE);
   }
   catch (error)
   {
@@ -198,7 +198,7 @@ async function readCertificate(): Promise<string>
 {
   try
   {
-    return await readFile(CERTIFICATE_FILE);
+    return await FileSystem.readExistingFile(CERTIFICATE_FILE);
   }
   catch (error)
   {
@@ -209,20 +209,6 @@ async function readCertificate(): Promise<string>
 
     throw error;
   }
-}
-
-// ! Throws exception on error.
-async function readFile(path: string): Promise<string>
-{
-  // ! Throws exception on error.
-  const readResult = await FileSystem.readFile(path, true);
-
-  if (readResult === "File doesn't exist")
-  {
-    throw new Error(`File "${path}" doesn't exist`);
-  }
-
-  return readResult.data;
 }
 
 function redirectHttpToHttps(expressApp: Express)

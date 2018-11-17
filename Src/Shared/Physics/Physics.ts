@@ -13,6 +13,8 @@ import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 
 export namespace Physics
 {
+  export type Polygon = Array<{ x: number; y: number }>;
+
   /// Výhledově nejspíš bude physics worldů víc,
   /// takže si tu zatím to provolávání nechám.
   export function tick(miliseconds: number)

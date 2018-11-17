@@ -1,13 +1,16 @@
 /*
   Part of Kosmud
 
-  TEST - shared Ship class ancestor.
+  Shared Ship class ancestor.
 */
 
-import { Vector } from "../../Shared/Physics/Vector";
+// import { Vector } from "../../Shared/Physics/Vector";
 import { Vehicle } from "../../Shared/Physics/Vehicle";
 
-export class Ship
+export class Ship extends Vehicle
 {
-  constructor(protected position: Vector, protected rotation: number) {}
+  // constructor(protected position: Vector, protected rotation: number)
+  // {
+  //   super();
+  // }
 }

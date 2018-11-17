@@ -93,6 +93,7 @@ export class Serializable extends Attributable
   // TODO: Přidat comment, jak se loadují entity (nějak přes Entities)
   public static deserialize(data: string): Serializable
   {
+    // ! Throws exception on error.
     const jsonObject = JsonObject.parse(data);
     const className = (jsonObject as any)[CLASS_NAME];
 

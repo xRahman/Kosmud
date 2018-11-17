@@ -4,8 +4,9 @@
 
 import { Scene } from "../../Client/Phaser/Scene";
 import { Sprite } from "../../Client/Phaser/Sprite";
+import * as Shared from "../../Shared/Physics/Tilemap";
 
-export class Tilemap
+export class Tilemap extends Shared.Tilemap
 {
   private readonly tilemap: Phaser.Tilemaps.Tilemap;
 
@@ -17,6 +18,8 @@ export class Tilemap
     tilemapJsonDataId: string
   )
   {
+    super();
+
     this.tilemap = scene.make.tilemap({ key: tilemapJsonDataId });
   }
 

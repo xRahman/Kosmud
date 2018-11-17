@@ -16,6 +16,25 @@ Priority:
    - zatím asi až tak moc nespěchá, hratelný to bude i bez toho.
 
 TODO: Načíst physics shape lodi.
+  OK, jak budu vyrábět ship?
+  - primárně každopádně na serveru.
+    - loadne se entita. Ta má příslušnej typ (prototyp), tzn.
+      má nasetovaný properties, jako třeba jakou má použít tilemapu.
+    - na server se pošle info o tom, z čeho se má pro loď vytvořit grafika
+      (hmm, to zavání posláním prototypu, abych ty datový struktury
+       nemusel deklarovat dvakrát)
+       - Momentálně to každopádně můžu na klientu a na serveru vytvořit
+         paralelně.
+   Ship na serveru (nebo možná i v Shared) by každopádně měla mít
+     info o tom, jakou tilemapu má použít. Prozatím to může bejt
+     přiřazený natvrdo, nemusí se to loadovat z disku
+     (to mi ostatně ušetří posílání prototypu na klienta - když
+      to bude natvrdo v shared kódu, tak na to klient uvidí automaticky).
+
+TODO: Přesunout interface Tilemap.Data do Shared/Tilemap.
+
+TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
+  (v /Shared/Physics, /Server/Physics ale /Client/Phaser).
 
 TODO: Asi bych měl udělat shared předka classy Tilemap,
   kterého různě implementuje klient a server. Časem budu chtít počítat
@@ -38,6 +57,13 @@ protože jejich phaser varianty nejsou zděděné z GameObjectu.
 - nebo možná zdědit DynamicTilemapLayer ze StaticTilemapLayer.
 
 TODO: Dát návrh na rozvoj tile animation pluginu.
+
+TODO: Výhledově zdědit Client/Ship ze Shared/Ship
+  (bude to komplikovaný, páč Client/Ship je zděděná z Vehicle
+   a má tudíž physics body. To by teda loď na klientu měla časem
+   mít taky, ale znamenalo by to na klientu komplet inicializovat
+   fyziku).
+   - na druhou stranu bych nemusel extra deklarovat všechny properties.
 
 Ad 2:
 -----

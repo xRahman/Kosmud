@@ -6,9 +6,8 @@
   Note: All transform functions work both ways.
 */
 
+import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
-
-type Polygon = Array<{ x: number; y: number }>;
 
 export namespace CoordsTransform
 {
@@ -22,7 +21,7 @@ export namespace CoordsTransform
     return new Vector({ x, y: -y });
   }
 
-  export function transformPolygon(polygon: Polygon): Polygon
+  export function transformPolygon(polygon: Physics.Polygon): Physics.Polygon
   {
     const result = [];
 

@@ -81,6 +81,20 @@ export namespace FileSystem
   }
 
   // ! Throws exception on error.
+  export async function readExistingFile(path: string): Promise<string>
+  {
+    // ! Throws exception on error.
+    const readResult = await readFile(path, true);
+
+    if (readResult === "File doesn't exist")
+    {
+      throw new Error(`File "${path}" doesn't exist`);
+    }
+
+    return readResult.data;
+  }
+
+  // ! Throws exception on error.
   export async function readFile
   (
     path: string,
