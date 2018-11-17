@@ -1,3 +1,24 @@
+TODO: Nakonec pořádně projít a pročistit ShipGraphics, tam jsem hodně
+  hackoval.
+[done]
+
+TODO:
+- pojmenvávat důsledně layery ("_layer"), tilesety ("_tileset").
+  (tohle asi stačí pro názvy konstant v kódu - v editoru to může
+   bejt bez přípony, tam to je přehlednější).
+- bez podtržítek, ale done.
+[done]
+
+TODO: Konzistentně dávat do klíčů, názvů layerů a podobně příponu, co to je.
+  tzn: "thrusters_layer", "exhaust_animation"
+- bez podtržítek, ale done.
+[done]
+
+TODO: Zamyslet se nad konvencí stringových jmen a idček
+  (mohou tam být mezery - mělo by se to normálně číst. Otázka je, jestli
+   Všechna Písmena Velká nebo jak (to moc jako normální čtení nezní)...)
+[done]
+
 TODO: .tmx formát tilemap asi vůbec není potřeba - Tiled editor by měl
   umět načítat rovnou JSON.
 - cesty k texturám jsou relativní, takže záleží na tom, kde je soubor

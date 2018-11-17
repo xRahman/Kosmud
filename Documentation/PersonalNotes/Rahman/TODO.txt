@@ -17,6 +17,11 @@ Priority:
 
 TODO: Načíst physics shape lodi.
 
+TODO: Asi bych měl udělat shared předka classy Tilemap,
+  kterého různě implementuje klient a server. Časem budu chtít počítat
+  fyziku i na klientu a asi budu chtít vyrábět zóny stejnejma metodama,
+  tak ať to na to je připravený.
+
 TODO: Scene by asi měla wrappovat Phaser.Scene, ne extendovat
   (všude mám wrappery jen scéna je potomek).
 
@@ -31,21 +36,6 @@ StaticTilemapLayer a DynamicTilemapLayer možná nebudou moci bejt PhaserObjecty
 protože jejich phaser varianty nejsou zděděné z GameObjectu.
 - možná jim dát jiného předka? (TilemapLayer)?
 - nebo možná zdědit DynamicTilemapLayer ze StaticTilemapLayer.
-
-TODO: Nakonec pořádně projít a pročistit ShipGraphics, tam jsem hodně
-  hackoval.
-
-TODO:
-- pojmenvávat důsledně layery ("_layer"), tilesety ("_tileset").
-  (tohle asi stačí pro názvy konstant v kódu - v editoru to může
-   bejt bez přípony, tam to je přehlednější).
-
-TODO: Konzistentně dávat do klíčů, názvů layerů a podobně příponu, co to je.
-  tzn: "thrusters_layer", "exhaust_animation"
-
-TODO: Zamyslet se nad konvencí stringových jmen a idček
-  (mohou tam být mezery - mělo by se to normálně číst. Otázka je, jestli
-   Všechna Písmena Velká nebo jak (to moc jako normální čtení nezní)...)
 
 TODO: Dát návrh na rozvoj tile animation pluginu.
 
