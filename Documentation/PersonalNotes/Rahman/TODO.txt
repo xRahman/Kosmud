@@ -31,7 +31,6 @@ TODO: Načíst physics shape lodi.
      (to mi ostatně ušetří posílání prototypu na klienta - když
       to bude natvrdo v shared kódu, tak na to klient uvidí automaticky).
 
-TODO: Přesunout interface Tilemap.Data do Shared/Tilemap.
 
 TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
   (v /Shared/Physics, /Server/Physics ale /Client/Phaser).

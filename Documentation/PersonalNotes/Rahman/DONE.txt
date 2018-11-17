@@ -1,3 +1,6 @@
+TODO: Přesunout interface Tilemap.Data do Shared/Tilemap.
+[done]
+
 TODO: Nakonec pořádně projít a pročistit ShipGraphics, tam jsem hodně
   hackoval.
 [done]
