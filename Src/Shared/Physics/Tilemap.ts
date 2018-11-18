@@ -6,13 +6,14 @@ import { Physics } from "../../Shared/Physics/Physics";
 
 export abstract class Tilemap
 {
+  constructor(protected readonly name: string) { }
 }
 
 // ------------------ Type Declarations ----------------------
 
 export namespace Tilemap
 {
-  interface TilemapObject
+  export interface TilemapObject
   {
     gid?: number;
     height: number;
@@ -27,12 +28,14 @@ export namespace Tilemap
     y: number;
   }
 
-  interface Layer
+  export interface Layer
   {
     draworder: string;        // "topdown"
     id: number;
     name: string;
     objects: Array<TilemapObject>;
+    // This property is not part of data format, it is set after loading.
+    objectsMap: Map<string, Array<TilemapObject>>;  // Indexed by object name.
     opacity: number;
     type: string;             // "objectgroup"
     visible: boolean;
@@ -40,7 +43,7 @@ export namespace Tilemap
     y: number;
   }
 
-  interface ObjectGroup
+  export interface ObjectGroup
   {
     draworder: string;          // "index"
     name: string;
@@ -52,20 +55,20 @@ export namespace Tilemap
     y: number;
   }
 
-  interface AnimationFrame
+  export interface AnimationFrame
   {
     "duration": number;         // In miliseconds.
     "tileid": number;
   }
 
-  interface Tile
+  export interface Tile
   {
     id: number;
     objectgroup?: ObjectGroup;
     animation?: Array<AnimationFrame>;
   }
 
-  interface Tileset
+  export interface Tileset
   {
     columns: number;
     firstgid: number;
@@ -86,6 +89,7 @@ export namespace Tilemap
     height: number;
     infinite: boolean;
     layers: Array<Layer>;
+    layersMap?: Map<string, Layer>;
     nextlayerid: number;
     nextobjectid: number;
     orientation: string;      // "orthogonal"
@@ -93,6 +97,8 @@ export namespace Tilemap
     tiledversion: string;     // "1.2.1"
     tileheight: number;
     tilesets: Array<Tileset>;
+    // This property is not part of data format, it is set after loading.
+    tilesMap?: Map<number, Tile>; // Indexed by 'gid' (global tilemap id).
     tilewidth: number;
     type: string;             // "map"
     version: number;          // 1.2;

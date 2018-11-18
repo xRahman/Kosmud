@@ -13,7 +13,7 @@
 
 import { Vector } from "../../Shared/Physics/Vector";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { Physics } from "../../Shared/Physics/Physics";
 import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
 export class Graphics extends PhaserObject
@@ -49,7 +49,7 @@ export class Graphics extends PhaserObject
 
   public drawShape
   (
-    shape: PhysicsBody.Shape,
+    shape: Physics.Shape,
     lineWidth: number,
     color: number,
     alpha0to1: number

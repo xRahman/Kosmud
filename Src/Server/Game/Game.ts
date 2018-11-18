@@ -7,17 +7,53 @@
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Ship } from "../../Server/Game/Ship";
+import { Connection } from "../../Server/Net/Connection";
 import { Connections } from "../../Server/Net/Connections";
 import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
+import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
+import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
 const GAME_TICK_MILISECONDS = 1000 / 60;
 
 export namespace Game
 {
-  /// Test:
-  export let ship = new Ship();
+  export let ships: Array<Ship> = [];
 
-  export function startLoop()
+  // ! Throws exception on error.
+  export function getPlayerShip()
+  {
+    /// Zatím navrdo první loď v seznamu.
+    if (ships.length < 1)
+    {
+      throw new Error("Player ship doesn't exist yet");
+    }
+
+    return ships[0];
+  }
+
+  // ! Throws exception on error.
+  export async function preload()
+  {
+    // ! Throws exception on error.
+    await Ship.preload();
+  }
+
+  // ! Throws exception on error.
+  export async function create()
+  {
+    // ! Throws exception on error.
+    const shape = Ship.getShape();
+
+    const physicsConfig: PhysicsBody.Config =
+    {
+      shape,
+      density:  0.00001
+    };
+
+    ships.push(new Ship(physicsConfig));
+  }
+
+  export function loop()
   {
     setInterval
     (
@@ -26,18 +62,12 @@ export namespace Game
     );
   }
 
-  /// TEMPORARY (finálně by se tohle mělo dělat jinak - minimálně
-  //    bude víc lodí).
-  export function getShipToSceneInfo()
+  export function sendShipsToClient(connection: Connection)
   {
-    const shipInfo =
+    for (const ship of ships)
     {
-      rotation: ship.getRotation(),
-      position: ship.getPosition(),
-      shape: ship.getShape(),
-    };
-
-    return shipInfo;
+      connection.send(createShipToScenePacket(ship));
+    }
   }
 }
 
@@ -58,33 +88,63 @@ function tick(tickDuration: number)
 
 function updatePhysics(tickDuration: number)
 {
-  updateVelocity();
+  steer();
   Physics.tick(tickDuration);
+}
+
+function getShipState(ship: Ship): SceneUpdate.ShipState
+{
+  const shipState =
+  {
+    shipPosition: ship.getPosition(),
+    shipRotation: ship.getRotation(),
+    shipVelocity: ship.getVelocity(),
+    desiredVelocity: ship.getDesiredVelocity(),
+    steeringForce: ship.getSteeringForce(),
+    desiredSteeringForce: ship.getDesiredSteeringForce(),
+    desiredForwardSteeringForce: ship.getDesiredForwardSteeringForce(),
+    desiredLeftwardSteeringForce: ship.getDesiredLeftwardSteeringForce(),
+    forwardThrustRatio: ship.getForwardThrustRatio(),
+    leftwardThrustRatio: ship.getLeftwardThrustRatio(),
+    torqueRatio: ship.getTorqueRatio()
+  };
+
+  return shipState;
+}
+
+function getShipsState(): Array<SceneUpdate.ShipState>
+{
+  const result: Array<SceneUpdate.ShipState> = [];
+
+  for (const ship of Game.ships)
+  {
+    result.push(getShipState(ship));
+  }
+
+  return result;
 }
 
 function updateClients()
 {
-  const sceneUpdate = new SceneUpdate
-  (
-    Game.ship.getPosition(),
-    Game.ship.getRotation(),
-    Game.ship.getVelocity(),
-    Game.ship.getDesiredVelocity(),
-    Game.ship.getSteeringForce(),
-    Game.ship.getDesiredSteeringForce(),
-    Game.ship.getDesiredForwardSteeringForce(),
-    Game.ship.getDesiredLeftwardSteeringForce(),
-    Game.ship.getForwardThrustRatio(),
-    Game.ship.getLeftwardThrustRatio(),
-    Game.ship.getTorqueRatio()
-  );
+  const sceneUpdate = new SceneUpdate(getShipsState());
 
-  // TODO: Sent all scene update data, not just one ship.
   Connections.broadcast(sceneUpdate);
 }
 
-function updateVelocity()
+function steer()
 {
-  // ship.updateVelocityDirection();
-  Game.ship.steer();
+  for (const ship of Game.ships)
+  {
+    ship.steer();
+  }
+}
+
+function createShipToScenePacket(ship: Ship)
+{
+  return new ShipToScene
+  (
+    ship.getShape(),
+    ship.getPosition(),
+    ship.getRotation()
+  );
 }

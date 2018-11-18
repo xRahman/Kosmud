@@ -10,7 +10,7 @@
             "program": "${workspaceRoot}/Src/Server/KosmudServer.ts",
             "stopOnEntry": false,
             "args": [],
-            "cwd": "${workspaceRoot}/Server",
+            "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
             "runtimeExecutable": null,
             "runtimeArgs":

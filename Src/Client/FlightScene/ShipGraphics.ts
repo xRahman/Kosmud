@@ -3,11 +3,11 @@ import { Sprite } from "../../Client/Phaser/Sprite";
 import { Container } from "../../Client/Phaser/Container";
 import { Scene } from "../../Client/Phaser/Scene";
 import { Tilemap } from "../../Client/Phaser/Tilemap";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { Physics } from "../../Shared/Physics/Physics";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
 import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
-import { Ship } from "../Game/Ship";
+import { Ship } from "../../Client/Game/Ship";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
 const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID =
@@ -31,7 +31,7 @@ export class ShipGraphics
   constructor
   (
     private readonly scene: FlightScene,
-    shape: PhysicsBody.Shape,
+    shape: Physics.Shape,
   )
   {
     this.container = new Container(scene, 0, 0);
@@ -40,6 +40,10 @@ export class ShipGraphics
     this.basicShipsTilemap = new Tilemap
     (
       scene,
+      /// TODO: Jméno tilemapy by se mělo brát
+      /// ze Shared/Game/Ship/TILEMAP_NAME (aby bylo stejný na klientu
+      /// i na serveru - je to ostatně stejná tilemapa). Teď není Client/Ship
+      /// zděděná ze Shared/Ship, takže to není tak jednoduchý.
       BASIC_SHIPS_TILEMAP_ID,
       BASIC_SHIPS_TILEMAP_DATA_ID
     );

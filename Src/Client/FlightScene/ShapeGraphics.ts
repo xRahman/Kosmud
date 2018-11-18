@@ -1,4 +1,4 @@
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { Physics } from "../../Shared/Physics/Physics";
 import { Container } from "../../Client/Phaser/Container";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Graphics } from "../../Client/Phaser/Graphics";
@@ -8,7 +8,7 @@ export class ShapeGraphics extends Graphics
   constructor
   (
     scene: Phaser.Scene,
-    shape: PhysicsBody.Shape,
+    shape: Physics.Shape,
     container?: Container
   )
   {

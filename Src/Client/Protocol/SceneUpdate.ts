@@ -18,20 +18,22 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    /// TODO: Odhackovat:
+    const shipState = this.shipStates[0];
     const ship = Renderer.getFlightScene().getShip();
 
     if (ship !== "Doesn't exist")
     {
-      ship.setPosition(this.shipPosition);
-      ship.setRotation(this.shipRotation);
+      ship.setPosition(shipState.shipPosition);
+      ship.setRotation(shipState.shipRotation);
 
-      ship.setVectors(this);
+      ship.setVectors(shipState);
 
       ship.updateExhausts
       (
-        this.forwardThrustRatio,
-        this.leftwardThrustRatio,
-        this.torqueRatio
+        shipState.forwardThrustRatio,
+        shipState.leftwardThrustRatio,
+        shipState.torqueRatio
       );
     }
   }

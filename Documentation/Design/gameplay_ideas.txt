@@ -1,4 +1,5 @@
-﻿==============================================================
+﻿
+==============================================================
 
 Combat
 -------
@@ -9,6 +10,18 @@ v grupě a odpálit rakety naráz, apod.
 
 Teammates naopak mohou s point defensí pomoci (vmanévrovat do salva, odpálit PD cooldowny apod.)
 - přilétající rakety budou vidět, takže bude čas na reakci.
+
+
+Light vs heavy weapons
+-----------------------
+
+Mohl bych to udělat jako v PoE, tzn. že armor redukuje nelineárně.
+
+To způsobí, že těžké zbraně budou účinnější proti velkým cílům (s velkým
+armorem) a lehké rychlopalné proti lehkým cílům (s malým armorem).
+
+- uvažuju o tom kvůli rozdělení rolí (fighter, bomber).
+  (bomber je teda možná blbej název, protože se nebude nic bombardovat)
 
 
 ==============================================================

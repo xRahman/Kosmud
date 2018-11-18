@@ -27,14 +27,16 @@ async function start()
   try
   {
     await HttpsServer.startServers();
+    await Game.preload();
+    await Game.create();
   }
   catch (error)
   {
-    REPORT(error, "Failed to start http server");
+    REPORT(error, "Failed to start");
     return;
   }
 
-  Game.startLoop();
+  Game.loop();
 }
 
 // tslint:disable-next-line:no-floating-promises

@@ -6,7 +6,8 @@
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
-import { PhysicsWorld } from "./PhysicsWorld";
+import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
+import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
 /// Zatím natvrdo.
 const MAX_SPEED = 200;
@@ -35,10 +36,12 @@ export class Vehicle
   protected leftwardThrust = 0;
   protected torque = 0;
 
-  private readonly physicsBody = PhysicsWorld.createBody();
+  private readonly physicsBody: PhysicsBody;
 
-  constructor()
+  constructor(physicsConfig: PhysicsBody.Config)
   {
+    this.physicsBody = PhysicsWorld.createBody(physicsConfig);
+
     this.waypoint.set(this.physicsBody.getPosition());
   }
 

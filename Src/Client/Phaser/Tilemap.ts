@@ -13,12 +13,12 @@ export class Tilemap extends Shared.Tilemap
   constructor
   (
     private readonly scene: Scene,
-    private readonly name: string,
+    name: string,
     // String id of preloaded tilemap json data.
     tilemapJsonDataId: string
   )
   {
-    super();
+    super(name);
 
     this.tilemap = scene.make.tilemap({ key: tilemapJsonDataId });
   }

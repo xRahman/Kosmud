@@ -7,14 +7,14 @@
 */
 
 import { Vector } from "../../Shared/Physics/Vector";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { Physics } from "../../Shared/Physics/Physics";
 import { Packet } from "../../Shared/Protocol/Packet";
 
 export class ShipToScene extends Packet
 {
   constructor
   (
-    public shipShape: PhysicsBody.Shape,
+    public shipShape: Physics.Shape,
     public shipPosition: Vector,
     public shipRotation: number
   )

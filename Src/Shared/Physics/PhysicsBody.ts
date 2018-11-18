@@ -5,7 +5,8 @@
 */
 
 import { validateNumber, validateVector } from "../../Shared/Utils/Math";
-import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
+// import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
+import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
 
 // 3rd party modules.
@@ -17,31 +18,23 @@ export class PhysicsBody
   private velocity = 0;
   private readonly body: b2Body;
 
-  constructor(world: b2World)
+  constructor(world: b2World, config: PhysicsBody.Config)
   {
     const bodyDefinition = new b2BodyDef();
+    const x = (config.position !== undefined) ? config.position.x : 0;
+    const y = (config.position !== undefined) ? config.position.y : 0;
 
-    bodyDefinition.position.Set(0, 0);
+    bodyDefinition.position.Set(x, y);
     bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
     this.body = world.CreateBody(bodyDefinition);
 
-    const shape = new b2PolygonShape();
+    for (const polygon of config.shape)
+    {
+      const fixtureDefinition = createFixtureDefinition(polygon, config);
 
-    /// Zatím natvrdo.
-    shape.SetAsBox(100, 100);
-
-    const fixtureDefinition = new b2FixtureDef();
-
-    fixtureDefinition.shape = shape;
-    // density * area = mass
-    fixtureDefinition.density = 0.00001;
-    // 0 - no friction, 1 - maximum friction
-    fixtureDefinition.friction = 0.5;
-    // 0 - almost no bouncing, 1 - maximum bouncing.
-    fixtureDefinition.restitution = 1;
-
-    this.body.CreateFixture(fixtureDefinition);
+      this.body.CreateFixture(fixtureDefinition);
+    }
   }
 
   public getPosition()
@@ -126,7 +119,7 @@ export class PhysicsBody
 
   public getShape()
   {
-    const shape: PhysicsBody.Shape = [];
+    const shape: Physics.Shape = [];
 
     for
     (
@@ -141,7 +134,7 @@ export class PhysicsBody
       {
         const vertices = (fixture.GetShape() as b2PolygonShape).m_vertices;
 
-        const polygon: PhysicsBody.Polygon = [];
+        const polygon: Physics.Polygon = [];
 
         for (const vertex of vertices)
         {
@@ -162,17 +155,55 @@ export class PhysicsBody
   }
 }
 
+function createFixtureDefinition
+(
+  polygon:
+  Physics.Polygon,
+  config: PhysicsBody.Config
+)
+: b2FixtureDef
+{
+  const friction =
+    (config.friction !== undefined) ? config.friction : 0.5;
+  const restitution =
+    (config.restitution !== undefined) ? config.restitution : 1;
+
+  const shape = new b2PolygonShape();
+
+  shape.Set(polygon);
+
+  const fixtureDefinition = new b2FixtureDef();
+
+  fixtureDefinition.shape = shape;
+
+  // density * area = mass
+  fixtureDefinition.density = config.density;
+  // 0 - no friction, 1 - maximum friction
+  fixtureDefinition.friction = friction;
+  // 0 - almost no bouncing, 1 - maximum bouncing.
+  fixtureDefinition.restitution = restitution;
+
+  return fixtureDefinition;
+
+  // // density * area = mass
+  // fixtureDefinition.density = 0.00001;
+  // // 0 - no friction, 1 - maximum friction
+  // fixtureDefinition.friction = 0.5;
+  // // 0 - almost no bouncing, 1 - maximum bouncing.
+  // fixtureDefinition.restitution = 1;
+}
+
 // ------------------ Type Declarations ----------------------
 
 export namespace PhysicsBody
 {
-  export type Config =
+  export interface Config
   {
-    /// Zatím to dám natvrdo, stejně se to bude nejspíš muset
-    /// načítat z exportu z Tiled editoru.
-  };
-
-  export type Polygon = Array<{ x: number; y: number }>;
-
-  export type Shape = Array<Polygon>;
+    position?: { x: number; y: number };  // Default: { x: 0, y: 0 }.
+    shape: Physics.Shape;
+    density: number;
+    friction?: number;                    // Default: 0.5
+    // 0 - almost no bouncing, 1 - maximum bouncing.
+    restitution?: number;                 // Default: 1.0
+  }
 }

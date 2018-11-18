@@ -30,7 +30,45 @@ TODO: Načíst physics shape lodi.
      přiřazený natvrdo, nemusí se to loadovat z disku
      (to mi ostatně ušetří posílání prototypu na klienta - když
       to bude natvrdo v shared kódu, tak na to klient uvidí automaticky).
+Async constructor asi nepůjde - to znamená, že:
+- buď musím nejdřív loadnout tilemapu a až pak udělat new Ship
+- nebo new Ship a pak await ship.load().
+Ship tak jako tak nebude existovat od začátku, takže by asi dávalo větší
+  smysl, aby měla všechny properties inicializované v konstruktoru.
+- to znamená udělat nějakej preload.
 
+TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
+  https://github.com/Louis-T/fernandez-polygon-decomposition
+  https://github.com/schteppe/poly-decomp.js/
+  - ten druhej asi neumí díry (a navíc má koordináty v poli), takže
+    asi spíš ten první.
+  - ideálně by se to mělo procesit offline, ale co už.
+
+
+TODO: Přiřadit Ship shape do body
+  (místo stávajícího hacku na obdélníkové body).
+- Skoro!
+TODO: Pořešit, proč jsou všechny polygony přes sebe.
+
+TODO: Procházení dat tilemapy je dost šílený - asi to bude chtít
+  udělat tak, že to projdu jen jednou a při tom vytahám všechna potřebná
+  data.
+- ideálně by se to mělo offline přechroustat do formátu, kterej se nemusí
+  traverzovat (všechno rovnou zaindexovat), ale na to teď není prostor.
+  - při tom by se daly rovnou rozřezávat nekonvexní polygony.
+
+TODO: Vůbec se mi nelíbí přetypování tilemapy. Mělo by se to loadovat
+  jako Serializable, aby se kontrolovalo, že tam jsou patřičné properties.
+
+TODO: Vehicly (a obecně herní objekty) by asi měly mít nastavenou hmotnost
+  spíš než hustotu (hustota by se měla dopočítat).
+  - na druhou stranu když pak zvětším loď na dvojnásobek, tak bude
+    mít absurdní hustotu (zůstane jí hmotnost...)
+
+TODO: Ship.getShape() by si asi mohlo výsledek pamatovat, ať se pokaždý
+ nevolá tilemap.getShape().
+
+TODO: Umožnit na klientu víc lodí.
 
 TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
   (v /Shared/Physics, /Server/Physics ale /Client/Phaser).
@@ -63,6 +101,28 @@ TODO: Výhledově zdědit Client/Ship ze Shared/Ship
    mít taky, ale znamenalo by to na klientu komplet inicializovat
    fyziku).
    - na druhou stranu bych nemusel extra deklarovat všechny properties.
+
+TODO: Jméno tilemapy by se mělo brát
+  ze Shared/Game/Ship/TILEMAP_NAME (ab
+  y bylo stejný na klientu
+  i na serveru - je to ostatně stejná tilemapa). Teď není Clie
+  nt/Ship
+  zděděná ze Shared/Ship, takže to není tak jednoduchý.
+(viz ShipGraphics.constructor()).
+
+TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
+  klienta, takže to dává smysl.
+  - možná by se Client mohl rovnou jmenovat WWW, wwwRoot, nebo tak něco.
+- Potom je taky otázka, jestli má vůbec smysl adresář /Server.
+  Spíš ne, je to akorát matoucí. Momentálně obsahuje /js a /Keys,
+  což obojí asi může bejt rovnou v rootu (/js by se možná mohlo jmenovat
+  /build, ale na clientu je to /js, tak asi dává smysl mít to stejně).
+
+TODO: odchytávat vyjímky z Tilemap.getShape().
+
+TODO: Updatnout Tilemap.Data podle
+  http://docs.mapeditor.org/en/stable/reference/tmx-map-format/
+- respektive je tam i verze pro JSON.
 
 Ad 2:
 -----

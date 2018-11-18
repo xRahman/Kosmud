@@ -10,6 +10,9 @@ import { Syslog } from "../../Server/Log/Syslog";
 import { Connection } from "../../Server/Net/Connection";
 import { Connections } from "../../Server/Net/Connections";
 
+/// TEST
+import { Game } from "../Game/Game";
+
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from "isomorphic-ws";
@@ -134,7 +137,7 @@ function acceptConnection(webSocket: WebSocket, ip: string, url: string)
 
   /// DEBUG:
   /// (ship by se měla přidávat do scény až poté, co se player naloguje.)
-  connection.sendShipToScene();
+  Game.sendShipsToClient(connection);
 }
 
 function denyConnection

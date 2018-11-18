@@ -15,6 +15,8 @@ export namespace Physics
 {
   export type Polygon = Array<{ x: number; y: number }>;
 
+  export type Shape = Array<Polygon>;
+
   /// Výhledově nejspíš bude physics worldů víc,
   /// takže si tu zatím to provolávání nechám.
   export function tick(miliseconds: number)

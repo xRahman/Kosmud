@@ -14,10 +14,12 @@ export class SetWaypoint extends Shared.SetWaypoint
 {
   // ---------------- Public methods --------------------
 
+  // ! Throws exception on error.
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    Game.ship.setWaypoint(this.waypoint);
+    // ! Throws exception on error.
+    Game.getPlayerShip().setWaypoint(this.waypoint);
   }
 }
 

@@ -38,24 +38,29 @@ export class KeyboardInput extends Shared.KeyboardInput
 
 // ----------------- Auxiliary Functions ---------------------
 
+// ! Throws exception on error.
 function startMovingShip(action: Shared.KeyboardInput.Action)
 {
   switch (action)
   {
     case "Left":
-      Game.ship.startTurningLeft();
+      // ! Throws exception on error.
+      Game.getPlayerShip().startTurningLeft();
       break;
 
     case "Right":
-      Game.ship.startTurningRight();
+      // ! Throws exception on error.
+      Game.getPlayerShip().startTurningRight();
       break;
 
     case "Forward":
-      Game.ship.moveForward();
+      // ! Throws exception on error.
+      Game.getPlayerShip().moveForward();
       break;
 
     case "Backward":
-      Game.ship.moveBackward();
+      // ! Throws exception on error.
+      Game.getPlayerShip().moveBackward();
       break;
 
     default:
@@ -63,18 +68,21 @@ function startMovingShip(action: Shared.KeyboardInput.Action)
   }
 }
 
+// ! Throws exception on error.
 function stopMovingShip(action: Shared.KeyboardInput.Action)
 {
   switch (action)
   {
     case "Left":
     case "Right":
-      Game.ship.stopTurning();
+      // ! Throws exception on error.
+      Game.getPlayerShip().stopTurning();
       break;
 
     case "Forward":
     case "Backward":
-      Game.ship.stopMoving();
+      // ! Throws exception on error.
+      Game.getPlayerShip().stopMoving();
       break;
 
     default:

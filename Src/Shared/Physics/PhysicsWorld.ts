@@ -17,9 +17,9 @@ export namespace PhysicsWorld
 {
   const world = new b2World(GRAVITY);
 
-  export function createBody(): PhysicsBody
+  export function createBody(config: PhysicsBody.Config): PhysicsBody
   {
-    return new PhysicsBody(world);
+    return new PhysicsBody(world, config);
   }
 
   export function tick(miliseconds: number)

@@ -11,21 +11,28 @@ import { Vector } from "../../Shared/Physics/Vector";
 
 export class SceneUpdate extends Packet
 {
-  constructor
-  (
-    public shipPosition: Vector,
-    public shipRotation: number,
-    public shipVelocity: Vector,
-    public desiredVelocity: Vector,
-    public steeringForce: Vector,
-    public desiredSteeringForce: Vector,
-    public desiredForwardSteeringForce: Vector,
-    public desiredLeftwardSteeringForce: Vector,
-    public forwardThrustRatio: number,
-    public leftwardThrustRatio: number,
-    public torqueRatio: number
-  )
+  constructor(public shipStates: Array<SceneUpdate.ShipState>)
   {
     super();
+  }
+}
+
+// ------------------ Type Declarations ----------------------
+
+export namespace SceneUpdate
+{
+  export interface ShipState
+  {
+    shipPosition: Vector;
+    shipRotation: number;
+    shipVelocity: Vector;
+    desiredVelocity: Vector;
+    steeringForce: Vector;
+    desiredSteeringForce: Vector;
+    desiredForwardSteeringForce: Vector;
+    desiredLeftwardSteeringForce: Vector;
+    forwardThrustRatio: number;
+    leftwardThrustRatio: number;
+    torqueRatio: number;
   }
 }

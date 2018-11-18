@@ -21,7 +21,6 @@ import { SetWaypoint } from "../../Server/Protocol/SetWaypoint";
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from "isomorphic-ws";
-import { Game } from "../Game/Game";
 
 // We need to registr packet classes here because when a module is
 // imported and not used, typescript doesn't execute it's code.
@@ -64,22 +63,6 @@ export class Connection extends Socket
       // ! Throws exception on error.
       packet.serialize("Send to Client")
     );
-  }
-
-  /// TODO: Výhledově tohle nejspíš bude jinde
-  ///  (asi v procesení EnterGameRequestu).
-  public sendShipToScene()
-  {
-    const shipInfo = Game.getShipToSceneInfo();
-
-    const packet = new ShipToScene
-    (
-      shipInfo.shape,
-      shipInfo.position,
-      shipInfo.rotation
-    );
-
-    this.send(packet);
   }
 
   // --------------- Private methods --------------------
