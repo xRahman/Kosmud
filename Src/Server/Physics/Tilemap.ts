@@ -262,15 +262,18 @@ function getTileShape
 
   for (const object of tile.objectgroup.objects)
   {
-    if (object.polygon === undefined)
-    {
-      throw new Error(`Failed to get physics shape from tilemap`
-        + ` '${tilemapName}' because object '${object.name}' in`
-        + ` tile with gid '${tileGid}' corresponding to layer object`
-        + ` '${layerObjectName}' doesn't have a 'polygon' property`);
-    }
+    // ! Throws exception on error.
+    const polygon = getPolygon
+    (
+      object,
+      tileGid,
+      data.tilewidth,
+      data.tileheight,
+      layerObjectName,
+      tilemapName
+    );
 
-    shape.push(object.polygon);
+    shape.push(polygon);
   }
 
   if (shape.length === 0)
@@ -283,6 +286,43 @@ function getTileShape
   }
 
   return shape;
+}
+
+// ! Throws exception on error.
+function getPolygon
+(
+  object: Shared.Tilemap.TilemapObject,
+  tileGid: number,
+  tileWidth: number,
+  tileHeight: number,
+  layerObjectName: string,
+  tilemapName: string
+)
+{
+  if (object.polygon === undefined)
+  {
+    throw new Error(`Failed to get physics shape from tilemap`
+      + ` '${tilemapName}' because object '${object.name}' in`
+      + ` tile with gid '${tileGid}' corresponding to layer object`
+      + ` '${layerObjectName}' doesn't have a 'polygon' property`);
+  }
+
+  // Polygons are saved at [0, 0] in tilemap data so we
+  // need to translate them by [object.x, object.y].
+  //   We also need to translate to the middle of the tile,
+  // because Tiled tiles have origin at top left (in Phaser
+  // it's in the midle).
+  const xOffset = object.x - tileWidth / 2;
+  const yOffset = object.y - tileHeight / 2;
+
+  const polygon: Physics.Polygon = [];
+
+  for (const point of object.polygon)
+  {
+    polygon.push({ x: (point.x + xOffset), y: (point.y + yOffset) });
+  }
+
+  return polygon;
 }
 
 // ! Throws exception on error.

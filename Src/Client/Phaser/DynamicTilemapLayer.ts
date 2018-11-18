@@ -6,6 +6,10 @@ import { PhaserObject } from "../../Client/Phaser/PhaserObject";
 
 export class DynamicTilemapLayer extends PhaserObject
 {
+  // DynamicTilemapLayer is not actually inherited from
+  // Phaser.GameObjects.GameObject (according to Paser
+  // documentation) but it seems that it has the same
+  // properties so we can consider it to be so.
   protected phaserObject: Phaser.Tilemaps.DynamicTilemapLayer;
 
   constructor

@@ -1,3 +1,10 @@
+TODO: Sledovat moji issue v animated tiles pluginu:
+  https://github.com/nkholski/phaser-animated-tiles/issues/3
+
+Dnešní TODO:
+- předělat tilemapu lodi tak, aby byla placnutá "normálně".
+- a vrátit do kódu translaci.
+  (důvod: fyzika je taky posunutá a translace tam je, tak ať je to stejně).
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
@@ -8,92 +15,16 @@ Priority:
    [done]
 3) Dát něco do scény.
 4) Vyhýbání (překážkám a jiným lodím).
-5) Lepší physics body shape pro loď (a pro překážky taky).
+5) Lepší physics body shape pro loď
+   [done]
+   (a pro překážky taky).
 6) Anchor pointy (pro exhausty, časem pro zbraně).
+   - je to ještě lepší - sprity se rovnou umisťujou v Tiled editoru.
+   [done]
 7) Bullets (railgun a tak)
 8) Rakety!
 9) Lag simulátor a interpolace na clientu, aby se to netrhalo.
    - zatím asi až tak moc nespěchá, hratelný to bude i bez toho.
-
-TODO: Načíst physics shape lodi.
-  OK, jak budu vyrábět ship?
-  - primárně každopádně na serveru.
-    - loadne se entita. Ta má příslušnej typ (prototyp), tzn.
-      má nasetovaný properties, jako třeba jakou má použít tilemapu.
-    - na server se pošle info o tom, z čeho se má pro loď vytvořit grafika
-      (hmm, to zavání posláním prototypu, abych ty datový struktury
-       nemusel deklarovat dvakrát)
-       - Momentálně to každopádně můžu na klientu a na serveru vytvořit
-         paralelně.
-   Ship na serveru (nebo možná i v Shared) by každopádně měla mít
-     info o tom, jakou tilemapu má použít. Prozatím to může bejt
-     přiřazený natvrdo, nemusí se to loadovat z disku
-     (to mi ostatně ušetří posílání prototypu na klienta - když
-      to bude natvrdo v shared kódu, tak na to klient uvidí automaticky).
-Async constructor asi nepůjde - to znamená, že:
-- buď musím nejdřív loadnout tilemapu a až pak udělat new Ship
-- nebo new Ship a pak await ship.load().
-Ship tak jako tak nebude existovat od začátku, takže by asi dávalo větší
-  smysl, aby měla všechny properties inicializované v konstruktoru.
-- to znamená udělat nějakej preload.
-
-TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
-  https://github.com/Louis-T/fernandez-polygon-decomposition
-  https://github.com/schteppe/poly-decomp.js/
-  - ten druhej asi neumí díry (a navíc má koordináty v poli), takže
-    asi spíš ten první.
-  - ideálně by se to mělo procesit offline, ale co už.
-
-
-TODO: Přiřadit Ship shape do body
-  (místo stávajícího hacku na obdélníkové body).
-- Skoro!
-TODO: Pořešit, proč jsou všechny polygony přes sebe.
-
-TODO: Procházení dat tilemapy je dost šílený - asi to bude chtít
-  udělat tak, že to projdu jen jednou a při tom vytahám všechna potřebná
-  data.
-- ideálně by se to mělo offline přechroustat do formátu, kterej se nemusí
-  traverzovat (všechno rovnou zaindexovat), ale na to teď není prostor.
-  - při tom by se daly rovnou rozřezávat nekonvexní polygony.
-
-TODO: Vůbec se mi nelíbí přetypování tilemapy. Mělo by se to loadovat
-  jako Serializable, aby se kontrolovalo, že tam jsou patřičné properties.
-
-TODO: Vehicly (a obecně herní objekty) by asi měly mít nastavenou hmotnost
-  spíš než hustotu (hustota by se měla dopočítat).
-  - na druhou stranu když pak zvětším loď na dvojnásobek, tak bude
-    mít absurdní hustotu (zůstane jí hmotnost...)
-
-TODO: Ship.getShape() by si asi mohlo výsledek pamatovat, ať se pokaždý
- nevolá tilemap.getShape().
-
-TODO: Umožnit na klientu víc lodí.
-
-TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
-  (v /Shared/Physics, /Server/Physics ale /Client/Phaser).
-
-TODO: Asi bych měl udělat shared předka classy Tilemap,
-  kterého různě implementuje klient a server. Časem budu chtít počítat
-  fyziku i na klientu a asi budu chtít vyrábět zóny stejnejma metodama,
-  tak ať to na to je připravený.
-
-TODO: Scene by asi měla wrappovat Phaser.Scene, ne extendovat
-  (všude mám wrappery jen scéna je potomek).
-
-TODO: doladit vizuály exhaustů
-- úlně je schovávat, když nejsou aktivní.
-- dát jim nějakou minimální délku (jako u zadních).
-
-TODO: Tilemap by pak asi mohla ještě vytvářet StaticLayery a DynamicLayery.
-- asi to můžu připravit, tj. classy StaticLayer a DynamicLayer zděděné klasicky
-  z PhaserObjectu.
-StaticTilemapLayer a DynamicTilemapLayer možná nebudou moci bejt PhaserObjecty,
-protože jejich phaser varianty nejsou zděděné z GameObjectu.
-- možná jim dát jiného předka? (TilemapLayer)?
-- nebo možná zdědit DynamicTilemapLayer ze StaticTilemapLayer.
-
-TODO: Dát návrh na rozvoj tile animation pluginu.
 
 TODO: Výhledově zdědit Client/Ship ze Shared/Ship
   (bude to komplikovaný, páč Client/Ship je zděděná z Vehicle
@@ -101,7 +32,6 @@ TODO: Výhledově zdědit Client/Ship ze Shared/Ship
    mít taky, ale znamenalo by to na klientu komplet inicializovat
    fyziku).
    - na druhou stranu bych nemusel extra deklarovat všechny properties.
-
 TODO: Jméno tilemapy by se mělo brát
   ze Shared/Game/Ship/TILEMAP_NAME (ab
   y bylo stejný na klientu
@@ -109,6 +39,37 @@ TODO: Jméno tilemapy by se mělo brát
   nt/Ship
   zděděná ze Shared/Ship, takže to není tak jednoduchý.
 (viz ShipGraphics.constructor()).
+TODO: Sloučit Ship na clientu a serveru, aby se používaly stejné
+ properties (názvy layerů, cesta k tilemapě a tak).
+ - Cesta k tilemapě teda bude muset mít jinej prefix.
+
+TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
+  https://github.com/Louis-T/fernandez-polygon-decomposition
+  https://github.com/schteppe/poly-decomp.js/
+  - ten druhej asi neumí díry (a navíc má koordináty v poli), takže
+    asi spíš ten první.
+  - ideálně by se to mělo procesit offline, ale co už.
+Spíš to asi odložím. Zatím můžu ručně editovat čiste konvexní polygony
+  (ostatně to znamená rychlejší start.
+
+TODO: Změnit konstanty, aby hustota byla nějaké rozumné číslo.
+- bude potřeba příslušně zvednout thrust, což je ok.
+
+
+TODO: Umožnit na klientu víc lodí.
+- a pořádně to projít i na serveru, asi je to teď lehce zmatený.
+  (getPlayerShip() je ale ok řešení, asi by šlo použít i na klientu).
+
+TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
+  (v /Shared/Physics, /Server/Physics ale /Client/Phaser).
+
+
+TODO: Scene by měla wrappovat Phaser.Scene, ne extendovat
+  (všude mám wrappery jen scéna je potomek).
+
+TODO: doladit vizuály exhaustů
+- úlně je schovávat, když nejsou aktivní.
+- dát jim nějakou minimální délku (jako u zadních).
 
 TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
   klienta, takže to dává smysl.
@@ -124,32 +85,21 @@ TODO: Updatnout Tilemap.Data podle
   http://docs.mapeditor.org/en/stable/reference/tmx-map-format/
 - respektive je tam i verze pro JSON.
 
-Ad 2:
------
-
-Ad 4:
-------
-TODO: načíst výstup z Tiled editoru.
-- na serveru do fyziky, na klientu do grafiky
-Body zkusím editovat rovnou u tilesy (pokud to bude fungovat pro object layer).
-
-https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
-
-
 
 TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
 
-
 TODO: Steering by se možná choval líp, kdyby se prostě loď nejdřív otočila
   do požadovaného směru a pak se aplikoval jen forward/backward thrust.
+- rozhodně to budu muset ještě poladit.
+TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
+  je vidět, jak se to občas chová divně.
+TODO: Opravit "backlash" při zastavování.
 
 
 TODO: Refactoriiiing!
 - Učesat steering kód.
 - Místo Phaser.Scene všude předávat Scene
   (což je z ní beztak zděděné, ale je to můj interní typ).
-- SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
- (konstruktor s 20 parametry už je trochu přes míru...)
 
  Refactorovat steering
 - různá chování počítají jen desired velocity
@@ -160,15 +110,11 @@ TODO: Refactoriiiing!
 Ok, asi se raději budu držet skládání sil.
 
 TODO: Odchytávání výjimek ze Steeringu.
+- to už možná je, ale chce to zkontrolovat.
 
 TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
 
 TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
-
-TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
-  je vidět, jak se to občas chová divně.
-
-TODO: Opravit "backlash" při zastavování.
 
 -----------------------------------------------------------------------
 

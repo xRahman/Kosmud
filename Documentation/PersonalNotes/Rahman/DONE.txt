@@ -1,3 +1,91 @@
+TODO: Dát návrh na rozvoj tile animation pluginu.
+[done]
+
+TODO: SceneUpdate by asi mělo parametry dostávat trochu víc strukturovaně
+ (konstruktor s 20 parametry už je trochu přes míru...)
+- sort of done
+[done]
+
+
+TODO: načíst výstup z Tiled editoru.
+- na serveru do fyziky, na klientu do grafiky
+Body zkusím editovat rovnou u tilesy (pokud to bude fungovat pro object layer).
+https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+[done]
+
+TODO: Tilemap by pak mohla ještě vytvářet StaticLayery a DynamicLayery.
+- asi to můžu připravit, tj. classy StaticLayer a DynamicLayer zděděné klasicky
+  z PhaserObjectu.
+StaticTilemapLayer a DynamicTilemapLayer možná nebudou moci bejt PhaserObjecty,
+protože jejich phaser varianty nejsou zděděné z GameObjectu.
+- možná jim dát jiného předka? (TilemapLayer)?
+- nebo možná zdědit DynamicTilemapLayer ze StaticTilemapLayer.
+Zjevně to funguje, i když to v Phaseru zděděné není.
+- Připravené to je, zatím to nechám být.
+[done]
+
+TODO: Asi bych měl udělat shared předka classy Tilemap,
+  kterého různě implementuje klient a server. Časem budu chtít počítat
+  fyziku i na klientu a asi budu chtít vyrábět zóny stejnejma metodama,
+  tak ať to na to je připravený.
+[done]
+
+TODO: Ship.getShape() by si asi mohlo výsledek pamatovat, ať se pokaždý
+ nevolá tilemap.getShape().
+- na druhou stranu volá se to asi jen jednou (rovnou se z toho vytvoří
+  physics body), takž je to asi ok.
+[won't do]
+
+TODO: Načíst physics shape lodi.
+  OK, jak budu vyrábět ship?
+  - primárně každopádně na serveru.
+    - loadne se entita. Ta má příslušnej typ (prototyp), tzn.
+      má nasetovaný properties, jako třeba jakou má použít tilemapu.
+    - na server se pošle info o tom, z čeho se má pro loď vytvořit grafika
+      (hmm, to zavání posláním prototypu, abych ty datový struktury
+       nemusel deklarovat dvakrát)
+       - Momentálně to každopádně můžu na klientu a na serveru vytvořit
+         paralelně.
+   Ship na serveru (nebo možná i v Shared) by každopádně měla mít
+     info o tom, jakou tilemapu má použít. Prozatím to může bejt
+     přiřazený natvrdo, nemusí se to loadovat z disku
+     (to mi ostatně ušetří posílání prototypu na klienta - když
+      to bude natvrdo v shared kódu, tak na to klient uvidí automaticky).
+Async constructor asi nepůjde - to znamená, že:
+- buď musím nejdřív loadnout tilemapu a až pak udělat new Ship
+- nebo new Ship a pak await ship.load().
+Ship tak jako tak nebude existovat od začátku, takže by asi dávalo větší
+  smysl, aby měla všechny properties inicializované v konstruktoru.
+- to znamená udělat nějakej preload.
+[done]
+
+TODO: Vehicly (a obecně herní objekty) by asi měly mít nastavenou hmotnost
+  spíš než hustotu (hustota by se měla dopočítat).
+  - na druhou stranu když pak zvětším loď na dvojnásobek, tak bude
+    mít absurdní hustotu (zůstane jí hmotnost...)
+[kašlat na to, hustota je ok]
+
+TODO: Vůbec se mi nelíbí přetypování tilemapy. Mělo by se to loadovat
+  jako Serializable, aby se kontrolovalo, že tam jsou patřičné properties.
+- Ono to je nakonec asi ok. Když budou data jinak, tak to tak jako tak hodí
+  exception. Sice nebude moc dobře popsaná a vysvětlená, ale zas mít kód
+  plnej ošetřování možnáho 'undefined' by bylo taky dost naprd.
+[it's ok]
+
+TODO: Procházení dat tilemapy je dost šílený - asi to bude chtít
+  udělat tak, že to projdu jen jednou a při tom vytahám všechna potřebná
+  data.
+- ideálně by se to mělo offline přechroustat do formátu, kterej se nemusí
+  traverzovat (všechno rovnou zaindexovat), ale na to teď není prostor.
+  - při tom by se daly rovnou rozřezávat nekonvexní polygony.
+[done]
+
+TODO: Přiřadit Ship shape do body
+  (místo stávajícího hacku na obdélníkové body).
+- Skoro!
+TODO: Pořešit, proč jsou všechny polygony přes sebe.
+[done]
+
 TODO: Přesunout interface Tilemap.Data do Shared/Tilemap.
 [done]
 

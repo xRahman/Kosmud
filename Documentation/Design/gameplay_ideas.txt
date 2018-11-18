@@ -26,6 +26,23 @@ armorem) a lehké rychlopalné proti lehkým cílům (s malým armorem).
 
 ==============================================================
 
+Base Building
+--------------
+
+Záměr je, aby se každej hráč podílel ne jen sbíráním matroše, ale tím,
+že sám něco staví.
+
+Řešení: Gildovní báze (nebo klidně i město) se pospojuje z bází
+  jednotlivých hráčů.
+  - hráč může svou bázi rozělit na víc komponent a připojit je ke gildovní
+    bázi na různých místech.
+  - celá gildovní báze může být přesunovatelná.
+
+Bonus: Když hráč leavne klan, tak si prostě svou bázi odpojí a odelí
+  s ní někam jinam (to by ostatně mohl být způsob, jak klan leavnout).
+
+==============================================================
+
 - Obecně bych to asi rád hrál ve větším zoomu (a tudíž na delší vzdálenosti) než se hraje
 Starsector. Už jen proto, že taranování spaceshipou je divný..
 
