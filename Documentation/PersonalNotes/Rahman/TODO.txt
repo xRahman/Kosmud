@@ -1,6 +1,9 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Hlasitost zvuku ostatních lidí snižovat se vzdáleností od pozice
+  hráčovy lodě (nejspíš ne od pozice kamery).
+
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
@@ -39,18 +42,8 @@ TODO: Sloučit Ship na clientu a serveru, aby se používaly stejné
  properties (názvy layerů, cesta k tilemapě a tak).
  - Cesta k tilemapě teda bude muset mít jinej prefix.
 
-TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
-  https://github.com/Louis-T/fernandez-polygon-decomposition
-  https://github.com/schteppe/poly-decomp.js/
-  - ten druhej asi neumí díry (a navíc má koordináty v poli), takže
-    asi spíš ten první.
-  - ideálně by se to mělo procesit offline, ale co už.
-Spíš to asi odložím. Zatím můžu ručně editovat čiste konvexní polygony
-  (ostatně to znamená rychlejší start.
-
-TODO: Změnit konstanty, aby hustota byla nějaké rozumné číslo.
-- bude potřeba příslušně zvednout thrust, což je ok.
-
+TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
+- vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
 
 TODO: Umožnit na klientu víc lodí.
 - a pořádně to projít i na serveru, asi je to teď lehce zmatený.
@@ -226,6 +219,15 @@ TODO: Odhackovat Client/Phaser/Sound.setVolume();
 
 Výhledové TODO:
 -----------------
+
+TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
+  https://github.com/Louis-T/fernandez-polygon-decomposition
+  https://github.com/schteppe/poly-decomp.js/
+  - ten druhej asi neumí díry (a navíc má koordináty v poli), takže
+    asi spíš ten první.
+  - ideálně by se to mělo procesit offline, ale co už.
+Spíš to asi odložím. Zatím můžu ručně editovat čiste konvexní polygony
+  (ostatně to znamená rychlejší start.
 
 TODO: Nepovedlo se mi rozplazit tslint extension, kterej by lintoval
   při psaní a zároveň nežral message reportnuté z buildu, které

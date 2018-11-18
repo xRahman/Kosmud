@@ -184,13 +184,6 @@ function createFixtureDefinition
   fixtureDefinition.restitution = restitution;
 
   return fixtureDefinition;
-
-  // // density * area = mass
-  // fixtureDefinition.density = 0.00001;
-  // // 0 - no friction, 1 - maximum friction
-  // fixtureDefinition.friction = 0.5;
-  // // 0 - almost no bouncing, 1 - maximum bouncing.
-  // fixtureDefinition.restitution = 1;
 }
 
 // ------------------ Type Declarations ----------------------

@@ -1,3 +1,11 @@
+TODO: Změnit konstanty, aby hustota byla nějaké rozumné číslo.
+- bude potřeba příslušně zvednout thrust, což je ok.
+Nebude to tak jednoduchý: když to zvětším, tak pak musej
+  bejt mnohem větší všechny thrusty, torques a tak a vektory
+  jsou pak přes celou obrazovku.
+- takže to zatím nechám bejt.
+[won't do]
+
 TODO:
 - předělat tilemapu lodi tak, aby byla placnutá "normálně".
 - a vrátit do kódu translaci.

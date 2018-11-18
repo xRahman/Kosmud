@@ -47,7 +47,10 @@ export namespace Game
     const physicsConfig: PhysicsBody.Config =
     {
       shape,
-      density:  0.00001
+      /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
+      /// bejt mnohem větší všechny thrusty, torques a tak a vektory
+      /// jsou pak přes celou obrazovku.
+      density: 0.00001
     };
 
     ships.push(new Ship(physicsConfig));
