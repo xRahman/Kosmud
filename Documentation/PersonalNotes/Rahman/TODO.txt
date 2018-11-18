@@ -1,10 +1,6 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-Dnešní TODO:
-- předělat tilemapu lodi tak, aby byla placnutá "normálně".
-- a vrátit do kódu translaci.
-  (důvod: fyzika je taky posunutá a translace tam je, tak ať je to stejně).
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu

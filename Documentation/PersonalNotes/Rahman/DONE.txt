@@ -1,3 +1,9 @@
+TODO:
+- předělat tilemapu lodi tak, aby byla placnutá "normálně".
+- a vrátit do kódu translaci.
+  (důvod: fyzika je taky posunutá a translace tam je, tak ať je to stejně).
+[done]
+
 TODO: Dát návrh na rozvoj tile animation pluginu.
 [done]
 

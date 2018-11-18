@@ -49,6 +49,12 @@ export class Tilemap extends Shared.Tilemap
 
     for (const phaserSprite of phaserSprites)
     {
+      // We need to translate the tiles by halph the tile
+      // size because tiles have origin at top left in
+      // Tiled editor but in the middle in Phaser engine.
+      phaserSprite.x -= this.tilemap.tileWidth / 2;
+      phaserSprite.y -= this.tilemap.tileHeight / 2;
+
       const sprite = new Sprite
       (
         this.scene,
