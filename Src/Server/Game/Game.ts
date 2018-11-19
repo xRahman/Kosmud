@@ -41,19 +41,20 @@ export namespace Game
   // ! Throws exception on error.
   export async function create()
   {
-    // ! Throws exception on error.
-    const shape = Ship.getShape();
+    // // ! Throws exception on error.
+    // const shape = Ship.getShape();
 
-    const physicsConfig: PhysicsBody.Config =
-    {
-      shape,
-      /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
-      /// bejt mnohem větší všechny thrusty, torques a tak a vektory
-      /// jsou pak přes celou obrazovku.
-      density: 0.00001
-    };
+    // const physicsConfig: Physics.Config =
+    // {
+    //   shape,
+    //   /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
+    //   /// bejt mnohem větší všechny thrusty, torques a tak a vektory
+    //   /// jsou pak přes celou obrazovku.
+    //   density: 0.00001
+    // };
 
-    ships.push(new Ship(physicsConfig));
+    // ships.push(new Ship(physicsConfig));
+    ships.push(new Ship());
   }
 
   export function loop()

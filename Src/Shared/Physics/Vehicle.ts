@@ -7,23 +7,47 @@
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
+import { Physics } from "../../Shared/Physics/Physics";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
-
-/// Zatím natvrdo.
-const MAX_SPEED = 200;
-const FORWARD_THRUST = 100;
-const BACKWARD_THRUST = 20;
-const STRAFE_THRUST = 5;
-const ANGULAR_VELOCITY = Math.PI * 2;
-const TORQUE = 3000;
 
 const FPS = 60;
 
-const STOPPING_DISTANCE = 20;
-const STOPPING_SPEED = MAX_SPEED / 100;
-
-export class Vehicle
+export abstract class Vehicle
 {
+  /// Nechám to zatím CAPSEM. Časem to možná nebudou konstanty
+  /// (protože se budou měnit debufama a tak, tak to pak případně
+  ///  přejmenuju. Ale popravdě by asi bylo lepší nechat základ konstantní
+  ///  a případný modifikátor přičítat/přinásobovat až )
+  protected readonly MAX_SPEED = 200;
+  protected readonly FORWARD_THRUST = 100;
+  protected readonly BACKWARD_THRUST = 20;
+  protected readonly STRAFE_THRUST = 5;
+  protected readonly ANGULAR_VELOCITY = Math.PI * 2;
+  protected readonly TORQUE = 3000;
+  protected readonly STOPPING_DISTANCE = 20;
+  protected readonly STOPPING_SPEED = this.MAX_SPEED / 100;
+
+/// Pozn.: Fyzikální properties nejsou sloučené do objektu, protože by
+/// se pak nedaly po jedné přetížit v potomcích. Až Vehicle bude Entity
+/// class, tak bude dědičnost fungovat i pro vnořené objekty a budu to
+/// tudíž moct sloučit (dávalo by to smysl, protože při vytváření
+/// PhysicsBody se to stejně předává celé najednou).
+///   Nebo je tu ještě možnost do konstruktoru PhysicsBody passnout prostě
+/// 'this' - interfacu to vyhovovat bude.
+  /// Když dám shapeId zvlášť, tak může bejt abstract, čímž vynutím
+  /// inicializaci v potomcích (a nebudu tudíž muset ošetřovat, jestli
+  /// je inicializované.
+  protected abstract readonly physicsShapeId: string;
+  protected readonly position = { x: 0, y: 0 };
+  /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
+  /// bejt mnohem větší všechny thrusty, torques a tak a vektory
+  /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to
+  /// příjde).
+  protected readonly density = 0.00001;
+  protected readonly friction = 0.5;       // Value: 0 to 1.
+  // 0 - almost no bouncing, 1 - maximum bouncing.
+  protected readonly restitution = 1;      // Value: 0 to 1.
+
   protected readonly waypoint = new Vector();
   protected readonly desiredVelocity = new Vector();
   protected readonly steeringForce = new Vector();
@@ -38,9 +62,22 @@ export class Vehicle
 
   private readonly physicsBody: PhysicsBody;
 
-  constructor(physicsConfig: PhysicsBody.Config)
+  // ! Throws exception on error.
+  constructor()
   {
-    this.physicsBody = PhysicsWorld.createBody(physicsConfig);
+    const physicsBodyConfig: PhysicsBody.Config =
+    {
+      shapeId: this.physicsShapeId,
+      position: this.position,
+      density: this.density,
+      friction: this.friction,
+      restitution: this.restitution
+    };
+
+    /// TODO: Tohle by se asi dalo hodit mimo konstruktor,
+    /// rovnou jako inicizalizace property.
+    // ! Throws exception on error.
+    this.physicsBody = PhysicsWorld.createBody(physicsBodyConfig);
 
     this.waypoint.set(this.physicsBody.getPosition());
   }
@@ -69,19 +106,19 @@ export class Vehicle
   public getForwardThrustRatio()
   {
     if (this.forwardThrust >= 0)
-      return this.forwardThrust / FORWARD_THRUST;
+      return this.forwardThrust / this.FORWARD_THRUST;
     else
-      return this.forwardThrust / BACKWARD_THRUST;
+      return this.forwardThrust / this.BACKWARD_THRUST;
   }
 
   public getLeftwardThrustRatio()
   {
-    return this.leftwardThrust / STRAFE_THRUST;
+    return this.leftwardThrust / this.STRAFE_THRUST;
   }
 
   public getTorqueRatio()
   {
-    return this.torque / TORQUE;
+    return this.torque / this.TORQUE;
   }
 
   public setWaypoint(waypoint: Vector)
@@ -96,16 +133,16 @@ export class Vehicle
   }
 
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
-  public setVelocity(velocity: number)
-  {
-    this.physicsBody.setVelocity(velocity);
-  }
+  // public setVelocity(velocity: number)
+  // {
+  //   this.physicsBody.setVelocity(velocity);
+  // }
 
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
-  public updateVelocityDirection()
-  {
-    this.physicsBody.updateVelocityDirection();
-  }
+  // public updateVelocityDirection()
+  // {
+  //   this.physicsBody.updateVelocityDirection();
+  // }
 
   public getShape()
   {
@@ -143,18 +180,18 @@ export class Vehicle
     if (distance > brakingDistance)
     {
       // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
-      desiredVelocity.setLength(MAX_SPEED);
+      desiredVelocity.setLength(this.MAX_SPEED);
 
       rotationFlip = 0;
     }
-    else if (distance > STOPPING_DISTANCE)
+    else if (distance > this.STOPPING_DISTANCE)
     {
       rotationFlip = Math.PI;
 
       // Break almost to zero velocity
       // (zero velocity is not a good idea because zero vector
       //  has undefined direction).
-      desiredVelocity.setLength(STOPPING_SPEED);
+      desiredVelocity.setLength(this.STOPPING_SPEED);
     }
     else if (distance > 1)
     {
@@ -164,7 +201,7 @@ export class Vehicle
       // Use gradual approach at STOPPING_DISTANCE.
       desiredVelocity.setLength
       (
-        STOPPING_SPEED * distance / STOPPING_DISTANCE
+        this.STOPPING_SPEED * distance / this.STOPPING_DISTANCE
       );
     }
     else
@@ -194,7 +231,7 @@ export class Vehicle
       this.desiredSteeringForce.getRotation() + rotationFlip
     );
 
-    if (distance <= STOPPING_DISTANCE)
+    if (distance <= this.STOPPING_DISTANCE)
     {
       // If we are in final "braking down" phase, pass current
       // rotation as desired rotation to prevent tuning in-place
@@ -217,7 +254,7 @@ export class Vehicle
     const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
 
     // 2. Scale 'desired velocity' to maximum speed.
-    desiredVelocity.setLength(MAX_SPEED);
+    desiredVelocity.setLength(this.MAX_SPEED);
 
     this.computeLinearForces
     (
@@ -371,22 +408,26 @@ export class Vehicle
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.
     // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
     let forwardLimitRatio = 1;
-    if (desiredForwardComponentMagnitude > FORWARD_THRUST)
+    if (desiredForwardComponentMagnitude > this.FORWARD_THRUST)
     {
-      forwardLimitRatio = FORWARD_THRUST / desiredForwardComponentMagnitude;
+      forwardLimitRatio =
+        this.FORWARD_THRUST / desiredForwardComponentMagnitude;
     }
-    else if (desiredForwardComponentMagnitude < -BACKWARD_THRUST)
+    else if (desiredForwardComponentMagnitude < -this.BACKWARD_THRUST)
     {
-      forwardLimitRatio = -BACKWARD_THRUST / desiredForwardComponentMagnitude;
+      forwardLimitRatio =
+        -this.BACKWARD_THRUST / desiredForwardComponentMagnitude;
     }
     let strafeLimitRatio = 1;
-    if (desiredLeftwardComponentMagnitude > STRAFE_THRUST)
+    if (desiredLeftwardComponentMagnitude > this.STRAFE_THRUST)
     {
-      strafeLimitRatio = STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+      strafeLimitRatio =
+        this.STRAFE_THRUST / desiredLeftwardComponentMagnitude;
     }
-    else if (desiredLeftwardComponentMagnitude < -STRAFE_THRUST)
+    else if (desiredLeftwardComponentMagnitude < -this.STRAFE_THRUST)
     {
-      strafeLimitRatio = -STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+      strafeLimitRatio =
+        -this.STRAFE_THRUST / desiredLeftwardComponentMagnitude;
     }
     const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
 
@@ -434,14 +475,14 @@ export class Vehicle
     const newAngularVelocity = intervalBound
     (
       desiredAngularVelocity,
-      { from: -ANGULAR_VELOCITY, to: ANGULAR_VELOCITY }
+      { from: -this.ANGULAR_VELOCITY, to: this.ANGULAR_VELOCITY }
     );
 
     // Multiplication by 'FPS' prevents overturning the desired angle
     // (as suggested by Box2D example).
     let torque = inertia * (newAngularVelocity - oldAngularVelocity) * FPS;
 
-    torque = intervalBound(torque, { from: -TORQUE, to: TORQUE });
+    torque = intervalBound(torque, { from: -this.TORQUE, to: this.TORQUE });
 
     this.torque = torque;
   }
@@ -452,7 +493,10 @@ export class Vehicle
     const v = velocity.length();
 
     // d = (1/2 * mass * v^2) / Force;
-    return STOPPING_DISTANCE + (mass * v * v) / (BACKWARD_THRUST * 2);
+    const stoppingDistance =
+      this.STOPPING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
+
+    return stoppingDistance;
   }
 }
 

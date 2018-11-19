@@ -6,7 +6,7 @@ import { Physics } from "../../Shared/Physics/Physics";
 
 export abstract class Tilemap
 {
-  constructor(protected readonly name: string) { }
+   constructor(protected readonly name: string) { }
 }
 
 // ------------------ Type Declarations ----------------------

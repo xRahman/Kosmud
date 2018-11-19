@@ -4,6 +4,7 @@
   Physics World.
 */
 
+import { Physics } from "../../Shared/Physics/Physics";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
 // 3rd party modules.
@@ -16,8 +17,10 @@ export namespace PhysicsWorld
 
   const world = new b2World(GRAVITY);
 
+  // ! Throws exception on error.
   export function createBody(config: PhysicsBody.Config): PhysicsBody
   {
+    // ! Throws exception on error.
     return new PhysicsBody(world, config);
   }
 

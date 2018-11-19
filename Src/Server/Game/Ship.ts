@@ -5,7 +5,7 @@
 */
 
 import { Tilemap } from "../../Server/Physics/Tilemap";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+// import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
@@ -16,10 +16,10 @@ export class Ship extends Shared.Ship
     Ship.TILEMAP_PATH
   );
 
-  constructor(physicsConfig: PhysicsBody.Config)
-  {
-    super(physicsConfig);
-  }
+  // constructor(physicsConfig: PhysicsBody.Config)
+  // {
+  //   super(physicsConfig);
+  // }
 
   // ------------- Public static methods ----------------
 
@@ -29,42 +29,42 @@ export class Ship extends Shared.Ship
     await this.tilemap.load();
   }
 
-  // ! Throws exception on error.
-  public static getShape()
-  {
-    // ! Throws exception on error.
-    return this.tilemap.getShape();
-  }
+  // // ! Throws exception on error.
+  // public static getShape()
+  // {
+  //   // ! Throws exception on error.
+  //   return this.tilemap.getShape();
+  // }
 
   // ---------------- Public methods --------------------
 
-  public startTurningLeft()
-  {
-    this.setAngularVelocity(-Math.PI / 30);
-  }
+  // public startTurningLeft()
+  // {
+  //   this.setAngularVelocity(-Math.PI / 30);
+  // }
 
-  public startTurningRight()
-  {
-    this.setAngularVelocity(Math.PI / 30);
-  }
+  // public startTurningRight()
+  // {
+  //   this.setAngularVelocity(Math.PI / 30);
+  // }
 
-  public stopTurning()
-  {
-    this.setAngularVelocity(0);
-  }
+  // public stopTurning()
+  // {
+  //   this.setAngularVelocity(0);
+  // }
 
-  public moveForward()
-  {
-    this.setVelocity(20);
-  }
+  // public moveForward()
+  // {
+  //   this.setVelocity(20);
+  // }
 
-  public moveBackward()
-  {
-    this.setVelocity(-20);
-  }
+  // public moveBackward()
+  // {
+  //   this.setVelocity(-20);
+  // }
 
-  public stopMoving()
-  {
-    this.setVelocity(0);
-  }
+  // public stopMoving()
+  // {
+  //   this.setVelocity(0);
+  // }
 }

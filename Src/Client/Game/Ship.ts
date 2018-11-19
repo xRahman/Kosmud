@@ -1,11 +1,13 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Physics } from "../../Shared/Physics/Physics";
+import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 import { ShipSound } from "../../Client/FlightScene/ShipSound";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
+import * as Shared from "../../Shared/Game/Ship";
 
-export class Ship
+export class Ship extends Shared.Ship
 {
   private readonly exhausts: ShipExhausts;
   private readonly graphics: ShipGraphics;
@@ -29,6 +31,8 @@ export class Ship
     private rotation: number
   )
   {
+    super();
+
     // ! Throws exception on error.
     this.graphics = new ShipGraphics(scene, shape);
     this.sound = new ShipSound(scene);

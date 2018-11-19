@@ -8,6 +8,7 @@ import { validateNumber, validateVector } from "../../Shared/Utils/Math";
 // import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
+import { Tilemaps } from "../../Shared/Engine/Tilemaps";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
@@ -15,21 +16,32 @@ import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
 
 export class PhysicsBody
 {
-  private velocity = 0;
+  private readonly velocity = 0;
   private readonly body: b2Body;
 
+  // ! Throws exception on error.
   constructor(world: b2World, config: PhysicsBody.Config)
   {
-    const bodyDefinition = new b2BodyDef();
-    const x = (config.position !== undefined) ? config.position.x : 0;
-    const y = (config.position !== undefined) ? config.position.y : 0;
+    if (config.shapeId === undefined)
+    {
+      throw new Error(`Failed to get physics shape from tilemap`
+        + ` because provided 'shapeId' is not inicialized`);
+    }
 
-    bodyDefinition.position.Set(x, y);
+    // ! Throws exception on error.
+    const shape = Tilemaps.getPhysicsShape(config.shapeId);
+
+    const bodyDefinition = new b2BodyDef();
+    // const x = (config.position !== undefined) ? config.position.x : 0;
+    // const y = (config.position !== undefined) ? config.position.y : 0;
+
+    // bodyDefinition.position.Set(x, y);
+    bodyDefinition.position.Set(config.position.x, config.position.y);
     bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
     this.body = world.CreateBody(bodyDefinition);
 
-    for (const polygon of config.shape)
+    for (const polygon of shape)
     {
       const fixtureDefinition = createFixtureDefinition(polygon, config);
 
@@ -74,12 +86,12 @@ export class PhysicsBody
     return validateNumber(this.body.GetMass());
   }
 
-  public setVelocity(velocity: number)
-  {
-    this.velocity = validateNumber(velocity);
+  // public setVelocity(velocity: number)
+  // {
+  //   this.velocity = validateNumber(velocity);
 
-    this.updateVelocityDirection();
-  }
+  //   this.updateVelocityDirection();
+  // }
 
   public setAngularVelocity(angularVelocity: number)
   {
@@ -112,10 +124,10 @@ export class PhysicsBody
   //   return velocityVector;
   // }
 
-  public updateVelocityDirection()
-  {
-    this.body.SetLinearVelocity(this.getVelocity());
-  }
+  // public updateVelocityDirection()
+  // {
+  //   this.body.SetLinearVelocity(this.getVelocity());
+  // }
 
   public getShape()
   {
@@ -192,11 +204,15 @@ export namespace PhysicsBody
 {
   export interface Config
   {
-    position?: { x: number; y: number };  // Default: { x: 0, y: 0 }.
-    shape: Physics.Shape;
-    density: number;
-    friction?: number;                    // Default: 0.5
+    shapeId: string;
+    position: { x: number; y: number };
+    /// Zavžuju hodit shapeId mimo config (ve Vehicle), aby mohlo být
+    /// abstraktní. Ovšem možná by spíš měly bejt všechny physics properties
+    /// v rootu vehiclu a config by se z nich měl vyrábět, jak jsem to měl.
+    // shapeId?: string;
+    density: number;                     // Value: 0 to 1.
+    friction: number;                    // Value: 0 to 1.
     // 0 - almost no bouncing, 1 - maximum bouncing.
-    restitution?: number;                 // Default: 1.0
+    restitution: number;                 // Value: 0 to 1.
   }
 }
