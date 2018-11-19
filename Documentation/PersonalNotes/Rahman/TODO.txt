@@ -1,9 +1,6 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Hlasitost zvuku ostatních lidí snižovat se vzdáleností od pozice
-  hráčovy lodě (nejspíš ne od pozice kamery).
-
 
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
@@ -29,13 +26,14 @@ TODO: Výhledově zdědit Client/Ship ze Shared/Ship
   (bude to komplikovaný, páč Client/Ship je zděděná z Vehicle
    a má tudíž physics body. To by teda loď na klientu měla časem
    mít taky, ale znamenalo by to na klientu komplet inicializovat
-   fyziku).
+   fyziku a vyrábět tam physics body).
    - na druhou stranu bych nemusel extra deklarovat všechny properties.
+  Alternativa by byla, mít physics body až na serveru. Což by dost
+    zkomplikovalo dědění (a ostatně celý smysl Vehicle v Shared je, aby
+    ho mohl používat i Client).
 TODO: Jméno tilemapy by se mělo brát
-  ze Shared/Game/Ship/TILEMAP_NAME (ab
-  y bylo stejný na klientu
-  i na serveru - je to ostatně stejná tilemapa). Teď není Clie
-  nt/Ship
+  ze Shared/Game/Ship/TILEMAP_NAME (aby bylo stejný na klientu
+  i na serveru - je to ostatně stejná tilemapa). Teď není Client/Ship
   zděděná ze Shared/Ship, takže to není tak jednoduchý.
 (viz ShipGraphics.constructor()).
 TODO: Sloučit Ship na clientu a serveru, aby se používaly stejné
@@ -44,6 +42,8 @@ TODO: Sloučit Ship na clientu a serveru, aby se používaly stejné
 
 TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
 - vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
+- a taky je divný, že se pořád letí na maximum thrust
+  (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
 
 TODO: Umožnit na klientu víc lodí.
 - a pořádně to projít i na serveru, asi je to teď lehce zmatený.
@@ -52,6 +52,9 @@ TODO: Umožnit na klientu víc lodí.
 TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
   (v /Shared/Physics, /Server/Physics ale /Client/Phaser).
 
+IDEA: Client/Phaser přejmenovat na Client/Engine
+- pak by teoreticky mohl být i Shared/Engine a Server/Engine a Tilemap
+  by mohla být tam.
 
 TODO: Scene by měla wrappovat Phaser.Scene, ne extendovat
   (všude mám wrappery jen scéna je potomek).
@@ -68,7 +71,7 @@ TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
   což obojí asi může bejt rovnou v rootu (/js by se možná mohlo jmenovat
   /build, ale na clientu je to /js, tak asi dává smysl mít to stejně).
 
-TODO: odchytávat vyjímky z Tilemap.getShape().
+TODO: odchytávat výjimky z Tilemap.getShape().
 
 TODO: Updatnout Tilemap.Data podle
   http://docs.mapeditor.org/en/stable/reference/tmx-map-format/
@@ -219,6 +222,9 @@ TODO: Odhackovat Client/Phaser/Sound.setVolume();
 
 Výhledové TODO:
 -----------------
+
+TODO: Hlasitost zvuku ostatních lidí snižovat se vzdáleností od pozice
+  hráčovy lodě (nejspíš ne od pozice kamery).
 
 TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
   https://github.com/Louis-T/fernandez-polygon-decomposition
