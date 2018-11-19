@@ -5,11 +5,12 @@
 */
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
+import { Tilemaps } from "../../Shared/Engine/Tilemaps";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
-import { Physics } from "../../Shared/Physics/Physics";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
+/// TODO: Tohle časem taky hodit někam jinam.
 const FPS = 60;
 
 export abstract class Vehicle
@@ -37,7 +38,7 @@ export abstract class Vehicle
   /// Když dám shapeId zvlášť, tak může bejt abstract, čímž vynutím
   /// inicializaci v potomcích (a nebudu tudíž muset ošetřovat, jestli
   /// je inicializované.
-  protected abstract readonly physicsShapeId: string;
+  protected readonly shapeId: string | "Not set" = "Not set";
   protected readonly position = { x: 0, y: 0 };
   /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
   /// bejt mnohem větší všechny thrusty, torques a tak a vektory
@@ -60,35 +61,15 @@ export abstract class Vehicle
   protected leftwardThrust = 0;
   protected torque = 0;
 
-  private readonly physicsBody: PhysicsBody;
-
-  // ! Throws exception on error.
-  constructor()
-  {
-    const physicsBodyConfig: PhysicsBody.Config =
-    {
-      shapeId: this.physicsShapeId,
-      position: this.position,
-      density: this.density,
-      friction: this.friction,
-      restitution: this.restitution
-    };
-
-    /// TODO: Tohle by se asi dalo hodit mimo konstruktor,
-    /// rovnou jako inicizalizace property.
-    // ! Throws exception on error.
-    this.physicsBody = PhysicsWorld.createBody(physicsBodyConfig);
-
-    this.waypoint.set(this.physicsBody.getPosition());
-  }
+  private physicsBody: PhysicsBody | "Doesn't exist" = "Doesn't exist";
 
   // ---------------- Public methods --------------------
 
-  public getPosition() {  return this.physicsBody.getPosition(); }
+  public getPosition() { return this.getPhysicsBody().getPosition(); }
 
-  public getX() { return this.physicsBody.getX(); }
-  public getY() { return this.physicsBody.getY(); }
-  public getRotation() { return this.physicsBody.getRotation(); }
+  public getX() { return this.getPhysicsBody().getX(); }
+  public getY() { return this.getPhysicsBody().getY(); }
+  public getRotation() { return this.getPhysicsBody().getRotation(); }
 
   public getDesiredVelocity() { return this.desiredVelocity; }
   public getSteeringForce() { return this.steeringForce; }
@@ -101,7 +82,7 @@ export abstract class Vehicle
   {
     return this.desiredLeftwardSteeringForce;
   }
-  public getVelocity() { return this.physicsBody.getVelocity(); }
+  public getVelocity() { return this.getPhysicsBody().getVelocity(); }
 
   public getForwardThrustRatio()
   {
@@ -129,24 +110,54 @@ export abstract class Vehicle
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
   public setAngularVelocity(angularVelocity: number)
   {
-    this.physicsBody.setAngularVelocity(angularVelocity);
+    this.getPhysicsBody().setAngularVelocity(angularVelocity);
   }
 
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
   // public setVelocity(velocity: number)
   // {
-  //   this.physicsBody.setVelocity(velocity);
+  //   this.getPhysicsBody().setVelocity(velocity);
   // }
 
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
   // public updateVelocityDirection()
   // {
-  //   this.physicsBody.updateVelocityDirection();
+  //   this.getPhysicsBody().updateVelocityDirection();
   // }
 
   public getShape()
   {
-    return this.physicsBody.getShape();
+    return this.getPhysicsBody().getShape();
+  }
+
+  // ! Throws exception on error.
+  public addToPhysicsWorld()
+  {
+    if (this.shapeId === "Not set")
+    {
+      throw new Error(`Failed to add vehicle '${this.getErrorIdString()}'`
+        + ` to physics world because it doesn't have a 'shapeId' set yet.`
+        + ` Make sure you set the 'shapeId' before you call`
+        + ` addToPhysicsWorld()`);
+    }
+
+    // ! Throws exception on error.
+    /// TODO: Ptát se na shape zóny, ne Tilmapsů.
+    const shape = Tilemaps.getPhysicsShape(this.shapeId);
+
+    const physicsBodyConfig: PhysicsBody.Config =
+    {
+      shape,
+      position: this.position,
+      density: this.density,
+      friction: this.friction,
+      restitution: this.restitution
+    };
+
+    // ! Throws exception on error.
+    this.physicsBody = PhysicsWorld.createBody(physicsBodyConfig);
+
+    this.waypoint.set(this.physicsBody.getPosition());
   }
 
   public steer()
@@ -155,8 +166,15 @@ export abstract class Vehicle
 
     // this.seek();
 
-    this.physicsBody.applyForce(this.steeringForce);
-    this.physicsBody.applyTorque(this.torque);
+    this.getPhysicsBody().applyForce(this.steeringForce);
+    this.getPhysicsBody().applyTorque(this.torque);
+  }
+
+  // tslint:disable-next-line:prefer-function-over-method
+  public getErrorIdString()
+  {
+    /// Až bude Vehicle zděděné z Entity, tak tohle zrušit.
+    return "TODO";
   }
 
   // --------------- Protected methods ------------------
@@ -166,8 +184,8 @@ export abstract class Vehicle
   {
     const vehiclePosition = this.getPosition();
     const targetPosition = this.waypoint;
-    const oldVelocity = this.physicsBody.getVelocity();
-    const vehicleRotation = this.physicsBody.getRotation();
+    const oldVelocity = this.getPhysicsBody().getVelocity();
+    const vehicleRotation = this.getPhysicsBody().getRotation();
 
     const targetVector = Vector.v1MinusV2(targetPosition, vehiclePosition);
     const distance = targetVector.length();
@@ -245,7 +263,7 @@ export abstract class Vehicle
   // ! Throws exception on error.
   protected seek()
   {
-    const vehicleVelocity = this.physicsBody.getVelocity();
+    const vehicleVelocity = this.getPhysicsBody().getVelocity();
     const vehiclePosition = this.getPosition();
     const targetPosition = this.waypoint;
     const vehicleRotation = this.getRotation();
@@ -272,6 +290,19 @@ export abstract class Vehicle
   }
 
   // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private getPhysicsBody(): PhysicsBody
+  {
+    if (this.physicsBody === "Doesn't exist")
+    {
+      throw new Error(`Physics body of vehicle '${this.getErrorIdString()}'`
+        + ` doesn't exist yet. Make sure you call 'addToPhysicsWorld()`
+        + ` before you do anything with the vehicle`);
+    }
+
+    return this.physicsBody;
+  }
 
 // private computeArriveDesiredVelocity
 // (
@@ -457,7 +488,7 @@ export abstract class Vehicle
     desiredRotation: number
   )
   {
-    const oldAngularVelocity = this.physicsBody.getAngularVelocity();
+    const oldAngularVelocity = this.getPhysicsBody().getAngularVelocity();
 
     if (currentRotation < 0 || currentRotation > Math.PI * 2)
       throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
@@ -465,7 +496,7 @@ export abstract class Vehicle
     if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
       throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
 
-    const inertia = this.physicsBody.getInertia();
+    const inertia = this.getPhysicsBody().getInertia();
 
     const desiredAngularVelocity = computeDesiredAngularVelocity
     (
@@ -489,7 +520,7 @@ export abstract class Vehicle
 
   private computeBrakingDistance(velocity: Vector)
   {
-    const mass = this.physicsBody.getMass();
+    const mass = this.getPhysicsBody().getMass();
     const v = velocity.length();
 
     // d = (1/2 * mass * v^2) / Force;

@@ -8,7 +8,6 @@ import { validateNumber, validateVector } from "../../Shared/Utils/Math";
 // import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
-import { Tilemaps } from "../../Shared/Engine/Tilemaps";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
@@ -22,26 +21,14 @@ export class PhysicsBody
   // ! Throws exception on error.
   constructor(world: b2World, config: PhysicsBody.Config)
   {
-    if (config.shapeId === undefined)
-    {
-      throw new Error(`Failed to get physics shape from tilemap`
-        + ` because provided 'shapeId' is not inicialized`);
-    }
-
-    // ! Throws exception on error.
-    const shape = Tilemaps.getPhysicsShape(config.shapeId);
-
     const bodyDefinition = new b2BodyDef();
-    // const x = (config.position !== undefined) ? config.position.x : 0;
-    // const y = (config.position !== undefined) ? config.position.y : 0;
 
-    // bodyDefinition.position.Set(x, y);
     bodyDefinition.position.Set(config.position.x, config.position.y);
     bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
     this.body = world.CreateBody(bodyDefinition);
 
-    for (const polygon of shape)
+    for (const polygon of config.shape)
     {
       const fixtureDefinition = createFixtureDefinition(polygon, config);
 
@@ -204,7 +191,7 @@ export namespace PhysicsBody
 {
   export interface Config
   {
-    shapeId: string;
+    shape: Physics.Shape;
     position: { x: number; y: number };
     /// Zavžuju hodit shapeId mimo config (ve Vehicle), aby mohlo být
     /// abstraktní. Ovšem možná by spíš měly bejt všechny physics properties

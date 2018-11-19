@@ -4,7 +4,6 @@
   Physics World.
 */
 
-import { Physics } from "../../Shared/Physics/Physics";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
 // 3rd party modules.

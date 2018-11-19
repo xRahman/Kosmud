@@ -82,6 +82,13 @@ Problém: Jak se dostat k json datům tilemapy, které loadnul Phaser?
     this.load.json("yourkey", "your.json")
 
 Tilemaps.ts zatím vypadá, že by se měl jmenovat spíš PhysicsShapes.ts.
+  - nope, shapy budou v zónách.
+- respektive nejspíš nemusí existovat vůbec (a pokud, tak bude schraňovat
+  tilemapy, ne shapy).
+
+TODO: Vehicle.addToPhysicsWorld() by si mělo o shape říkat zóně, ne
+  Tilemapsům.
+  (Vehicle by mělo vědět, ve které je zóně.)
 
 
 Jak na to se shapama a tilemapama
@@ -337,6 +344,12 @@ TODO: Odhackovat Client/Phaser/Sound.setVolume();
 
 Výhledové TODO:
 -----------------
+
+TODO: Konstantu FPS ve Vehicle.ts hodit někam jinam (udělat jednu konstantu
+  pro veškeré časování a tu všude používat).
+- možná do Engine, pokud něco takovýho bude existovat.
+
+TODO: Až bude Vehicle zděděné z Entity, zrušit Vehicle.getErrorIdString().
 
 TODO: Hlasitost zvuku ostatních lidí snižovat se vzdáleností od pozice
   hráčovy lodě (nejspíš ne od pozice kamery).
