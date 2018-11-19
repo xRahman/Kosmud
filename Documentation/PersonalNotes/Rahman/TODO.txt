@@ -31,6 +31,8 @@ TODO: Výhledově zdědit Client/Ship ze Shared/Ship
   Alternativa by byla, mít physics body až na serveru. Což by dost
     zkomplikovalo dědění (a ostatně celý smysl Vehicle v Shared je, aby
     ho mohl používat i Client).
+  Ona překvapivě fyzika na clientu inicializovaná je, jen netiká (což je
+    asi ok, tikat zatím nemusí).
 TODO: Jméno tilemapy by se mělo brát
   ze Shared/Game/Ship/TILEMAP_NAME (aby bylo stejný na klientu
   i na serveru - je to ostatně stejná tilemapa). Teď není Client/Ship
@@ -39,11 +41,6 @@ TODO: Jméno tilemapy by se mělo brát
 TODO: Sloučit Ship na clientu a serveru, aby se používaly stejné
  properties (názvy layerů, cesta k tilemapě a tak).
  - Cesta k tilemapě teda bude muset mít jinej prefix.
-
-TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
-- vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
-- a taky je divný, že se pořád letí na maximum thrust
-  (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
 
 TODO: Umožnit na klientu víc lodí.
 - a pořádně to projít i na serveru, asi je to teď lehce zmatený.
@@ -65,7 +62,8 @@ TODO: doladit vizuály exhaustů
 
 TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
   klienta, takže to dává smysl.
-  - možná by se Client mohl rovnou jmenovat WWW, wwwRoot, nebo tak něco.
+  - možná by se Client mohl rovnou jmenovat WWW, wwwRoot, nebo tak něco
+    (i když, Client je asi ok).
 - Potom je taky otázka, jestli má vůbec smysl adresář /Server.
   Spíš ne, je to akorát matoucí. Momentálně obsahuje /js a /Keys,
   což obojí asi může bejt rovnou v rootu (/js by se možná mohlo jmenovat
@@ -73,10 +71,37 @@ TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
 
 TODO: odchytávat výjimky z Tilemap.getShape().
 
-TODO: Updatnout Tilemap.Data podle
-  http://docs.mapeditor.org/en/stable/reference/tmx-map-format/
-- respektive je tam i verze pro JSON.
 
+
+TODO: Refactoriiiing!
+- Místo Phaser.Scene všude předávat Scene
+  (což je z ní beztak zděděné, ale je to můj interní typ).
+
+
+
+TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
+
+TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
+
+
+Opravy steeringu
+-----------------
+
+TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
+- vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
+- a taky je divný, že se pořád letí na maximum thrust
+  (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
+
+TODO: Odchytávání výjimek ze Steeringu.
+- to už možná je, ale chce to zkontrolovat.
+
+ Refactorovat steering
+- různá chování počítají jen desired velocity
+  I když, to je otázka.
+  - Za prvé nevím, jestli bude fungovat skládání behaviourů přes rychlosti
+    (nejspíš je nějakej důvod, proč se skládaj až výsledné steering forces)
+  - Za druhé nevím, co složitější behaviours s těma silama dělaj...
+Ok, asi se raději budu držet skládání sil.
 
 TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
 
@@ -87,32 +112,6 @@ TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
   je vidět, jak se to občas chová divně.
 TODO: Opravit "backlash" při zastavování.
 
-
-TODO: Refactoriiiing!
-- Učesat steering kód.
-- Místo Phaser.Scene všude předávat Scene
-  (což je z ní beztak zděděné, ale je to můj interní typ).
-
- Refactorovat steering
-- různá chování počítají jen desired velocity
-  I když, to je otázka.
-  - Za prvé nevím, jestli bude fungovat skládání behaviourů přes rychlosti
-    (nejspíš je nějakej důvod, proč se skládaj až výsledné steering forces)
-  - Za druhé nevím, co složitější behaviours s těma silama dělaj...
-Ok, asi se raději budu držet skládání sil.
-
-TODO: Odchytávání výjimek ze Steeringu.
-- to už možná je, ale chce to zkontrolovat.
-
-TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
-
-TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
-
------------------------------------------------------------------------
-
-TODO: Shared/Game/Ship je možná zbytečná, Ship na clientu z ní není
-  zděděná.
-- tak možná ne, nějaké společné properties to už má.
 
 -----------------------------------------------------------------------
 
@@ -151,6 +150,10 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 Odložené TODO:
 ---------------
 
+TODO: Updatnout Tilemap.Data podle
+  http://docs.mapeditor.org/en/stable/reference/tmx-map-format/
+- respektive je tam i verze pro JSON.
+
 TODO: Výhledově místo atlas animací používat tile animace vytvořené v Tiled
   editoru a číst je z dat tilemapy.
 
@@ -158,10 +161,12 @@ TODO: Časem udělat (pre)loadovací scénu.
 - to pak znamená jinak loadovat pluginy, viz:
   https://github.com/photonstorm/phaser3-plugin-template
 
+
 TODO: Možná by stálo za to transformaci souřadnic ještě upravit, aby [0, 0]
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
   - i když, to možná bude lepší vyřešit kamerou.
+
 
 TODO: Zapínání a vypínání debug grafiky.
 - flaga na zapnutí debug view by asi měla bejt na serveru (v accountu?)
@@ -172,10 +177,10 @@ TODO: Zapínání a vypínání debug grafiky.
          se neposílají v každém paketu
          - asi se přepínání bude muset posílat taky).
 
+
 TODO: SetWaypoint by se asi mělo posílat z něčeho jinýho než
   z Waypointu.
   - ani scéna by to neměla dělat. Možná engine?
-
 
 
 TODO: Výhledově zrušit posílání ShipToScene
@@ -200,10 +205,6 @@ TODO: Mrknout na:
   game.scale.scaleMode = Phaser.ScaleManager.RESIZE
 https://stackoverflow.com/questions/28227090/phaser-make-background-screen-width-instead-of-content-width
 
-TODO: Výhledově Ship zdědit z Vehicle a přesunout tam věci, které by ship měla
-sdílet s jinými pohyblivými objekty.
-- pak je taky otázka, co s turretama a podobně. Brát je jako Vehicle? Uvidíme.
-
 
 TODO: Vyzkoušet linear a angular drag (zapnout na physicsBody).
 - to by teoreticky mělo způsobit, že síla bude muset působit pořád,
@@ -226,6 +227,7 @@ Výhledové TODO:
 TODO: Hlasitost zvuku ostatních lidí snižovat se vzdáleností od pozice
   hráčovy lodě (nejspíš ne od pozice kamery).
 
+
 TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
   https://github.com/Louis-T/fernandez-polygon-decomposition
   https://github.com/schteppe/poly-decomp.js/
@@ -234,6 +236,40 @@ TODO: Vyzkoušet dekompozici nekonvexních pologynů na konvexní:
   - ideálně by se to mělo procesit offline, ale co už.
 Spíš to asi odložím. Zatím můžu ručně editovat čiste konvexní polygony
   (ostatně to znamená rychlejší start.
+
+
+TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
+- jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
+
+
+TODO: Použít https://letsencrypt.org/
+
+
+TODO: Přidat comment k Serializable.deserialize(), jak se loadují
+  entity (nějak přes Entities)
+
+
+TODO: (Znovu) vyzkoušet ES6 moduly v browseru.
+https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7
+   <script type="module" src="module.js"></script>
+- nefungují, protože browser vyžaduje v importech '.js' a typescript
+  ho tam se zapnutým outputem "module": "es2015" nedává.
+  viz https://github.com/Microsoft/TypeScript/issues/16577
+
+
+TODO: Prostudovat avanced Typescript typy:
+  https://levelup.gitconnected.com/advanced-typescript-types-with-examples-1d144e4eda9e
+- nebo si to možná hodit do nějakého typescriptového howtu či manuálu.
+
+
+TODO: Výhledově místo neposílání paketů do closed connection
+  při disconnectu disablovat komplet herní keyboard processing.
+  (viz Keyboard.sendPlayerInput())
+  - component.hide() nestačí, to je vypne zobrazování.
+
+
+Tslint
+--------
 
 TODO: Nepovedlo se mi rozplazit tslint extension, kterej by lintoval
   při psaní a zároveň nežral message reportnuté z buildu, které
@@ -264,46 +300,3 @@ TODO: Tslint (co momentálně nejde v tslintu nastavit):
      throw new Error(), kterej se nevejde na jeden řádek, tak je taky lepší
      ho uzávorkovat do {}.
 - kontroly vyžadující type information
-
-TODO: Pořešit FileSystem.isEmpty() a FileSystem.isEmptySync()
-- jsou v 'extfs', který jsem zrušil, nejsou ve 'fs-extra'
-
-
-TODO: Použít https://letsencrypt.org/
-
-
-TODO: Přidat comment k Serializable.deserialize(), jak se loadují
-  entity (nějak přes Entities)
-
-
-TODO: (Znovu) vyzkoušet ES6 moduly v browseru.
-https://medium.com/dev-channel/es6-modules-in-chrome-canary-m60-ba588dfb8ab7
-   <script type="module" src="module.js"></script>
-- nefungují, protože browser vyžaduje v importech '.js' a typescript
-  ho tam se zapnutým outputem "module": "es2015" nedává.
-  viz https://github.com/Microsoft/TypeScript/issues/16577
-
-
-TODO: Prostudovat avanced Typescript typy:
-  https://levelup.gitconnected.com/advanced-typescript-types-with-examples-1d144e4eda9e
-- nebo si to možná hodit do nějakého typescriptového howtu či manuálu.
-
-
-TODO: Rozhodnout dilema s pojmeováváním class
-- vidím to na SharedClass, Client/Class, Server/Class
-- zatím používám trik:
-   import * as Shared from '.../Class';
-   class Class extends Shared.Class {}
-Je to teda pořád otázka. ClientEntities a ServerEntities jsou asi názornější,
-než když se tři classy jmenují stejně.
-
-
-TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
-- spíš to nechám postaru. Vidět v importu, jestli je to ze /Shared, /Client
-  nebo /Server je docela důležitý.
-
-
-TODO: Výhledově místo neposílání paketů do closed connection
-  při disconnectu disablovat komplet herní keyboard processing.
-  (viz Keyboard.sendPlayerInput())
-  - component.hide() nestačí, to je vypne zobrazování.

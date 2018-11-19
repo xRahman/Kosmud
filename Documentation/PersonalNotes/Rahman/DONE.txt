@@ -1,3 +1,24 @@
+TODO: Shared/Game/Ship je možná zbytečná, Ship na clientu z ní není
+  zděděná.
+- tak možná ne, nějaké společné properties to už má.
+[won't do]
+
+TODO: Výhledově Ship zdědit z Vehicle a přesunout tam věci, které by ship měla
+sdílet s jinými pohyblivými objekty.
+[done]
+
+TODO: Výhledově sjednotit formát importů (asi import { ERROR } from './ERROR').
+- spíš to nechám postaru. Vidět v importu, jestli je to ze /Shared, /Client
+  nebo /Server je docela důležitý.
+[done]
+
+TODO: Rozhodnout dilema s pojmeováváním class
+- vidím to na SharedClass, Client/Class, Server/Class
+- zatím používám trik:
+   import * as Shared from '.../Class';
+   class Class extends Shared.Class {}
+[done]
+
 TODO: Změnit konstanty, aby hustota byla nějaké rozumné číslo.
 - bude potřeba příslušně zvednout thrust, což je ok.
 Nebude to tak jednoduchý: když to zvětším, tak pak musej

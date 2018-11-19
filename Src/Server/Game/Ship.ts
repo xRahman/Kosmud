@@ -4,9 +4,9 @@
   TEST - a ship.
 */
 
-import * as Shared from "../../Shared/Game/Ship";
 import { Tilemap } from "../../Server/Physics/Tilemap";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {

@@ -10,11 +10,10 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
   b2FixtureDef } from "../../Shared/Box2D/Box2D";
 
-/// Test.
-const GRAVITY = new b2Vec2(0, 0);
-
 export namespace PhysicsWorld
 {
+  const GRAVITY = new b2Vec2(0, 0);
+
   const world = new b2World(GRAVITY);
 
   export function createBody(config: PhysicsBody.Config): PhysicsBody
