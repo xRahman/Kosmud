@@ -3,17 +3,18 @@
   // Configure glob patterns for excluding files and folders.
   "files.exclude":
   {
-    ".git/": true,
-    ".vscode/": true,
     "_Resources/": true,
+    ".git/": true,
+    ".gitattributes": true,
+    ".gitignore": true,
+    ".vscode/": true,
     "**/*.bat": true,
     "**/documentation/**/*.odt": true,
     "**/documentation/design/^bak": true,
-    ".gitattributes": true,
-    ".gitignore": true,
     "amend": true,
     "commit": true,
-    "node_modules/": true
+    "node_modules/": true,
+    "RawData/": true
   },
   "search.exclude":
   {
