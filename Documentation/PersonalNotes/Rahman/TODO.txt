@@ -70,6 +70,14 @@ TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
   Spíš ne, je to akorát matoucí. Momentálně obsahuje /js a /Keys,
   což obojí asi může bejt rovnou v rootu (/js by se možná mohlo jmenovat
   /build, ale na clientu je to /js, tak asi dává smysl mít to stejně).
+(Tohle je teda zrovna dost blbý dělat, když se to nedá přeložit, pustit
+ a otestovat, takže to asi odložím.)
+- otázka je, co s adresářem /Server. Buď ho zrušit úplně a přesnout
+  /Server/js do rootu, nebo ho přejmenovat na Build, takže by bylo
+  /Build/js/...
+  - /Build by měl smysl, kdyby do něj časem přistálo víc věcí, než jen
+    javascript. A taky je idiomatický (líp vyjadřuje, o co jde, než čistě /js)
+Ok, přejmenuju /Server na /Build.
 
 TODO: odchytávat výjimky z Tilemap.getShape().
 
