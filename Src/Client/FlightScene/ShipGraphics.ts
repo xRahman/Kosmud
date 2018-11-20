@@ -37,6 +37,7 @@ export class ShipGraphics
     this.container = new Container(scene, 0, 0);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
+    /// TODO: Tilemapu bude vyrábět zóna (asi v create()).
     this.basicShipsTilemap = new Tilemap
     (
       scene,

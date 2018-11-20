@@ -1,6 +1,11 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Přehodit stuff ze Server/Tilemap do Shared/Tilemap.
+TODO: Potřebuju já vůbec client/server verze Tilemap classy?
+- liší se jen loadování a to by beztak bylo lepší dělat externě
+  (loadnout json object a předhodit ho konstruktoru).
+
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).

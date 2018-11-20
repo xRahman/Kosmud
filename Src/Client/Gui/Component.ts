@@ -31,11 +31,9 @@ export abstract class Component
     return div;
   }
 
-  // --------------- Public accessors -------------------
+  // ---------------- Public methods --------------------
 
   public getElement() { return this.element; }
-
-  // ---------------- Public methods --------------------
 
   public hide()
   {

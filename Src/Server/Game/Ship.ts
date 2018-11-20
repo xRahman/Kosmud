@@ -4,17 +4,17 @@
   TEST - a ship.
 */
 
-import { Tilemap } from "../../Server/Engine/Tilemap";
+// import { Tilemap } from "../../Server/Engine/Tilemap";
 // import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private static readonly tilemap = new Tilemap
-  (
-    Ship.TILEMAP_NAME,
-    Ship.TILEMAP_PATH
-  );
+  // private static readonly tilemap = new Tilemap
+  // (
+  //   Ship.TILEMAP_NAME,
+  //   Ship.TILEMAP_PATH
+  // );
 
   // constructor(physicsConfig: PhysicsBody.Config)
   // {
@@ -23,11 +23,12 @@ export class Ship extends Shared.Ship
 
   // ------------- Public static methods ----------------
 
-  public static async preload()
-  {
-    // ! Throws exception on error.
-    await this.tilemap.load();
-  }
+  // // ! Throws exception on error.
+  // public static async preload()
+  // {
+  //   // ! Throws exception on error.
+  //   // await this.tilemap.load();
+  // }
 
   // // ! Throws exception on error.
   // public static getShape()

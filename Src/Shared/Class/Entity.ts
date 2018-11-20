@@ -32,7 +32,7 @@ export class Entity extends Serializable
   private id = "Not assigned";
   private name = "<missing name>";
 
-  // --------------- Public accessors -------------------
+  // --------------- Public methods ---------------------
 
   // ~ Overrides Serializable.errorId.
   public get debugId()
@@ -108,8 +108,6 @@ export class Entity extends Serializable
 
   public getName() { return this.name; }
   public setName(name: string) { this.name = name; }
-
-  // --------------- Public methods ---------------------
 
   // -------------- Protected methods -------------------
 

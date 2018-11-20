@@ -8,19 +8,20 @@ import * as Shared from "../../Shared/Engine/Tilemap";
 
 export class Tilemap extends Shared.Tilemap
 {
-  private readonly tilemap: Phaser.Tilemaps.Tilemap;
+  private readonly phaserTilemap: Phaser.Tilemaps.Tilemap;
 
   constructor
   (
     private readonly scene: Scene,
     name: string,
     // String id of preloaded tilemap json data.
-    tilemapJsonDataId: string
+    tilemapJsonDataId: string,
+    tilemapJsonData: object
   )
   {
-    super(name);
+    super(name, tilemapJsonData);
 
-    this.tilemap = scene.make.tilemap({ key: tilemapJsonDataId });
+    this.phaserTilemap = scene.make.tilemap({ key: tilemapJsonDataId });
   }
 
   // ---------------- Public methods --------------------
@@ -38,7 +39,7 @@ export class Tilemap extends Shared.Tilemap
   )
   : Array<Sprite>
   {
-    const phaserSprites = this.tilemap.createFromObjects
+    const phaserSprites = this.phaserTilemap.createFromObjects
     (
       tilemapObjectLayerName,
       tilemapObjectName,
@@ -52,8 +53,8 @@ export class Tilemap extends Shared.Tilemap
       // We need to translate the tiles by halph the tile
       // size because tiles have origin at top left in
       // Tiled editor but in the middle in Phaser engine.
-      phaserSprite.x -= this.tilemap.tileWidth / 2;
-      phaserSprite.y -= this.tilemap.tileHeight / 2;
+      phaserSprite.x -= this.phaserTilemap.tileWidth / 2;
+      phaserSprite.y -= this.phaserTilemap.tileHeight / 2;
 
       const sprite = new Sprite
       (
@@ -69,7 +70,7 @@ export class Tilemap extends Shared.Tilemap
     {
       throw new Error(`No sprites based on object name '${tilemapObjectName}'`
         + ` have been found in object layer '${tilemapObjectLayerName}' of`
-        + ` tilemap '${this.name}'`);
+        + ` tilemap '${this.getName()}'`);
     }
 
     return result;

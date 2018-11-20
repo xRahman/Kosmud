@@ -1,10 +1,8 @@
 /*
   Server implementation of Tilemap.
 */
-
+/*
 import { Physics } from "../../Shared/Physics/Physics";
-import { JsonObject } from "../../Shared/Class/JsonObject";
-import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import * as Shared from "../../Shared/Engine/Tilemap";
 
 export class Tilemap extends Shared.Tilemap
@@ -25,34 +23,29 @@ export class Tilemap extends Shared.Tilemap
     const jsonData = await FileSystem.readExistingFile(this.jsonFilePath);
 
     // ! Throws exception on error.
-    this.data = (JsonObject.parse(jsonData) as Shared.Tilemap.Data);
+    this.data = JsonObject.parse(jsonData) as Shared.Tilemap.Data);
 
     // ! Throws exception on error.
-    indexData(this.data, this.name);
+    indexData(this.data, this.getName());
   }
 
   // ! Throws exception on error.
-  public getShape()
+  public getShape(objectLayerName: string, objectName: string)
   {
     if (this.data === "Not loaded")
     {
       throw new Error(`Failed to get physics shape from tilemap`
-        + ` '${this.name}' because the tilemap is not loaded`);
+        + ` '${this.getName()}' because the tilemap is not loaded`);
     }
-
-    /// TODO: Tohle časem parametrizovat (a brát to ze stejnýho
-    ///   zdroje jako klient).
-    const layerName = "Basic fighter";
-    const objectName = "Hull";
 
     // ! Throws exception on error.
     const hullTileGid = getHullTileGid
     (
-      this.data, layerName, objectName, this.name
+      this.data, objectLayerName, objectName, this.getName()
     );
 
     // ! Throws exception on error.
-    return getTileShape(this.data, hullTileGid, objectName, this.name);
+    return getTileShape(this.data, hullTileGid, objectName, this.getName());
   }
 }
 
@@ -350,3 +343,4 @@ function getTile
 
   return tile;
 }
+*/

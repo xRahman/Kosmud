@@ -5,8 +5,7 @@
 */
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
-import { Entity } from "../../Shared/Class/Entity";
-import { Tilemaps } from "../../Shared/Engine/Tilemaps";
+import { GameEntity } from "../../Shared/Game/GameEntity";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
@@ -14,7 +13,7 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 /// TODO: Tohle časem taky hodit někam jinam.
 const FPS = 60;
 
-export abstract class Vehicle extends Entity
+export abstract class Vehicle extends GameEntity
 {
   /// Nechám to zatím CAPSEM. Časem to možná nebudou konstanty
   /// (protože se budou měnit debufama a tak, tak to pak případně
@@ -39,7 +38,7 @@ export abstract class Vehicle extends Entity
   /// Když dám shapeId zvlášť, tak může bejt abstract, čímž vynutím
   /// inicializaci v potomcích (a nebudu tudíž muset ošetřovat, jestli
   /// je inicializované.
-  protected readonly shapeId: string | "Not set" = "Not set";
+  protected shapeId: string | "Not set" = "Not set";
   protected readonly position = { x: 0, y: 0 };
   /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
   /// bejt mnohem větší všechny thrusty, torques a tak a vektory
@@ -126,6 +125,17 @@ export abstract class Vehicle extends Entity
   //   this.getPhysicsBody().updateVelocityDirection();
   // }
 
+  // ! Throws exception on error.
+  public setShapeId(shapeId: string)
+  {
+    if (this.shapeId !== "Not set")
+    {
+      throw new Error(`Shape id is alredy set to ${this.debugId}`);
+    }
+
+    this.shapeId = shapeId;
+  }
+
   public getShape()
   {
     return this.getPhysicsBody().getShape();
@@ -143,8 +153,7 @@ export abstract class Vehicle extends Entity
     }
 
     // ! Throws exception on error.
-    /// TODO: Ptát se na shape zóny, ne Tilmapsů.
-    const shape = Tilemaps.getPhysicsShape(this.shapeId);
+    const shape = this.getZone().getPhysicsShape(this.shapeId);
 
     const physicsBodyConfig: PhysicsBody.Config =
     {

@@ -32,7 +32,7 @@ export class FlightScene extends Scene
     super(FLIGHT_SCENE, width, height);
   }
 
-  // --------------- Public accessors -------------------
+  // ---------------- Public methods --------------------
 
   public getShip(): Ship | "Doesn't exist"
   {
@@ -41,8 +41,6 @@ export class FlightScene extends Scene
 
     return this.contents.ship;
   }
-
-  // ---------------- Public methods --------------------
 
   public addShip(request: ShipToScene)
   {
