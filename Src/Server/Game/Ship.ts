@@ -4,7 +4,7 @@
   TEST - a ship.
 */
 
-import { Tilemap } from "../../Server/Physics/Tilemap";
+import { Tilemap } from "../../Server/Engine/Tilemap";
 // import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import * as Shared from "../../Shared/Game/Ship";
 
