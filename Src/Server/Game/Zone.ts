@@ -42,7 +42,12 @@ export class Zone extends Shared.Zone
   // tslint:disable-next-line:prefer-function-over-method
   protected async createTilemap(config: Shared.Zone.TilemapConfig)
   {
-    const jsonData = await loadTilemapJsonData(config.tilemapJsonPath);
+    // Path is different on the server because server root is '/'
+    // and client root is '/Client'. And we also need to make sure
+    // that the part starts with './' on the sever (FileSystem
+    // checks that to prevent traversing out of project directory).
+    const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
+    const jsonData = await loadTilemapJsonData(tilemapJsonPath);
 
     return new Tilemap(config.tilemapName, jsonData);
   }

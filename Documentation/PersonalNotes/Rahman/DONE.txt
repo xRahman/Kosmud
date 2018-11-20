@@ -1,3 +1,154 @@
+Hmm, vyrábět PhysicsBody v konstruktoru Vehiclu asi nepůjde.
+- musel bych physicsShapeId předávat konstruktoru jako parametr,
+  což by asi zatím fungovalo, ale až to budou entity tak ne
+  (leda by shapy byly entity, pak by se to provázalo automaticky při loadu
+   - jenže tím bych měl inicializovaný pouze shape, nikoliv physics body).
+Čili správné řešení asi je, že může existovat Vehicle mimo physics world
+  (který tedy nemá physics body).
+[done]
+- hmm, pak to ale vlastně asi nebude nutný preloadovat (tilemapy asi jo,
+  shapy z nich půjdou vytáhnou při initu - to se teda ostatně dělá už teď).
+  - tzn. že bych se vrátil k tomu, že nemám shapeId, ale "adresu" shapu
+    uvnitř tilemapy? (která tilemapa, který object layer, který objekt)
+    To je asi blbost, shapeId dává smysl.
+[done]
+- Umožnit nemít vytvoření physicsBody by znamenalo ve Vehicle zavést metodu
+  getPhysicsBody, která bude házet výjimku při neexistujícím physicsBody.
+  Tzn. prakticky všechny metody ve Vehicle budou házet výjimky
+  (na druhou stranu díky tomu se s tím bude pracovat jako teď, takže to je
+   asi ok).
+[done]
+
+- Vyrobit Shared/Game/Zone (ať na to rovnou vidí i klient. Jo, to je určitě
+  potřeba, protože tam bude seznam věcí, co se mají preloadnout + jejich
+  idčka).
+[done]
+- dát do ní seznam tilemap a shapů, které se mají loadovat (čili ne do Ship!).
+[done]
+- v Zone.preload preloadovat tilemapy a vyrábět z nich shapy (podle seznamů).
+  - to mimojiné znamená, že nepotřebuju Tilemaps.ts - tilemapy a shapy budou
+    v zóně.
+[done]
+
+Asi bych taky mohl na serveru vytvořit Zónu, víceméně čistě pro posílení
+  představy, že jedné zóně na serveru odpovídá jedna scéna na klientu
+  (zóna je prostě všechno, co může bejt najednou v physics worldu a může
+   to tudíž vzájemně interagovat).
+[done]
+
+TODO: Asi bych mohl udělat seznam toho, co se má pro scénu/zónu preloadnout.
+  - zatím klidně natvrdo do scene.preload() (respektive na serveru
+    zone.preload()) s tím, že časem to zřejmě bude savnuté v zóně
+    (jaké prototypy zóna obsahuje).
+[done]
+
+TODO: Někde by asi měl existovat seznam tilemap a shapů, které se mají loadnout
+  - Na druhou stranu to může bejt pro každou scénu jinak. Obecně každá scéna
+    (ve smyslu zóna s jedním physics worldem) by měla vědět, co do ní patří.
+    - momentálně mám jen jednu scénu/zónu, takže prostě při loadování
+      je to potřeba vyjmenovat.
+  Seznam je teď ve scéně (časm by se mohl sestavovat z prototypů entit
+    vložených do scény, ale to je daleká budoucnost).
+[done]
+V zásadě jsem zase u toho, že buď musím udělat 4 classy pro 4 typy lodí,
+  nebo musím zavést entity. Ovšem údaje o tom, jaké shapy je potřeba loadnout,
+  dost dobře nemůžou mít až instance lodí...
+Mohou to ovšem mít prototypové entity lodí.
+- zatím budou 4 instance (ze kterých se časem stanou prototypy).
+  properties jim setuju natvro ručně (zatím jen physics shape,
+   časem přibudou minimálně ostatní physics properties).
+[done, for now]
+
+1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
+   (couvání a strafování zatím netřeba).
+   - ještě to není úplně ok, ale prozatím se dá.
+[done]
+2) Efekty trysek (grafický a zvukový).
+[done]
+5) Lepší physics body shape pro loď
+[done]
+   (a pro překážky taky).
+6) Anchor pointy (pro exhausty, časem pro zbraně).
+   - je to ještě lepší - sprity se rovnou umisťujou v Tiled editoru.
+[done]
+
+TODO: Vehicle.addToPhysicsWorld() by si mělo o shape říkat zóně, ne
+  Tilemapsům.
+  (Vehicle by mělo vědět, ve které je zóně.)
+[done]
+
+Tilemaps.ts zatím vypadá, že by se měl jmenovat spíš PhysicsShapes.ts.
+  - nope, shapy budou v zónách.
+- respektive nejspíš nemusí existovat vůbec (a pokud, tak bude schraňovat
+  tilemapy, ne shapy).
+Zrušeno. Tilemapy si drží (vyrábí) zóny.
+[done]
+
+TODO: Vehicle by mohlo mít rovnou property physicsConfig místo samostatných
+  properties, ze kterých se physicsConfig vyrobí.
+- otázka ovšem je, jestli mi pak bude fungovat dědičnost
+  (jako že defaultně asi nebude. Asi by fungovala, kdyby to byly opravdu
+   entity, což ale zatím nejsou).
+- a odněkud se taky musí brát shapeId...
+Zatím jsem to vrátil přímo do classy, kvůli dědičnosti. Až budu mít
+  prototypovou děčičnost entit, tak to můžu zvážit znova.
+[done]
+
+TODO: Preload physics shapů (zaregistruje a vrátí shapeId);
+- ještě je teda otázka, jestli to držet v paměti, nebo to tahat z tilemapy.
+- i když, vehicly se budou vytváře průběžně a pokaždý budou potřebovat shape.
+  (to spíš bude možný po naparsování zahodit data tilemapy).
+[done]
+
+TODO idčko tilemapy definující physics shape by taky mohlo bejt rovnou ve Vehicle
+  - Vehicle by si pak samo vytvářelo Physics shape.
+Je tam shapeId, idčko tilemapy Vehicle nepotřebuje.
+[done]
+
+TODO: Ship by asi neměla dostávat jako parametr physicsConfig.
+  Místo toho by asi tyhle properties měla rovnou mít (nejspíš v předkovi,
+  ale to teď nemusím řešit). Od physics shapu asi stačí idčko s tím,
+  že si shape vyžádá od nějakého manageru shapů (Zone).
+[done]
+- výhledově by asi taky neměla init těla a podobně dělat v konstruktoru,
+  ale až v initu, protože to bude entita a bude se loadovat (init() se bude
+  volat ručně po loadu).
+- dělá se to přes addToPhysicsWorld()
+[done]
+Anyways, co s tím teď?
+- Potřebuju beztak sloučit parametry (jméno tilemapy, jméno object layeru,
+  jméno objectu v něm).
+  - Takže kam s nima?
+  Zatím to prostě narvu do Shared/Ship, nebudu se to snažit vyřešit
+  všechno naráz. Konstruktory ať klidně konstruují, monetálně potřebuju
+  hlavně sloučit konstanty na jedno místo v kódu (jako inicializované
+  properties classy, ať se dají později měnit).
+  - respektive fyzikální properties by asi měly bejt rovnou ve vehicle
+    (tam už ostatně některé jsou, jen mimo classu).
+- narval jsem to do zóny.
+[done]
+
+TODO: Jméno tilemapy by se mělo brát
+  ze Shared/Game/Ship/TILEMAP_NAME (aby bylo stejný na klientu
+  i na serveru - je to ostatně stejná tilemapa). Teď není Client/Ship
+  zděděná ze Shared/Ship, takže to není tak jednoduchý.
+  (viz ShipGraphics.constructor()).
+[done]
+TODO: Sloučit Ship na clientu a serveru, aby se používaly stejné
+ properties (názvy layerů, cesta k tilemapě a tak).
+ - Cesta k tilemapě teda bude muset mít jinej prefix.
+[done]
+
+TODO: Přehodit stuff ze Server/Tilemap do Shared/Tilemap.
+TODO: Potřebuju já vůbec client/server verze Tilemap classy?
+- liší se jen loadování a to by beztak bylo lepší dělat externě
+  (loadnout json object a předhodit ho konstruktoru).
+- poněkud jsem zapomněl, že na klientu tilemapu používá phaser...
+  (tam teda vlastně asi nemusím řešit paměť, takže klidně můžu držet
+   tilemapu v paměti 2x).
+Každopádně ale client verze Tilemapy existovat musí.
+[zrušnea Server/Tilemap]
+
 TODO: Ještě jednou zvážit, jestli má být Config spíš v Physics nebo
   v PhysicsBody. Physics.Config se sice líp píše, ale technicky vzato
   to není konfig celé fyziky, ale opravdu cofig PhysicsBody.
