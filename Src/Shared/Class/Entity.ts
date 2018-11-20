@@ -25,12 +25,12 @@
   of creating own propety on the instance).
 */
 
-import { Serializable } from "../../Shared/Class/Serializable";
+import { ID, Serializable } from "../../Shared/Class/Serializable";
 
 export class Entity extends Serializable
 {
-  /// Zatím provizorně.
-  public id = "Not assigned";
+  private id = "Not assigned";
+  private name = "<missing name>";
 
   // --------------- Public accessors -------------------
 
@@ -56,10 +56,58 @@ export class Entity extends Serializable
       id = this.id;
     }
 
-    // return `{ className: ${this.getClassName()},`
-    //   + ` name: ${this.name}, id: ${id}}`;
-    return `{ className: ${this.getClassName()}, id: ${id}}`;
+    return `{ className: ${this.getClassName()},`
+      + ` name: ${this.name}, id: ${id}}`;
   }
+
+  // ! Throws exception on error.
+  public getId()
+  {
+    const hasOwnValidId = this.hasOwnProperty(ID)
+      && this.id !== "Not assigned"
+      && this.id !== undefined
+      && this.id !== null
+      && this.id !== "";
+
+    // If we don't have own 'id' property, this.id would return
+    // id of our prototype object (thanks to inheritance), which
+    // is not our id (id has to be unique for each entity instance).
+    if (!hasOwnValidId)
+    {
+      throw new Error(`Attempt to get ${ID} of an entity which`
+        + ` doesn't have an ${ID}. This must never happen, each`
+        + ` entity must have a valid ${ID}"`);
+    }
+
+    return this.id;
+  }
+
+  // ! Throws exception on error.
+  public setId(id: string)
+  {
+    // Id can only be set once.
+    //   We need to check if we have own property 'id'
+    // (not just the one inherited from our prototype),
+    // because if we don't, value of 'this.id' would be
+    // that of our prototype.
+    if (this.hasOwnProperty(ID) && this.id !== "Not assigned")
+    {
+      throw new Error(`Failed to set ${ID} of entity ${this.debugId}`
+        + ` because it already has an ${ID}`);
+    }
+
+    this.id = id;
+
+    if (!this.hasOwnProperty(ID))
+    {
+      throw new Error(`Something is terribly broken - property`
+        + `'${ID}' has been set to prototype object rather than`
+        + `to the instance`);
+    }
+  }
+
+  public getName() { return this.name; }
+  public setName(name: string) { this.name = name; }
 
   // --------------- Public methods ---------------------
 

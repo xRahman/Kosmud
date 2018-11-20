@@ -1,3 +1,17 @@
+TODO: Ještě jednou zvážit, jestli má být Config spíš v Physics nebo
+  v PhysicsBody. Physics.Config se sice líp píše, ale technicky vzato
+  to není konfig celé fyziky, ale opravdu cofig PhysicsBody.
+- takže to asi spíš vrátit zpět do PhysicsBody.
+[done]
+
+TODO: Úplně se mi nelíbí, že je Tilemap pokaždý v jiným adresáři
+  (v /Shared/Physics, /Server/Physics ale /Client/Phaser).
+IDEA: Client/Phaser přejmenovat na Client/Engine
+- pak by teoreticky mohl být i Shared/Engine a Server/Engine a Tilemap
+  by mohla být tam.
+- jo, udělám to tak.
+[done]
+
 TODO: Zdědit Vehicle z Entity (protože proč ne).
 TODO: getErrorIdString() přejmenovat na getErrorId().
 - nakoned je z toho getter 'debugId'.

@@ -73,7 +73,7 @@ const VECTOR_X = "x";
 const VECTOR_Y = "y";
 const MAP = "map";
 const SET = "set";
-const ID = "id";
+export const ID = "id";
 
 interface ObjectType { [key: string]: any; }
 
