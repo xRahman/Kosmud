@@ -2,7 +2,7 @@ import { ShipToScene } from "../../Client/Protocol/ShipToScene";
 import { Ship } from "../../Client/Game/Ship";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
-import { Scene } from "../../Client/Phaser/Scene";
+import { Scene } from "../../Client/Engine/Scene";
 import { REPORT } from "../../Shared/Log/REPORT";
 import { ERROR } from "../../Shared/Log/ERROR";
 

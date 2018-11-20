@@ -1,8 +1,8 @@
 import { Vector } from "../../Shared/Physics/Vector";
-import { Sprite } from "../../Client/Phaser/Sprite";
-import { Container } from "../../Client/Phaser/Container";
-import { Scene } from "../../Client/Phaser/Scene";
-import { Tilemap } from "../../Client/Phaser/Tilemap";
+import { Sprite } from "../../Client/Engine/Sprite";
+import { Container } from "../../Client/Engine/Container";
+import { Scene } from "../../Client/Engine/Scene";
+import { Tilemap } from "../../Client/Engine/Tilemap";
 import { Physics } from "../../Shared/Physics/Physics";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";

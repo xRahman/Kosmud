@@ -2,8 +2,8 @@
   This class is not a graphic element, it only stores tilemap data.
 */
 
-import { Scene } from "../../Client/Phaser/Scene";
-import { Sprite } from "../../Client/Phaser/Sprite";
+import { Scene } from "../../Client/Engine/Scene";
+import { Sprite } from "../../Client/Engine/Sprite";
 import * as Shared from "../../Shared/Physics/Tilemap";
 
 export class Tilemap extends Shared.Tilemap

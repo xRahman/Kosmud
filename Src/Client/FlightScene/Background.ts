@@ -1,5 +1,5 @@
-import { Sprite } from "../../Client/Phaser/Sprite";
-import { Scene } from "../../Client/Phaser/Scene";
+import { Sprite } from "../../Client/Engine/Sprite";
+import { Scene } from "../../Client/Engine/Scene";
 
 const BACKGROUND_TEXTURE_ID = "Background Texture";
 

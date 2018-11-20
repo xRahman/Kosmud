@@ -2,9 +2,9 @@ import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { SetWaypoint } from "../../Shared/Protocol/SetWaypoint";
 import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";
-import { Mouse } from "../../Client/Phaser/Mouse";
-import { Sprite } from "../../Client/Phaser/Sprite";
-import { Scene } from "../../Client/Phaser/Scene";
+import { Mouse } from "../../Client/Engine/Mouse";
+import { Sprite } from "../../Client/Engine/Sprite";
+import { Scene } from "../../Client/Engine/Scene";
 
 const WAYPOINT_TEXTURE_ID = "Waypoint Texture";
 

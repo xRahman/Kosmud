@@ -6,7 +6,7 @@
   (Part of client-server communication protocol.)
 */
 
-import { Renderer } from "../../Client/Phaser/Renderer";
+import { Renderer } from "../../Client/Engine/Renderer";
 import { Connection } from "../../Client/Net/Connection";
 import * as Shared from "../../Shared/Protocol/ShipToScene";
 

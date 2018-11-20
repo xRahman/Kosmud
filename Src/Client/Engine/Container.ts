@@ -2,7 +2,7 @@
   Wraps Phaser.GameObjects.Container
 */
 
-import { PhaserObject } from "../../Client/Phaser/PhaserObject";
+import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Container extends PhaserObject
 {

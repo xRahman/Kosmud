@@ -5,7 +5,7 @@
 */
 
 import { Component } from "../../Client/Gui/Component";
-import { Renderer } from "../../Client/Phaser/Renderer";
+import { Renderer } from "../../Client/Engine/Renderer";
 import { REPORT } from "../../Shared/Log/REPORT";
 
 export class CanvasDiv extends Component

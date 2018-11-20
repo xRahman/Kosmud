@@ -1,6 +1,6 @@
 import { lowerBound } from "../../Shared/Utils/Math";
-import { Sound } from "../../Client/Phaser/Sound";
-import { Sprite } from "../../Client/Phaser/Sprite";
+import { Sound } from "../../Client/Engine/Sound";
+import { Sprite } from "../../Client/Engine/Sprite";
 import { ShipSound } from "../../Client/FlightScene/ShipSound";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 

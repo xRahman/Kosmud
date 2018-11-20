@@ -1,4 +1,4 @@
-import { Sound } from "../Phaser/Sound";
+import { Sound } from "../../Client/Engine/Sound";
 
 const SHIP_ENGINE_SOUND = "Ship Engine Sound";
 

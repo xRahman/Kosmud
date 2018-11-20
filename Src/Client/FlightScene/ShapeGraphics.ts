@@ -1,7 +1,7 @@
 import { Physics } from "../../Shared/Physics/Physics";
-import { Container } from "../../Client/Phaser/Container";
+import { Container } from "../../Client/Engine/Container";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { Graphics } from "../../Client/Phaser/Graphics";
+import { Graphics } from "../../Client/Engine/Graphics";
 
 export class ShapeGraphics extends Graphics
 {

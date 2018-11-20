@@ -3,9 +3,9 @@
 */
 
 import { Vector } from "../../Shared/Physics/Vector";
-import { Scene } from "../../Client/Phaser/Scene";
-import { Container } from "../../Client/Phaser/Container";
-import { PhaserObject } from "../../Client/Phaser/PhaserObject";
+import { Scene } from "../../Client/Engine/Scene";
+import { Container } from "../../Client/Engine/Container";
+import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 const INFINITE_REPEAT = -1;
 

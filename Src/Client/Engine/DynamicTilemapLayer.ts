@@ -1,16 +1,16 @@
 /*
-  Wraps Phaser.Tilemaps.StaticTilemapLayer.
+  Wraps Phaser.Tilemaps.DynamicTilemapLayer.
 */
 
-import { PhaserObject } from "../../Client/Phaser/PhaserObject";
+import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
-export class StaticTilemapLayer extends PhaserObject
+export class DynamicTilemapLayer extends PhaserObject
 {
-  // StaticTilemapLayer is not actually inherited from
+  // DynamicTilemapLayer is not actually inherited from
   // Phaser.GameObjects.GameObject (according to Paser
   // documentation) but it seems that it has the same
   // properties so we can consider it to be so.
-  protected phaserObject: Phaser.Tilemaps.StaticTilemapLayer;
+  protected phaserObject: Phaser.Tilemaps.DynamicTilemapLayer;
 
   constructor
   (
@@ -24,7 +24,7 @@ export class StaticTilemapLayer extends PhaserObject
   {
     super(scene);
 
-    this.phaserObject = tilemap.createStaticLayer
+    this.phaserObject = tilemap.createDynamicLayer
     (
       tilemapLayerName,
       tileset,

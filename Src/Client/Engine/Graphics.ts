@@ -14,7 +14,7 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Physics } from "../../Shared/Physics/Physics";
-import { PhaserObject } from "../../Client/Phaser/PhaserObject";
+import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Graphics extends PhaserObject
 {
