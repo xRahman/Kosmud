@@ -21,8 +21,8 @@ import * as express from "express";
 // tslint:disable-next-line:no-duplicate-imports
 import { Express } from "express";
 
-const PRIVATE_KEY_FILE = "./Server/Keys/kosmud-key.pem";
-const CERTIFICATE_FILE = "./Server/Keys/kosmud-cert.pem";
+const PRIVATE_KEY_FILE = "./Keys/kosmud-key.pem";
+const CERTIFICATE_FILE = "./Keys/kosmud-cert.pem";
 
 const WWW_ROOT = "./Client";
 
