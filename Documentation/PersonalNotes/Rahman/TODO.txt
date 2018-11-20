@@ -77,6 +77,7 @@ TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
   /Build/js/...
   - /Build by měl smysl, kdyby do něj časem přistálo víc věcí, než jen
     javascript. A taky je idiomatický (líp vyjadřuje, o co jde, než čistě /js)
+  - hmm, nebo /bin? i když, /Bin by asi vypadalo blbě, takže spíš /Build
 Ok, přejmenuju /Server na /Build.
 
 TODO: odchytávat výjimky z Tilemap.getShape().
