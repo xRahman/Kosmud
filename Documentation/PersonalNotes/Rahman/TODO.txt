@@ -1,9 +1,6 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Zdědit Vehicle z Entity (protože proč ne).
-TODO: getErrorIdString() přejmenovat na getErrorId().
-
 Priority:
 1) Opravit pohyb lodi, aby se rozumně otáčela a zabrzdila na waypointu
    (couvání a strafování zatím netřeba).

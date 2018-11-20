@@ -5,6 +5,7 @@
 */
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
+import { Entity } from "../../Shared/Class/Entity";
 import { Tilemaps } from "../../Shared/Engine/Tilemaps";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -13,7 +14,7 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 /// TODO: Tohle časem taky hodit někam jinam.
 const FPS = 60;
 
-export abstract class Vehicle
+export abstract class Vehicle extends Entity
 {
   /// Nechám to zatím CAPSEM. Časem to možná nebudou konstanty
   /// (protože se budou měnit debufama a tak, tak to pak případně
@@ -135,9 +136,9 @@ export abstract class Vehicle
   {
     if (this.shapeId === "Not set")
     {
-      throw new Error(`Failed to add vehicle '${this.getErrorIdString()}'`
-        + ` to physics world because it doesn't have a 'shapeId' set yet.`
-        + ` Make sure you set the 'shapeId' before you call`
+      throw new Error(`Failed to add vehicle '${this.debugId}'`
+        + ` to physics world because it doesn't have a 'shapeId'`
+        + ` set yet. Make sure you set 'shapeId' before you call`
         + ` addToPhysicsWorld()`);
     }
 
@@ -168,13 +169,6 @@ export abstract class Vehicle
 
     this.getPhysicsBody().applyForce(this.steeringForce);
     this.getPhysicsBody().applyTorque(this.torque);
-  }
-
-  // tslint:disable-next-line:prefer-function-over-method
-  public getErrorIdString()
-  {
-    /// Až bude Vehicle zděděné z Entity, tak tohle zrušit.
-    return "TODO";
   }
 
   // --------------- Protected methods ------------------
@@ -296,7 +290,7 @@ export abstract class Vehicle
   {
     if (this.physicsBody === "Doesn't exist")
     {
-      throw new Error(`Physics body of vehicle '${this.getErrorIdString()}'`
+      throw new Error(`Physics body of vehicle '${this.debugId}'`
         + ` doesn't exist yet. Make sure you call 'addToPhysicsWorld()`
         + ` before you do anything with the vehicle`);
     }

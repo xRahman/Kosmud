@@ -1,3 +1,8 @@
+TODO: Zdědit Vehicle z Entity (protože proč ne).
+TODO: getErrorIdString() přejmenovat na getErrorId().
+- nakoned je z toho getter 'debugId'.
+[done]
+
 TODO: Shared/Game/Ship je možná zbytečná, Ship na clientu z ní není
   zděděná.
 - tak možná ne, nějaké společné properties to už má.

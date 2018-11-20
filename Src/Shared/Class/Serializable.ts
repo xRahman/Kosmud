@@ -114,6 +114,15 @@ export class Serializable extends Attributable
     return serializable.deserialize(jsonObject);
   }
 
+  // --------------- Public accessors -------------------
+
+  // -> Returns string describing this object for error logging.
+  public get debugId()
+  {
+    // There is not much to say about generic serializable object.
+    return `{ className: ${this.getClassName()} }`;
+  }
+
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
@@ -124,18 +133,11 @@ export class Serializable extends Attributable
     if (!(this instanceof Class))
     {
       throw new Error (`Type cast error: serializable`
-        + ` object ${this.getErrorIdString()} is not`
-        + ` an instance of class (${Class.name})`);
+        + ` object ${this.debugId} is not an instance`
+        + ` of class (${Class.name})`);
     }
 
     return (this as any);
-  }
-
-  // Returns string describing this object for error logging.
-  public getErrorIdString()
-  {
-    // There is not much to say about generic serializable object.
-    return `{ className: ${this.getClassName()} }`;
   }
 
   // ! Throws exception on error.
@@ -228,17 +230,17 @@ export class Serializable extends Attributable
     // 'this.constructor' contains static properties of this class.
     if (!this.constructor.hasOwnProperty(VERSION))
     {
-      throw new Error(`Failed to serialize ${this.getErrorIdString()}`
-        + ` because static '${VERSION}' property is missing on it.`
-        + ` Make sure that 'static ${VERSION}' is inicialized in`
-        + ` class ${this.getClassName()}`);
+      throw new Error(`Failed to serialize ${this.debugId}`
+        + ` because static '${VERSION}' property is missing`
+        + ` on it. Make sure that 'static ${VERSION}' is`
+        + ` inicialized in class ${this.getClassName()}`);
     }
 
     const version = (this.constructor as any)[VERSION];
 
     if (!Types.isNumber(version))
     {
-      throw new Error(`Failed to serialize ${this.getErrorIdString()}`
+      throw new Error(`Failed to serialize ${this.debugId}`
         + ` because static '${VERSION}' property is not a number.`
         + ` Make sure that 'static ${VERSION}' is inicialized in`
         + ` class ${this.getClassName()} to some number`);
