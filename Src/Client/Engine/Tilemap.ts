@@ -4,7 +4,7 @@
 
 import { Scene } from "../../Client/Engine/Scene";
 import { Sprite } from "../../Client/Engine/Sprite";
-import * as Shared from "../../Shared/Physics/Tilemap";
+import * as Shared from "../../Shared/Engine/Tilemap";
 
 export class Tilemap extends Shared.Tilemap
 {

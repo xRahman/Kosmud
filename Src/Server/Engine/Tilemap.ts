@@ -5,7 +5,7 @@
 import { Physics } from "../../Shared/Physics/Physics";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
-import * as Shared from "../../Shared/Physics/Tilemap";
+import * as Shared from "../../Shared/Engine/Tilemap";
 
 export class Tilemap extends Shared.Tilemap
 {
