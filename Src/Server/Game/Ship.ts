@@ -4,40 +4,44 @@
   TEST - a ship.
 */
 
-// import { Tilemap } from "../../Server/Engine/Tilemap";
-// import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  // private static readonly tilemap = new Tilemap
-  // (
-  //   Ship.TILEMAP_NAME,
-  //   Ship.TILEMAP_PATH
-  // );
-
-  // constructor(physicsConfig: PhysicsBody.Config)
-  // {
-  //   super(physicsConfig);
-  // }
-
-  // ------------- Public static methods ----------------
-
-  // // ! Throws exception on error.
-  // public static async preload()
-  // {
-  //   // ! Throws exception on error.
-  //   // await this.tilemap.load();
-  // }
-
-  // // ! Throws exception on error.
-  // public static getShape()
-  // {
-  //   // ! Throws exception on error.
-  //   return this.tilemap.getShape();
-  // }
-
   // ---------------- Public methods --------------------
+
+  public getStateUpdate(): SceneUpdate.ShipState
+  {
+    const shipState =
+    {
+      shipPosition: this.getPosition(),
+      shipRotation: this.getRotation(),
+      shipVelocity: this.getVelocity(),
+      desiredVelocity: this.getDesiredVelocity(),
+      steeringForce: this.getSteeringForce(),
+      desiredSteeringForce: this.getDesiredSteeringForce(),
+      desiredForwardSteeringForce: this.getDesiredForwardSteeringForce(),
+      desiredLeftwardSteeringForce: this.getDesiredLeftwardSteeringForce(),
+      forwardThrustRatio: this.getForwardThrustRatio(),
+      leftwardThrustRatio: this.getLeftwardThrustRatio(),
+      torqueRatio: this.getTorqueRatio()
+    };
+
+    return shipState;
+  }
+
+  public getInitialState()
+  {
+    const state =
+    {
+      shape: this.getShape(),
+      position: this.getPosition(),
+      rotation: this.getRotation()
+    };
+
+    return state;
+  }
 
   // public startTurningLeft()
   // {

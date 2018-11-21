@@ -19,7 +19,7 @@ export class SetWaypoint extends Shared.SetWaypoint
   public async process(connection: Connection)
   {
     // ! Throws exception on error.
-    Game.getPlayerShip().setWaypoint(this.waypoint);
+    connection.getAccount().getShip().setWaypoint(this.waypoint);
   }
 }
 

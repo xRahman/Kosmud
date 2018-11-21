@@ -1,6 +1,7 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+
 Upřesnění aktuálního cíle:
 ---------------------------
 - 1 player ship, 1 enemy ship
@@ -12,6 +13,9 @@ Upřesnění aktuálního cíle:
   (na to asi budu muset rozběhat windows a vůbec základy gui).
 - detekce zásahů, detekce kolizí lodí. Basic počítání hpček.
 (překážky, tedy obecně objekty ve scéně, na tohle nejsou potřeba)
+
+
+
 
 TODO: Výhledově zdědit Client/Ship ze Shared/Ship
 - ještě to dotáhnout.
@@ -27,7 +31,7 @@ Problém: Jak se dostat k json datům tilemapy, které loadnul Phaser?
   JSON se případně preloaduje takhle (ale je blbost ho loadovat dvakrát):
     this.load.json("yourkey", "your.json")
 
-TODO: V Server/Zone.fakeLoad() setovat lodím i ostatní physics properties.
+TODO: V EnterShip.fakeLoadFighter() setovat i ostatní physics properties.
   (ve Vehicle budou jen defaultní).
 
 
@@ -45,9 +49,6 @@ OK, takže TODO:
 Na klientu bude mít scéna odkaz na zónu, ze které se vytváří.
 - Zóna bude zatím jen jedna, ale i tak ji udělat rovnou jako classu
   a instancnout ji.
-
-
-
 
 
 TODO: Umožnit na klientu víc lodí.
@@ -243,6 +244,10 @@ TODO: Odhackovat Client/Phaser/Sound.setVolume();
 
 Výhledové TODO:
 -----------------
+
+TODO: Neposílat všem playerům updaty všech zón, stačí každému poslat
+  update zóny, ve které se nachází.
+  (Server/Game/updateClients())
 
 TODO: Konstantu FPS ve Vehicle.ts hodit někam jinam (udělat jednu konstantu
   pro veškeré časování a tu všude používat).

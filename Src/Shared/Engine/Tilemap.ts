@@ -6,7 +6,8 @@ import { Physics } from "../../Shared/Physics/Physics";
 
 export class Tilemap
 {
-  private data: Tilemap.Data | "Not loaded" = "Not loaded";
+  // private data: Tilemap.Data | "Not loaded" = "Not loaded";
+  private data: Tilemap.Data;
 
   // ! Throws exception on error.
   constructor
@@ -34,11 +35,11 @@ export class Tilemap
   // ! Throws exception on error.
   public getShape(objectLayerName: string, objectName: string)
   {
-    if (this.data === "Not loaded")
-    {
-      throw new Error(`Failed to get physics shape from tilemap`
-        + ` '${this.getName()}' because the tilemap is not loaded`);
-    }
+    // if (this.data === "Not loaded")
+    // {
+    //   throw new Error(`Failed to get physics shape from tilemap`
+    //     + ` '${this.getName()}' because the tilemap is not loaded`);
+    // }
 
     // ! Throws exception on error.
     const hullTileGid = getHullTileGid

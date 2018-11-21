@@ -1,3 +1,24 @@
+TODO: getPlayerShip() na serveru nedává smysl - hráčských lodí tam bude víc.
+- potřebuju propojit connection a ship.
+  - buď do connection natvrdo vrazím odkaz na ship,
+    nebo musím vyrobit Account
+    - do connection dát odkaz na Account
+    - do accountu dát odkaz na ship
+Hmm, sakra, asi bych měl zavést event (packet classu) na EnterGame nebo
+  tak něco, kterou klient pošle po připojení k serveru.
+- ve zpracování tohohle eventu se vyrobí new Ship a setne
+  se do connection (ještě lépe do accountu).
+  (výhledově by se teda ship měla začít loadovat hned po autentifikaci, ať
+   player zbytečně nečeká).
+[done]
+
+TODO: Struktura server aplikace:
+- dávalo by asi větší smysl, kdyby loopoval Engine a Game jen tikala,
+  stejně jako fyzika.
+- steer() by možná neměl bejt součástí tiku fyziky, ale tiku hry.
+  (protože při tom bude potřeba procházet herní entity).
+[done]
+
 Hmm, vyrábět PhysicsBody v konstruktoru Vehiclu asi nepůjde.
 - musel bych physicsShapeId předávat konstruktoru jako parametr,
   což by asi zatím fungovalo, ale až to budou entity tak ne

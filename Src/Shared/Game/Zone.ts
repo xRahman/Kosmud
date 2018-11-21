@@ -12,9 +12,9 @@ import { Physics } from "../../Shared/Physics/Physics";
 
 export abstract class Zone extends ContainerEntity
 {
-  private readonly ships = new Set<Ship>();
-  private readonly tilemaps = new Map<string, Tilemap>();
-  private readonly physicsShapes = new Map<string, Physics.Shape>();
+  protected readonly ships = new Set<Ship>();
+  protected readonly tilemaps = new Map<string, Tilemap>();
+  protected readonly physicsShapes = new Map<string, Physics.Shape>();
 
   // ---------------- Public methods --------------------
 
@@ -32,7 +32,7 @@ export abstract class Zone extends ContainerEntity
     ship.setZone(this);
   }
 
-  public abstract async preload(): Promise<void>;
+  public abstract async load(): Promise<void>;
 
   // ! Throws exception on error.
   public getTilemap(name: string)
@@ -77,7 +77,7 @@ export abstract class Zone extends ContainerEntity
     this.physicsShapes.set(shapeId, shape);
   }
 
-  protected async preloadTilemaps(configs: Array<Zone.TilemapConfig>)
+  protected async loadTilemaps(configs: Array<Zone.TilemapConfig>)
   {
     for (const config of configs)
     {

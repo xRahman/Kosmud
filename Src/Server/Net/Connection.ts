@@ -17,6 +17,8 @@ import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
 import { KeyboardInput } from "../../Server/Protocol/KeyboardInput";
 import { MouseInput } from "../../Server/Protocol/MouseInput";
 import { SetWaypoint } from "../../Server/Protocol/SetWaypoint";
+import { EnterGame } from "../../Server/Protocol/EnterGame";
+import { Account } from "../../Server/Account/Account";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
@@ -30,9 +32,14 @@ Classes.registerSerializableClass(ShipToScene);
 Classes.registerSerializableClass(KeyboardInput);
 Classes.registerSerializableClass(MouseInput);
 Classes.registerSerializableClass(SetWaypoint);
+Classes.registerSerializableClass(EnterGame);
 
 export class Connection extends Socket
 {
+  /// TODO: Výhledově se samozřejmě bude Account vyrábět až při loginu.
+  // public account: Account | "Not logged in" = "Not logged in";
+  public account = new Account();
+
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
     super(webSocket, ip, url);
@@ -40,6 +47,19 @@ export class Connection extends Socket
 
   // ---------------- Public methods --------------------
 
+  // ! Throws exception on error.
+  public getAccount()
+  {
+    // if (this.account === "Not logged in")
+    // {
+    //   throw new Error(`User ${this.getUserInfo()}`
+    //   + ` is not logged in yet`);
+    // }
+
+    return this.account;
+  }
+
+  /// Tohle by mohl být getter...
   public getUserInfo()
   {
     let info = "";

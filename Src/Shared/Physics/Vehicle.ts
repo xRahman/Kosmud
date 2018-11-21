@@ -9,9 +9,7 @@ import { GameEntity } from "../../Shared/Game/GameEntity";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
-
-/// TODO: Tohle časem taky hodit někam jinam.
-const FPS = 60;
+import { Engine } from "../../Shared/Engine/Engine";
 
 export abstract class Vehicle extends GameEntity
 {
@@ -170,6 +168,7 @@ export abstract class Vehicle extends GameEntity
     this.waypoint.set(this.physicsBody.getPosition());
   }
 
+  // ! Throws exception on error.
   public steer()
   {
     this.arrive();
@@ -514,7 +513,8 @@ export abstract class Vehicle extends GameEntity
 
     // Multiplication by 'FPS' prevents overturning the desired angle
     // (as suggested by Box2D example).
-    let torque = inertia * (newAngularVelocity - oldAngularVelocity) * FPS;
+    let torque =
+      inertia * (newAngularVelocity - oldAngularVelocity) * Engine.FPS;
 
     torque = intervalBound(torque, { from: -this.TORQUE, to: this.TORQUE });
 

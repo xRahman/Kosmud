@@ -4,151 +4,94 @@
   Server-side game simulation.
 */
 
-import { Syslog } from "../../Shared/Log/Syslog";
-import { Physics } from "../../Shared/Physics/Physics";
-import { Ship } from "../../Server/Game/Ship";
+import { Zone } from "../../Server/Game/Zone";
 import { Connection } from "../../Server/Net/Connection";
 import { Connections } from "../../Server/Net/Connections";
-import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
-import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 
-const GAME_TICK_MILISECONDS = 1000 / 60;
+/// TEST
+import { Ship } from "../../Server/Game/Ship";
 
 export namespace Game
 {
-  export let ships: Array<Ship> = [];
-
-  // ! Throws exception on error.
-  export function getPlayerShip()
+  /// TEST
+  export function addShip(ship: Ship)
   {
-    /// Zatím navrdo první loď v seznamu.
-    if (ships.length < 1)
-    {
-      throw new Error("Player ship doesn't exist yet");
-    }
+    zones[0].addShip(ship);
+  }
 
-    return ships[0];
+  /// TEST
+  function fakeLoad()
+  {
+    zones.push(new Zone());
+  }
+
+  const zones: Array<Zone> = [];
+
+  export function tick()
+  {
+    steer(zones);
+  }
+
+  export function updateClients()
+  {
+    for (const zone of zones)
+    {
+      const sceneUpdate = zone.getSceneUpdate();
+
+      /// TODO: Neposílat všem playerům updaty všech zón, stačí
+      /// každému poslat update zóny, ve které se nachází.
+      Connections.broadcast(sceneUpdate);
+    }
   }
 
   // ! Throws exception on error.
-  export async function preload()
+  export async function load()
   {
+    /// TEST
+    fakeLoad();
+
     // ! Throws exception on error.
-    await Ship.preload();
+    await loadZones(zones);
   }
 
-  // ! Throws exception on error.
-  export async function create()
-  {
-    // // ! Throws exception on error.
-    // const shape = Ship.getShape();
-
-    // const physicsConfig: Physics.Config =
-    // {
-    //   shape,
-    //   /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
-    //   /// bejt mnohem větší všechny thrusty, torques a tak a vektory
-    //   /// jsou pak přes celou obrazovku.
-    //   density: 0.00001
-    // };
-
-    // ships.push(new Ship(physicsConfig));
-    ships.push(new Ship());
-  }
-
-  export function loop()
-  {
-    setInterval
-    (
-      () => { tick(GAME_TICK_MILISECONDS); },
-      GAME_TICK_MILISECONDS
-    );
-  }
-
-  export function sendShipsToClient(connection: Connection)
-  {
-    for (const ship of ships)
-    {
-      connection.send(createShipToScenePacket(ship));
-    }
-  }
+  // export function sendShipsToClient(connection: Connection)
+  // {
+  //   /// TODO: Tohle taky není dobře - měly by se posílat
+  //   /// jen lodě ze zóny, kde zrovna player je (a možná to
+  //   /// bude celé jinak).
+  //   for (const zone of zones)
+  //   {
+  //     zone.sendShipsToClient(connection);
+  //   }
+  // }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-function tick(tickDuration: number)
+async function loadZones(zones: Array<Zone>)
 {
-  try
+  for (const zone of zones)
   {
-    updatePhysics(tickDuration);
-    updateClients();
-  }
-  catch (error)
-  {
-    Syslog.reportUncaughtException(error);
+    await zone.load();
   }
 }
 
-function updatePhysics(tickDuration: number)
-{
-  steer();
-  Physics.tick(tickDuration);
-}
+// function getShipsState(): Array<SceneUpdate.ShipState>
+// {
+//   const result: Array<SceneUpdate.ShipState> = [];
 
-function getShipState(ship: Ship): SceneUpdate.ShipState
+//   for (const ship of Game.ships)
+//   {
+//     result.push(getShipState(ship));
+//   }
+
+//   return result;
+// }
+
+function steer(zones: Array<Zone>)
 {
-  const shipState =
+  for (const zone of zones)
   {
-    shipPosition: ship.getPosition(),
-    shipRotation: ship.getRotation(),
-    shipVelocity: ship.getVelocity(),
-    desiredVelocity: ship.getDesiredVelocity(),
-    steeringForce: ship.getSteeringForce(),
-    desiredSteeringForce: ship.getDesiredSteeringForce(),
-    desiredForwardSteeringForce: ship.getDesiredForwardSteeringForce(),
-    desiredLeftwardSteeringForce: ship.getDesiredLeftwardSteeringForce(),
-    forwardThrustRatio: ship.getForwardThrustRatio(),
-    leftwardThrustRatio: ship.getLeftwardThrustRatio(),
-    torqueRatio: ship.getTorqueRatio()
-  };
-
-  return shipState;
-}
-
-function getShipsState(): Array<SceneUpdate.ShipState>
-{
-  const result: Array<SceneUpdate.ShipState> = [];
-
-  for (const ship of Game.ships)
-  {
-    result.push(getShipState(ship));
+    zone.steerVehicles();
   }
-
-  return result;
-}
-
-function updateClients()
-{
-  const sceneUpdate = new SceneUpdate(getShipsState());
-
-  Connections.broadcast(sceneUpdate);
-}
-
-function steer()
-{
-  for (const ship of Game.ships)
-  {
-    ship.steer();
-  }
-}
-
-function createShipToScenePacket(ship: Ship)
-{
-  return new ShipToScene
-  (
-    ship.getShape(),
-    ship.getPosition(),
-    ship.getRotation()
-  );
 }

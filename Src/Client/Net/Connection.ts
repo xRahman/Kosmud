@@ -15,6 +15,9 @@ import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Socket } from "../../Client/Net/Socket";
 
+/// TEST
+import { EnterGame } from "../../Shared/Protocol/EnterGame";
+
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from "isomorphic-ws";
@@ -54,6 +57,9 @@ export class Connection extends Socket
     const webSocket = new WebSocket(`wss://${window.location.hostname}`);
 
     this.connection = new Connection(webSocket);
+
+    /// Test
+    enterGame();
   }
 
   public static isOpen()
@@ -241,4 +247,9 @@ function reportConnectionFailure()
     alert("Failed to open websocket connection. Your device reports"
       + " offline status. Please check your internet connection.");
   }
+}
+
+function enterGame()
+{
+  Connection.send(new EnterGame());
 }
