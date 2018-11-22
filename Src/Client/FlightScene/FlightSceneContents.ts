@@ -1,6 +1,7 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Background } from "../../Client/FlightScene/Background";
 import { Ship } from "../../Client/Game/Ship";
+import { Zone } from "../../Client/Game/Zone";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Waypoint } from "../../Client/FlightScene/Waypoint";
@@ -27,10 +28,10 @@ export class FlightSceneContents extends SceneContents
     );
   }
 
-  public static preload(scene: FlightScene)
+  public static preload(scene: FlightScene, zone: Zone)
   {
-    Background.preload(scene);
-    ShipGraphics.preload(scene);
+    Background.preload(scene, zone);
+    ShipGraphics.preload(scene, zone);
     ShipSound.preload(scene);
     Waypoint.preload(scene);
   }

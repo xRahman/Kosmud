@@ -10,13 +10,14 @@ import { Types } from "../../Shared/Utils/Types";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { SystemMessage } from "../../Shared/Protocol/SystemMessage";
 import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
-import { ShipToScene } from "../../Client/Protocol/ShipToScene";
+import { EnterFlightResponse } from
+  "../../Client/Protocol/EnterFlightResponse";
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Socket } from "../../Client/Net/Socket";
 
 /// TEST
-import { EnterGame } from "../../Shared/Protocol/EnterGame";
+import { EnterFlightRequest } from "../../Shared/Protocol/EnterFlightRequest";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
@@ -26,7 +27,7 @@ import * as WebSocket from "isomorphic-ws";
 // imported and not used, typescript doesn't execute it's code.
 Classes.registerSerializableClass(SystemMessage);
 Classes.registerSerializableClass(SceneUpdate);
-Classes.registerSerializableClass(ShipToScene);
+Classes.registerSerializableClass(EnterFlightResponse);
 Classes.registerSerializableClass(KeyboardInput);
 Classes.registerSerializableClass(MouseInput);
 
@@ -58,8 +59,11 @@ export class Connection extends Socket
 
     this.connection = new Connection(webSocket);
 
+    /// TODO: Výhledově by tu nemělo bejt hned sendEnterFlightRequest(),
+    ///   ale začátek login procesu (ať už přes username nebo přes nějakej
+    ///   klíč uloženej v browseru).
     /// Test
-    enterGame();
+    sendEnterFlightRequest();
   }
 
   public static isOpen()
@@ -249,7 +253,7 @@ function reportConnectionFailure()
   }
 }
 
-function enterGame()
+function sendEnterFlightRequest()
 {
-  Connection.send(new EnterGame());
+  Connection.send(new EnterFlightRequest());
 }

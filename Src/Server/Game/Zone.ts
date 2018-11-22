@@ -12,7 +12,6 @@ import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Ship } from "../../Server/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
-// import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
 import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
@@ -53,23 +52,6 @@ export class Zone extends Shared.Zone
 
     return new SceneUpdate(shipStates);
   }
-
-  // public sendShipsToClient(connection: Connection)
-  // {
-  //   for (const ship of this.ships)
-  //   {
-  //     const shipState = ship.getInitialState();
-
-  //     const packet = new ShipToScene
-  //     (
-  //       shipState.shape,
-  //       shipState.position,
-  //       shipState.rotation
-  //     );
-
-  //     connection.send(packet);
-  //   }
-  // }
 
   // --------------- Protected methods ------------------
 

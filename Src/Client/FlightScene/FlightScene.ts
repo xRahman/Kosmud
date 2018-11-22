@@ -1,5 +1,6 @@
-import { ShipToScene } from "../../Client/Protocol/ShipToScene";
+import { EnterFlightResponse } from "../../Client/Protocol/EnterFlightResponse";
 import { Ship } from "../../Client/Game/Ship";
+import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Engine/Scene";
@@ -21,10 +22,11 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.contents.
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
 
-  private readonly addRequestQueue = new Array<ShipToScene>();
+  private readonly addRequestQueue = new Array<EnterFlightResponse>();
 
   constructor
   (
+    private zone: Zone,
     width: number,
     height: number
   )
@@ -42,24 +44,31 @@ export class FlightScene extends Scene
     return this.contents.ship;
   }
 
-  public addShip(request: ShipToScene)
-  {
-    if (this.contents === "Doesn't exist")
-    {
-      this.queueAddShipRequest(request);
-    }
-    else
-    {
-      this.contents.addShip(this.createShip(request));
-    }
-  }
+  /// Tohle si tu nechám, protože časem se budou posílat ZoneUpdaty,
+  /// ve kterých budou nové lodě do scény. Imho se to ale bude dělat jinak.
+  // public addShip(request: EnterFlightResponse)
+  // {
+  //   if (this.contents === "Doesn't exist")
+  //   {
+  //     this.queueAddShipRequest(request);
+  //   }
+  //   else
+  //   {
+  //     this.contents.addShip(this.createShip(request));
+  //   }
+  // }
 
   // This method is run by Phaser.
   public preload()
   {
+    /// Zóna se bude posílat v rámci EnterFlightResponse. V ten moment se
+    /// asi bude teprve vyrábět FlightScene, takže zóna by měla nejspíš už
+    /// existovat a bejt setnutá do FlightScene. Takže tady prostě vezmu
+    /// this.zone.
+
     this.preloadAnimatedTilesPlugin();
 
-    FlightSceneContents.preload(this);
+    FlightSceneContents.preload(this, this.zone);
   }
 
   // This method is run by Phaser.
@@ -122,20 +131,20 @@ export class FlightScene extends Scene
 
   // ---------------- Private methods -------------------
 
-  // ! Throws exception on error.
-  private createShip(request: ShipToScene): Ship
-  {
-    // ! Throws exception on error.
-    return new Ship
-    (
-      this,
-      request.shipShape,
-      request.shipPosition,
-      request.shipRotation
-    );
-  }
+  // // ! Throws exception on error.
+  // private createShip(request: EnterFlightResponse): Ship
+  // {
+  //   // ! Throws exception on error.
+  //   return new Ship
+  //   (
+  //     this,
+  //     request.shipShape,
+  //     request.shipPosition,
+  //     request.shipRotation
+  //   );
+  // }
 
-  private queueAddShipRequest(request: ShipToScene)
+  private queueAddShipRequest(request: EnterFlightResponse)
   {
     this.addRequestQueue.push(request);
   }

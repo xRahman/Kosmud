@@ -1,3 +1,4 @@
+import { Zone } from "../../Client/Game/Zone";
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Body } from "../../Client/Gui/Body";
@@ -13,6 +14,7 @@ export namespace Renderer
     const canvasWidth = Body.getCanvasDiv().getWidth();
     const canvasHeight = Body.getCanvasDiv().getHeight();
 
+    /// TODO: Flight Scénu vyrábět až při zpracování EnterFlight requestu.
     flightScene = createFlightScene(canvasWidth, canvasHeight);
     phaserGame = createPhaserGame(canvasWidth, canvasHeight, flightScene);
   }
@@ -35,6 +37,8 @@ export namespace Renderer
 
     return flightScene;
   }
+
+  export function createFlightScene
 }
 
 // ----------------- Auxiliary Functions ---------------------
@@ -49,12 +53,18 @@ function getPhaserGame(): Phaser.Game
 }
 
 // ! Throws exception on error.
-function createFlightScene(width: number, height: number): FlightScene
+function createFlightScene
+(
+  zone: Zone,
+  width: number,
+  height: number
+)
+: FlightScene
 {
   if (flightScene !== "Doesn't exist")
     throw new Error("Flight scene already exists");
 
-  return new FlightScene(width, height);
+  return new FlightScene(zone, width, height);
 }
 
 // ! Throws exception on error.

@@ -8,6 +8,6 @@
 
 import { Packet } from "../../Shared/Protocol/Packet";
 
-export class EnterGame extends Packet
+export class EnterFlightRequest extends Packet
 {
 }

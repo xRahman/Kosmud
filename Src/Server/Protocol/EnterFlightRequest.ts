@@ -7,15 +7,15 @@
 */
 
 import { Connection } from "../../Server/Net/Connection";
-import * as Shared from "../../Shared/Protocol/EnterGame";
+import * as Shared from "../../Shared/Protocol/EnterFlightRequest";
 
 /// TEST
 import { Zone } from "../../Server/Game/Zone";
 import { Ship } from "../../Server/Game/Ship";
 import { Game } from "../../Server/Game/Game";
-import { ShipToScene } from "../../Shared/Protocol/ShipToScene";
+import { EnterFlightResponse } from "../../Shared/Protocol/EnterFlightResponse";
 
-export class EnterGame extends Shared.EnterGame
+export class EnterFlightRequest extends Shared.EnterFlightRequest
 {
   // ---------------- Public methods --------------------
 
@@ -27,11 +27,11 @@ export class EnterGame extends Shared.EnterGame
     /// TEST
     const fighter = fakeLoadFighter();
 
-    connection.getAccount().setShip(fighter);
     // ! Throws exception on error.
+    connection.getAccount().setShip(fighter);
 
-    // Poslat ShipToScene().
-    sendShipToScene(connection, fighter);
+    // ! Throws exception on error.
+    sendResponse(connection, fighter);
   }
 }
 
@@ -47,16 +47,20 @@ function fakeLoadFighter()
   /// TODO: Nasetovat properties, které se časem budou setovat
   /// editorem a loadovat.
   fighter.setShapeId(Zone.FIGHTER_SHAPE_ID);
+
+  /// Tímhle se ship dostane do zóny.
   Game.addShip(fighter);
 
   return fighter;
 }
 
-function sendShipToScene(connection: Connection, ship: Ship)
+function sendResponse(connection: Connection, ship: Ship)
 {
   const shipState = ship.getInitialState();
 
-  const packet = new ShipToScene
+  /// TODO: Tady by se správně měla posílat zóna
+  /// (respektive to z ní, co player vidí).
+  const packet = new EnterFlightResponse
   (
     shipState.shape,
     shipState.position,

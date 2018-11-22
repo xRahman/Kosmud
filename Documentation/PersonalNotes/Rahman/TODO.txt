@@ -1,6 +1,48 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Vyrobit client verzi Zóny.
+-mark-: Hrabu se v EnterFlightResponse.process().
+
+TODO: Ship na clientu budu muset asi pojmout úplně jinak
+  - měla by být schopna existovat v zóně, i když ještě není ve scéně.
+I když, hmmm.
+  Možná, že ne - flight scéna přece jen asi může existovat už od začátku.
+  Jen je teda otázka, jak vyřeším preload...
+Zjevně se nějak řeší, jeslti je scéna "active", a tedy ji má Phaser automaticky
+  loadnout a pustit, viz:
+  http://www.html5gamedevs.com/topic/36148-phaser-3-scene-phaser-2-state-passing-data-to-init-when-start/
+
+TODO: Loading scene: https://phaser.io/news/2018/05/phaser-3-preloader-tutorial
+
+Otázka je, jestli se má shape posílat v rámci přidávání lodě do scény,
+nebo spíš na klientu vyrobit z dat tilemapy stejně jako na serveru.
+- logičtější by asi bylo ho tam vyrobit, protože data tilemapy musí
+  načíst tak jako tak.
+  - bude tam ale pak chybět kontrola, že to má opravdu takovej shape, jako
+    si myslím (jakej to má na serveru).
+  - na druhou stranu posílat shape pro každou tilesu je blbost, stejně jako
+    posílat ho pro každou loď znova.
+Pak je ještě otázka, co všechno se má poslat s lodí, aby se dala na klientu
+správně zobrazit.
+- ideálně asi poslat celou entitu (její Shared část) a neřešit to...
+- každopádně teď ale asi budu muset poslat shapeId
+
+TODO: Na clientu loadovat tilemapy ve scéně
+- na to asi budu muset dát klientu vědět, jakou scénu má loadovat.
+  (v rámci EnterGame?)
+  - jednotlivé zóny budou instance stejné classy, takže bude opravdu
+    potřeba ta data poslat.
+  - místo ShipToScene pak taky budu posílat UpdateZone, nebo tak něco
+    (a přibalit do toho celou shared Ship, místo abych z ní musel něco
+     vytahovat).
+  Posílat entity zatím nebudu - vezmu to natvrdo ze Zone.preloadData.
+  - ok, to bych měl dělat v rámci preloadu scény.
+TODO: A vyčíst z nich shapy
+TODO: Ve FlightScene.createShip() použít shape loadnutej z tilemapy
+  místo shapu poslaného ze serveru.
+
+
 
 Upřesnění aktuálního cíle:
 ---------------------------
@@ -15,6 +57,13 @@ Upřesnění aktuálního cíle:
 (překážky, tedy obecně objekty ve scéně, na tohle nejsou potřeba)
 
 
+TODO: V rámci EnterFlightRequest.sendResponse() posílat
+  zónu (respektive to z ní, co player vidí. A hlavně seznam
+  toho, co se má preloadnout).
+  - zatím to dělat nebudu a budu číst data zóny natvrdo.
+
+TODO: V Client/EnterFlightRequest.process() creatnout zónu z poslaných dat
+  (zatím ji tam budu natvrdo vyrábět).
 
 
 TODO: Výhledově zdědit Client/Ship ze Shared/Ship
@@ -42,6 +91,9 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
   - to v zásadě můžu udělat i v kódu, prostě udělám 4x new Ship() a nasetuju
     jim properties (efektivně to je totéž jako load entity z disku).
 {tohle si tu nechám, ať vím, kam směřuju}
+
+TODO: Renderer by se možná mohl jmenovat Engine, ať je to stejně jako na
+  serveru.
 
 
 OK, takže TODO:
