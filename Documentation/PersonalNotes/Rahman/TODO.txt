@@ -43,6 +43,16 @@ TODO: Ve FlightScene.createShip() použít shape loadnutej z tilemapy
   místo shapu poslaného ze serveru.
 
 
+Scéna nepotřebuje odkaz na zónu - renderuje se zóna do scény, ne naopak.
+- tzn. asi bych měl nejdřív vyrobit flight scénu a až pak si říct serveru
+  o zónu (tzn. poslat EnterFlightRequest).
+    Díky tomu pak bude existovat flightScene ve chvíli, kdy dostanu scénu
+  a věci v ní, a tudíž jim můžu dát scénu jako parametru.
+
+Takže TODO:
+- posílat EnterFlightRequest až poté, co je vyrobená (ne preloadnutá)
+  flight scéna.
+
 
 Upřesnění aktuálního cíle:
 ---------------------------
