@@ -46,7 +46,9 @@ export class ShipGraphics
       /// i na serveru - je to ostatně stejná tilemapa). Teď není Client/Ship
       /// zděděná ze Shared/Ship, takže to není tak jednoduchý.
       BASIC_SHIPS_TILEMAP_ID,
-      BASIC_SHIPS_TILEMAP_DATA_ID
+      BASIC_SHIPS_TILEMAP_DATA_ID,
+      /// TODO: Passovat samozřejmě JSON object s daty tilemapy.
+      {}
     );
 
     // ! Throws exception on error.

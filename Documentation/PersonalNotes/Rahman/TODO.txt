@@ -1,6 +1,12 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+
+Začnu tím, že budu mít dvě scény a flight scénu preloadnu on-demand.
+- FlightScene nesmí vyžadovat zónu.
+
+-----
+
 IDEA: U vehiclů je otázka, jak se budou savovat - když bude například
   pozice jen ve physicsBody, tak dokud loď body nemá, tak nemá jak pozici
   uložit. Navíc asi tak jako tak nebudu chtít savovat vnitřek b2Body.

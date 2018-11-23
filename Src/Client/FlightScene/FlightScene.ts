@@ -25,12 +25,7 @@ export class FlightScene extends Scene
 
   private readonly addRequestQueue = new Array<EnterFlightResponse>();
 
-  constructor
-  (
-    private zone: Zone,
-    width: number,
-    height: number
-  )
+  constructor(width: number, height: number)
   {
     super(FLIGHT_SCENE, width, height);
   }
@@ -69,7 +64,7 @@ export class FlightScene extends Scene
 
     this.preloadAnimatedTilesPlugin();
 
-    FlightSceneContents.preload(this, this.zone);
+    // FlightSceneContents.preload(this, this.zone);
   }
 
   // This method is run by Phaser.
@@ -86,14 +81,14 @@ export class FlightScene extends Scene
     /// TEST
     // this.contents.create(this);
 
-    try
-    {
-      this.createBufferedShips(this.contents);
-    }
-    catch (error)
-    {
-      REPORT(error, "Failed to add ships to flight scene");
-    }
+    // try
+    // {
+    //   this.createBufferedShips(this.contents);
+    // }
+    // catch (error)
+    // {
+    //   REPORT(error, "Failed to add ships to flight scene");
+    // }
   }
 
   // This method is run periodically by Phaser.
@@ -151,17 +146,17 @@ export class FlightScene extends Scene
   }
 
   // ! Throws exception on error.
-  private createBufferedShips(contents: FlightSceneContents)
-  {
-    for (const request of this.addRequestQueue)
-    {
-      contents.addShip
-      (
-        // ! Throws exception on error.
-        this.createShip(request)
-      );
-    }
-  }
+  // private createBufferedShips(contents: FlightSceneContents)
+  // {
+  //   for (const request of this.addRequestQueue)
+  //   {
+  //     contents.addShip
+  //     (
+  //       // ! Throws exception on error.
+  //       this.createShip(request)
+  //     );
+  //   }
+  // }
 
   private preloadAnimatedTilesPlugin()
   {

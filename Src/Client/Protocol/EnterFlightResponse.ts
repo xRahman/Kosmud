@@ -37,7 +37,8 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
     zone.addShip(this.createShip());
 
-    const flightScene = Renderer.createFlightScene(zone);
+    /// TODO: Znovu zprovoznit.
+    // const flightScene = Renderer.createFlightScene(zone);
   }
 
   // ---------------- Private methods -------------------

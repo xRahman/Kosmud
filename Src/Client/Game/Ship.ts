@@ -1,3 +1,4 @@
+import { Physics } from "../../Shared/Physics/Physics";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
@@ -28,7 +29,10 @@ export class Ship extends Shared.Ship
     super();
 
     // ! Throws exception on error.
-    this.graphics = new ShipGraphics(scene, shape);
+    // this.graphics = new ShipGraphics(scene, shape);
+    /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
+    const tmp: any = {};
+    this.graphics = new ShipGraphics(scene, tmp);
     this.sound = new ShipSound(scene);
 
     // ! Throws exception on error.
@@ -51,21 +55,21 @@ export class Ship extends Shared.Ship
     /// V this.physicsBody je 'initialPosition' (aby bylo jasný,
     /// že to je aktuální jen ze začátku), to bych asi úplně setovat neměl...
     /// (měl bych setovat x a y v physicsbody...)
-    this.position.set(position);
+    // this.position.set(position);
 
     this.graphics.setPosition(position);
   }
 
   public setRotation(rotation: number)
   {
-    this.rotation = rotation;
+    // this.rotation = rotation;
 
     this.graphics.setRotation(rotation);
   }
 
   public setVectors(vectors: Ship.Vectors)
   {
-    this.velocity.set(vectors.shipVelocity);
+    // this.velocity.set(vectors.shipVelocity);
     this.desiredVelocity.set(vectors.desiredVelocity);
     this.steeringForce.set(vectors.steeringForce);
     this.desiredSteeringForce.set(vectors.desiredSteeringForce);
@@ -78,7 +82,8 @@ export class Ship extends Shared.Ship
       vectors.desiredLeftwardSteeringForce
     );
 
-    this.graphics.drawVectors(this.vectors);
+    /// TODO: Znovu zprovoznit.
+    // this.graphics.drawVectors(this.vectors);
   }
 
   public updateExhausts

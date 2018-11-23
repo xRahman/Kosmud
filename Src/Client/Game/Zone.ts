@@ -22,8 +22,8 @@ export class Zone extends Shared.Zone
 
   public async load()
   {
-    preloadTextures(Shared.Zone.preloadData.textures);
-    preloadAtlases(Shared.Zone.preloadData.atlases);
+    // preloadTextures(Shared.Zone.preloadData.textures);
+    // preloadAtlases(Shared.Zone.preloadData.atlases);
 
     await this.loadTilemaps(Shared.Zone.preloadData.tilemaps);
 
@@ -41,10 +41,16 @@ export class Zone extends Shared.Zone
     // and client root is '/Client'. And we also need to make sure
     // that the part starts with './' on the sever (FileSystem
     // checks that to prevent traversing out of project directory).
-    const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
-    const jsonData = await loadTilemapJsonData(tilemapJsonPath);
+    // const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
+    // const jsonData = await loadTilemapJsonData(tilemapJsonPath);
 
-    return new Tilemap(config.tilemapName, jsonData);
+    // return new Tilemap(config.tilemapName, jsonData);
+    return new Tilemap
+    (
+      config.tilemapName,
+      /// TODO: Předávat samozřejmě něco jinýho.
+      {}
+    );
   }
 }
 

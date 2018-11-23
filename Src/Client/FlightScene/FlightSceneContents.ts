@@ -28,13 +28,13 @@ export class FlightSceneContents extends SceneContents
     );
   }
 
-  public static preload(scene: FlightScene, zone: Zone)
-  {
-    Background.preload(scene, zone);
-    ShipGraphics.preload(scene, zone);
-    ShipSound.preload(scene);
-    Waypoint.preload(scene);
-  }
+  // public static preload(scene: FlightScene, zone: Zone)
+  // {
+  //   Background.preload(scene, zone);
+  //   ShipGraphics.preload(scene, zone);
+  //   ShipSound.preload(scene);
+  //   Waypoint.preload(scene);
+  // }
 
   // ---------------- Public methods --------------------
 

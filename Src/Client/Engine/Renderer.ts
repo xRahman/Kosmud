@@ -51,18 +51,14 @@ function getPhaserGame(): Phaser.Game
 }
 
 // ! Throws exception on error.
-function createFlightScene
-(
-  zone: Zone,
-  width: number,
-  height: number
-)
-: FlightScene
+function createFlightScene(width: number, height: number): FlightScene
 {
   if (flightScene !== "Doesn't exist")
+  {
     throw new Error("Flight scene already exists");
+  }
 
-  return new FlightScene(zone, width, height);
+  return new FlightScene(width, height);
 }
 
 // ! Throws exception on error.
