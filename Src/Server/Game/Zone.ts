@@ -17,7 +17,7 @@ import * as Shared from "../../Shared/Game/Zone";
 export class Zone extends Shared.Zone
 {
   // ~ Overrides Shared.Zone.ships.
-  //  (We need to override to use Server/Ship instead of Client/Ship).
+  //  (We need to override to use Server/Ship instead of Shared/Ship).
   protected readonly ships = new Set<Ship>();
 
   // ---------------- Public methods --------------------

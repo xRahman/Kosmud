@@ -5,7 +5,6 @@
 */
 
 import { Zone } from "../../Server/Game/Zone";
-import { Connection } from "../../Server/Net/Connection";
 import { Connections } from "../../Server/Net/Connections";
 
 /// TEST
@@ -13,6 +12,8 @@ import { Ship } from "../../Server/Game/Ship";
 
 export namespace Game
 {
+  const zones: Array<Zone> = [];
+
   /// TEST
   export function addShip(ship: Ship)
   {
@@ -24,8 +25,6 @@ export namespace Game
   {
     zones.push(new Zone());
   }
-
-  const zones: Array<Zone> = [];
 
   export function tick()
   {

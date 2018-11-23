@@ -34,6 +34,7 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     // Renderer.getFlightScene().addShip(this);
 
     /// TEST:
+    /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
     zone.addShip(this.createShip());
 
     const flightScene = Renderer.createFlightScene(zone);
@@ -44,16 +45,27 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   // ! Throws exception on error.
   private createShip()
   {
-    return new Ship
-    (
-      /// Problém: Ship potřebuje scénu (aby si mohla vytvořit grafiku).
-      ///   Já ji ale chci vytvořit a přidat do zóny ještě předtím, než
-      ///   vytvořím scénu.
-      scene,
-      this.shipShape,
-      this.shipPosition,
-      this.shipRotation
-    );
+    const flightScene = Renderer.getFlightScene();
+    const ship = new Ship(flightScene);
+
+    ship.setPosition(this.shipPosition);
+    ship.setRotation(this.shipRotation);
+
+    /// TEST
+    ship.setShapeId(Zone.FIGHTER_SHAPE_ID);
+
+    return ship;
+
+    // return new Ship
+    // (
+    //   /// Problém: Ship potřebuje scénu (aby si mohla vytvořit grafiku).
+    //   ///   Já ji ale chci vytvořit a přidat do zóny ještě předtím, než
+    //   ///   vytvořím scénu.
+    //   scene,
+    //   this.shipShape,
+    //   this.shipPosition,
+    //   this.shipRotation
+    // );
   }
 }
 

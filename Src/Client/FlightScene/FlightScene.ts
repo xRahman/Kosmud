@@ -1,4 +1,5 @@
-import { EnterFlightResponse } from "../../Client/Protocol/EnterFlightResponse";
+import { EnterFlightResponse } from
+  "../../Client/Protocol/EnterFlightResponse";
 import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }

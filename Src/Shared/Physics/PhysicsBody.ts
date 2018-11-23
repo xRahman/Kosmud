@@ -5,9 +5,9 @@
 */
 
 import { validateNumber, validateVector } from "../../Shared/Utils/Math";
-// import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
+import { Vehicle } from "../../Shared/Physics/Vehicle";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
@@ -15,62 +15,72 @@ import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
 
 export class PhysicsBody
 {
-  private readonly velocity = 0;
-  private readonly body: b2Body;
+  public shapeId: string | "Not set" = "Not set";
+  /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
+  /// bejt mnohem větší všechny thrusty, torques a tak a vektory
+  /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to
+  /// příjde).
+  public density = 0.00001;
+  public friction = 0.5;       // Value: 0 to 1.
+  // 0 - almost no bouncing, 1 - maximum bouncing.
+  public restitution = 1;      // Value: 0 to 1.
+
+  /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
+  ///   Property 'initialPosition' se totiž používá jen při vkládání
+  /// do physics worldu - getPosition() potom vytahuje pozici s physicsBody.
+  ///   Možná to bude chtít custom savování/loadování, protože při savu
+  /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
+  /// savnout. A při loadu se pak zas musí body vytvořit.
+  public readonly initialPosition = { x: 0, y: 0 };
+
+  // private readonly velocity = 0;
+  /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
+  private body: b2Body | "Doesn't exist" = "Doesn't exist";
 
   // ! Throws exception on error.
-  constructor(world: b2World, config: PhysicsBody.Config)
+  constructor
+  (
+    /// TODO: Tohle nesavovat.
+    private readonly vehicle: Vehicle
+  )
   {
-    const bodyDefinition = new b2BodyDef();
-
-    bodyDefinition.position.Set(config.position.x, config.position.y);
-    bodyDefinition.type = b2BodyType.b2_dynamicBody;
-
-    this.body = world.CreateBody(bodyDefinition);
-
-    for (const polygon of config.shape)
-    {
-      const fixtureDefinition = createFixtureDefinition(polygon, config);
-
-      this.body.CreateFixture(fixtureDefinition);
-    }
   }
 
   public getPosition()
   {
-    return validateVector(this.body.GetPosition());
+    return validateVector(this.getBody().GetPosition());
   }
 
   public getX()
   {
-    return validateNumber(this.body.GetPosition().x);
+    return validateNumber(this.getBody().GetPosition().x);
   }
 
   public getY()
   {
-    return validateNumber(this.body.GetPosition().y);
+    return validateNumber(this.getBody().GetPosition().y);
   }
 
   public getRotation()
   {
-    return validateNumber(this.body.GetAngle());
+    return validateNumber(this.getBody().GetAngle());
   }
 
   public getAngularVelocity()
   {
-    return validateNumber(this.body.GetAngularVelocity());
+    return validateNumber(this.getBody().GetAngularVelocity());
   }
 
   // Inertia is resistance to torque.
   public getInertia()
   {
-    return validateNumber(this.body.GetInertia());
+    return validateNumber(this.getBody().GetInertia());
   }
 
   // Mass is resistance to linear force.
   public getMass()
   {
-    return validateNumber(this.body.GetMass());
+    return validateNumber(this.getBody().GetMass());
   }
 
   // public setVelocity(velocity: number)
@@ -82,22 +92,22 @@ export class PhysicsBody
 
   public setAngularVelocity(angularVelocity: number)
   {
-    this.body.SetAngularVelocity(validateNumber(angularVelocity));
+    this.getBody().SetAngularVelocity(validateNumber(angularVelocity));
   }
 
   public applyForce(force: Vector)
   {
-    this.body.ApplyForceToCenter(validateVector(force));
+    this.getBody().ApplyForceToCenter(validateVector(force));
   }
 
   public applyTorque(torque: number)
   {
-    this.body.ApplyTorque(validateNumber(torque));
+    this.getBody().ApplyTorque(validateNumber(torque));
   }
 
   public getVelocity(): Vector
   {
-    return validateVector(this.body.GetLinearVelocity());
+    return validateVector(this.getBody().GetLinearVelocity());
   }
 
   // private getVelocityVector(velocity: number)
@@ -113,7 +123,7 @@ export class PhysicsBody
 
   // public updateVelocityDirection()
   // {
-  //   this.body.SetLinearVelocity(this.getVelocity());
+  //   this.getBody().SetLinearVelocity(this.getVelocity());
   // }
 
   public getShape()
@@ -122,7 +132,7 @@ export class PhysicsBody
 
     for
     (
-      let fixture = this.body.GetFixtureList();
+      let fixture = this.getBody().GetFixtureList();
       fixture !== null;
       fixture = fixture.GetNext()
     )
@@ -152,54 +162,72 @@ export class PhysicsBody
 
     return shape;
   }
-}
 
-function createFixtureDefinition
-(
-  polygon:
-  Physics.Polygon,
-  config: PhysicsBody.Config
-)
-: b2FixtureDef
-{
-  const friction =
-    (config.friction !== undefined) ? config.friction : 0.5;
-  const restitution =
-    (config.restitution !== undefined) ? config.restitution : 1;
-
-  const shape = new b2PolygonShape();
-
-  shape.Set(polygon);
-
-  const fixtureDefinition = new b2FixtureDef();
-
-  fixtureDefinition.shape = shape;
-
-  // density * area = mass
-  fixtureDefinition.density = config.density;
-  // 0 - no friction, 1 - maximum friction
-  fixtureDefinition.friction = friction;
-  // 0 - almost no bouncing, 1 - maximum bouncing.
-  fixtureDefinition.restitution = restitution;
-
-  return fixtureDefinition;
-}
-
-// ------------------ Type Declarations ----------------------
-
-export namespace PhysicsBody
-{
-  export interface Config
+  // ! Throws exception on error.
+  public addToPhysicsWorld(world: b2World, shape: Physics.Shape)
   {
-    shape: Physics.Shape;
-    position: { x: number; y: number };
-    /// Zavžuju hodit shapeId mimo config (ve Vehicle), aby mohlo být
-    /// abstraktní. Ovšem možná by spíš měly bejt všechny physics properties
-    /// v rootu vehiclu a config by se z nich měl vyrábět, jak jsem to měl.
-    // shapeId?: string;
-    density: number;                     // Value: 0 to 1.
-    friction: number;                    // Value: 0 to 1.
+    if (this.body !== "Doesn't exist")
+    {
+      throw new Error(`Vehicle ${this.vehicle.debugId}`
+        + ` is already added to a physics world`);
+    }
+
+    // ! Throws exception on error.
+    this.createBody(world, shape);
+  }
+
+  // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private getBody()
+  {
+    if (this.body === "Doesn't exist")
+    {
+      throw new Error(`Vehicle ${this.vehicle.debugId} isn't`
+        + ` added to a physics world yet`);
+    }
+
+    return this.body;
+  }
+
+  private createBody(world: b2World, shape: Physics.Shape)
+  {
+    const bodyDefinition = new b2BodyDef();
+
+    bodyDefinition.position.Set
+    (
+      this.initialPosition.x,
+      this.initialPosition.y
+    );
+    bodyDefinition.type = b2BodyType.b2_dynamicBody;
+
+    this.body = world.CreateBody(bodyDefinition);
+
+    for (const polygon of shape)
+    {
+      const fixtureDefinition = this.createFixtureDefinition(polygon);
+
+      this.body.CreateFixture(fixtureDefinition);
+    }
+  }
+
+  private createFixtureDefinition(polygon: Physics.Polygon): b2FixtureDef
+  {
+    const shape = new b2PolygonShape();
+
+    shape.Set(polygon);
+
+    const fixtureDefinition = new b2FixtureDef();
+
+    fixtureDefinition.shape = shape;
+
+    // density * area = mass
+    fixtureDefinition.density = this.density;
+    // 0 - no friction, 1 - maximum friction
+    fixtureDefinition.friction = this.friction;
     // 0 - almost no bouncing, 1 - maximum bouncing.
-    restitution: number;                 // Value: 0 to 1.
+    fixtureDefinition.restitution = this.restitution;
+
+    return fixtureDefinition;
   }
 }

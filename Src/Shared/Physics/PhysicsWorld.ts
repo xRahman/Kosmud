@@ -16,12 +16,12 @@ export namespace PhysicsWorld
 
   const world = new b2World(GRAVITY);
 
-  // ! Throws exception on error.
-  export function createBody(config: PhysicsBody.Config): PhysicsBody
-  {
-    // ! Throws exception on error.
-    return new PhysicsBody(world, config);
-  }
+  // // ! Throws exception on error.
+  // export function createBody(config: PhysicsBody.Config): PhysicsBody
+  // {
+  //   // ! Throws exception on error.
+  //   return new PhysicsBody(world, config);
+  // }
 
   export function tick(miliseconds: number)
   {

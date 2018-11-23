@@ -7,7 +7,7 @@ import { Physics } from "../../Shared/Physics/Physics";
 export class Tilemap
 {
   // private data: Tilemap.Data | "Not loaded" = "Not loaded";
-  private data: Tilemap.Data;
+  private readonly data: Tilemap.Data;
 
   // ! Throws exception on error.
   constructor

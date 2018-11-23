@@ -5,11 +5,13 @@
 */
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
-import { GameEntity } from "../../Shared/Game/GameEntity";
 import { Vector } from "../../Shared/Physics/Vector";
-import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Engine } from "../../Shared/Engine/Engine";
+import { GameEntity } from "../../Shared/Game/GameEntity";
+
+// 3rd party modules.
+import { b2World } from "../../Shared/Box2D/Box2D";
 
 export abstract class Vehicle extends GameEntity
 {
@@ -26,27 +28,6 @@ export abstract class Vehicle extends GameEntity
   protected readonly STOPPING_DISTANCE = 20;
   protected readonly STOPPING_SPEED = this.MAX_SPEED / 100;
 
-/// Pozn.: Fyzikální properties nejsou sloučené do objektu, protože by
-/// se pak nedaly po jedné přetížit v potomcích. Až Vehicle bude Entity
-/// class, tak bude dědičnost fungovat i pro vnořené objekty a budu to
-/// tudíž moct sloučit (dávalo by to smysl, protože při vytváření
-/// PhysicsBody se to stejně předává celé najednou).
-///   Nebo je tu ještě možnost do konstruktoru PhysicsBody passnout prostě
-/// 'this' - interfacu to vyhovovat bude.
-  /// Když dám shapeId zvlášť, tak může bejt abstract, čímž vynutím
-  /// inicializaci v potomcích (a nebudu tudíž muset ošetřovat, jestli
-  /// je inicializované.
-  protected shapeId: string | "Not set" = "Not set";
-  protected readonly position = { x: 0, y: 0 };
-  /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
-  /// bejt mnohem větší všechny thrusty, torques a tak a vektory
-  /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to
-  /// příjde).
-  protected readonly density = 0.00001;
-  protected readonly friction = 0.5;       // Value: 0 to 1.
-  // 0 - almost no bouncing, 1 - maximum bouncing.
-  protected readonly restitution = 1;      // Value: 0 to 1.
-
   protected readonly waypoint = new Vector();
   protected readonly desiredVelocity = new Vector();
   protected readonly steeringForce = new Vector();
@@ -59,15 +40,15 @@ export abstract class Vehicle extends GameEntity
   protected leftwardThrust = 0;
   protected torque = 0;
 
-  private physicsBody: PhysicsBody | "Doesn't exist" = "Doesn't exist";
+  private readonly physicsBody = new PhysicsBody(this);
 
   // ---------------- Public methods --------------------
 
-  public getPosition() { return this.getPhysicsBody().getPosition(); }
+  public getPosition() { return this.physicsBody.getPosition(); }
 
-  public getX() { return this.getPhysicsBody().getX(); }
-  public getY() { return this.getPhysicsBody().getY(); }
-  public getRotation() { return this.getPhysicsBody().getRotation(); }
+  public getX() { return this.physicsBody.getX(); }
+  public getY() { return this.physicsBody.getY(); }
+  public getRotation() { return this.physicsBody.getRotation(); }
 
   public getDesiredVelocity() { return this.desiredVelocity; }
   public getSteeringForce() { return this.steeringForce; }
@@ -80,7 +61,7 @@ export abstract class Vehicle extends GameEntity
   {
     return this.desiredLeftwardSteeringForce;
   }
-  public getVelocity() { return this.getPhysicsBody().getVelocity(); }
+  public getVelocity() { return this.physicsBody.getVelocity(); }
 
   public getForwardThrustRatio()
   {
@@ -108,41 +89,43 @@ export abstract class Vehicle extends GameEntity
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
   public setAngularVelocity(angularVelocity: number)
   {
-    this.getPhysicsBody().setAngularVelocity(angularVelocity);
+    this.physicsBody.setAngularVelocity(angularVelocity);
   }
 
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
   // public setVelocity(velocity: number)
   // {
-  //   this.getPhysicsBody().setVelocity(velocity);
+  //   this.physicsBody.setVelocity(velocity);
   // }
 
   /// TODO: Tohle časem zrušit (mělo by se používat jen applyForce()).
   // public updateVelocityDirection()
   // {
-  //   this.getPhysicsBody().updateVelocityDirection();
+  //   this.physicsBody.updateVelocityDirection();
   // }
 
   // ! Throws exception on error.
   public setShapeId(shapeId: string)
   {
-    if (this.shapeId !== "Not set")
+    if (this.physicsBody.shapeId !== "Not set")
     {
-      throw new Error(`Shape id is alredy set to ${this.debugId}`);
+      throw new Error(`${this.debugId} already has a shape id`);
     }
 
-    this.shapeId = shapeId;
+    this.physicsBody.shapeId = shapeId;
   }
 
   public getShape()
   {
-    return this.getPhysicsBody().getShape();
+    return this.physicsBody.getShape();
   }
 
   // ! Throws exception on error.
-  public addToPhysicsWorld()
+  public addToPhysicsWorld(world: b2World)
   {
-    if (this.shapeId === "Not set")
+    const shapeId = this.physicsBody.shapeId;
+
+    if (shapeId === "Not set")
     {
       throw new Error(`Failed to add vehicle '${this.debugId}'`
         + ` to physics world because it doesn't have a 'shapeId'`
@@ -151,20 +134,12 @@ export abstract class Vehicle extends GameEntity
     }
 
     // ! Throws exception on error.
-    const shape = this.getZone().getPhysicsShape(this.shapeId);
+    const shape = this.getZone().getPhysicsShape(shapeId);
 
-    const physicsBodyConfig: PhysicsBody.Config =
-    {
-      shape,
-      position: this.position,
-      density: this.density,
-      friction: this.friction,
-      restitution: this.restitution
-    };
+    this.physicsBody.addToPhysicsWorld(world, shape);
 
-    // ! Throws exception on error.
-    this.physicsBody = PhysicsWorld.createBody(physicsBodyConfig);
-
+    // Set waypoint to the new position so the vehicle doesn't
+    // try to go back to where it was.
     this.waypoint.set(this.physicsBody.getPosition());
   }
 
@@ -175,8 +150,8 @@ export abstract class Vehicle extends GameEntity
 
     // this.seek();
 
-    this.getPhysicsBody().applyForce(this.steeringForce);
-    this.getPhysicsBody().applyTorque(this.torque);
+    this.physicsBody.applyForce(this.steeringForce);
+    this.physicsBody.applyTorque(this.torque);
   }
 
   // --------------- Protected methods ------------------
@@ -186,8 +161,8 @@ export abstract class Vehicle extends GameEntity
   {
     const vehiclePosition = this.getPosition();
     const targetPosition = this.waypoint;
-    const oldVelocity = this.getPhysicsBody().getVelocity();
-    const vehicleRotation = this.getPhysicsBody().getRotation();
+    const oldVelocity = this.physicsBody.getVelocity();
+    const vehicleRotation = this.physicsBody.getRotation();
 
     const targetVector = Vector.v1MinusV2(targetPosition, vehiclePosition);
     const distance = targetVector.length();
@@ -265,7 +240,7 @@ export abstract class Vehicle extends GameEntity
   // ! Throws exception on error.
   protected seek()
   {
-    const vehicleVelocity = this.getPhysicsBody().getVelocity();
+    const vehicleVelocity = this.physicsBody.getVelocity();
     const vehiclePosition = this.getPosition();
     const targetPosition = this.waypoint;
     const vehicleRotation = this.getRotation();
@@ -292,19 +267,6 @@ export abstract class Vehicle extends GameEntity
   }
 
   // ---------------- Private methods -------------------
-
-  // ! Throws exception on error.
-  private getPhysicsBody(): PhysicsBody
-  {
-    if (this.physicsBody === "Doesn't exist")
-    {
-      throw new Error(`Physics body of vehicle '${this.debugId}'`
-        + ` doesn't exist yet. Make sure you call 'addToPhysicsWorld()`
-        + ` before you do anything with the vehicle`);
-    }
-
-    return this.physicsBody;
-  }
 
 // private computeArriveDesiredVelocity
 // (
@@ -490,7 +452,7 @@ export abstract class Vehicle extends GameEntity
     desiredRotation: number
   )
   {
-    const oldAngularVelocity = this.getPhysicsBody().getAngularVelocity();
+    const oldAngularVelocity = this.physicsBody.getAngularVelocity();
 
     if (currentRotation < 0 || currentRotation > Math.PI * 2)
       throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
@@ -498,7 +460,7 @@ export abstract class Vehicle extends GameEntity
     if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
       throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
 
-    const inertia = this.getPhysicsBody().getInertia();
+    const inertia = this.physicsBody.getInertia();
 
     const desiredAngularVelocity = computeDesiredAngularVelocity
     (
@@ -523,7 +485,7 @@ export abstract class Vehicle extends GameEntity
 
   private computeBrakingDistance(velocity: Vector)
   {
-    const mass = this.getPhysicsBody().getMass();
+    const mass = this.physicsBody.getMass();
     const v = velocity.length();
 
     // d = (1/2 * mass * v^2) / Force;

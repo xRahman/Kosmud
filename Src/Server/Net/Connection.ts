@@ -13,7 +13,8 @@ import { Classes } from "../../Shared/Class/Classes";
 import { Connections } from "../../Server/Net/Connections";
 import { SystemMessage } from "../../Server/Protocol/SystemMessage";
 import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
-import { EnterFlightResponse } from "../../Shared/Protocol/EnterFlightResponse";
+import { EnterFlightResponse } from
+  "../../Shared/Protocol/EnterFlightResponse";
 import { KeyboardInput } from "../../Server/Protocol/KeyboardInput";
 import { MouseInput } from "../../Server/Protocol/MouseInput";
 import { SetWaypoint } from "../../Server/Protocol/SetWaypoint";

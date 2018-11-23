@@ -1,6 +1,4 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { Physics } from "../../Shared/Physics/Physics";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 import { ShipSound } from "../../Client/FlightScene/ShipSound";
@@ -12,24 +10,20 @@ export class Ship extends Shared.Ship
   private readonly exhausts: ShipExhausts;
   private readonly graphics: ShipGraphics;
   private readonly sound: ShipSound;
-  private readonly vectors: Ship.Vectors =
-  {
-    shipVelocity: new Vector(),
-    desiredVelocity: new Vector(),
-    steeringForce: new Vector(),
-    desiredSteeringForce: new Vector(),
-    desiredForwardSteeringForce: new Vector(),
-    desiredLeftwardSteeringForce: new Vector()
-  };
+
+  /// Tohle je zděděný z Vehicle.
+  // private readonly vectors: Ship.Vectors =
+  // {
+  //   shipVelocity: new Vector(),
+  //   desiredVelocity: new Vector(),
+  //   steeringForce: new Vector(),
+  //   desiredSteeringForce: new Vector(),
+  //   desiredForwardSteeringForce: new Vector(),
+  //   desiredLeftwardSteeringForce: new Vector()
+  // };
 
   // ! Throws exception on error.
-  constructor
-  (
-    private readonly scene: FlightScene,
-    private readonly shape: Physics.Shape,
-    private readonly position: Vector,
-    private rotation: number
-  )
+  constructor(private readonly scene: FlightScene)
   {
     super();
 
@@ -40,8 +34,9 @@ export class Ship extends Shared.Ship
     // ! Throws exception on error.
     this.exhausts = new ShipExhausts(this.graphics, this.sound);
 
-    this.setPosition(position);
-    this.setRotation(rotation);
+    /// Tohle jsem přesunul do EnterFlightResponse.createShip().
+    // this.setPosition(position);
+    // this.setRotation(rotation);
   }
 
   // ---------------- Public methods --------------------
@@ -53,14 +48,12 @@ export class Ship extends Shared.Ship
 
   public setPosition(position: Vector)
   {
+    /// V this.physicsBody je 'initialPosition' (aby bylo jasný,
+    /// že to je aktuální jen ze začátku), to bych asi úplně setovat neměl...
+    /// (měl bych setovat x a y v physicsbody...)
     this.position.set(position);
 
     this.graphics.setPosition(position);
-  }
-
-  public getPosition(): Vector
-  {
-    return this.position;
   }
 
   public setRotation(rotation: number)
@@ -70,22 +63,17 @@ export class Ship extends Shared.Ship
     this.graphics.setRotation(rotation);
   }
 
-  public getRotation(): number
-  {
-    return this.rotation;
-  }
-
   public setVectors(vectors: Ship.Vectors)
   {
-    this.vectors.shipVelocity.set(vectors.shipVelocity);
-    this.vectors.desiredVelocity.set(vectors.desiredVelocity);
-    this.vectors.steeringForce.set(vectors.steeringForce);
-    this.vectors.desiredSteeringForce.set(vectors.desiredSteeringForce);
-    this.vectors.desiredForwardSteeringForce.set
+    this.velocity.set(vectors.shipVelocity);
+    this.desiredVelocity.set(vectors.desiredVelocity);
+    this.steeringForce.set(vectors.steeringForce);
+    this.desiredSteeringForce.set(vectors.desiredSteeringForce);
+    this.desiredForwardSteeringForce.set
     (
       vectors.desiredForwardSteeringForce
     );
-    this.vectors.desiredLeftwardSteeringForce.set
+    this.desiredLeftwardSteeringForce.set
     (
       vectors.desiredLeftwardSteeringForce
     );

@@ -37,8 +37,6 @@ export namespace Renderer
 
     return flightScene;
   }
-
-  export function createFlightScene
 }
 
 // ----------------- Auxiliary Functions ---------------------

@@ -13,7 +13,8 @@ import * as Shared from "../../Shared/Protocol/EnterFlightRequest";
 import { Zone } from "../../Server/Game/Zone";
 import { Ship } from "../../Server/Game/Ship";
 import { Game } from "../../Server/Game/Game";
-import { EnterFlightResponse } from "../../Shared/Protocol/EnterFlightResponse";
+import { EnterFlightResponse } from
+  "../../Shared/Protocol/EnterFlightResponse";
 
 export class EnterFlightRequest extends Shared.EnterFlightRequest
 {

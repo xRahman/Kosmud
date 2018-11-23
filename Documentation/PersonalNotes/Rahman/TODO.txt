@@ -1,6 +1,14 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+IDEA: U vehiclů je otázka, jak se budou savovat - když bude například
+  pozice jen ve physicsBody, tak dokud loď body nemá, tak nemá jak pozici
+  uložit. Navíc asi tak jako tak nebudu chtít savovat vnitřek b2Body.
+- mohl bych to udělat tak, že vehicle vždycky bude mít PhysicsBody
+  (což je moje classa) a v tom se budou savovat údaje jako pozice a podobně.
+  - ha, tzn. by tam taky rovnou mohly být konstanty jako restitution a tak.
+  PhysicsBody by pak mohlo a nemuselo mít b2Body.
+
 TODO: Vyrobit client verzi Zóny.
 -mark-: Hrabu se v EnterFlightResponse.process().
 
@@ -52,6 +60,12 @@ Scéna nepotřebuje odkaz na zónu - renderuje se zóna do scény, ne naopak.
 Takže TODO:
 - posílat EnterFlightRequest až poté, co je vyrobená (ne preloadnutá)
   flight scéna.
+
+TODO: Server/Zone.getSceneUpdate() by se asi mohlo jemnovat prostě
+  getUpdate().
+A ScenUpdate (packet) by se mohl jmenovat ZoneUpdate.
+(updatuje se stav zóny, kterej si pak klient promítne do scény).
+
 
 
 Upřesnění aktuálního cíle:
