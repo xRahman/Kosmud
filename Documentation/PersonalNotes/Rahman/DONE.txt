@@ -1,3 +1,6 @@
+TODO: Přejmenovat ShipGraphics na ShipModel
+[done]
+
 TODO: Startnout flightZónu
   (nejspíš v EnterFlightResponse.process()).
 [done]

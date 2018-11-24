@@ -18,7 +18,7 @@ const BASIC_SHIPS_TILEMAP_DATA_ID = "Basic ships Tilemap data";
 const BASIC_FIGHTER_TILEMAP_LAYER = "Basic fighter";
 const HULL_TILEMAP_OBJECT_NAME = "Hull";
 
-export class ShipGraphics
+export class ShipModel
 {
   private readonly container: Container;
   private readonly basicShipsTilemap: Tilemap;

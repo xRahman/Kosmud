@@ -2,7 +2,7 @@ import { lowerBound } from "../../Shared/Utils/Math";
 import { Sound } from "../../Client/Engine/Sound";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { ShipSound } from "../../Client/FlightScene/ShipSound";
-import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
+import { ShipModel } from "../../Client/FlightScene/ShipModel";
 
 const FRONT_VOLUME = 0.1;
 const SIDE_VOLUME = 0.04;
@@ -33,7 +33,7 @@ export class ShipExhausts
   // ! Throws exception on error.
   constructor
   (
-    graphics: ShipGraphics,
+    graphics: ShipModel,
     sound: ShipSound
   )
   {

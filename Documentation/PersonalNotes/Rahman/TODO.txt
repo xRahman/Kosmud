@@ -16,8 +16,7 @@ TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
     - V tom případě by se to ale asi nemělo jmenovat ShipGraphics. Jak?
       - ShipMedia? ShipMultimedia? ShipAudiovisuals?
       ShipModel, ha!
-TODO: Přejmenovat ShipGraphics na ShipModel
-TODO: Hodit do něj ShipAudio.
+TODO: Hodit ShipAudio do ShipModel. 
 
 
 TODO: Vyrábět v zóně seznam shapů
