@@ -1,7 +1,7 @@
 import { lowerBound } from "../../Shared/Utils/Math";
 import { Sound } from "../../Client/Engine/Sound";
 import { Sprite } from "../../Client/Engine/Sprite";
-import { ShipSound } from "../../Client/FlightScene/ShipSound";
+import { ShipAudio } from "../../Client/FlightScene/ShipAudio";
 import { ShipModel } from "../../Client/FlightScene/ShipModel";
 
 const FRONT_VOLUME = 0.1;
@@ -34,7 +34,7 @@ export class ShipExhausts
   constructor
   (
     graphics: ShipModel,
-    sound: ShipSound
+    sound: ShipAudio
   )
   {
     const animationName = "Exhaust yellow rectangular Animation";

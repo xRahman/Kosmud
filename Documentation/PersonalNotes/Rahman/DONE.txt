@@ -1,3 +1,6 @@
+TODO: Hmm, ShipAudio by asi bylo lepší než ShipSound.
+[done]
+
 TODO: Přejmenovat ShipGraphics na ShipModel
 [done]
 

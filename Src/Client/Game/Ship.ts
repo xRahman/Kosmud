@@ -1,7 +1,7 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/FlightScene/ShipModel";
-import { ShipSound } from "../../Client/FlightScene/ShipSound";
+import { ShipAudio } from "../../Client/FlightScene/ShipAudio";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
 import * as Shared from "../../Shared/Game/Ship";
 
@@ -9,7 +9,7 @@ export class Ship extends Shared.Ship
 {
   private readonly exhausts: ShipExhausts;
   private readonly graphics: ShipModel;
-  private readonly sound: ShipSound;
+  private readonly sound: ShipAudio;
 
   /// Tohle je zděděný z Vehicle.
   // private readonly vectors: Ship.Vectors =
@@ -32,7 +32,7 @@ export class Ship extends Shared.Ship
     /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
     const tmp: any = {};
     this.graphics = new ShipModel(scene, tmp);
-    this.sound = new ShipSound(scene);
+    this.sound = new ShipAudio(scene);
 
     // ! Throws exception on error.
     this.exhausts = new ShipExhausts(this.graphics, this.sound);

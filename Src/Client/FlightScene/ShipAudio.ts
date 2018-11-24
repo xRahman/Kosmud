@@ -3,7 +3,7 @@ import { Sound } from "../../Client/Engine/Sound";
 
 const SHIP_ENGINE_SOUND = "Ship Engine Sound";
 
-export class ShipSound
+export class ShipAudio
 {
   constructor(private readonly scene: Scene) {}
 
