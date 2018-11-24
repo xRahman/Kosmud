@@ -2,6 +2,7 @@ TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
 TODO: FlightScene.preload()
+- loadovat podle seznamu v zóně.
 
 TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
   a dělat to až z FlightScene.create()
@@ -17,14 +18,13 @@ TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
       - ShipMedia? ShipMultimedia? ShipAudiovisuals?
       ShipModel, ha!
 
-TODO: Přejmenovat property Client/Ship.graphics na model.
 
 TODO: Vyhodit vyrábění tilemapy z konstruktoru ShipModelu
   (tilemapa se bude vyrábět v creatu flightScény).
 
 
 TODO: Přejmenovat Client/Engine/Container na GraphicsContainer
-- včetně proměnné.
+- včetně proměnné v ShipModel.
 
 
 TODO: Vyrábět v zóně seznam shapů

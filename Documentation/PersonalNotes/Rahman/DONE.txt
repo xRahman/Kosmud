@@ -1,3 +1,10 @@
+TODO: Umožnit, aby Ship.model nemusel existovat.
+- a vyrábět ho až v create().
+[done]
+
+TODO: Přejmenovat property Client/Ship.graphics na model.
+[done]
+
 TODO: Hodit ShipSound do ShipModel.
 [done]
 

@@ -1,11 +1,11 @@
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/FlightScene/ShipModel";
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private readonly model: ShipModel;
+  private model: ShipModel | "Not created" = "Not created";
 
   /// Tohle je zděděný z Vehicle.
   // private readonly vectors: Ship.Vectors =
@@ -18,10 +18,21 @@ export class Ship extends Shared.Ship
   //   desiredLeftwardSteeringForce: new Vector()
   // };
 
+  // // ! Throws exception on error.
+  // constructor(private readonly scene: FlightScene)
+  // {
+  //   super();
+  // }
+
+  // ---------------- Public methods --------------------
+
   // ! Throws exception on error.
-  constructor(private readonly scene: FlightScene)
+  public create(scene: FlightScene)
   {
-    super();
+    if (this.model !== "Not created")
+    {
+      throw new Error(`Ship ${this.debugId} already has a model`);
+    }
 
     /// TODO: Tohle přesunout až do create().
     // ! Throws exception on error.
@@ -29,19 +40,16 @@ export class Ship extends Shared.Ship
     /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
     const tmp: any = {};
     this.model = new ShipModel(scene, tmp);
-
-    /// Tohle jsem přesunul do EnterFlightResponse.createShip().
-    // this.setPosition(position);
-    // this.setRotation(rotation);
   }
 
-  // ---------------- Public methods --------------------
-
+  // ! Throws exception on error.
   public update()
   {
-    this.model.update(this.getPosition());
+    // ! Throws exception on error.
+    this.getModel().update(this.getPosition());
   }
 
+  // ! Throws exception on error.
   public setPosition(position: Vector)
   {
     /// V this.physicsBody je 'initialPosition' (aby bylo jasný,
@@ -49,14 +57,17 @@ export class Ship extends Shared.Ship
     /// (měl bych setovat x a y v physicsbody...)
     // this.position.set(position);
 
-    this.model.setPosition(position);
+    // ! Throws exception on error.
+    this.getModel().setPosition(position);
   }
 
+  // ! Throws exception on error.
   public setRotation(rotation: number)
   {
     // this.rotation = rotation;
 
-    this.model.setRotation(rotation);
+    // ! Throws exception on error.
+    this.getModel().setRotation(rotation);
   }
 
   public setVectors(vectors: Ship.Vectors)
@@ -78,6 +89,7 @@ export class Ship extends Shared.Ship
     // this.graphics.drawVectors(this.vectors);
   }
 
+  // ! Throws exception on error.
   /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
   public updateExhausts
   (
@@ -86,12 +98,28 @@ export class Ship extends Shared.Ship
     torqueRatio: number
   )
   {
-    this.model.updateExhausts
+    // ! Throws exception on error.
+    this.getModel().updateExhausts
     (
       forwardThrustRatio,
       leftwardThrustRatio,
       torqueRatio
     );
+  }
+
+  // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private getModel()
+  {
+    if (this.model === "Not created")
+    {
+      throw new Error(`Ship ${this.debugId} doesn't have a model yet`
+        + ` make sure create() is called before whatever has just been`
+        + ` called`);
+    }
+
+    return this.model;
   }
 }
 
