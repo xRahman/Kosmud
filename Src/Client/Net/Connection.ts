@@ -33,9 +33,12 @@ Classes.registerSerializableClass(MouseInput);
 
 export class Connection extends Socket
 {
-  // ----------------- Private data ---------------------
-
   private static connection: Connection | "Not connected" = "Not connected";
+
+  constructor(address: string)
+  {
+    super(new WebSocket(address));
+  }
 
   // ------------- Public static methods ----------------
 
@@ -53,17 +56,11 @@ export class Connection extends Socket
     // There is no point in error handling here, because opening
     // a socket is asynchronnous. If an error occurs, 'error' event
     // is fired and onSocketError() is executed.
+    //   For the same reason we can't send anything to the socket until
+    // it's actually open - see this.onOpen().
     //   We don't need to specify port because websocket server runs
     // inside https server so it automaticaly uses htts port.
-    const webSocket = new WebSocket(`wss://${window.location.hostname}`);
-
-    this.connection = new Connection(webSocket);
-
-    /// TODO: Výhledově by tu nemělo bejt hned sendEnterFlightRequest(),
-    ///   ale začátek login procesu (ať už přes username nebo přes nějakej
-    ///   klíč uloženej v browseru).
-    /// Test
-    sendEnterFlightRequest();
+    this.connection = new Connection(`wss://${window.location.hostname}`);
   }
 
   public static isOpen()
@@ -165,6 +162,18 @@ export class Connection extends Socket
     // this, we send WebSocketEvent.REASON_CLOSE when socket is closed
     // from onBeforeUnload() and we check for it in ServerSocket.onClose().
     this.connection.close(WebSocketEvent.TAB_CLOSED);
+  }
+
+  // ~ Overrides Client.Socket.onOpen().
+  protected onOpen(event: Types.OpenEvent)
+  {
+    super.onOpen(event);
+
+    /// TODO: Výhledově by tu nemělo bejt hned sendEnterFlightRequest(),
+    ///   ale začátek login procesu (ať už přes username nebo přes nějakej
+    ///   klíč uloženej v browseru).
+    /// Test
+    sendEnterFlightRequest();
   }
 
   // ~ Overrides Socket.onClose().

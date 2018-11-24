@@ -34,7 +34,7 @@ export class Entity extends Serializable
 
   // --------------- Public methods ---------------------
 
-  // ~ Overrides Serializable.errorId.
+  // ~ Overrides Serializable.get debugId().
   public get debugId()
   {
     let id: string;
@@ -57,7 +57,7 @@ export class Entity extends Serializable
     }
 
     return `{ className: ${this.getClassName()},`
-      + ` name: ${this.name}, id: ${id}}`;
+      + ` name: ${this.name}, id: ${id} }`;
   }
 
   // ! Throws exception on error.

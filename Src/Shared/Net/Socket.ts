@@ -70,7 +70,7 @@ export abstract class Socket extends PacketHandler
     if (!this.isOpen())
     {
       throw new Error(`Failed to send data to ${this.getOrigin()}`
-        + ` because the connection is closed`);
+        + ` because the connection is not open`);
     }
 
     if (this.webSocket)

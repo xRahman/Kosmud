@@ -30,6 +30,8 @@ export abstract class Zone extends ContainerEntity
     this.addToContents(ship);
     this.ships.add(ship);
     ship.setZone(this);
+
+    /// TODO: Přidat ship do physicsWorldu.
   }
 
   public abstract async load(): Promise<void>;

@@ -45,6 +45,9 @@ function fakeLoadFighter()
 {
   const fighter = new Ship();
 
+  /// TEST
+  fighter.setId("TEST_ID_00");
+
   /// TODO: Nasetovat properties, které se časem budou setovat
   /// editorem a loadovat.
   fighter.setShapeId(Zone.FIGHTER_SHAPE_ID);

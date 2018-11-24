@@ -1,9 +1,22 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Zóna by měla mít vlastní physics world.
+- na klientu i na serveru.
+TODO: Přidat ship do physicsWorldu.
+- v Zone.addShip().
 
 Začnu tím, že budu mít dvě scény a flight scénu preloadnu on-demand.
 - FlightScene nesmí vyžadovat zónu.
+
+TODO: První packet na server můžu poslat, až když se spustí onOpen event.
+- buď sendEnterFlightRequest() přesunu tam,
+- nebo z connection.connect() udělám async fci, kterou z KosmudClient.start()
+  awaitnu (connect() by vyrobila promisu a awaitnula ji).
+Ta druhá varianta by znamenala, že se mezi connect() a otevřením socketu
+  nebude moct nic jinýho dělat - leda bych tam awaitnul nějakou složenou
+  promisu. Jednodušší asi v tom případě bude, udělat to callbackem.
+
 
 -----
 
