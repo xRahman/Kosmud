@@ -5,7 +5,7 @@ import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private readonly graphics: ShipModel;
+  private readonly model: ShipModel;
 
   /// Tohle je zděděný z Vehicle.
   // private readonly vectors: Ship.Vectors =
@@ -28,7 +28,7 @@ export class Ship extends Shared.Ship
     // this.graphics = new ShipGraphics(scene, shape);
     /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
     const tmp: any = {};
-    this.graphics = new ShipModel(scene, tmp);
+    this.model = new ShipModel(scene, tmp);
 
     /// Tohle jsem přesunul do EnterFlightResponse.createShip().
     // this.setPosition(position);
@@ -39,7 +39,7 @@ export class Ship extends Shared.Ship
 
   public update()
   {
-    this.graphics.update(this.getPosition());
+    this.model.update(this.getPosition());
   }
 
   public setPosition(position: Vector)
@@ -49,14 +49,14 @@ export class Ship extends Shared.Ship
     /// (měl bych setovat x a y v physicsbody...)
     // this.position.set(position);
 
-    this.graphics.setPosition(position);
+    this.model.setPosition(position);
   }
 
   public setRotation(rotation: number)
   {
     // this.rotation = rotation;
 
-    this.graphics.setRotation(rotation);
+    this.model.setRotation(rotation);
   }
 
   public setVectors(vectors: Ship.Vectors)
@@ -86,7 +86,7 @@ export class Ship extends Shared.Ship
     torqueRatio: number
   )
   {
-    this.graphics.updateExhausts
+    this.model.updateExhausts
     (
       forwardThrustRatio,
       leftwardThrustRatio,
