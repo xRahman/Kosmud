@@ -1,6 +1,7 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+
 TODO: Zóna by měla mít vlastní physics world.
 - na klientu i na serveru.
 TODO: Přidat ship do physicsWorldu.

@@ -2,6 +2,7 @@
   This class is not a graphic element, it only stores tilemap data.
 */
 
+import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Scene } from "../../Client/Engine/Scene";
 import { Sprite } from "../../Client/Engine/Sprite";
 import * as Shared from "../../Shared/Engine/Tilemap";
@@ -46,15 +47,21 @@ export class Tilemap extends Shared.Tilemap
       { key: textureOrAtlasId }
     );
 
+    const tileWidth = this.phaserTilemap.tileWidth;
+    const tileHeight = this.phaserTilemap.tileHeight;
     const result: Array<Sprite> = [];
 
-    for (const phaserSprite of phaserSprites)
+    for (let phaserSprite of phaserSprites)
     {
-      // We need to translate the tiles by halph the tile
-      // size because tiles have origin at top left in
-      // Tiled editor but in the middle in Phaser engine.
-      phaserSprite.x -= this.phaserTilemap.tileWidth / 2;
-      phaserSprite.y -= this.phaserTilemap.tileHeight / 2;
+      // Translate by half the tile size because tiles in Tiled
+      // editor have their origin at top left  but sprites in
+      // Phaser engine have their origin  in the middle.
+      phaserSprite = CoordsTransform.transformTileObject
+      (
+        phaserSprite,
+        tileWidth,
+        tileHeight
+      );
 
       const sprite = new Sprite
       (

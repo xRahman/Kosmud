@@ -2,6 +2,7 @@
   Shared abstract ancestor of Tilemap classes.
 */
 
+import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Physics } from "../../Shared/Physics/Physics";
 
 export class Tilemap
@@ -305,17 +306,18 @@ function getPolygon
 
   // Polygons are saved at [0, 0] in tilemap data so we
   // need to translate them by [object.x, object.y].
-  //   We also need to translate to the middle of the tile,
-  // because Tiled tiles have origin at top left (in Phaser
-  // it's in the midle).
-  const xOffset = object.x - tileWidth / 2;
-  const yOffset = object.y - tileHeight / 2;
+  let offset = { x: object.x, y: object.y };
+
+  // We also need to translate to the middle of the tile,
+  // because Tiled tiles have their origin at top left but
+  // sprites in Phaser have their origin in the midle.
+  offset = CoordsTransform.transformTileObject(offset, tileWidth, tileHeight);
 
   const polygon: Physics.Polygon = [];
 
   for (const point of object.polygon)
   {
-    polygon.push({ x: (point.x + xOffset), y: (point.y + yOffset) });
+    polygon.push({ x: (point.x + offset.x), y: (point.y + offset.y) });
   }
 
   return polygon;

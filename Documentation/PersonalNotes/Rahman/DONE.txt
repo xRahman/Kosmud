@@ -1,3 +1,9 @@
+TODO: Na dvou místech transformuju z Tiled koordinátů do Phaser koordinátů
+  (odečítá se tam půlka tilesy). Asi by stálo za to volat na to metody
+   z CoordsTransform (čistě kvůli tomu, aby se dala snadno najít všechna
+   místa, kde se transformují nějaké souřadnice).
+[done]
+
 TODO: getPlayerShip() na serveru nedává smysl - hráčských lodí tam bude víc.
 - potřebuju propojit connection a ship.
   - buď do connection natvrdo vrazím odkaz na ship,
