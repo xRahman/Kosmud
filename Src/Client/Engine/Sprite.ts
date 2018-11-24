@@ -1,4 +1,6 @@
 /*
+  Part of Kosmud
+
   Wraps Phaser.GameObjects.Sprite.
 */
 
@@ -6,8 +8,6 @@ import { Vector } from "../../Shared/Physics/Vector";
 import { Scene } from "../../Client/Engine/Scene";
 import { Container } from "../../Client/Engine/Container";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
-
-const INFINITE_REPEAT = -1;
 
 export class Sprite extends PhaserObject
 {
@@ -38,30 +38,6 @@ export class Sprite extends PhaserObject
     }
 
     this.applyOptions(options);
-  }
-
-  // ------------- Public static methods ----------------
-
-  // ! Throws exception on error.
-  public static createAnimation
-  (
-    scene: Phaser.Scene,
-    animation: Sprite.Animation,
-    repeat = INFINITE_REPEAT
-  )
-  {
-    // ! Throws exception on error.
-    const frameNames = generateFrameNames(scene, animation);
-
-    scene.anims.create
-    (
-      {
-        key: animation.name,
-        frames: frameNames,
-        frameRate: animation.frameRate,
-        repeat
-      }
-    );
   }
 
   // ---------------- Public methods --------------------
@@ -137,14 +113,12 @@ export class Sprite extends PhaserObject
 
   private createPhaserSprite(config: Sprite.Config)
   {
-    const sprite = this.scene.add.sprite
+    const sprite = this.scene.createSprite
     (
-      config.position.x,
-      config.position.y,
+      config.position,
+      config.rotation,
       config.textureOrAtlasId
     );
-
-    sprite.setRotation(config.rotation);
 
     if (config.baseScaleX !== undefined)
       this.baseScaleX = config.baseScaleX;
@@ -154,33 +128,6 @@ export class Sprite extends PhaserObject
 
     return sprite;
   }
-}
-
-// ----------------- Auxiliary Functions ---------------------
-
-// ! Throws exception on error.
-function generateFrameNames(scene: Phaser.Scene, animation: Sprite.Animation)
-{
-  if (animation.pathInTextureAtlas.slice(-1) !== "/")
-  {
-    throw new Error(`Failed to generate animation frame names because`
-      + ` path '${animation.pathInTextureAtlas}' doesn't end with '/'`);
-  }
-
-  // Use names like "001.png"
-  const THREE_PLACES = 3;
-
-  return scene.anims.generateFrameNames
-  (
-    animation.textureAtlasId,
-    {
-      start: 1,
-      end: animation.numberOfFrames,
-      zeroPad: THREE_PLACES,
-      prefix: animation.pathInTextureAtlas,
-      suffix: ".png"
-    }
-  );
 }
 
 // ------------------ Type Declarations ----------------------

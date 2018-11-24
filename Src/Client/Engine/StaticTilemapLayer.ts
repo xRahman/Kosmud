@@ -1,7 +1,10 @@
 /*
+  Part of Kosmud
+
   Wraps Phaser.Tilemaps.StaticTilemapLayer.
 */
 
+import { Scene } from "../../Client/Engine/Scene";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class StaticTilemapLayer extends PhaserObject
@@ -14,7 +17,7 @@ export class StaticTilemapLayer extends PhaserObject
 
   constructor
   (
-    scene: Phaser.Scene,
+    scene: Scene,
     x: number,
     y: number,
     tilemapLayerName: string,

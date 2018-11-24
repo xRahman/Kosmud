@@ -22,7 +22,7 @@ export class Tilemap extends Shared.Tilemap
   {
     super(name, tilemapJsonData);
 
-    this.phaserTilemap = scene.make.tilemap({ key: tilemapJsonDataId });
+    this.phaserTilemap = scene.createTilemap(tilemapJsonDataId);
   }
 
   // ---------------- Public methods --------------------

@@ -1,3 +1,4 @@
+import { Scene } from "../../Client/Engine/Scene";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Container } from "../../Client/Engine/Container";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
@@ -7,7 +8,7 @@ export class ShapeGraphics extends Graphics
 {
   constructor
   (
-    scene: Phaser.Scene,
+    scene: Scene,
     shape: Physics.Shape,
     container?: Container
   )

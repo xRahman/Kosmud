@@ -1,20 +1,53 @@
+/*
+  Part of Kosmud
+
+  Wraps Phaser.GameObjects.Container
+*/
+
+/*
+  Notes:
+    It would be easier to just extend Phaser.Scene but since all other
+    Client/Engine classes are wrappers, Scene is a wrapper too.
+*/
+
+import { Sprite } from "../../Client/Engine/Sprite";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 
-export abstract class Scene extends Phaser.Scene
-{
-  protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
+const INFINITE_REPEAT = -1;
 
-  constructor
-  (
-    protected name: string,
-    protected width: number,
-    protected height: number
-  )
+interface PhaserScene extends Phaser.Scene
+{
+  preload?(): void;
+  create?(): void;
+}
+
+export abstract class Scene
+{
+  protected width = 0;
+  protected height = 0;
+  protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
+  protected phaserScene: PhaserScene;
+
+  constructor(protected name: string)
   {
-    super(name);
+    this.phaserScene = new Phaser.Scene(name);
+
+    this.phaserScene.preload = () => { this.preload(); };
+    this.phaserScene.create = () => { this.create(); };
+    this.phaserScene.update = () => { this.update(); };
   }
 
   // ---------------- Public methods --------------------
+
+  public addToPhaserGame(phaserGame: Phaser.Game)
+  {
+    phaserGame.scene.add(this.name, this.phaserScene);
+  }
+
+  public start(phaserGame: Phaser.Game)
+  {
+    phaserGame.scene.start(this.name);
+  }
 
   // This method is run by Phaser.
   public abstract preload(): void;
@@ -33,7 +66,7 @@ export abstract class Scene extends Phaser.Scene
 
   public loadTexture(textureId: string, textureFilePath: string)
   {
-    this.load.image(textureId, textureFilePath);
+    this.phaserScene.load.image(textureId, textureFilePath);
   }
 
   public loadTextureAtlas
@@ -43,12 +76,110 @@ export abstract class Scene extends Phaser.Scene
     texturesDirectory: string
   )
   {
-    this.load.multiatlas(atlasId, atlasJsonFilePath, texturesDirectory);
+    this.phaserScene.load.multiatlas
+    (
+      atlasId,
+      atlasJsonFilePath,
+      texturesDirectory
+    );
   }
 
   public loadTilemapData(tilemapDataId: string, tilemapJsonFilePath: string)
   {
-    this.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
+    this.phaserScene.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
+  }
+
+  public loadScenePlugin(config: Phaser.Loader.FileTypes.ScenePluginFileConfig)
+  {
+    this.phaserScene.load.scenePlugin(config);
+  }
+
+  public loadSound(audioId: string, path: string)
+  {
+    this.phaserScene.load.audio(audioId, path);
+  }
+
+  public createContainer(position: { x: number; y: number })
+  {
+    return this.phaserScene.add.container(position.x, position.y);
+  }
+
+  public createGraphics(position: { x: number; y: number })
+  {
+    return this.phaserScene.add.graphics(position);
+  }
+
+  public createSprite
+  (
+    position: { x: number; y: number },
+    rotation: number,
+    textureOrAtlasId: string
+  )
+  {
+    const sprite = this.phaserScene.add.sprite
+    (
+      position.x,
+      position.y,
+      textureOrAtlasId
+    );
+
+    sprite.setRotation(rotation);
+
+    return sprite;
+  }
+
+  public createTilemap(tilemapJsonDataId: string)
+  {
+    return this.phaserScene.make.tilemap({ key: tilemapJsonDataId });
+  }
+
+  // ! Throws exception on error.
+  public createAnimation(animation: Sprite.Animation, repeat = INFINITE_REPEAT)
+  {
+    // ! Throws exception on error.
+    const frameNames = this.generateFrameNames(animation);
+
+    this.phaserScene.anims.create
+    (
+      {
+        key: animation.name,
+        frames: frameNames,
+        frameRate: animation.frameRate,
+        repeat
+      }
+    );
+  }
+
+  public createSound(soundId: string)
+  {
+    return this.phaserScene.sound.add(soundId);
+  }
+
+  // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private generateFrameNames(animation: Sprite.Animation)
+  {
+    if (animation.pathInTextureAtlas.slice(-1) !== "/")
+    {
+      throw new Error(`Failed to generate animation frame names because`
+        + ` path '${animation.pathInTextureAtlas}' doesn't end with '/'`);
+    }
+
+    // Use names like "001.png"
+    const THREE_PLACES = 3;
+
+    return this.phaserScene.anims.generateFrameNames
+    (
+      animation.textureAtlasId,
+      {
+        start: 1,
+        end: animation.numberOfFrames,
+        zeroPad: THREE_PLACES,
+        prefix: animation.pathInTextureAtlas,
+        suffix: ".png"
+      }
+    );
   }
 }
 

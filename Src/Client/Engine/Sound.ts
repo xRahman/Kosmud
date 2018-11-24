@@ -1,7 +1,11 @@
 /*
+  Part of Kosmud
+
   Wraps Phaser.Sound.BaseSound
   /// Teda az na to, ze chci nastavovat volume, ktera v BaseSound neni...
 */
+
+import { Scene } from "../../Client/Engine/Scene";
 
 export class Sound
 {
@@ -11,7 +15,7 @@ export class Sound
 
   constructor
   (
-    scene: Phaser.Scene,
+    scene: Scene,
     soundId: string,
     baseVolume0to1 = 1
   )
@@ -77,9 +81,9 @@ export class Sound
 
 function createSound
 (
-  scene: Phaser.Scene,
+  scene: Scene,
   soundId: string
 )
 {
-  return scene.sound.add(soundId);
+  return scene.createSound(soundId);
 }

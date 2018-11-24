@@ -1,16 +1,17 @@
+import { Scene } from "../../Client/Engine/Scene";
 import { Sound } from "../../Client/Engine/Sound";
 
 const SHIP_ENGINE_SOUND = "Ship Engine Sound";
 
 export class ShipSound
 {
-  constructor(private readonly scene: Phaser.Scene) {}
+  constructor(private readonly scene: Scene) {}
 
   // ------------- Public static methods ----------------
 
-  public static preload(scene: Phaser.Scene)
+  public static preload(scene: Scene)
   {
-    scene.load.audio(SHIP_ENGINE_SOUND, "Sound/Ship/Engine/ShipEngine.mp3");
+    scene.loadSound(SHIP_ENGINE_SOUND, "Sound/Ship/Engine/ShipEngine.mp3");
   }
 
   // ---------------- Public methods --------------------

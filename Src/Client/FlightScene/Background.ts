@@ -25,9 +25,9 @@ export class Background
     this.resize(canvasWidth, canvasHeight);
   }
 
-  public static preload(scene: Phaser.Scene)
+  public static preload(scene: Scene)
   {
-    scene.load.image
+    scene.loadTexture
     (
       BACKGROUND_TEXTURE_ID,
       "Textures/Background/deep_space0.jpg"

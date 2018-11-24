@@ -1,6 +1,9 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Startnout flightZónu
+  (nejspíš v EnterFlightResponse.process()).
+
 TODO: Vyrábět v zóně seznam shapů
 - na serveru
   - tam se to snad dělá
@@ -10,6 +13,22 @@ Začnu tím, že flight scénu nebudu předávat do konfigu Phaser.Game
  a preload pustím později ručně.
 - FlightScene nesmí vyžadovat zónu.
 
+TODO: Animation by asi mohla bejt samostatná classa
+  (teď se to dělá přes Scene).
+- scene.createAnimation() by mohla vrátit rovnou Animation.
+
+Hmm, ono by to asi celý mělo bejt tak, že scene.createNěco() vytvoří
+  a vrátí rovnou wrapper, nikoliv interní phaserovou property.
+  - takže createAnimation() by mělo vrátit Animation,
+    createSound() by mělo vrátit sound, atd.
+  - čili konstruktory wrapperů pak nebudou dostávat jako parametr
+    Scene, ale to, co mají wrappovat.
+Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
+  v body si Vehicle drží fyzikální properties (a má ho tudíž od začátku,
+  přestože ještě není v physics worldu).
+  - Možná bych to ale mohl předělat, vrátit properties do PhysicsConfigu,
+    nebo tak něčeho a PhysicsBody vyrábat opravdu až v addToPhysicsWorld().
+    - asi jo.
 
 -----
 

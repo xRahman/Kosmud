@@ -20,7 +20,7 @@ export class SceneUpdate extends Shared.SceneUpdate
   {
     /// TODO: Odhackovat:
     const shipState = this.shipStates[0];
-    const ship = Renderer.getFlightScene().getShip();
+    const ship = Renderer.flightScene.getShip();
 
     if (ship !== "Doesn't exist")
     {

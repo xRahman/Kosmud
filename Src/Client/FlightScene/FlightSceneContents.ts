@@ -11,9 +11,15 @@ export class FlightSceneContents extends SceneContents
   public waypoint: Waypoint;
   public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
-  constructor(scene: FlightScene, canvasWidth: number, canvasHeight: number)
+  constructor
+  (
+    scene: FlightScene,
+    input: Phaser.Input.InputPlugin,
+    canvasWidth: number,
+    canvasHeight: number
+  )
   {
-    super(scene, canvasWidth, canvasHeight);
+    super(input);
 
     this.background = new Background(scene, canvasWidth, canvasHeight);
 

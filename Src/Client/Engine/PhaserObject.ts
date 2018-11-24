@@ -9,6 +9,7 @@
 */
 
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Scene } from "../../Client/Engine/Scene";
 
 // Phaser.GameObjects.GameObject technicaly is an ancestor of
 // Sprite, Container, Graphics etc., but we need to use common
@@ -31,7 +32,7 @@ export abstract class PhaserObject
 {
   protected abstract phaserObject: PhaserGameObject;
 
-  constructor(protected scene: Phaser.Scene) {}
+  constructor(protected scene: Scene) {}
 
   // ---------------- Public methods --------------------
 

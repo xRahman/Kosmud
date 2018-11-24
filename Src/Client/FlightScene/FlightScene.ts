@@ -1,19 +1,13 @@
-import { EnterFlightResponse } from
-  "../../Client/Protocol/EnterFlightResponse";
+import { ERROR } from "../../Shared/Log/ERROR";
 import { Ship } from "../../Client/Game/Ship";
-import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Engine/Scene";
-import { REPORT } from "../../Shared/Log/REPORT";
-import { ERROR } from "../../Shared/Log/ERROR";
 
 interface AnimatedTilesPlugin
 {
   init(map: Phaser.Tilemaps.Tilemap): void;
 }
-
-const FLIGHT_SCENE = "Flight scene";
 
 export class FlightScene extends Scene
 {
@@ -23,11 +17,11 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.contents.
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
 
-  private readonly addRequestQueue = new Array<EnterFlightResponse>();
+  // private readonly addRequestQueue = new Array<EnterFlightResponse>();
 
-  constructor(width: number, height: number)
+  constructor(name: string)
   {
-    super(FLIGHT_SCENE, width, height);
+    super(name);
   }
 
   // ---------------- Public methods --------------------
@@ -76,7 +70,13 @@ export class FlightScene extends Scene
         + ` because scene contents already exist`);
     }
 
-    this.contents = new FlightSceneContents(this, this.width, this.height);
+    this.contents = new FlightSceneContents
+    (
+      this,
+      this.phaserScene.input,
+      this.width,
+      this.height
+    );
 
     /// TEST
     // this.contents.create(this);
@@ -140,10 +140,10 @@ export class FlightScene extends Scene
   //   );
   // }
 
-  private queueAddShipRequest(request: EnterFlightResponse)
-  {
-    this.addRequestQueue.push(request);
-  }
+  // private queueAddShipRequest(request: EnterFlightResponse)
+  // {
+  //   this.addRequestQueue.push(request);
+  // }
 
   // ! Throws exception on error.
   // private createBufferedShips(contents: FlightSceneContents)
@@ -160,7 +160,7 @@ export class FlightScene extends Scene
 
   private preloadAnimatedTilesPlugin()
   {
-    this.load.scenePlugin
+    this.loadScenePlugin
     (
       {
         // Key is not used anywhere (we let loader assign the plugin

@@ -1,22 +1,33 @@
-import { Zone } from "../../Client/Game/Zone";
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Body } from "../../Client/Gui/Body";
 
-let flightScene: FlightScene | "Doesn't exist" = "Doesn't exist";
 let phaserGame: Phaser.Game | "Doesn't exist" = "Doesn't exist";
 
 export namespace Renderer
 {
+  export const flightScene = new FlightScene("Flight scene");
+
   // ! Throws exception on error.
   export function init()
   {
     const canvasWidth = Body.getCanvasDiv().getWidth();
     const canvasHeight = Body.getCanvasDiv().getHeight();
 
-    /// TODO: Flight Scénu vyrábět až při zpracování EnterFlight requestu.
-    flightScene = createFlightScene(canvasWidth, canvasHeight);
-    phaserGame = createPhaserGame(canvasWidth, canvasHeight, flightScene);
+    phaserGame = createPhaserGame(canvasWidth, canvasHeight);
+
+    // Note that 'flightScene' is not started automatically because it is
+    // not passed to Phaser.Game in the config. We are not starting it even
+    // here, we are just adding to phaserGame so it can be started later.
+    flightScene.addToPhaserGame(phaserGame);
+    flightScene.resize(canvasWidth, canvasHeight);
+  }
+
+  // ! Throws exception on error.
+  export function startFlightScene()
+  {
+    // ! Throws exception on error.
+    flightScene.start(getPhaserGame());
   }
 
   // ! Throws exception on error.
@@ -26,16 +37,7 @@ export namespace Renderer
     getPhaserGame().resize(width, height);
 
     // ! Throws exception on error.
-    getFlightScene().resize(width, height);
-  }
-
-  // ! Throws exception on error.
-  export function getFlightScene(): FlightScene
-  {
-    if (flightScene === "Doesn't exist")
-      throw new Error("Flight scene doesn't exist");
-
-    return flightScene;
+    flightScene.resize(width, height);
   }
 }
 
@@ -45,30 +47,13 @@ export namespace Renderer
 function getPhaserGame(): Phaser.Game
 {
   if (phaserGame === "Doesn't exist")
-    throw new Error("Phaser game doesn't exist");
+    throw new Error("Phaser game doesn't exist yet");
 
   return phaserGame;
 }
 
 // ! Throws exception on error.
-function createFlightScene(width: number, height: number): FlightScene
-{
-  if (flightScene !== "Doesn't exist")
-  {
-    throw new Error("Flight scene already exists");
-  }
-
-  return new FlightScene(width, height);
-}
-
-// ! Throws exception on error.
-function createPhaserGame
-(
-  width: number,
-  height: number,
-  scene: Phaser.Scene
-)
-: Phaser.Game
+function createPhaserGame(width: number, height: number): Phaser.Game
 {
   if (phaserGame !== "Doesn't exist")
     throw new Error("Flight scene already exists");
@@ -83,8 +68,13 @@ function createPhaserGame
       width,
       height,
       disableContextMenu: true,
-      parent: CanvasDiv.ELEMENT_ID,
-      scene
+      parent: CanvasDiv.ELEMENT_ID
+      /// Scény passnuté v configu Phaser.Game se automaticky spustí
+      /// (tzn. pustí se preload(), create() a následně periodicky update()).
+      /// Tzn. tady by buď neměla bejt žádná zóna (pokud na začátku player
+      ///   uvidí pouze html), nebo nějaká startovací (třeba kdybych měl
+      ///   na pozadí nějakou animačku v enginu).
+      // scene
     }
   );
 }

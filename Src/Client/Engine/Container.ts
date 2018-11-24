@@ -1,23 +1,21 @@
 /*
+  Part of Kosmud
+
   Wraps Phaser.GameObjects.Container
 */
 
+import { Scene } from "../../Client/Engine/Scene";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Container extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Container;
 
-  constructor
-  (
-    scene: Phaser.Scene,
-    x: number,
-    y: number
-  )
+  constructor(scene: Scene, position = { x: 0, y: 0 })
   {
     super(scene);
 
-    this.phaserObject = scene.add.container(x, y);
+    this.phaserObject = scene.createContainer(position);
   }
 
   // ---------------- Public methods --------------------

@@ -14,17 +14,18 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Physics } from "../../Shared/Physics/Physics";
+import { Scene } from "../../Client/Engine/Scene";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Graphics extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Phaser.Scene, depth = 0, position = new Vector())
+  constructor(scene: Scene, depth = 0, position = { x: 0, y: 0 })
   {
     super(scene);
 
-    this.phaserObject = scene.add.graphics(position);
+    this.phaserObject = scene.createGraphics(position);
     this.phaserObject.setDepth(depth);
   }
 

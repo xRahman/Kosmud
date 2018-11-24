@@ -1,3 +1,4 @@
+import { Scene } from "../../Client/Engine/Scene";
 import { Ship } from "../../Client/Game/Ship";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
@@ -9,7 +10,7 @@ export class VectorGraphics
 {
   private readonly graphics: Graphics;
 
-  constructor(scene: Phaser.Scene)
+  constructor(scene: Scene)
   {
     this.graphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
   }

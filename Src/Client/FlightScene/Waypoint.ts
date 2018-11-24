@@ -25,9 +25,9 @@ export class Waypoint
     this.hide();
   }
 
-  public static preload(scene: Phaser.Scene)
+  public static preload(scene: Scene)
   {
-    scene.load.image
+    scene.loadTexture
     (
       WAYPOINT_TEXTURE_ID,
       "Textures/Markers/waypoint_32x32.png"

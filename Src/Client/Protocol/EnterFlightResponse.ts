@@ -42,7 +42,7 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   // ! Throws exception on error.
   private createShip()
   {
-    const flightScene = Renderer.getFlightScene();
+    const flightScene = Renderer.flightScene;
     const ship = new Ship(flightScene);
 
     ship.setPosition(this.shipPosition);

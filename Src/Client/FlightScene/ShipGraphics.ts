@@ -34,7 +34,7 @@ export class ShipGraphics
     shape: Physics.Shape,
   )
   {
-    this.container = new Container(scene, 0, 0);
+    this.container = new Container(scene);
     this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
 
     /// TODO: Tilemapu bude vyrábět zóna (asi v create()).
@@ -119,7 +119,7 @@ export class ShipGraphics
     };
 
     // ! Throws exception on error.
-    Sprite.createAnimation(this.scene, animation);
+    this.scene.createAnimation(animation);
   }
 
   // ! Throws exception on error.

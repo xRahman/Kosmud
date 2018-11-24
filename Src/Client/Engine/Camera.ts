@@ -1,9 +1,11 @@
+/*
+import { Scene } from "../../Client/Engine/Scene";
 
 export class Camera
 {
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
 
-  constructor(private readonly scene: Phaser.Scene)
+  constructor(private readonly scene: Scene)
   {
     this.camera = getMainCamera(scene);
   }
@@ -23,7 +25,7 @@ export class Camera
 // ----------------- Auxiliary Functions ---------------------
 
 // ! Throws exception on error.
-function getMainCamera(scene: Phaser.Scene)
+function getMainCamera(scene: Scene)
 {
   if (scene.cameras === undefined)
   {
@@ -39,3 +41,4 @@ function getMainCamera(scene: Phaser.Scene)
 
   return scene.cameras.main;
 }
+*/
