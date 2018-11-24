@@ -7,11 +7,10 @@
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Engine } from "../../Shared/Engine/Engine";
+import { Zone } from "../../Shared/Game/Zone";
 import { GameEntity } from "../../Shared/Game/GameEntity";
-
-// 3rd party modules.
-import { b2World } from "../../Shared/Box2D/Box2D";
 
 export abstract class Vehicle extends GameEntity
 {
@@ -121,22 +120,9 @@ export abstract class Vehicle extends GameEntity
   }
 
   // ! Throws exception on error.
-  public addToPhysicsWorld(world: b2World)
+  public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
   {
-    const shapeId = this.physicsBody.shapeId;
-
-    if (shapeId === "Not set")
-    {
-      throw new Error(`Failed to add vehicle '${this.debugId}'`
-        + ` to physics world because it doesn't have a 'shapeId'`
-        + ` set yet. Make sure you set 'shapeId' before you call`
-        + ` addToPhysicsWorld()`);
-    }
-
-    // ! Throws exception on error.
-    const shape = this.getZone().getPhysicsShape(shapeId);
-
-    this.physicsBody.addToPhysicsWorld(world, shape);
+    physicsWorld.add(this.physicsBody, zone);
 
     // Set waypoint to the new position so the vehicle doesn't
     // try to go back to where it was.

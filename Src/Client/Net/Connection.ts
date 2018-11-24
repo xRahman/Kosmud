@@ -7,6 +7,7 @@
 import { Classes } from "../../Shared/Class/Classes";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
+import { Zone } from "../../Client/Game/Zone";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { SystemMessage } from "../../Shared/Protocol/SystemMessage";
 import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
@@ -35,12 +36,28 @@ export class Connection extends Socket
 {
   private static connection: Connection | "Not connected" = "Not connected";
 
+  private zone: Zone | "Isn't assigned" = "Isn't assigned";
+
   constructor(address: string)
   {
     super(new WebSocket(address));
   }
 
   // ------------- Public static methods ----------------
+
+  // ! Throws exception on error.
+  public setZone(zone: Zone)
+  {
+    /// TODO: Výhledově bude player cestovat do různých zón, takže
+    ///  se určitě bude přesetovávat existující zóna. Zatím si to tu
+    ///  ale nechám, dokud mám jen jednu zónu.
+    if (this.zone !== "Isn't assigned")
+    {
+      throw new Error(`Zone is already assigned to the connection`);
+    }
+
+    this.zone = zone;
+  }
 
   // ! Throws exception on error.
   public static connect()

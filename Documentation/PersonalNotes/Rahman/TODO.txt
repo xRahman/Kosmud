@@ -1,6 +1,10 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Vyrábět v zóně seznam shapů
+- na serveru
+- na klientu
+
 
 TODO: Zóna by měla mít vlastní physics world.
 - na klientu i na serveru.

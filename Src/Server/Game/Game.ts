@@ -23,7 +23,11 @@ export namespace Game
   /// TEST
   function fakeLoad()
   {
-    zones.push(new Zone());
+    const zone = new Zone();
+
+    zone.createPhysicsWorld();
+
+    zones.push(zone);
   }
 
   export function tick()

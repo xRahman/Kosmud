@@ -4,12 +4,7 @@
   Physics engine wrapper.
 */
 
-// import {PhysicsBody} from 'Shared/Physics/PhysicsBody';
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
-
-// 3rd party modules.
-// import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
-//          b2FixtureDef } from "../../Shared/Box2D/Box2D";
 
 export namespace Physics
 {
@@ -17,10 +12,22 @@ export namespace Physics
 
   export type Shape = Array<Polygon>;
 
-  /// Výhledově nejspíš bude physics worldů víc,
-  /// takže si tu zatím to provolávání nechám.
+  const physicsWorlds = new Set<PhysicsWorld>();
+
+  export function createWorld()
+  {
+    const physicsWorld = new PhysicsWorld();
+
+    physicsWorlds.add(physicsWorld);
+
+    return physicsWorld;
+  }
+
   export function tick(miliseconds: number)
   {
-    PhysicsWorld.tick(miliseconds);
+    for (const physicsWorld of physicsWorlds)
+    {
+      physicsWorld.tick(miliseconds);
+    }
   }
 }

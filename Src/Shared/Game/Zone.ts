@@ -6,9 +6,10 @@
 */
 
 import { Ship } from "../../Shared/Game/Ship";
-import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
+import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Physics } from "../../Shared/Physics/Physics";
+import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
 
 export abstract class Zone extends ContainerEntity
 {
@@ -16,25 +17,10 @@ export abstract class Zone extends ContainerEntity
   protected readonly tilemaps = new Map<string, Tilemap>();
   protected readonly physicsShapes = new Map<string, Physics.Shape>();
 
+  private physicsWorld: PhysicsWorld | "Doesn't exist" =
+    "Doesn't exist";
+
   // ---------------- Public methods --------------------
-
-  // ! Throws exception on error.
-  public addShip(ship: Ship)
-  {
-    if (this.ships.has(ship))
-    {
-      throw new Error(`Zone ${this.debugId} already has`
-        + ` ship ${ship.debugId}`);
-    }
-
-    this.addToContents(ship);
-    this.ships.add(ship);
-    ship.setZone(this);
-
-    /// TODO: Přidat ship do physicsWorldu.
-  }
-
-  public abstract async load(): Promise<void>;
 
   // ! Throws exception on error.
   public getTilemap(name: string)
@@ -62,6 +48,40 @@ export abstract class Zone extends ContainerEntity
     }
 
     return shape;
+  }
+
+  // ! Throws exception on error.
+  public addShip(ship: Ship)
+  {
+    if (this.ships.has(ship))
+    {
+      throw new Error(`Zone ${this.debugId} already has`
+        + ` ship ${ship.debugId}`);
+    }
+
+    this.addToContents(ship);
+    this.ships.add(ship);
+    ship.setZone(this);
+
+    ship.addToPhysicsWorld
+    (
+      // ! Throws exception on error.
+      this.getPhysicsWorld(),
+      this
+    );
+  }
+
+  public abstract async load(): Promise<void>;
+
+  // ! Throws exception on error.
+  public createPhysicsWorld()
+  {
+    if (this.physicsWorld !== "Doesn't exist")
+    {
+      throw new Error(`Zone ${this.debugId} alread has a physics world`);
+    }
+
+    this.physicsWorld = Physics.createWorld();
   }
 
   // --------------- Protected methods ------------------
@@ -107,6 +127,21 @@ export abstract class Zone extends ContainerEntity
 
       this.addPhysicsShape(config.shapeId, shape);
     }
+  }
+
+  // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private getPhysicsWorld()
+  {
+    if (this.physicsWorld === "Doesn't exist")
+    {
+      throw new Error(`Zone ${this.debugId} doesn't have a physics`
+      + ` world yet. Make sure that you call createPhysicsWorld()`
+      + ` before you try to do anything with it`);
+    }
+
+    return this.physicsWorld;
   }
 }
 

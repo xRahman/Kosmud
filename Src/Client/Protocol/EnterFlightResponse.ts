@@ -24,7 +24,7 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     /// Tzn. tady je potřeba creatnout zónu (nebo ji prostě
     /// deserializovat z packetu).
 
-    const zone = createZone();
+    connection.setZone(this.createZone());
 
     /// TODO: Následně se tady vyrobí flight scéna z dat zóny.
 
@@ -32,10 +32,6 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     /// při vytváření zóny.
     /// (Zatím ale budu loď přidávat rovnou do zóny)
     // Renderer.getFlightScene().addShip(this);
-
-    /// TEST:
-    /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
-    zone.addShip(this.createShip());
 
     /// TODO: Znovu zprovoznit.
     // const flightScene = Renderer.createFlightScene(zone);
@@ -68,13 +64,22 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     //   this.shipRotation
     // );
   }
+
+  /// TEST
+  private createZone()
+  {
+    const zone = new Zone();
+
+    zone.createPhysicsWorld();
+
+    /// TEST:
+    /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
+    zone.addShip(this.createShip());
+
+    return zone;
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-function createZone()
-{
-  return new Zone();
-}
 
 // This class is registered in Client/Net/Connection.

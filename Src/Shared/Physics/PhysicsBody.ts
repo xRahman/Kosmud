@@ -5,6 +5,7 @@
 */
 
 import { validateNumber, validateVector } from "../../Shared/Utils/Math";
+import { Zone } from "../../Shared/Game/Zone";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Vehicle } from "../../Shared/Physics/Vehicle";
@@ -164,13 +165,23 @@ export class PhysicsBody
   }
 
   // ! Throws exception on error.
-  public addToPhysicsWorld(world: b2World, shape: Physics.Shape)
+  public create(world: b2World, zone: Zone)
   {
     if (this.body !== "Doesn't exist")
     {
       throw new Error(`Vehicle ${this.vehicle.debugId}`
         + ` is already added to a physics world`);
     }
+
+    if (this.shapeId === "Not set")
+    {
+      throw new Error(`Failed to create physics body of vehicle`
+        + ` '${this.vehicle.debugId}' because it doesn't have a`
+        + ` 'shapeId'. Make sure you set 'shapeId' before you add`
+        + ` the vehicle to physics world`);
+    }
+
+    const shape = zone.getPhysicsShape(this.shapeId);
 
     // ! Throws exception on error.
     this.createBody(world, shape);
@@ -203,11 +214,16 @@ export class PhysicsBody
 
     this.body = world.CreateBody(bodyDefinition);
 
+    this.createFixtures(this.body, shape);
+  }
+
+  private createFixtures(body: b2Body, shape: Physics.Shape)
+  {
     for (const polygon of shape)
     {
       const fixtureDefinition = this.createFixtureDefinition(polygon);
 
-      this.body.CreateFixture(fixtureDefinition);
+      body.CreateFixture(fixtureDefinition);
     }
   }
 

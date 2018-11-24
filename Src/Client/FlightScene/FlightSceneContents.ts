@@ -1,12 +1,9 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Background } from "../../Client/FlightScene/Background";
 import { Ship } from "../../Client/Game/Ship";
-import { Zone } from "../../Client/Game/Zone";
-import { ShipGraphics } from "../../Client/FlightScene/ShipGraphics";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Waypoint } from "../../Client/FlightScene/Waypoint";
 import { Vector } from "../../Shared/Physics/Vector";
-import { ShipSound } from "../../Client/FlightScene/ShipSound";
 
 export class FlightSceneContents extends SceneContents
 {
