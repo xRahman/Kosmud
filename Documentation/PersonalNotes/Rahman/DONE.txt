@@ -1,3 +1,20 @@
+TODO: První packet na server můžu poslat, až když se spustí onOpen event.
+- buď sendEnterFlightRequest() přesunu tam,
+- nebo z connection.connect() udělám async fci, kterou z KosmudClient.start()
+  awaitnu (connect() by vyrobila promisu a awaitnula ji).
+Ta druhá varianta by znamenala, že se mezi connect() a otevřením socketu
+  nebude moct nic jinýho dělat - leda bych tam awaitnul nějakou složenou
+  promisu. Jednodušší asi v tom případě bude, udělat to callbackem.
+[done]
+
+TODO: Zóna by měla mít vlastní physics world.
+- na klientu i na serveru.
+[done]
+
+TODO: Přidat ship do physicsWorldu.
+- v Zone.addShip().
+[done]
+
 TODO: Na dvou místech transformuju z Tiled koordinátů do Phaser koordinátů
   (odečítá se tam půlka tilesy). Asi by stálo za to volat na to metody
    z CoordsTransform (čistě kvůli tomu, aby se dala snadno najít všechna

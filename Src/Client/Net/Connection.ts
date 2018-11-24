@@ -46,20 +46,6 @@ export class Connection extends Socket
   // ------------- Public static methods ----------------
 
   // ! Throws exception on error.
-  public setZone(zone: Zone)
-  {
-    /// TODO: Výhledově bude player cestovat do různých zón, takže
-    ///  se určitě bude přesetovávat existující zóna. Zatím si to tu
-    ///  ale nechám, dokud mám jen jednu zónu.
-    if (this.zone !== "Isn't assigned")
-    {
-      throw new Error(`Zone is already assigned to the connection`);
-    }
-
-    this.zone = zone;
-  }
-
-  // ! Throws exception on error.
   public static connect()
   {
     if (this.isOpen())
@@ -146,22 +132,6 @@ export class Connection extends Socket
     };
   }
 
-  // ---------------- Public methods --------------------
-
-  // Disabled for now
-  // // Sends system message to the connection.
-  // public sendSystemMessage(message: string, type: Syslog.Type)
-  // {
-  //   if (this.isOpen())
-  //   {
-  //     let packet = new SystemMessage(message, type);
-
-  //     this.send(packet);
-  //   }
-  // }
-
-  // ---------------- Event handlers --------------------
-
   private static onBeforeUnload(event: BeforeUnloadEvent)
   {
     if (this.connection === "Not connected")
@@ -180,6 +150,36 @@ export class Connection extends Socket
     // from onBeforeUnload() and we check for it in ServerSocket.onClose().
     this.connection.close(WebSocketEvent.TAB_CLOSED);
   }
+
+  // ---------------- Public methods --------------------
+
+  // ! Throws exception on error.
+  public setZone(zone: Zone)
+  {
+    /// TODO: Výhledově bude player cestovat do různých zón, takže
+    ///  se určitě bude přesetovávat existující zóna. Zatím si to tu
+    ///  ale nechám, dokud mám jen jednu zónu.
+    if (this.zone !== "Isn't assigned")
+    {
+      throw new Error(`Zone is already assigned to the connection`);
+    }
+
+    this.zone = zone;
+  }
+
+  // Disabled for now
+  // // Sends system message to the connection.
+  // public sendSystemMessage(message: string, type: Syslog.Type)
+  // {
+  //   if (this.isOpen())
+  //   {
+  //     let packet = new SystemMessage(message, type);
+
+  //     this.send(packet);
+  //   }
+  // }
+
+  // ---------------- Event handlers --------------------
 
   // ~ Overrides Client.Socket.onOpen().
   protected onOpen(event: Types.OpenEvent)
