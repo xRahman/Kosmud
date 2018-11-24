@@ -1,3 +1,9 @@
+TODO: Hodit ShipSound do ShipModel.
+[done]
+
+TODO: Hodit ShipExhausts do ShipModel.
+[done]
+
 TODO: Hmm, ShipAudio by asi bylo lepší než ShipSound.
 [done]
 

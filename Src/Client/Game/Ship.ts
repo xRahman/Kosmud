@@ -1,15 +1,11 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/FlightScene/ShipModel";
-import { ShipAudio } from "../../Client/FlightScene/ShipAudio";
-import { ShipExhausts } from "../../Client/Game/ShipExhausts";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
-  private readonly exhausts: ShipExhausts;
   private readonly graphics: ShipModel;
-  private readonly sound: ShipAudio;
 
   /// Tohle je zděděný z Vehicle.
   // private readonly vectors: Ship.Vectors =
@@ -27,15 +23,12 @@ export class Ship extends Shared.Ship
   {
     super();
 
+    /// TODO: Tohle přesunout až do create().
     // ! Throws exception on error.
     // this.graphics = new ShipGraphics(scene, shape);
     /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
     const tmp: any = {};
     this.graphics = new ShipModel(scene, tmp);
-    this.sound = new ShipAudio(scene);
-
-    // ! Throws exception on error.
-    this.exhausts = new ShipExhausts(this.graphics, this.sound);
 
     /// Tohle jsem přesunul do EnterFlightResponse.createShip().
     // this.setPosition(position);
@@ -85,6 +78,7 @@ export class Ship extends Shared.Ship
     // this.graphics.drawVectors(this.vectors);
   }
 
+  /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
   public updateExhausts
   (
     forwardThrustRatio: number,
@@ -92,7 +86,7 @@ export class Ship extends Shared.Ship
     torqueRatio: number
   )
   {
-    this.exhausts.update
+    this.graphics.updateExhausts
     (
       forwardThrustRatio,
       leftwardThrustRatio,

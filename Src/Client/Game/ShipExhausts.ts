@@ -31,21 +31,17 @@ export class ShipExhausts
   private readonly rear: Exhaust;
 
   // ! Throws exception on error.
-  constructor
-  (
-    graphics: ShipModel,
-    sound: ShipAudio
-  )
+  constructor(model: ShipModel, sound: ShipAudio)
   {
     const animationName = "Exhaust yellow rectangular Animation";
 
     // ! Throws exception on error.
-    graphics.createExhaustSpriteAnimation(animationName);
+    model.createExhaustSpriteAnimation(animationName);
 
     this.front =
     {
       // ! Throws exception on error.
-      sprites: graphics.createExhaustSprites
+      sprites: model.createExhaustSprites
       (
         FRONT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
@@ -56,7 +52,7 @@ export class ShipExhausts
     this.frontLeft =
     {
       // ! Throws exception on error.
-      sprites: graphics.createExhaustSprites
+      sprites: model.createExhaustSprites
       (
         FRONT_LEFT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
@@ -67,7 +63,7 @@ export class ShipExhausts
     this.frontRight =
     {
       // ! Throws exception on error.
-      sprites: graphics.createExhaustSprites
+      sprites: model.createExhaustSprites
       (
         FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
@@ -78,7 +74,7 @@ export class ShipExhausts
     this.rearLeft =
     {
       // ! Throws exception on error.
-      sprites: graphics.createExhaustSprites
+      sprites: model.createExhaustSprites
       (
         REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
@@ -89,7 +85,7 @@ export class ShipExhausts
     this.rearRight =
     {
       // ! Throws exception on error.
-      sprites: graphics.createExhaustSprites
+      sprites: model.createExhaustSprites
       (
         REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
@@ -100,7 +96,7 @@ export class ShipExhausts
     this.rear =
     {
       // ! Throws exception on error.
-      sprites: graphics.createExhaustSprites
+      sprites: model.createExhaustSprites
       (
         REAR_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName

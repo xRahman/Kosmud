@@ -16,8 +16,15 @@ TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
     - V tom případě by se to ale asi nemělo jmenovat ShipGraphics. Jak?
       - ShipMedia? ShipMultimedia? ShipAudiovisuals?
       ShipModel, ha!
-TODO: Hodit ShipSound do ShipModel.
-TODO: Hodit ShipExhausts do ShipModel.
+
+TODO: Přejmenovat property Client/Ship.graphics na model.
+
+TODO: Vyhodit vyrábění tilemapy z konstruktoru ShipModelu
+  (tilemapa se bude vyrábět v creatu flightScény).
+
+
+TODO: Přejmenovat Client/Engine/Container na GraphicsContainer
+- včetně proměnné.
 
 
 TODO: Vyrábět v zóně seznam shapů

@@ -7,6 +7,8 @@ import { Physics } from "../../Shared/Physics/Physics";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
 import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
+import { ShipAudio } from "../../Client/FlightScene/ShipAudio";
+import { ShipExhausts } from "../../Client/Game/ShipExhausts";
 import { Ship } from "../../Client/Game/Ship";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
@@ -24,6 +26,9 @@ export class ShipModel
   private readonly basicShipsTilemap: Tilemap;
   private readonly shipSprites: Array<Sprite>;
   private readonly vectors: VectorGraphics;
+
+  private readonly exhausts: ShipExhausts;
+  private readonly audio: ShipAudio;
 
   private readonly shapeGraphics: ShapeGraphics;
 
@@ -56,6 +61,11 @@ export class ShipModel
     this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
 
     this.vectors = new VectorGraphics(scene);
+
+    this.audio = new ShipAudio(scene);
+
+    // ! Throws exception on error.
+    this.exhausts = new ShipExhausts(this, this.audio);
   }
 
   // ------------- Public static methods ----------------
@@ -145,6 +155,24 @@ export class ShipModel
       }
     );
   }
+
+  /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
+  public updateExhausts
+  (
+    forwardThrustRatio: number,
+    leftwardThrustRatio: number,
+    torqueRatio: number
+  )
+  {
+    this.exhausts.update
+    (
+      forwardThrustRatio,
+      leftwardThrustRatio,
+      torqueRatio
+    );
+  }
+
+  // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
   private createShipSprites()
