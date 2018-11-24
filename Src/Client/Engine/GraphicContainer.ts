@@ -7,7 +7,7 @@
 import { Scene } from "../../Client/Engine/Scene";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
-export class Container extends PhaserObject
+export class GraphicContainer extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Container;
 

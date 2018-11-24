@@ -1,6 +1,6 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Engine/Sprite";
-import { Container } from "../../Client/Engine/Container";
+import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Scene } from "../../Client/Engine/Scene";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 import { Physics } from "../../Shared/Physics/Physics";
@@ -22,7 +22,7 @@ const HULL_TILEMAP_OBJECT_NAME = "Hull";
 
 export class ShipModel
 {
-  private readonly container: Container;
+  private readonly graphicContainer: GraphicContainer;
   private readonly basicShipsTilemap: Tilemap;
   private readonly shipSprites: Array<Sprite>;
   private readonly vectors: VectorGraphics;
@@ -39,8 +39,8 @@ export class ShipModel
     shape: Physics.Shape,
   )
   {
-    this.container = new Container(scene);
-    this.container.setDepth(FlightScene.Z_ORDER_SHIPS);
+    this.graphicContainer = new GraphicContainer(scene);
+    this.graphicContainer.setDepth(FlightScene.Z_ORDER_SHIPS);
 
     /// TODO: Tilemapu bude vyrábět zóna (asi v create()).
     this.basicShipsTilemap = new Tilemap
@@ -58,7 +58,12 @@ export class ShipModel
 
     // ! Throws exception on error.
     this.shipSprites = this.createShipSprites();
-    this.shapeGraphics = new ShapeGraphics(scene, shape, this.container);
+    this.shapeGraphics = new ShapeGraphics
+    (
+      scene,
+      shape,
+      this.graphicContainer
+    );
 
     this.vectors = new VectorGraphics(scene);
 
@@ -101,12 +106,12 @@ export class ShipModel
 
   public setPosition(position: Vector)
   {
-    this.container.setPosition(position);
+    this.graphicContainer.setPosition(position);
   }
 
   public setRotation(rotation: number)
   {
-    this.container.setRotation(rotation);
+    this.graphicContainer.setRotation(rotation);
   }
 
   public drawVectors(vectors: Ship.Vectors)
@@ -148,7 +153,7 @@ export class ShipModel
       EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
       {
         animationName,
-        container: this.container,
+        graphicContainer: this.graphicContainer,
         // This allows us to scale exhausts animations from the
         // start rather than from the middle.
         origin: { x: 0, y: 0.5 }
@@ -184,7 +189,7 @@ export class ShipModel
       HULL_TILEMAP_OBJECT_NAME,
       BASIC_SHIPS_TEXTURE_ID,
       {
-        container: this.container
+        graphicContainer: this.graphicContainer
       }
     );
   }

@@ -6,7 +6,7 @@
 
 import { Vector } from "../../Shared/Physics/Vector";
 import { Scene } from "../../Client/Engine/Scene";
-import { Container } from "../../Client/Engine/Container";
+import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Sprite extends PhaserObject
@@ -81,8 +81,8 @@ export class Sprite extends PhaserObject
     if (options.animationName !== undefined)
       this.playAnimation(options.animationName);
 
-    if (options.container !== undefined)
-      options.container.add(this);
+    if (options.graphicContainer !== undefined)
+      options.graphicContainer.add(this);
 
     if (options.origin)
       this.setOrigin(options.origin);
@@ -155,7 +155,7 @@ export namespace Sprite
   export interface Options
   {
     animationName?: string;
-    container?: Container;
+    graphicContainer?: GraphicContainer;
     origin?: { x: number; y: number };
   }
 }

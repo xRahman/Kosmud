@@ -23,10 +23,6 @@ TODO: Vyhodit vyrábění tilemapy z konstruktoru ShipModelu
   (tilemapa se bude vyrábět v creatu flightScény).
 
 
-TODO: Přejmenovat Client/Engine/Container na GraphicsContainer
-- včetně proměnné v ShipModel.
-
-
 TODO: Vyrábět v zóně seznam shapů
 - na serveru
   - tam se to snad dělá

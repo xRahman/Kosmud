@@ -1,3 +1,7 @@
+TODO: Přejmenovat Client/Engine/Container na GraphicContainer
+- včetně proměnné v ShipModel.
+[done]
+
 TODO: Umožnit, aby Ship.model nemusel existovat.
 - a vyrábět ho až v create().
 [done]
