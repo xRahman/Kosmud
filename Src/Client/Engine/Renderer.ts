@@ -1,6 +1,7 @@
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Body } from "../../Client/Gui/Body";
+import { Zone } from "../../Client/Game/Zone";
 
 let phaserGame: Phaser.Game | "Doesn't exist" = "Doesn't exist";
 
@@ -24,8 +25,9 @@ export namespace Renderer
   }
 
   // ! Throws exception on error.
-  export function startFlightScene()
+  export function startFlightScene(zone: Zone)
   {
+    flightScene.setZone(zone);
     // ! Throws exception on error.
     flightScene.start(getPhaserGame());
   }

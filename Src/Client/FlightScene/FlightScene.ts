@@ -1,5 +1,6 @@
 import { ERROR } from "../../Shared/Log/ERROR";
 import { Ship } from "../../Client/Game/Ship";
+import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Engine/Scene";
@@ -17,6 +18,8 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.contents.
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
 
+  private zone: Zone | "Not assigned" = "Not assigned";
+
   // private readonly addRequestQueue = new Array<EnterFlightResponse>();
 
   constructor(name: string)
@@ -25,6 +28,11 @@ export class FlightScene extends Scene
   }
 
   // ---------------- Public methods --------------------
+
+  public setZone(zone: Zone)
+  {
+    this.zone = zone;
+  }
 
   public getShip(): Ship | "Doesn't exist"
   {
@@ -48,13 +56,28 @@ export class FlightScene extends Scene
   //   }
   // }
 
+  // ! Throws exception on error.
   // This method is run by Phaser.
   public preload()
   {
+    if (this.zone === "Not assigned")
+    {
+      throw new Error(`Failed to preload scene '${this.name}'`
+        + ` because it doesn't have a zone attached. Make sure`
+        + ` you call setZone() on this scene before you start`
+        + ` it`);
+    }
+
     /// Zóna se bude posílat v rámci EnterFlightResponse. V ten moment se
     /// asi bude teprve vyrábět FlightScene, takže zóna by měla nejspíš už
     /// existovat a bejt setnutá do FlightScene. Takže tady prostě vezmu
     /// this.zone.
+
+    /// TODO: Preload dat podle toho, co je uloženo v zóně.
+    ///  (asi by se tu mohlo volat zone.preload() nebo zone.init()
+    ///   s tím, že parametr bude json object preloadnutých tilemap
+    ///   - i když blbost, zone.init() se asi bude dělat až v creatu(),
+    ///   tady se jen zavolá loadování).
 
     this.preloadAnimatedTilesPlugin();
 

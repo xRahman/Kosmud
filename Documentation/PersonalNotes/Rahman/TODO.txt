@@ -1,8 +1,24 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Startnout flightZónu
-  (nejspíš v EnterFlightResponse.process()).
+TODO: FlightScene.preload()
+
+TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
+  a dělat to až z FlightScene.create()
+  (nejspíš provolat scene.create(), která provolá create() jednotlivých
+   lodí ve scéně).
+- problém je, že pak grafické bazmeky v Shipu nebudou inicializované
+  v konstruktoru. Možná je všechny sloučit do ShipGraphics?
+  - ono to tak vlastně i je, jen exhausty a zvuky jsou mimo.
+    (což možná není nutný, exhausty jsou očividně grafickej bazmek,
+     takže klidně mohou být v shipGraphics.
+  - Zvuky by tam ideálně měly bejt taky.
+    - V tom případě by se to ale asi nemělo jmenovat ShipGraphics. Jak?
+      - ShipMedia? ShipMultimedia? ShipAudiovisuals?
+      ShipModel, ha!
+TODO: Přejmenovat ShipGraphics na ShipModel
+TODO: Hodit do něj ShipAudio.
+
 
 TODO: Vyrábět v zóně seznam shapů
 - na serveru
@@ -12,6 +28,9 @@ Začnu tím, že flight scénu nebudu předávat do konfigu Phaser.Game
 (tím se totiž rovnou pustí preload() a create()), ale pouze ji vytvořím
  a preload pustím později ručně.
 - FlightScene nesmí vyžadovat zónu.
+
+TODO: Zkontrolovat, že se při vytvoření shipy na clientu
+  správně získá shape ze zóny.
 
 TODO: Animation by asi mohla bejt samostatná classa
   (teď se to dělá přes Scene).
@@ -29,6 +48,13 @@ Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
   - Možná bych to ale mohl předělat, vrátit properties do PhysicsConfigu,
     nebo tak něčeho a PhysicsBody vyrábat opravdu až v addToPhysicsWorld().
     - asi jo.
+
+-----
+
+Note:
+  Scénu držím v connection. Asi to není úplně logický místo, ale předpokládám,
+  že na zónu budu přistupovat z nějakýho packetu (ZoneUpdate, nejspíš), takže
+  se tam bude hodit.
 
 -----
 
@@ -150,15 +176,6 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
     jim properties (efektivně to je totéž jako load entity z disku).
 {tohle si tu nechám, ať vím, kam směřuju}
 
-TODO: Renderer by se možná mohl jmenovat Engine, ať je to stejně jako na
-  serveru.
-
-
-OK, takže TODO:
-=================
-Na klientu bude mít scéna odkaz na zónu, ze které se vytváří.
-- Zóna bude zatím jen jedna, ale i tak ji udělat rovnou jako classu
-  a instancnout ji.
 
 
 TODO: Umožnit na klientu víc lodí.
@@ -166,8 +183,6 @@ TODO: Umožnit na klientu víc lodí.
   (getPlayerShip() je ale ok řešení, asi by šlo použít i na klientu).
 - tohle pořeší předělání na scény, ale i tak to projít
 
-TODO: Scene by měla wrappovat Phaser.Scene, ne extendovat
-  (všude mám wrappery jen scéna je potomek).
 
 TODO: doladit vizuály exhaustů
 - úlně je schovávat, když nejsou aktivní.

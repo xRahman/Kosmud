@@ -24,7 +24,9 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     /// Tzn. tady je potřeba creatnout zónu (nebo ji prostě
     /// deserializovat z packetu).
 
-    connection.setZone(this.createZone());
+    const zone = this.createZone();
+
+    connection.setZone(zone);
 
     /// TODO: Následně se tady vyrobí flight scéna z dat zóny.
 
@@ -33,8 +35,10 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     /// (Zatím ale budu loď přidávat rovnou do zóny)
     // Renderer.getFlightScene().addShip(this);
 
-    /// TODO: Znovu zprovoznit.
-    // const flightScene = Renderer.createFlightScene(zone);
+    // This will cause Phaser engine to call preload() and creat()
+    // on the flight scene and then periodically call update() and
+    // draw the scene.
+    Renderer.startFlightScene(zone);
   }
 
   // ---------------- Private methods -------------------
@@ -52,17 +56,6 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     ship.setShapeId(Zone.FIGHTER_SHAPE_ID);
 
     return ship;
-
-    // return new Ship
-    // (
-    //   /// Problém: Ship potřebuje scénu (aby si mohla vytvořit grafiku).
-    //   ///   Já ji ale chci vytvořit a přidat do zóny ještě předtím, než
-    //   ///   vytvořím scénu.
-    //   scene,
-    //   this.shipShape,
-    //   this.shipPosition,
-    //   this.shipRotation
-    // );
   }
 
   /// TEST

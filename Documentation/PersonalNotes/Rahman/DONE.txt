@@ -1,3 +1,15 @@
+TODO: Startnout flightZónu
+  (nejspíš v EnterFlightResponse.process()).
+[done]
+
+TODO: Renderer by se možná mohl jmenovat Engine, ať je to stejně jako na
+  serveru.
+[done]
+
+TODO: Scene by měla wrappovat Phaser.Scene, ne extendovat
+  (všude mám wrappery jen scéna je potomek).
+[done]
+
 TODO: První packet na server můžu poslat, až když se spustí onOpen event.
 - buď sendEnterFlightRequest() přesunu tam,
 - nebo z connection.connect() udělám async fci, kterou z KosmudClient.start()
