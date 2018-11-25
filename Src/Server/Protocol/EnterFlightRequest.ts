@@ -25,14 +25,23 @@ export class EnterFlightRequest extends Shared.EnterFlightRequest
   // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
-    /// TEST
-    const fighter = fakeLoadFighter();
+    const account = connection.getAccount();
 
-    // ! Throws exception on error.
-    connection.getAccount().setShip(fighter);
+    if (account.hasShip())
+    {
+      sendResponse(connection, account.getShip());
+    }
+    else
+    {
+      /// TEST
+      const fighter = fakeLoadFighter();
 
-    // ! Throws exception on error.
-    sendResponse(connection, fighter);
+      // ! Throws exception on error.
+      account.setShip(fighter);
+
+      // ! Throws exception on error.
+      sendResponse(connection, fighter);
+    }
   }
 }
 
@@ -46,7 +55,7 @@ function fakeLoadFighter()
   const fighter = new Ship();
 
   /// TEST
-  fighter.setId("TEST_ID_00");
+  fighter.setId("TEST_FIGHTER_ID");
 
   /// TODO: Nasetovat properties, které se časem budou setovat
   /// editorem a loadovat.

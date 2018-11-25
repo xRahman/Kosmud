@@ -19,9 +19,9 @@ export class EnterFlightResponse extends Packet
     ///       - to, co player zrovna vidí
     /// TODO: Naopak by se neměl posílat shape
     /// (ten se na klientu vytáhne z dat)
-    public shipShape: Physics.Shape,
-    public shipPosition: Vector,
-    public shipRotation: number
+    public shipShape: Physics.Shape = [],
+    public shipPosition: Vector = new Vector(),
+    public shipRotation: number = 0
   )
   {
     super();

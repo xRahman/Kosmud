@@ -1,3 +1,19 @@
+TODO: Aha, kurning. Při reloadu browser tabu se vyrobí nová connection,
+  takže starej account zapomene...
+ok, prozatím vyřešeno (Account je natvrdo v Accounts)
+[done]
+
+TODO: Když reloadnu browser tab, tak se znovu pošele EnterFlightRequest
+  a znovu se vyrobí fighter (se stejným idčkem, takže neprojde přidání
+  do scény).
+Co s tím?
+- buď musím při disconnectu player ship vyhodit ze scény a při dalším
+  connectu ji tam zas vrátit (to asi nechci, tím by se mimo jiné dalo
+  slušně cheatovat)
+- nebo musím testovat, jestli ta loď už ve scéně je.
+Nějak jsem to prozatím ohackoval
+[done]
+
 TODO: Create zvuků.
 - zvuky by si asi měla vyrábět každá loď.
 Idčko zvuku v ship.create() by se nemělo brát z preloadDat, ale z dat

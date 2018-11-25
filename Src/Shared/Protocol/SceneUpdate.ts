@@ -11,7 +11,16 @@ import { Vector } from "../../Shared/Physics/Vector";
 
 export class SceneUpdate extends Packet
 {
-  constructor(public shipStates: Array<SceneUpdate.ShipState>)
+  // public shipStates: Array<SceneUpdate.ShipState> = [];
+
+  // constructor(shipStates: Array<SceneUpdate.ShipState>)
+  // {
+  //   super();
+
+  //   this.shipStates = shipStates;
+  // }
+
+  constructor(public shipStates: Array<SceneUpdate.ShipState> = [])
   {
     super();
   }

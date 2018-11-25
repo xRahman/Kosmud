@@ -18,6 +18,13 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    /// DEBUG:
+    console.log(this);
+
+    /// If there are no ships in the zone, do nothing.
+    if (this.shipStates.length === 0)
+      return;
+
     /// TODO: Odhackovat:
     const shipState = this.shipStates[0];
     const ship = Renderer.flightScene.getShip();

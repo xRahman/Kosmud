@@ -1,7 +1,12 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
--mark-: Client/Zone.preload()
+TODO: Packety se serializují, takže bych neměl spoléhat na to, že se provede
+  konstruktor. Navíc prázná pole a objekty se vůbec neposílají a spoléhá se,
+  že jsou na druhé straně inicializované na nějakou defaultní hodnotu.
+=> Asi bych měl ve všech packetech důsledně všem propertiesům dávat defaultní
+  hodnoty.
+=> A možná bych v Serializable objektech vůbec neměl používat konstruktor.
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.

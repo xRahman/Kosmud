@@ -33,6 +33,8 @@ export class Ship extends Shared.Ship
   ///   se nachází - takže parametr asi není potřeba.
   public create(scene: FlightScene, zone: Zone)
   {
+    console.log(`Ship.create()`);
+
     if (this.model !== "Not created")
     {
       throw new Error(`Ship ${this.debugId} already has a model`);
@@ -120,8 +122,8 @@ export class Ship extends Shared.Ship
   {
     if (this.model === "Not created")
     {
-      throw new Error(`Ship ${this.debugId} doesn't have a model yet`
-        + ` make sure create() is called before whatever has just been`
+      throw new Error(`Ship ${this.debugId} doesn't have a model yet.`
+        + ` Make sure create() is called before whatever has just been`
         + ` called`);
     }
 

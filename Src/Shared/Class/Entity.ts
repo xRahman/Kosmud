@@ -29,7 +29,7 @@ import { ID, Serializable } from "../../Shared/Class/Serializable";
 
 export class Entity extends Serializable
 {
-  private id = "Not assigned";
+  private id = "<missing id>";
   private name = "<missing name>";
 
   // --------------- Public methods ---------------------
@@ -64,7 +64,7 @@ export class Entity extends Serializable
   public getId()
   {
     const hasOwnValidId = this.hasOwnProperty(ID)
-      && this.id !== "Not assigned"
+      && this.id !== "<missing id>"
       && this.id !== undefined
       && this.id !== null
       && this.id !== "";
@@ -90,7 +90,7 @@ export class Entity extends Serializable
     // (not just the one inherited from our prototype),
     // because if we don't, value of 'this.id' would be
     // that of our prototype.
-    if (this.hasOwnProperty(ID) && this.id !== "Not assigned")
+    if (this.hasOwnProperty(ID) && this.id !== "<missing id>")
     {
       throw new Error(`Failed to set ${ID} of entity ${this.debugId}`
         + ` because it already has an ${ID}`);

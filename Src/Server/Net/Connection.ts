@@ -19,7 +19,7 @@ import { KeyboardInput } from "../../Server/Protocol/KeyboardInput";
 import { MouseInput } from "../../Server/Protocol/MouseInput";
 import { SetWaypoint } from "../../Server/Protocol/SetWaypoint";
 import { EnterFlightRequest } from "../../Server/Protocol/EnterFlightRequest";
-import { Account } from "../../Server/Account/Account";
+import { Accounts } from "../../Server/Account/Accounts";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
@@ -39,7 +39,7 @@ export class Connection extends Socket
 {
   /// TODO: Výhledově se samozřejmě bude Account vyrábět až při loginu.
   // public account: Account | "Not logged in" = "Not logged in";
-  public account = new Account();
+  public account = Accounts.account;
 
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
