@@ -9,6 +9,7 @@
 // import { JsonObject } from "../../Shared/Class/JsonObject";
 // import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Ship } from "../../Client/Game/Ship";
+import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import * as Shared from "../../Shared/Game/Zone";
 
@@ -20,14 +21,14 @@ export class Zone extends Shared.Zone
 
   // ---------------- Public methods --------------------
 
-  public async load()
+  public async preload(scene: FlightScene)
   {
     // preloadTextures(Shared.Zone.preloadData.textures);
     // preloadAtlases(Shared.Zone.preloadData.atlases);
 
-    await this.loadTilemaps(Shared.Zone.preloadData.tilemaps);
+    await this.loadTilemaps(this.preloadData.tilemaps);
 
-    this.initShapes(Shared.Zone.preloadData.shapes);
+    this.initShapes(this.preloadData.shapes);
   }
 
   // --------------- Protected methods ------------------

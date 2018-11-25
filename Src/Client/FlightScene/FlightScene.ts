@@ -68,6 +68,7 @@ export class FlightScene extends Scene
         + ` it`);
     }
 
+    this.zone.preload(this);
     /// Zóna se bude posílat v rámci EnterFlightResponse. V ten moment se
     /// asi bude teprve vyrábět FlightScene, takže zóna by měla nejspíš už
     /// existovat a bejt setnutá do FlightScene. Takže tady prostě vezmu

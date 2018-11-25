@@ -1,6 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+-mark-: Client/Zone.preload()
+
 TODO: FlightScene.preload()
 - loadovat podle seznamu v zóně.
 

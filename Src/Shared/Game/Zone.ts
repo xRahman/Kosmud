@@ -13,6 +13,42 @@ import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
 
 export abstract class Zone extends ContainerEntity
 {
+  protected readonly preloadData: Zone.PreloadData =
+  {
+    textures:
+    [
+      {
+        textureId: "Basic ships Texture",
+        texturePath: "Textures/Ships/basic_ships.png"
+      }
+    ],
+    atlases:
+    [
+      {
+        atlasId: "Exhaust yellow rectangular Texture atlas",
+        atlasJsonPath:
+          "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
+        textureDirectory: "Textures/Effects/Exhausts"
+      }
+    ],
+    tilemaps:
+    [
+      {
+        tilemapName: Zone.BASIC_SHIPS_TILEMAP,
+        tilemapJsonPath: "Tilemaps/Ships/basic_ships.json"
+      }
+    ],
+    shapes:
+    [
+      {
+        shapeId: Zone.FIGHTER_SHAPE_ID,
+        tilemapName: Zone.BASIC_SHIPS_TILEMAP,
+        objectLayerName: "Basic fighter",
+        objectName: "Hull"
+      }
+    ]
+  };
+
   protected readonly ships = new Set<Ship>();
   protected readonly tilemaps = new Map<string, Tilemap>();
   protected readonly physicsShapes = new Map<string, Physics.Shape>();
@@ -70,8 +106,6 @@ export abstract class Zone extends ContainerEntity
       this
     );
   }
-
-  public abstract async load(): Promise<void>;
 
   // ! Throws exception on error.
   public createPhysicsWorld()
@@ -151,7 +185,7 @@ export namespace Zone
 {
   export const FIGHTER_SHAPE_ID = "Fighter Shape id";
 
-  const BASIC_SHIPS_TILEMAP = "Basic ships Tilemap";
+  export const BASIC_SHIPS_TILEMAP = "Basic ships Tilemap";
 
   export interface TextureConfig
   {
@@ -180,47 +214,11 @@ export namespace Zone
     objectName: string;
   }
 
-  interface PreloadData
+  export interface PreloadData
   {
     textures: Array<TextureConfig>;
     atlases: Array<TextureAtlasConfig>;
     tilemaps: Array<TilemapConfig>;
     shapes: Array<ShapeConfig>;
   }
-
-  export const preloadData: PreloadData =
-  {
-    textures:
-    [
-      {
-        textureId: "Basic ships Texture",
-        texturePath: "Textures/Ships/basic_ships.png"
-      }
-    ],
-    atlases:
-    [
-      {
-        atlasId: "Exhaust yellow rectangular Texture atlas",
-        atlasJsonPath:
-          "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
-        textureDirectory: "Textures/Effects/Exhausts"
-      }
-    ],
-    tilemaps:
-    [
-      {
-        tilemapName: BASIC_SHIPS_TILEMAP,
-        tilemapJsonPath: "Tilemaps/Ships/basic_ships.json"
-      }
-    ],
-    shapes:
-    [
-      {
-        shapeId: FIGHTER_SHAPE_ID,
-        tilemapName: BASIC_SHIPS_TILEMAP,
-        objectLayerName: "Basic fighter",
-        objectName: "Hull"
-      }
-    ]
-  };
 }
