@@ -22,9 +22,9 @@ export class Zone extends Shared.Zone
 
   public async load()
   {
-    await this.loadTilemaps(this.preloadData.tilemaps);
+    await this.loadTilemaps();
 
-    this.initShapes(this.preloadData.shapes);
+    this.initShapes();
   }
 
   public getSceneUpdate()
@@ -41,9 +41,9 @@ export class Zone extends Shared.Zone
 
   // ---------------- Private methods -------------------
 
-  private async loadTilemaps(configs: Array<Shared.Zone.TilemapConfig>)
+  private async loadTilemaps()
   {
-    for (const config of configs)
+    for (const config of this.preloadData.tilemaps)
     {
       const tilemap = await createTilemap(config);
 
@@ -64,7 +64,7 @@ async function createTilemap(config: Shared.Zone.TilemapConfig)
   const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
   const jsonData = await loadTilemapJsonData(tilemapJsonPath);
 
-  return new Tilemap(config.tilemapName, jsonData);
+  return new Tilemap(config.tilemapId, jsonData);
 }
 
 async function loadTilemapJsonData(jsonFilePath: string)

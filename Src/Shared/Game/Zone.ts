@@ -42,7 +42,7 @@ export abstract class Zone extends ContainerEntity
     tilemaps:
     [
       {
-        tilemapName: Zone.BASIC_SHIPS_TILEMAP_ID,
+        tilemapId: Zone.BASIC_SHIPS_TILEMAP_ID,
         tilemapJsonPath: "Tilemaps/Ships/basic_ships.json"
       }
     ],
@@ -144,9 +144,9 @@ export abstract class Zone extends ContainerEntity
   }
 
   // ! Throws exception on error.
-  protected initShapes(configs: Array<Zone.ShapeConfig>)
+  protected initShapes()
   {
-    for (const config of configs)
+    for (const config of this.preloadData.shapes)
     {
       // ! Throws exception on error.
       const tilemap = this.getTilemap(config.tilemapName);
@@ -229,7 +229,7 @@ export namespace Zone
 
   export interface TilemapConfig
   {
-    tilemapName: string;
+    tilemapId: string;
     tilemapJsonPath: string;
   }
 

@@ -9,7 +9,7 @@ import { Vehicle } from "../../Shared/Physics/Vehicle";
 
 export class Ship extends Vehicle
 {
-  protected readonly tilemapName = Zone.BASIC_SHIPS_TILEMAP_ID;
-
+  protected readonly tilemapId = Zone.BASIC_SHIPS_TILEMAP_ID;
   protected readonly engineSoundId = "Ship Engine Sound";
+  protected readonly physicsShapeId = Zone.FIGHTER_SHAPE_ID;
 }

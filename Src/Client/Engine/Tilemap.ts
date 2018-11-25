@@ -3,6 +3,7 @@
 */
 
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Zone } from "../../Shared/Game/Zone";
 import { Scene } from "../../Client/Engine/Scene";
 import { Sprite } from "../../Client/Engine/Sprite";
 import * as Shared from "../../Shared/Engine/Tilemap";
@@ -14,15 +15,13 @@ export class Tilemap extends Shared.Tilemap
   constructor
   (
     private readonly scene: Scene,
-    name: string,
-    // String id of preloaded tilemap json data.
-    tilemapJsonDataId: string,
+    config: Zone.TilemapConfig,
     tilemapJsonData: object
   )
   {
-    super(name, tilemapJsonData);
+    super(config.tilemapId, tilemapJsonData);
 
-    this.phaserTilemap = scene.createTilemap(tilemapJsonDataId);
+    this.phaserTilemap = scene.createTilemap(config.tilemapId);
   }
 
   // ---------------- Public methods --------------------

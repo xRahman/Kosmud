@@ -1,21 +1,18 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
-import { Scene } from "../../Client/Engine/Scene";
 import { Tilemap } from "../../Client/Engine/Tilemap";
-import { Physics } from "../../Shared/Physics/Physics";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { ShapeGraphics } from "../../Client/FlightScene/ShapeGraphics";
 import { VectorGraphics } from "../../Client/FlightScene/VectorsGraphics";
 import { ShipAudio } from "../../Client/FlightScene/ShipAudio";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
 import { Ship } from "../../Client/Game/Ship";
+import { Physics } from "../../Shared/Physics/Physics";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
 const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID =
   "Exhaust yellow rectangular Texture atlas";
-const BASIC_SHIPS_TILEMAP_ID = "Basic ships Tilemap";
-const BASIC_SHIPS_TILEMAP_DATA_ID = "Basic ships Tilemap data";
 
 const BASIC_FIGHTER_TILEMAP_LAYER = "Basic fighter";
 const HULL_TILEMAP_OBJECT_NAME = "Hull";
@@ -23,7 +20,6 @@ const HULL_TILEMAP_OBJECT_NAME = "Hull";
 export class ShipModel
 {
   private readonly graphicContainer: GraphicContainer;
-  private readonly basicShipsTilemap: Tilemap;
   private readonly shipSprites: Array<Sprite>;
   private readonly vectors: VectorGraphics;
 
@@ -36,26 +32,13 @@ export class ShipModel
   constructor
   (
     private readonly scene: FlightScene,
+    private readonly tilemap: Tilemap,
     shape: Physics.Shape,
     engineSoundId: string
   )
   {
     this.graphicContainer = new GraphicContainer(scene);
     this.graphicContainer.setDepth(FlightScene.Z_ORDER_SHIPS);
-
-    /// TODO: Tilemapu bude vyrábět zóna (asi v create()).
-    this.basicShipsTilemap = new Tilemap
-    (
-      scene,
-      /// TODO: Jméno tilemapy by se mělo brát
-      /// ze Shared/Game/Ship/TILEMAP_NAME (aby bylo stejný na klientu
-      /// i na serveru - je to ostatně stejná tilemapa). Teď není Client/Ship
-      /// zděděná ze Shared/Ship, takže to není tak jednoduchý.
-      BASIC_SHIPS_TILEMAP_ID,
-      BASIC_SHIPS_TILEMAP_DATA_ID,
-      /// TODO: Passovat samozřejmě JSON object s daty tilemapy.
-      {}
-    );
 
     // ! Throws exception on error.
     this.shipSprites = this.createShipSprites();
@@ -148,7 +131,7 @@ export class ShipModel
   : Array<Sprite>
   {
     // ! Throws exception on error.
-    return this.basicShipsTilemap.createSprites
+    return this.tilemap.createSprites
     (
       BASIC_FIGHTER_TILEMAP_LAYER,
       tilemapObjectName,
@@ -185,7 +168,7 @@ export class ShipModel
   private createShipSprites()
   {
     // ! Throws exception on error.
-    return this.basicShipsTilemap.createSprites
+    return this.tilemap.createSprites
     (
       BASIC_FIGHTER_TILEMAP_LAYER,
       HULL_TILEMAP_OBJECT_NAME,

@@ -29,11 +29,9 @@ export class Zone extends Shared.Zone
 
   public create(scene: FlightScene)
   {
-    /// TODO: Vyrobit tilemapy z json dat.
-    createTilemaps();
-    this.initShapes(this.preloadData.shapes);
-
-    createShips();
+    this.createTilemaps(scene);
+    this.initShapes();
+    this.createShips(scene);
   }
 
   // --------------- Protected methods ------------------
@@ -58,6 +56,34 @@ export class Zone extends Shared.Zone
 //       {}
 //     );
 //   }
+
+  // ---------------- Private methods -------------------
+
+  private createTilemaps(scene: FlightScene)
+  {
+    for (const config of this.preloadData.tilemaps)
+    {
+      const tilemapJsonData = scene.getTilemapJsonData(config.tilemapId);
+
+      this.addTilemap(new Tilemap(scene, config, tilemapJsonData));
+    }
+  }
+
+  private createShips(scene: FlightScene)
+  {
+    for (const ship of this.ships)
+    {
+      ship.create(scene, this);
+    }
+  }
+
+  // ! Throws exception on error.
+  // ~ Overrides Shared.Zone.getTilemap().
+  //   (Override is needed to return client version of Tilemap.)
+  public getTilemap(name: string)
+  {
+    return super.getTilemap(name) as Tilemap;
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
@@ -111,6 +137,6 @@ function preloadTilemaps
 {
   for (const config of configs)
   {
-    scene.preloadTilemap(config.tilemapName, config.tilemapJsonPath);
+    scene.preloadTilemap(config.tilemapId, config.tilemapJsonPath);
   }
 }

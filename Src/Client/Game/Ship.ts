@@ -1,6 +1,7 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/FlightScene/ShipModel";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { Zone } from "../../Client/Game/Zone";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
@@ -28,19 +29,23 @@ export class Ship extends Shared.Ship
 
   // ! Throws exception on error.
   /// TODO: Tohle by se možná mohlo jmenovat createModel().
-  public create(scene: FlightScene)
+  /// TODO: Ship (obecně game entity) asi má odkaz na zónu, ve které
+  ///   se nachází - takže parametr asi není potřeba.
+  public create(scene: FlightScene, zone: Zone)
   {
     if (this.model !== "Not created")
     {
       throw new Error(`Ship ${this.debugId} already has a model`);
     }
 
-    /// TODO: Tohle přesunout až do create().
-    // ! Throws exception on error.
-    // this.graphics = new ShipGraphics(scene, shape);
-    /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
-    const tmp: any = {};
-    this.model = new ShipModel(scene, tmp, this.engineSoundId);
+    this.model = new ShipModel
+    (
+      scene,
+      // ! Throws exception on error.
+      zone.getTilemap(this.tilemapId),
+      zone.getPhysicsShape(this.physicsShapeId),
+      this.engineSoundId
+    );
   }
 
   // ! Throws exception on error.
