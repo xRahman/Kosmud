@@ -37,6 +37,7 @@ export class ShipModel
   (
     private readonly scene: FlightScene,
     shape: Physics.Shape,
+    engineSoundId: string
   )
   {
     this.graphicContainer = new GraphicContainer(scene);
@@ -67,7 +68,7 @@ export class ShipModel
 
     this.vectors = new VectorGraphics(scene);
 
-    this.audio = new ShipAudio(scene);
+    this.audio = new ShipAudio(scene, engineSoundId);
 
     // ! Throws exception on error.
     this.exhausts = new ShipExhausts(this, this.audio);
@@ -75,27 +76,28 @@ export class ShipModel
 
   // ------------- Public static methods ----------------
 
-  public static preload(scene: Scene)
-  {
-    scene.loadTexture
-    (
-      BASIC_SHIPS_TEXTURE_ID,
-      "Textures/Ships/basic_ships.png"
-    );
+  /// Tohle se teď dělá v zone.preload()
+  // public static preload(scene: Scene)
+  // {
+  //   scene.loadTexture
+  //   (
+  //     BASIC_SHIPS_TEXTURE_ID,
+  //     "Textures/Ships/basic_ships.png"
+  //   );
 
-    scene.loadTextureAtlas
-    (
-      EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
-      "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
-      "Textures/Effects/Exhausts"
-    );
+  //   scene.loadTextureAtlas
+  //   (
+  //     EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+  //     "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
+  //     "Textures/Effects/Exhausts"
+  //   );
 
-    scene.loadTilemapData
-    (
-      BASIC_SHIPS_TILEMAP_DATA_ID,
-      "Tilemaps/Ships/basic_ships.json"
-    );
-  }
+  //   scene.loadTilemapData
+  //   (
+  //     BASIC_SHIPS_TILEMAP_DATA_ID,
+  //     "Tilemaps/Ships/basic_ships.json"
+  //   );
+  // }
 
   // ---------------- Public methods --------------------
 

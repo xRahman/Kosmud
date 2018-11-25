@@ -5,10 +5,8 @@
   (all objects in the same zone can physically influence each other).
 */
 
-import { REPORT } from "../../Shared/Log/REPORT";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
-// import { Connection } from "../../Server/Net/Connection";
 import { Ship } from "../../Server/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
@@ -24,21 +22,9 @@ export class Zone extends Shared.Zone
 
   public async load()
   {
-    /// Tohle je blbost, na serveru textury nepotřebuju ;-)
-    // preloadTextures(Shared.Zone.preloadData.textures);
-    // preloadAtlases(Shared.Zone.preloadData.atlases);
+    await this.loadTilemaps(this.preloadData.tilemaps);
 
-    await this.loadTilemaps(Shared.Zone.preloadData.tilemaps);
-
-    this.initShapes(Shared.Zone.preloadData.shapes);
-  }
-
-  public steerVehicles()
-  {
-    for (const ship of this.ships)
-    {
-      steerShip(ship);
-    }
+    this.initShapes(this.preloadData.shapes);
   }
 
   public getSceneUpdate()
@@ -53,24 +39,33 @@ export class Zone extends Shared.Zone
     return new SceneUpdate(shipStates);
   }
 
-  // --------------- Protected methods ------------------
+  // ---------------- Private methods -------------------
 
-  // ~ Overrides Shared.Zone.createTilemap().
-  // tslint:disable-next-line:prefer-function-over-method
-  protected async createTilemap(config: Shared.Zone.TilemapConfig)
+  private async loadTilemaps(configs: Array<Shared.Zone.TilemapConfig>)
   {
-    // Path is different on the server because server root is '/'
-    // and client root is '/Client'. And we also need to make sure
-    // that the part starts with './' on the sever (FileSystem
-    // checks that to prevent traversing out of project directory).
-    const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
-    const jsonData = await loadTilemapJsonData(tilemapJsonPath);
+    for (const config of configs)
+    {
+      const tilemap = await createTilemap(config);
 
-    return new Tilemap(config.tilemapName, jsonData);
+      this.addTilemap(tilemap);
+    }
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+// ~ Overrides Shared.Zone.createTilemap().
+async function createTilemap(config: Shared.Zone.TilemapConfig)
+{
+  // Path is different on the server because server root is '/'
+  // and client root is '/Client'. And we also need to make sure
+  // that the part starts with './' on the sever (FileSystem
+  // checks that to prevent traversing out of project directory).
+  const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
+  const jsonData = await loadTilemapJsonData(tilemapJsonPath);
+
+  return new Tilemap(config.tilemapName, jsonData);
+}
 
 async function loadTilemapJsonData(jsonFilePath: string)
 {
@@ -79,16 +74,4 @@ async function loadTilemapJsonData(jsonFilePath: string)
 
   // ! Throws exception on error.
   return JsonObject.parse(jsonData);
-}
-
-function steerShip(ship: Ship)
-{
-  try
-  {
-    ship.steer();
-  }
-  catch (error)
-  {
-    REPORT(error, `Failed to steer ship ${ship.debugId}`);
-  }
 }

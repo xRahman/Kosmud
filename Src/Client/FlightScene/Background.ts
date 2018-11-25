@@ -27,7 +27,7 @@ export class Background
 
   public static preload(scene: Scene)
   {
-    scene.loadTexture
+    scene.preloadTexture
     (
       BACKGROUND_TEXTURE_ID,
       "Textures/Background/deep_space0.jpg"

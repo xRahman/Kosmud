@@ -3,6 +3,23 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 
 -mark-: Client/Zone.preload()
 
+TODO: FlightSceneContents v původním významu postrádá smysl,
+  lodě a objekty teď budou ve scéně.
+  - pořád někde musí být waypoint (i když ten možná může bejt v ShipModelu)
+    a background (ten by zas mohl bejt v úplně jiný scéně...).
+  - každopádně pokud to zůstane, mělo by se to asi jmenovat jinak.
+{zatím to nechám být - je v tom background a waypoint}
+
+
+TODO: Mrknout se na serveru, jestli se initShapes() v zone.preload()
+  nemůže volat až v creatu (na serveru to je všechno async, ale i tak
+  by asi bylo lepší, aby to bylo stejně jako na klientu).
+- zone.create() na serveru vůbec nemám, ale mám tam createPhysicsWorld(),
+  s tím by se to možná dalo sloučit.
+
+TODO: zone.steerVehicles() by se možná dalo hodit do update()
+  (opět aby to bylo koncepčně stejně jako na klientu).
+
 TODO: FlightScene.preload()
 - loadovat podle seznamu v zóně.
 
@@ -19,6 +36,9 @@ TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
     - V tom případě by se to ale asi nemělo jmenovat ShipGraphics. Jak?
       - ShipMedia? ShipMultimedia? ShipAudiovisuals?
       ShipModel, ha!
+
+TODO: zone.update() se nikde nevolá
+  (tzn. se nevolá ani steerVehicles()).
 
 
 TODO: Vyhodit vyrábění tilemapy z konstruktoru ShipModelu

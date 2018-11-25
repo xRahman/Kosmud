@@ -60,15 +60,8 @@ export class FlightScene extends Scene
   // This method is run by Phaser.
   public preload()
   {
-    if (this.zone === "Not assigned")
-    {
-      throw new Error(`Failed to preload scene '${this.name}'`
-        + ` because it doesn't have a zone attached. Make sure`
-        + ` you call setZone() on this scene before you start`
-        + ` it`);
-    }
-
-    this.zone.preload(this);
+    // ! Throws exception on error.
+    this.getZone().preload(this);
     /// Zóna se bude posílat v rámci EnterFlightResponse. V ten moment se
     /// asi bude teprve vyrábět FlightScene, takže zóna by měla nejspíš už
     /// existovat a bejt setnutá do FlightScene. Takže tady prostě vezmu
@@ -82,16 +75,19 @@ export class FlightScene extends Scene
 
     this.preloadAnimatedTilesPlugin();
 
-    // FlightSceneContents.preload(this, this.zone);
+    FlightSceneContents.preload(this);
   }
 
   // This method is run by Phaser.
   public create()
   {
+    // ! Throws exception on error.
+    this.getZone().create(this);
+
     if (this.contents !== "Doesn't exist")
     {
       ERROR(`Failed to create scene '${this.name}'`
-        + ` because scene contents already exist`);
+        + ` because scene contents already exists`);
     }
 
     this.contents = new FlightSceneContents
@@ -184,7 +180,7 @@ export class FlightScene extends Scene
 
   private preloadAnimatedTilesPlugin()
   {
-    this.loadScenePlugin
+    this.preloadScenePlugin
     (
       {
         // Key is not used anywhere (we let loader assign the plugin
@@ -197,6 +193,19 @@ export class FlightScene extends Scene
         sceneKey: "animatedTilesPlugin"
       }
     );
+  }
+
+  // ! Throws exception on error.
+  private getZone()
+  {
+    if (this.zone === "Not assigned")
+    {
+      throw new Error(`Scene '${this.name}' doesn't have`
+        + ` a zone attached yet. Make sure you call setZone()`
+        + ` before you start this scene`);
+    }
+
+    return this.zone;
   }
 }
 

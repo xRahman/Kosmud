@@ -27,6 +27,7 @@ export class Ship extends Shared.Ship
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
+  /// TODO: Tohle by se možná mohlo jmenovat createModel().
   public create(scene: FlightScene)
   {
     if (this.model !== "Not created")
@@ -39,7 +40,7 @@ export class Ship extends Shared.Ship
     // this.graphics = new ShipGraphics(scene, shape);
     /// TODO: Odhackovat (tmp je tu, jen aby to šlo přeložit).
     const tmp: any = {};
-    this.model = new ShipModel(scene, tmp);
+    this.model = new ShipModel(scene, tmp, this.engineSoundId);
   }
 
   // ! Throws exception on error.

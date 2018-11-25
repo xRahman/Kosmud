@@ -31,7 +31,7 @@ export class ShipExhausts
   private readonly rear: Exhaust;
 
   // ! Throws exception on error.
-  constructor(model: ShipModel, sound: ShipAudio)
+  constructor(model: ShipModel, audio: ShipAudio)
   {
     const animationName = "Exhaust yellow rectangular Animation";
 
@@ -46,7 +46,7 @@ export class ShipExhausts
         FRONT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
-      sound: sound.createExhaustSound(FRONT_VOLUME)
+      sound: audio.createExhaustSound(FRONT_VOLUME)
     };
 
     this.frontLeft =
@@ -57,7 +57,7 @@ export class ShipExhausts
         FRONT_LEFT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
-      sound: sound.createExhaustSound(SIDE_VOLUME)
+      sound: audio.createExhaustSound(SIDE_VOLUME)
     };
 
     this.frontRight =
@@ -68,7 +68,7 @@ export class ShipExhausts
         FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
-      sound: sound.createExhaustSound(SIDE_VOLUME)
+      sound: audio.createExhaustSound(SIDE_VOLUME)
     };
 
     this.rearLeft =
@@ -79,7 +79,7 @@ export class ShipExhausts
         REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
-      sound: sound.createExhaustSound(SIDE_VOLUME)
+      sound: audio.createExhaustSound(SIDE_VOLUME)
     };
 
     this.rearRight =
@@ -90,7 +90,7 @@ export class ShipExhausts
         REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
-      sound: sound.createExhaustSound(SIDE_VOLUME)
+      sound: audio.createExhaustSound(SIDE_VOLUME)
     };
 
     this.rear =
@@ -101,7 +101,7 @@ export class ShipExhausts
         REAR_EXHAUST_TILEMAP_OBJECT_NAME,
         animationName
       ),
-      sound: sound.createExhaustSound(REAR_VOLUME)
+      sound: audio.createExhaustSound(REAR_VOLUME)
     };
   }
 

@@ -5,6 +5,7 @@
   (all objects in the same zone can physically influence each other).
 */
 
+import { REPORT } from "../../Shared/Log/REPORT";
 import { Ship } from "../../Shared/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -31,10 +32,17 @@ export abstract class Zone extends ContainerEntity
         textureDirectory: "Textures/Effects/Exhausts"
       }
     ],
+    sounds:
+    [
+      {
+        soundId: Zone.SHIP_SOUND_ID,
+        soundPath: "Sound/Ship/Engine/ShipEngine.mp3"
+      }
+    ],
     tilemaps:
     [
       {
-        tilemapName: Zone.BASIC_SHIPS_TILEMAP,
+        tilemapName: Zone.BASIC_SHIPS_TILEMAP_ID,
         tilemapJsonPath: "Tilemaps/Ships/basic_ships.json"
       }
     ],
@@ -42,7 +50,7 @@ export abstract class Zone extends ContainerEntity
     [
       {
         shapeId: Zone.FIGHTER_SHAPE_ID,
-        tilemapName: Zone.BASIC_SHIPS_TILEMAP,
+        tilemapName: Zone.BASIC_SHIPS_TILEMAP_ID,
         objectLayerName: "Basic fighter",
         objectName: "Hull"
       }
@@ -118,10 +126,12 @@ export abstract class Zone extends ContainerEntity
     this.physicsWorld = Physics.createWorld();
   }
 
-  // --------------- Protected methods ------------------
+  public update()
+  {
+    this.steerVehicles();
+  }
 
-  protected abstract async createTilemap(config: Zone.TilemapConfig)
-  : Promise<Tilemap>;
+  // --------------- Protected methods ------------------
 
   protected addTilemap(tilemap: Tilemap)
   {
@@ -133,17 +143,6 @@ export abstract class Zone extends ContainerEntity
     this.physicsShapes.set(shapeId, shape);
   }
 
-  protected async loadTilemaps(configs: Array<Zone.TilemapConfig>)
-  {
-    for (const config of configs)
-    {
-      const tilemap = await this.createTilemap(config);
-
-      this.addTilemap(tilemap);
-    }
-  }
-
-  /// TODO: Tohle asi přesunout do Shared, ať to můžu použít i na klientu.
   // ! Throws exception on error.
   protected initShapes(configs: Array<Zone.ShapeConfig>)
   {
@@ -165,6 +164,14 @@ export abstract class Zone extends ContainerEntity
 
   // ---------------- Private methods -------------------
 
+  public steerVehicles()
+  {
+    for (const ship of this.ships)
+    {
+      steerShip(ship);
+    }
+  }
+
   // ! Throws exception on error.
   private getPhysicsWorld()
   {
@@ -179,13 +186,33 @@ export abstract class Zone extends ContainerEntity
   }
 }
 
+// ----------------- Auxiliary Functions ---------------------
+
+function steerShip(ship: Ship)
+{
+  try
+  {
+    ship.steer();
+  }
+  catch (error)
+  {
+    REPORT(error, `Failed to steer ship ${ship.debugId}`);
+  }
+}
+
 // ------------------ Type declarations ----------------------
 
 export namespace Zone
 {
   export const FIGHTER_SHAPE_ID = "Fighter Shape id";
+  export const BASIC_SHIPS_TILEMAP_ID = "Basic ships Tilemap";
+  export const SHIP_SOUND_ID = "Ship Engine Sound";
 
-  export const BASIC_SHIPS_TILEMAP = "Basic ships Tilemap";
+  export interface SoundConfig
+  {
+    soundId: string;
+    soundPath: string;
+  }
 
   export interface TextureConfig
   {
@@ -218,6 +245,7 @@ export namespace Zone
   {
     textures: Array<TextureConfig>;
     atlases: Array<TextureAtlasConfig>;
+    sounds: Array<SoundConfig>;
     tilemaps: Array<TilemapConfig>;
     shapes: Array<ShapeConfig>;
   }

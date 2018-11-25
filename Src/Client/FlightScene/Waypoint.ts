@@ -16,8 +16,8 @@ export class Waypoint
   constructor
   (
     scene: Scene,
-    private readonly position: Vector,
-    private readonly rotation: number
+    private readonly position = new Vector({ x: 0, y: 0 }),
+    private readonly rotation = 0
   )
   {
     this.sprite = createSprite(scene, position, rotation);
@@ -27,7 +27,7 @@ export class Waypoint
 
   public static preload(scene: Scene)
   {
-    scene.loadTexture
+    scene.preloadTexture
     (
       WAYPOINT_TEXTURE_ID,
       "Textures/Markers/waypoint_32x32.png"

@@ -64,12 +64,12 @@ export abstract class Scene
     this.height = height;
   }
 
-  public loadTexture(textureId: string, textureFilePath: string)
+  public preloadTexture(textureId: string, textureFilePath: string)
   {
     this.phaserScene.load.image(textureId, textureFilePath);
   }
 
-  public loadTextureAtlas
+  public preloadTextureAtlas
   (
     atlasId: string,
     atlasJsonFilePath: string,
@@ -84,17 +84,20 @@ export abstract class Scene
     );
   }
 
-  public loadTilemapData(tilemapDataId: string, tilemapJsonFilePath: string)
+  public preloadTilemap(tilemapDataId: string, tilemapJsonFilePath: string)
   {
     this.phaserScene.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
   }
 
-  public loadScenePlugin(config: Phaser.Loader.FileTypes.ScenePluginFileConfig)
+  public preloadScenePlugin
+  (
+    config: Phaser.Loader.FileTypes.ScenePluginFileConfig
+  )
   {
     this.phaserScene.load.scenePlugin(config);
   }
 
-  public loadSound(audioId: string, path: string)
+  public preloadSound(audioId: string, path: string)
   {
     this.phaserScene.load.audio(audioId, path);
   }

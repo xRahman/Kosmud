@@ -3,7 +3,6 @@ import { Background } from "../../Client/FlightScene/Background";
 import { Ship } from "../../Client/Game/Ship";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Waypoint } from "../../Client/FlightScene/Waypoint";
-import { Vector } from "../../Shared/Physics/Vector";
 
 export class FlightSceneContents extends SceneContents
 {
@@ -23,21 +22,14 @@ export class FlightSceneContents extends SceneContents
 
     this.background = new Background(scene, canvasWidth, canvasHeight);
 
-    this.waypoint = new Waypoint
-    (
-      scene,
-      new Vector({ x: 0, y: 0 }),
-      0
-    );
+    this.waypoint = new Waypoint(scene);
   }
 
-  // public static preload(scene: FlightScene, zone: Zone)
-  // {
-  //   Background.preload(scene, zone);
-  //   ShipGraphics.preload(scene, zone);
-  //   ShipSound.preload(scene);
-  //   Waypoint.preload(scene);
-  // }
+  public static preload(scene: FlightScene)
+  {
+    Background.preload(scene);
+    Waypoint.preload(scene);
+  }
 
   // ---------------- Public methods --------------------
 
@@ -46,12 +38,6 @@ export class FlightSceneContents extends SceneContents
     /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
     this.ship = ship;
   }
-
-  /// TEST
-  // // tslint:disable-next-line:prefer-function-over-method
-  // public create(scene: FlightScene)
-  // {
-  // }
 
   public update()
   {
