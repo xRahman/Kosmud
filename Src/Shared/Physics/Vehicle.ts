@@ -39,15 +39,26 @@ export abstract class Vehicle extends GameEntity
   protected leftwardThrust = 0;
   protected torque = 0;
 
-  private readonly physicsBody = new PhysicsBody(this);
+  protected readonly physicsBody = new PhysicsBody(this);
 
   // ---------------- Public methods --------------------
 
   public getPosition() { return this.physicsBody.getPosition(); }
 
+  public setInitialPosition(initialPosition: { x: number; y: number })
+  {
+    this.physicsBody.initialPosition.x = initialPosition.x;
+    this.physicsBody.initialPosition.y = initialPosition.y;
+  }
+
   public getX() { return this.physicsBody.getX(); }
   public getY() { return this.physicsBody.getY(); }
   public getRotation() { return this.physicsBody.getRotation(); }
+
+  public setInitialRotation(initialRotation: number)
+  {
+    this.physicsBody.initialRotation = initialRotation;
+  }
 
   public getDesiredVelocity() { return this.desiredVelocity; }
   public getSteeringForce() { return this.steeringForce; }

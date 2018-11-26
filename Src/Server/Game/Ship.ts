@@ -31,17 +31,17 @@ export class Ship extends Shared.Ship
     return shipState;
   }
 
-  public getInitialState()
-  {
-    const state =
-    {
-      shape: this.getShape(),
-      position: this.getPosition(),
-      rotation: this.getRotation()
-    };
+  // public getInitialState()
+  // {
+  //   const state =
+  //   {
+  //     shape: this.getShape(),
+  //     position: this.getPosition(),
+  //     rotation: this.getRotation()
+  //   };
 
-    return state;
-  }
+  //   return state;
+  // }
 
   // public startTurningLeft()
   // {

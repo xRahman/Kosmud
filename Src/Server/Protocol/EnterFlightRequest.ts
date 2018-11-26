@@ -69,15 +69,15 @@ function fakeLoadFighter()
 
 function sendResponse(connection: Connection, ship: Ship)
 {
-  const shipState = ship.getInitialState();
+  // const shipState = ship.getInitialState();
 
   /// TODO: Tady by se správně měla posílat zóna
   /// (respektive to z ní, co player vidí).
   const packet = new EnterFlightResponse
   (
-    shipState.shape,
-    shipState.position,
-    shipState.rotation
+    // shipState.shape,
+    // shipState.position,
+    // shipState.rotation
   );
 
   connection.send(packet);

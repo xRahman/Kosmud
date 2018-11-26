@@ -81,6 +81,7 @@ export class FlightScene extends Scene
   // This method is run by Phaser.
   public create()
   {
+    this.getZone().addShip(fakeCreateShip());
     // ! Throws exception on error.
     this.getZone().create(this);
 
@@ -217,4 +218,20 @@ export namespace FlightScene
   export const Z_ORDER_WAYPOINTS = Z_ORDER_OBSTACLES + 1;
   export const Z_ORDER_SHIPS = Z_ORDER_WAYPOINTS + 1;
   export const Z_ORDER_DEBUG = Z_ORDER_SHIPS + 1;
+}
+
+// ! Throws exception on error.
+function fakeCreateShip()
+{
+  const ship = new Ship();
+  ship.setId("TEST_FIGHTER_ID");
+
+  /// Pozice se bude posílat ze serveru.
+  // ship.setInitialPosition(this.shipPosition);
+  // ship.setInitialRotation(this.shipRotation);
+
+  /// TEST
+  ship.setShapeId(Zone.FIGHTER_SHAPE_ID);
+
+  return ship;
 }

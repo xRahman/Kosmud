@@ -33,6 +33,7 @@ export class PhysicsBody
   /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
   /// savnout. A při loadu se pak zas musí body vytvořit.
   public readonly initialPosition = { x: 0, y: 0 };
+  public initialRotation = 0;
 
   // private readonly velocity = 0;
   /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
@@ -210,6 +211,7 @@ export class PhysicsBody
       this.initialPosition.x,
       this.initialPosition.y
     );
+    bodyDefinition.angle = this.initialRotation;
     bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
     this.body = world.CreateBody(bodyDefinition);

@@ -1,6 +1,15 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+PROBLÉM: Na serveru se loď při přidání do zóny rovnou přidá do physics
+  worldu (což celkem dává smysl). Na klientu to ale asi nepůjde, protože
+  ze zóny se čte, co se vlastně má loadovat, tudíž by v ní měly bejt lodě
+  ještě před preloadem.
+  - i když. Potřebuju v zóně insertnuté celé lodě, abych mohl začít
+    preloadovat? Asi nepotřebuju.
+    - v zásadě asi ani nepotřebuju seznam lodí (idček) v zóně, ale ten
+      tam teda časem 
+
 TODO: Packety se serializují, takže bych neměl spoléhat na to, že se provede
   konstruktor. Navíc prázná pole a objekty se vůbec neposílají a spoléhá se,
   že jsou na druhé straně inicializované na nějakou defaultní hodnotu.

@@ -6,7 +6,6 @@
   (Part of client-server communication protocol.)
 */
 
-import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
 import { Renderer } from "../../Client/Engine/Renderer";
 import { Connection } from "../../Client/Net/Connection";
@@ -17,6 +16,7 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().
+  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
     /// TODO: V rámci tohohle packetu by měla být data zóny
@@ -24,7 +24,7 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
     /// Tzn. tady je potřeba creatnout zónu (nebo ji prostě
     /// deserializovat z packetu).
 
-    const zone = this.createZone();
+    const zone = createZone();
 
     connection.setZone(zone);
 
@@ -42,36 +42,26 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   }
 
   // ---------------- Private methods -------------------
-
-  // ! Throws exception on error.
-  private createShip()
-  {
-    const ship = new Ship();
-
-    ship.setPosition(this.shipPosition);
-    ship.setRotation(this.shipRotation);
-
-    /// TEST
-    ship.setShapeId(Zone.FIGHTER_SHAPE_ID);
-
-    return ship;
-  }
-
-  /// TEST
-  private createZone()
-  {
-    const zone = new Zone();
-
-    zone.createPhysicsWorld();
-
-    /// TEST:
-    /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
-    zone.addShip(this.createShip());
-
-    return zone;
-  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+/// TEST
+function createZone()
+{
+  const zone = new Zone();
+
+  zone.createPhysicsWorld();
+
+  /// TEST:
+  /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
+  /// Změna: Loď se bude do zóny přidávat až v creatu(). Před preloadem
+  /// to jednak není potřeba a navíc se pak loď snaží vložit do physics
+  /// worldu, který ještě není vytvořený (dá se vyrobit až v creatu, když
+  /// jsou naloadované physics shapy).
+  // zone.addShip(this.createShip());
+
+  return zone;
+}
 
 // This class is registered in Client/Net/Connection.

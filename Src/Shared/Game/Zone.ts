@@ -204,7 +204,7 @@ function steerShip(ship: Ship)
 
 export namespace Zone
 {
-  export const FIGHTER_SHAPE_ID = "Fighter Shape id";
+  export const FIGHTER_SHAPE_ID = "Fighter shape id";
   export const BASIC_SHIPS_TILEMAP_ID = "Basic ships Tilemap";
   export const SHIP_SOUND_ID = "Ship Engine Sound";
 
