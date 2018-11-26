@@ -3,21 +3,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 
 TODO: Pořešit TODO v Client/SceneUpdate.process().
 
-PROBLÉM: Na serveru se loď při přidání do zóny rovnou přidá do physics
-  worldu (což celkem dává smysl). Na klientu to ale asi nepůjde, protože
-  ze zóny se čte, co se vlastně má loadovat, tudíž by v ní měly bejt lodě
-  ještě před preloadem.
-  - i když. Potřebuju v zóně insertnuté celé lodě, abych mohl začít
-    preloadovat? Asi nepotřebuju.
-    - v zásadě asi ani nepotřebuju seznam lodí (idček) v zóně, ale ten
-      tam teda časem 
-
-TODO: Packety se serializují, takže bych neměl spoléhat na to, že se provede
-  konstruktor. Navíc prázná pole a objekty se vůbec neposílají a spoléhá se,
-  že jsou na druhé straně inicializované na nějakou defaultní hodnotu.
-=> Asi bych měl ve všech packetech důsledně všem propertiesům dávat defaultní
-  hodnoty.
-=> A možná bych v Serializable objektech vůbec neměl používat konstruktor.
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.
@@ -334,6 +319,16 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 Odložené TODO:
 ---------------
+
+TODO: Packety se serializují, takže bych neměl spoléhat na to, že se provede
+  konstruktor. Navíc prázná pole a objekty se vůbec neposílají a spoléhá se,
+  že jsou na druhé straně inicializované na nějakou defaultní hodnotu.
+=> Asi bych měl ve všech packetech důsledně všem propertiesům dávat defaultní
+  hodnoty.
+=> A možná bych v Serializable objektech vůbec neměl používat konstruktor.
+{obecně nevím, jak tohle ošetřit. Asi leda commentem na začátku souborů}
+- jo a mohl bych tam asi opravdu zrušit konstruktory a setovat všechno
+  dodatečně.
 
 TODO: Zvážit, že by physics shapy byly entity (měly by unikátní idčko a tak).
 
