@@ -161,7 +161,8 @@ export abstract class Scene
   // ! Throws exception on error.
   public getTilemapJsonData(tilemapId: string)
   {
-    const jsonData = this.phaserScene.cache.json.get(tilemapId);
+    // Phaser loads tilemap json data so we don't have to do it again.
+    const jsonData = this.phaserScene.cache.tilemap.get(tilemapId).data;
 
     if (!jsonData || typeof jsonData !== "object")
     {

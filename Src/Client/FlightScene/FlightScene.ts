@@ -81,9 +81,10 @@ export class FlightScene extends Scene
   // This method is run by Phaser.
   public create()
   {
-    this.getZone().addShip(fakeCreateShip());
     // ! Throws exception on error.
     this.getZone().create(this);
+
+    this.getZone().addShip(fakeCreateShip());
 
     if (this.contents !== "Doesn't exist")
     {

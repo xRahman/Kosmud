@@ -73,7 +73,7 @@ export abstract class Zone extends ContainerEntity
 
     if (tilemap === undefined)
     {
-      throw new Error(`Failed to find tilemap '${name}' the`
+      throw new Error(`Failed to find tilemap '${name}' in the`
         + ` list of loaded tilemaps in zone ${this.debugId}`);
     }
 
@@ -204,7 +204,7 @@ function steerShip(ship: Ship)
 
 export namespace Zone
 {
-  export const FIGHTER_SHAPE_ID = "Fighter shape id";
+  export const FIGHTER_SHAPE_ID = "Fighter shape";
   export const BASIC_SHIPS_TILEMAP_ID = "Basic ships Tilemap";
   export const SHIP_SOUND_ID = "Ship Engine Sound";
 
