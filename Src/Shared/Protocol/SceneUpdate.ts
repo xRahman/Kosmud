@@ -32,6 +32,7 @@ export namespace SceneUpdate
 {
   export interface ShipState
   {
+    shipId: string;
     shipPosition: Vector;
     shipRotation: number;
     shipVelocity: Vector;

@@ -20,6 +20,16 @@ export class ContainerEntity extends Entity
 
   // --------------- Protected methods ------------------
 
+  protected get(id: string): ContainerEntity | "Not found"
+  {
+    const entity = this.contents.get(id);
+
+    if (entity === undefined)
+      return "Not found";
+
+    return entity;
+  }
+
   protected getContents()
   {
     return this.contents.values();

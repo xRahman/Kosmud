@@ -8,7 +8,8 @@ export class FlightSceneContents extends SceneContents
 {
   public background: Background;
   public waypoint: Waypoint;
-  public ship: Ship | "Doesn't exist" = "Doesn't exist";
+  /// Lodě jsou teď ve scéně.
+  // public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
   constructor
   (
@@ -33,11 +34,12 @@ export class FlightSceneContents extends SceneContents
 
   // ---------------- Public methods --------------------
 
-  public addShip(ship: Ship)
-  {
-    /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
-    this.ship = ship;
-  }
+  /// Lodě jsou teď ve scéně.
+  // public addShip(ship: Ship)
+  // {
+  //   /// TODO Až bude lodí víc, tak je přidávat nějak inteligentnějš.
+  //   this.ship = ship;
+  // }
 
   public update()
   {
@@ -46,7 +48,8 @@ export class FlightSceneContents extends SceneContents
     this.mouse.update();
     // this.camera.update();
 
-    if (this.ship !== "Doesn't exist")
-      this.ship.update();
+    /// Lodě jsou teď ve scéně.
+    // if (this.ship !== "Doesn't exist")
+    //   this.ship.update();
   }
 }

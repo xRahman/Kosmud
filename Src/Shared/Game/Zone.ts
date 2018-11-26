@@ -57,7 +57,7 @@ export abstract class Zone extends ContainerEntity
     ]
   };
 
-  protected readonly ships = new Set<Ship>();
+  protected readonly ships = new Map<string, Ship>();
   protected readonly tilemaps = new Map<string, Tilemap>();
   protected readonly physicsShapes = new Map<string, Physics.Shape>();
 
@@ -97,14 +97,14 @@ export abstract class Zone extends ContainerEntity
   // ! Throws exception on error.
   public addShip(ship: Ship)
   {
-    if (this.ships.has(ship))
+    if (this.ships.has(ship.getId()))
     {
       throw new Error(`Zone ${this.debugId} already has`
         + ` ship ${ship.debugId}`);
     }
 
     this.addToContents(ship);
-    this.ships.add(ship);
+    this.ships.set(ship.getId(), ship);
     ship.setZone(this);
 
     ship.addToPhysicsWorld
@@ -113,6 +113,16 @@ export abstract class Zone extends ContainerEntity
       this.getPhysicsWorld(),
       this
     );
+  }
+
+  protected getShip(id: string): Ship | "Not found"
+  {
+    const ship = this.ships.get(id);
+
+    if (ship === undefined)
+      return "Not found";
+
+    return ship;
   }
 
   // ! Throws exception on error.
@@ -166,7 +176,7 @@ export abstract class Zone extends ContainerEntity
 
   public steerVehicles()
   {
-    for (const ship of this.ships)
+    for (const ship of this.ships.values())
     {
       steerShip(ship);
     }

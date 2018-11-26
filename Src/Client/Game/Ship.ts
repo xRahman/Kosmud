@@ -1,3 +1,4 @@
+import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/FlightScene/ShipModel";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
@@ -31,9 +32,8 @@ export class Ship extends Shared.Ship
   /// TODO: Tohle by se možná mohlo jmenovat createModel().
   /// TODO: Ship (obecně game entity) asi má odkaz na zónu, ve které
   ///   se nachází - takže parametr asi není potřeba.
-  public create(scene: FlightScene, zone: Zone)
+  public createModel(scene: FlightScene, zone: Zone)
   {
-    console.log(`Ship.create()`);
 
     if (this.model !== "Not created")
     {
@@ -51,10 +51,20 @@ export class Ship extends Shared.Ship
   }
 
   // ! Throws exception on error.
-  public update()
+  public update(shipState: SceneUpdate.ShipState)
   {
+    this.setPosition(shipState.shipPosition);
+    this.setRotation(shipState.shipRotation);
+
+    this.setVectors(shipState);
+
     // ! Throws exception on error.
-    this.getModel().update(this.getPosition());
+    this.getModel().updateExhausts
+    (
+      shipState.forwardThrustRatio,
+      shipState.leftwardThrustRatio,
+      shipState.torqueRatio
+    );
   }
 
   // ! Throws exception on error.
@@ -95,24 +105,6 @@ export class Ship extends Shared.Ship
 
     /// TODO: Znovu zprovoznit.
     // this.graphics.drawVectors(this.vectors);
-  }
-
-  // ! Throws exception on error.
-  /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
-  public updateExhausts
-  (
-    forwardThrustRatio: number,
-    leftwardThrustRatio: number,
-    torqueRatio: number
-  )
-  {
-    // ! Throws exception on error.
-    this.getModel().updateExhausts
-    (
-      forwardThrustRatio,
-      leftwardThrustRatio,
-      torqueRatio
-    );
   }
 
   // ---------------- Private methods -------------------

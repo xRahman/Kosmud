@@ -36,7 +36,7 @@ export class Connection extends Socket
 {
   private static connection: Connection | "Not connected" = "Not connected";
 
-  private zone: Zone | "Isn't assigned" = "Isn't assigned";
+  private zone: Zone | "Not assigned" = "Not assigned";
 
   constructor(address: string)
   {
@@ -122,6 +122,23 @@ export class Connection extends Socket
     this.connection.send(packet);
   }
 
+  // ! Throws exception on error.
+  public static setZone(zone: Zone)
+  {
+    // ! Throws exception on error.
+    const connection = this.getConnection();
+
+    /// TODO: Výhledově bude player cestovat do různých zón, takže
+    ///  se určitě bude přesetovávat existující zóna. Zatím si to tu
+    ///  ale nechám, dokud mám jen jednu zónu.
+    if (connection.zone !== "Not assigned")
+    {
+      throw new Error(`Zone is already assigned to the connection`);
+    }
+
+    connection.zone = zone;
+  }
+
   // ------------- Private static methods ---------------
 
   private static registerBeforeUnloadEvent()
@@ -151,20 +168,33 @@ export class Connection extends Socket
     this.connection.close(WebSocketEvent.TAB_CLOSED);
   }
 
+  // ! Throws exception on error.
+  private static getConnection()
+  {
+    if (this.connection === "Not connected")
+    {
+      throw new Error(`Connection is not open yet`);
+    }
+
+    return this.connection;
+  }
+
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public setZone(zone: Zone)
+  public getZone()
   {
-    /// TODO: Výhledově bude player cestovat do různých zón, takže
-    ///  se určitě bude přesetovávat existující zóna. Zatím si to tu
-    ///  ale nechám, dokud mám jen jednu zónu.
-    if (this.zone !== "Isn't assigned")
+    if (this.zone === "Not assigned")
     {
-      throw new Error(`Zone is already assigned to the connection`);
+      throw new Error(`Zone is not assigned to the connection yet`);
     }
 
-    this.zone = zone;
+    return this.zone;
+  }
+
+  public hasZoneAssigned()
+  {
+    return this.zone !== "Not assigned";
   }
 
   // Disabled for now

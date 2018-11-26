@@ -4,6 +4,7 @@ import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }
   from "../../Client/FlightScene/FlightSceneContents";
 import { Scene } from "../../Client/Engine/Scene";
+import { Connection } from "../Net/Connection";
 
 interface AnimatedTilesPlugin
 {
@@ -34,13 +35,16 @@ export class FlightScene extends Scene
     this.zone = zone;
   }
 
-  public getShip(): Ship | "Doesn't exist"
-  {
-    if (this.contents === "Doesn't exist")
-      return "Doesn't exist";
+  /// Lodě jsou teď ve scéně.
+  // public getShip(): Ship | "Doesn't exist"
+  // {
+  //   if (this.contents === "Doesn't exist")
+  //     return "Doesn't exist";
 
-    return this.contents.ship;
-  }
+  //   console.log(this.contents);
+
+  //   return this.contents.ship;
+  // }
 
   /// Tohle si tu nechám, protože časem se budou posílat ZoneUpdaty,
   /// ve kterých budou nové lodě do scény. Imho se to ale bude dělat jinak.
@@ -99,6 +103,8 @@ export class FlightScene extends Scene
       this.width,
       this.height
     );
+
+    Connection.setZone(this.getZone());
 
     /// TEST
     // this.contents.create(this);

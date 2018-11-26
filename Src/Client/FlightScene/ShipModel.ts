@@ -84,14 +84,10 @@ export class ShipModel
 
   // ---------------- Public methods --------------------
 
-  public update(shipPosition: Vector)
-  {
-    this.vectors.update(shipPosition);
-  }
-
   public setPosition(position: Vector)
   {
     this.graphicContainer.setPosition(position);
+    this.vectors.update(position);
   }
 
   public setRotation(rotation: number)

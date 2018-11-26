@@ -18,28 +18,15 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    /// If there are no ships in the zone, do nothing.
-    if (this.shipStates.length === 0)
-      return;
-
-    /// TODO: Odhackovat:
-    const shipState = this.shipStates[0];
-    const ship = Renderer.flightScene.getShip();
-
-    if (ship !== "Doesn't exist")
-    {
-      ship.setPosition(shipState.shipPosition);
-      ship.setRotation(shipState.shipRotation);
-
-      ship.setVectors(shipState);
-
-      ship.updateExhausts
-      (
-        shipState.forwardThrustRatio,
-        shipState.leftwardThrustRatio,
-        shipState.torqueRatio
-      );
-    }
+    // ! Throws exception on error.
+    /// TODO: Tohle není mnemotechnické - nejde ani tak o to, jestli
+    ///   má connection setnutou zónu, ale jestli jsou už v zóně lodě
+    ///   a mají vytvořené modely, aby se jim dala setovat pozice.
+    ///     Zóna se teda teď do connection setne právě kvůli tomu na
+    ///   konci creatu, ale chtělo by to celý pojmenovat nějak líp
+    ///   (isSceneReady?)
+    if (connection.hasZoneAssigned())
+      connection.getZone().updateShips(this.shipStates);
   }
 }
 

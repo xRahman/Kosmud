@@ -8,13 +8,16 @@
 import { Ship } from "../../Client/Game/Ship";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
 {
   // ~ Overrides Shared.Zone.ships.
   //  (We need to override to use Client/Ship instead of Shared/Ship).
-  protected readonly ships = new Set<Ship>();
+  protected readonly ships = new Map<string, Ship>();
+
+  private scene: FlightScene | "Not assigned" = "Not assigned";
 
   // ---------------- Public methods --------------------
 
@@ -29,12 +32,64 @@ export class Zone extends Shared.Zone
 
   public create(scene: FlightScene)
   {
+    this.scene = scene;
+
     this.createTilemaps(scene);
     this.initShapes();
-    this.createShips(scene);
+
+    /// V tenhle moment ještě nemůžou bejt v zóně lodě,
+    /// protože přidat je lze až poté, co jsou vyrobené
+    /// tilemapy a initnuté shapy.
+    // this.createShips(scene);
+  }
+
+  // ~ Overrides Shared.Zone.addShip().
+  // ! Throws exception on error.
+  public addShip(ship: Ship)
+  {
+    super.addShip(ship);
+
+    ship.createModel(this.getScene(), this);
+  }
+
+  // ! Throws exception on error.
+  // ~ Overrides Shared.Zone.getTilemap().
+  //   (Override is needed to return client version of Tilemap.)
+  public getTilemap(name: string)
+  {
+    return super.getTilemap(name) as Tilemap;
+  }
+
+  public updateShips(shipStates: Array<SceneUpdate.ShipState>)
+  {
+    for (const shipState of shipStates)
+    {
+      const ship = this.getShip(shipState.shipId);
+
+      if (ship === "Not found")
+      {
+        throw new Error(`Failed to update ship because ship`
+          + ` with id ${shipState.shipId} isn't present in`
+          + ` zone ${this.debugId}`);
+      }
+
+      ship.update(shipState);
+    }
   }
 
   // --------------- Protected methods ------------------
+
+  // ~ Overrides Shared.Zone.getShip().
+  //   (We override ancestor version to return client version of ship.)
+  protected getShip(id: string): Ship | "Not found"
+  {
+    const ship = this.ships.get(id);
+
+    if (ship === undefined)
+      return "Not found";
+
+    return ship;
+  }
 
   // ~ Overrides Shared.Zone.createTilemap().
   // tslint:disable-next-line:prefer-function-over-method
@@ -69,21 +124,28 @@ export class Zone extends Shared.Zone
     }
   }
 
-  private createShips(scene: FlightScene)
+  // ! Throws exception on error.
+  private getScene()
   {
-    for (const ship of this.ships)
+    if (this.scene === "Not assigned")
     {
-      ship.create(scene, this);
+      throw new Error(`Scene is not assigned to zone ${this.debugId}`
+        + ` yet. Make sure you call create() on the zone before you`
+        + ` use the scene`);
     }
+
+    return this.scene;
   }
 
-  // ! Throws exception on error.
-  // ~ Overrides Shared.Zone.getTilemap().
-  //   (Override is needed to return client version of Tilemap.)
-  public getTilemap(name: string)
-  {
-    return super.getTilemap(name) as Tilemap;
-  }
+  /// V create() ještě v zóně nejsou žádný lodě, takže tohle
+  /// nejspíš nebude potřeba.
+  // private createShips(scene: FlightScene)
+  // {
+  //   for (const ship of this.ships)
+  //   {
+  //     ship.create(scene, this);
+  //   }
+  // }
 }
 
 // ----------------- Auxiliary Functions ---------------------

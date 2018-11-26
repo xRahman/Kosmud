@@ -1,6 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Pořešit TODO v Client/SceneUpdate.process().
+
 PROBLÉM: Na serveru se loď při přidání do zóny rovnou přidá do physics
   worldu (což celkem dává smysl). Na klientu to ale asi nepůjde, protože
   ze zóny se čte, co se vlastně má loadovat, tudíž by v ní měly bejt lodě

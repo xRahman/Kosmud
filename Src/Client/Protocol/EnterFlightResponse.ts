@@ -26,8 +26,6 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
 
     const zone = createZone();
 
-    connection.setZone(zone);
-
     /// TODO: Následně se tady vyrobí flight scéna z dat zóny.
 
     /// TODO: Tohle by se mělo udělat o řádek vejš automaticky

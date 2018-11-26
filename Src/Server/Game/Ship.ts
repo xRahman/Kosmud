@@ -15,6 +15,7 @@ export class Ship extends Shared.Ship
   {
     const shipState =
     {
+      shipId: this.getId(),
       shipPosition: this.getPosition(),
       shipRotation: this.getRotation(),
       shipVelocity: this.getVelocity(),

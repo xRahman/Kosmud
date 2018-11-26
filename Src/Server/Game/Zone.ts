@@ -16,7 +16,7 @@ export class Zone extends Shared.Zone
 {
   // ~ Overrides Shared.Zone.ships.
   //  (We need to override to use Server/Ship instead of Shared/Ship).
-  protected readonly ships = new Set<Ship>();
+  protected readonly ships = new Map<string, Ship>();
 
   // ---------------- Public methods --------------------
 
@@ -31,7 +31,7 @@ export class Zone extends Shared.Zone
   {
     const shipStates: Array<SceneUpdate.ShipState> = [];
 
-    for (const ship of this.ships)
+    for (const ship of this.ships.values())
     {
       shipStates.push(ship.getStateUpdate());
     }

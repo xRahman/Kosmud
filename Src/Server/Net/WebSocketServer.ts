@@ -59,8 +59,7 @@ export class WebSocketServer
     //   But since the websocket server runs inside a http server,
     // it must be started after onStartListening() is fired on http
     // server.
-    Syslog.log("[WEBSOCKET_SERVER]", `Websocket server is up`
-      + ` and listening to new connections`);
+    Syslog.log("[WEBSOCKET_SERVER]", `Websocket server is up and listening`);
 
     this.open = true;
   }
