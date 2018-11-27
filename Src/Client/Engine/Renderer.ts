@@ -1,13 +1,14 @@
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
+import { Scene } from "../../Client/Engine/Scene";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
 import { Body } from "../../Client/Gui/Body";
-import { Zone } from "../../Client/Game/Zone";
 
+const scenes = new Map<string, Scene>();
 let phaserGame: Phaser.Game | "Doesn't exist" = "Doesn't exist";
 
 export namespace Renderer
 {
-  export const flightScene = new FlightScene("Flight scene");
+  export const flightScene = addScene(new FlightScene("Flight scene"));
 
   // ! Throws exception on error.
   export function init()
@@ -48,6 +49,19 @@ export namespace Renderer
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+// ! Throws exception on error.
+function addScene<T extends Scene>(scene: T): T
+{
+  if (scenes.has(scene.getName()))
+  {
+    throw new Error(`Scene ${scene.debugId} already exists`);
+  }
+
+  scenes.set(scene.getName(), scene);
+
+  return scene;
+}
 
 // ! Throws exception on error.
 function getPhaserGame(): Phaser.Game

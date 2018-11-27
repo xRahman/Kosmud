@@ -1,3 +1,7 @@
+TODO: Scény vyrábět metodou, která je nacpe do setu a zkontroluje přitom,
+  že je jméno unikátní.
+[done]
+
 TODO: Exhausty by měly být pod lodí, ne přes ní.
   (obávám se, že to možná bude znamenat, dát je do samostatného layeru).
   - nebo možná jen prohodit pořadí vytváření asetů.

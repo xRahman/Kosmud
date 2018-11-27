@@ -1,8 +1,7 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Scény vyrábět metodou, která je nacpe do setu a zkontroluje přitom,
-  že je jméno unikátní.
+TODO: Scény přemístit do Scenes.ts
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.
@@ -67,13 +66,7 @@ Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
 
 -----
 
-IDEA: U vehiclů je otázka, jak se budou savovat - když bude například
-  pozice jen ve physicsBody, tak dokud loď body nemá, tak nemá jak pozici
-  uložit. Navíc asi tak jako tak nebudu chtít savovat vnitřek b2Body.
-- mohl bych to udělat tak, že vehicle vždycky bude mít PhysicsBody
-  (což je moje classa) a v tom se budou savovat údaje jako pozice a podobně.
-  - ha, tzn. by tam taky rovnou mohly být konstanty jako restitution a tak.
-  PhysicsBody by pak mohlo a nemuselo mít b2Body.
+
 
 
 Otázka je, jestli se má shape posílat v rámci přidávání lodě do scény,
@@ -286,6 +279,14 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 Odložené TODO:
 ---------------
+
+IDEA: U vehiclů je otázka, jak se budou savovat - když bude například
+  pozice jen ve physicsBody, tak dokud loď body nemá, tak nemá jak pozici
+  uložit. Navíc asi tak jako tak nebudu chtít savovat vnitřek b2Body.
+- mohl bych to udělat tak, že vehicle vždycky bude mít PhysicsBody
+  (což je moje classa) a v tom se budou savovat údaje jako pozice a podobně.
+  - ha, tzn. by tam taky rovnou mohly být konstanty jako restitution a tak.
+  PhysicsBody by pak mohlo a nemuselo mít b2Body.
 
 TODO: Packety se serializují, takže bych neměl spoléhat na to, že se provede
   konstruktor. Navíc prázná pole a objekty se vůbec neposílají a spoléhá se,

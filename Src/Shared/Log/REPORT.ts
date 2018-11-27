@@ -11,7 +11,7 @@
 /*
   Usage example:
 
-    import {REPORT} from 'Shared/Log/REPORT';
+    import { REPORT } from 'Shared/Log/REPORT';
 
     try
     {

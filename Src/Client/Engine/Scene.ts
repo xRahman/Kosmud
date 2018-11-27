@@ -10,6 +10,8 @@
     Client/Engine classes are wrappers, Scene is a wrapper too.
 */
 
+import { ERROR } from "../../Shared/Log/ERROR";
+import { REPORT } from "../../Shared/Log/REPORT";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { SceneContents } from "../../Client/Engine/SceneContents";
@@ -32,9 +34,6 @@ export abstract class Scene
 
   protected active = false;
 
-  private loadingStarter: Types.ResolveFunction<void> | "Not awaiting loading"
-    = "Not awaiting loading";
-
   private finishLoading: Types.ResolveFunction<void> | "Not loading"
     = "Not loading";
 
@@ -51,6 +50,13 @@ export abstract class Scene
   }
 
   // ---------------- Public methods --------------------
+
+  public get debugId()
+  {
+    return `{ ${this.constructor.name} '${this.name}' }`;
+  }
+
+  public getName() { return this.name; }
 
   public isActive()
   {
@@ -69,9 +75,10 @@ export abstract class Scene
     // which we handle by onPreload() method - the loading happens
     // there.
     // (There is no way around it, because Phaser checks if preload()
-    //  even exists and if any loading is planned from it and skips
-    //  loading otherwise).
-    // So just imagine that 'onPreload()' is called here.
+    //  even exists on scene object and if any loading is planned from
+    //  it and skips loading otherwise).
+    // So just imagine that 'onPreload()' is called here (which it is,
+    //  indirectly).
     Renderer.startScene(this.name);
 
     // Here we wait for Phaser to call create() callback
@@ -214,13 +221,8 @@ export abstract class Scene
     this.active = false;
   }
 
-  protected async startLoading(): Promise<void>
-  {
-    return new Promise<void>
-    (
-      (resolve, reject) => { this.loadingStarter = resolve; }
-    );
-  }
+  // ! Throws exception on error.
+  protected abstract update(): void;
 
   protected async loadingIsFinished(): Promise<void>
   {
@@ -269,13 +271,15 @@ export abstract class Scene
     this.loadAssets();
   }
 
-  // ! Throws exception on error.
   private onCreate()
   {
     if (this.finishLoading === "Not loading")
     {
-      throw new Error(`Unable to finish loading of scene '${this.name}'`
+      // This is a top-level function (it's called by Phaser engine)
+      // so we report the error directly instead of throwing an exception.
+      ERROR(`Unable to finish loading of ${this.debugId}`
         + ` because loading has not even started`);
+      return;
     }
 
     // Method create() is called by the Phaser engine when loading
@@ -284,8 +288,17 @@ export abstract class Scene
     this.finishLoading();
   }
 
-  // This method is run periodically by Phaser.
-  protected abstract onUpdate(): void;
+  private onUpdate()
+  {
+    try
+    {
+      this.update();
+    }
+    catch (error)
+    {
+      REPORT(error, `Failed to update ${this.debugId}`);
+    }
+  }
 }
 
 // ------------------ Type Declarations ----------------------

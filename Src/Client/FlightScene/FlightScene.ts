@@ -1,4 +1,3 @@
-import { ERROR } from "../../Shared/Log/ERROR";
 import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }
@@ -20,8 +19,6 @@ export class FlightScene extends Scene
   protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
 
   private zone: Zone | "Not assigned" = "Not assigned";
-
-  // private readonly addRequestQueue = new Array<EnterFlightResponse>();
 
   constructor(name: string)
   {
@@ -51,90 +48,6 @@ export class FlightScene extends Scene
 
     this.activate();
   }
-
-  /// Lodě jsou teď ve scéně.
-  // public getShip(): Ship | "Doesn't exist"
-  // {
-  //   if (this.contents === "Doesn't exist")
-  //     return "Doesn't exist";
-
-  //   console.log(this.contents);
-
-  //   return this.contents.ship;
-  // }
-
-  /// Tohle si tu nechám, protože časem se budou posílat ZoneUpdaty,
-  /// ve kterých budou nové lodě do scény. Imho se to ale bude dělat jinak.
-  // public addShip(request: EnterFlightResponse)
-  // {
-  //   if (this.contents === "Doesn't exist")
-  //   {
-  //     this.queueAddShipRequest(request);
-  //   }
-  //   else
-  //   {
-  //     this.contents.addShip(this.createShip(request));
-  //   }
-  // }
-
-  // // ! Throws exception on error.
-  // // This method is run by Phaser.
-  // public preload()
-  // {
-  //   // ! Throws exception on error.
-  //   this.getZone().loadAssets(this);
-  //   /// Zóna se bude posílat v rámci EnterFlightResponse. V ten moment se
-  //   /// asi bude teprve vyrábět FlightScene, takže zóna by měla nejspíš už
-  //   /// existovat a bejt setnutá do FlightScene. Takže tady prostě vezmu
-  //   /// this.zone.
-
-  //   /// TODO: Preload dat podle toho, co je uloženo v zóně.
-  //   ///  (asi by se tu mohlo volat zone.preload() nebo zone.init()
-  //   ///   s tím, že parametr bude json object preloadnutých tilemap
-  //   ///   - i když blbost, zone.init() se asi bude dělat až v creatu(),
-  //   ///   tady se jen zavolá loadování).
-
-  //   this.preloadAnimatedTilesPlugin();
-
-  //   FlightSceneContents.preload(this);
-  // }
-
-  // // This method is run by Phaser.
-  // public create()
-  // {
-  //   // ! Throws exception on error.
-  //   this.getZone().create(this);
-
-  //   this.getZone().addShip(fakeCreateShip());
-
-  //   if (this.contents !== "Doesn't exist")
-  //   {
-  //     ERROR(`Failed to create scene '${this.name}'`
-  //       + ` because scene contents already exists`);
-  //   }
-
-  //   this.contents = new FlightSceneContents
-  //   (
-  //     this,
-  //     this.phaserScene.input,
-  //     this.width,
-  //     this.height
-  //   );
-
-  //   this.activate();
-
-  //   /// TEST
-  //   // this.contents.create(this);
-
-  //   // try
-  //   // {
-  //   //   this.createBufferedShips(this.contents);
-  //   // }
-  //   // catch (error)
-  //   // {
-  //   //   REPORT(error, "Failed to add ships to flight scene");
-  //   // }
-  // }
 
   // ! Throws exception on error.
   // ~ Overrides Scene.resize().
@@ -181,38 +94,20 @@ export class FlightScene extends Scene
     FlightSceneContents.preload(this);
   }
 
-  // ---------------- Private methods -------------------
-
-  // // ! Throws exception on error.
-  // private createShip(request: EnterFlightResponse): Ship
-  // {
-  //   // ! Throws exception on error.
-  //   return new Ship
-  //   (
-  //     this,
-  //     request.shipShape,
-  //     request.shipPosition,
-  //     request.shipRotation
-  //   );
-  // }
-
-  // private queueAddShipRequest(request: EnterFlightResponse)
-  // {
-  //   this.addRequestQueue.push(request);
-  // }
-
   // ! Throws exception on error.
-  // private createBufferedShips(contents: FlightSceneContents)
-  // {
-  //   for (const request of this.addRequestQueue)
-  //   {
-  //     contents.addShip
-  //     (
-  //       // ! Throws exception on error.
-  //       this.createShip(request)
-  //     );
-  //   }
-  // }
+  // ~ Overrides Scene.update().
+  // 'update()' is called in every rendering tick.
+  protected update()
+  {
+    if (this.contents === "Doesn't exist")
+    {
+      throw new Error(`Scene contents doesn't exist`);
+    }
+
+    this.contents.update();
+  }
+
+  // ---------------- Private methods -------------------
 
   private loadAnimatedTilesPlugin()
   {
@@ -249,7 +144,7 @@ export class FlightScene extends Scene
   {
     if (this.contents !== "Doesn't exist")
     {
-      ERROR(`Failed to create scene '${this.name}'`
+      throw new Error(`Failed to create ${this.debugId}`
         + ` because scene contents already exists`);
     }
 
@@ -260,21 +155,6 @@ export class FlightScene extends Scene
       this.width,
       this.height
     );
-  }
-
-  // ---------------- Event handlers --------------------
-
-  // ~ Overrides Scene.onUpdate().
-  protected onUpdate()
-  {
-    if (this.contents === "Doesn't exist")
-    {
-      ERROR(`Failed to update scene '${this.name}'`
-        + ` because scene contents doesn't exist`);
-      return;
-    }
-
-    this.contents.update();
   }
 }
 
