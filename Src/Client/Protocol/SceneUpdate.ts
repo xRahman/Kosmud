@@ -18,14 +18,7 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    // ! Throws exception on error.
-    /// TODO: Tohle není mnemotechnické - nejde ani tak o to, jestli
-    ///   má connection setnutou zónu, ale jestli jsou už v zóně lodě
-    ///   a mají vytvořené modely, aby se jim dala setovat pozice.
-    ///     Zóna se teda teď do connection setne právě kvůli tomu na
-    ///   konci creatu, ale chtělo by to celý pojmenovat nějak líp
-    ///   (isSceneReady?)
-    if (connection.hasZoneAssigned())
+    if (Renderer.isFlightSceneActive())
       connection.getZone().updateShips(this.shipStates);
   }
 }

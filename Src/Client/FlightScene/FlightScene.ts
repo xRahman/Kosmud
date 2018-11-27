@@ -104,7 +104,7 @@ export class FlightScene extends Scene
       this.height
     );
 
-    Connection.setZone(this.getZone());
+    this.activate();
 
     /// TEST
     // this.contents.create(this);
@@ -151,6 +151,16 @@ export class FlightScene extends Scene
     /// (Musí se tohle volat?)
     /// - Nejspíš nemusí.
     // this.cameras.resize(width, height);
+  }
+
+  // --------------- Protected methods ------------------
+
+  // ~ Overrides Scene.activate().
+  protected activate()
+  {
+    super.activate();
+
+    Connection.setZone(this.getZone());
   }
 
   // ---------------- Private methods -------------------

@@ -41,6 +41,11 @@ export namespace Renderer
     // ! Throws exception on error.
     flightScene.resize(width, height);
   }
+
+  export function isFlightSceneActive()
+  {
+    return flightScene.isActive();
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------

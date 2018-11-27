@@ -28,6 +28,8 @@ export abstract class Scene
   protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
   protected phaserScene: PhaserScene;
 
+  protected active = false;
+
   constructor(protected name: string)
   {
     this.phaserScene = new Phaser.Scene(name);
@@ -38,6 +40,11 @@ export abstract class Scene
   }
 
   // ---------------- Public methods --------------------
+
+  public isActive()
+  {
+    return this.active;
+  }
 
   public addToPhaserGame(phaserGame: Phaser.Game)
   {
@@ -172,6 +179,18 @@ export abstract class Scene
     }
 
     return jsonData as object;
+  }
+
+  // --------------- Protected methods ------------------
+
+  protected activate()
+  {
+    this.active = true;
+  }
+
+  protected deactivate()
+  {
+    this.active = false;
   }
 
   // ---------------- Private methods -------------------

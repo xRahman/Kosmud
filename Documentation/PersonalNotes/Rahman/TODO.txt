@@ -1,7 +1,11 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Pořešit TODO v Client/SceneUpdate.process().
+TODO: Zajímavá myšlenka: Předělat klienta přes async funkce, stejně
+  jako server (metody preload() a create() by resolvnuly promisu,
+  což by spustilo moji vlastní load() případně init() funkci).
+- při té příležitosti používat flagu zone.active.
+  (když budu z něčeho volat create(), tak tam můžu setnout zone.active = true;
 
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
