@@ -1,3 +1,8 @@
+TODO: Fyziku přesunout do shared kódu (ve finálu tam bude muset bejt,
+  aby šlo dělat client-side simulaci, tak bych s tím rovnou mohl počítat.
+  (klient-side simulaci ale zatím dělat nebudu).
+  [done]
+
 TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
   klienta, takže to dává smysl.
   - možná by se Client mohl rovnou jmenovat WWW, wwwRoot, nebo tak něco
