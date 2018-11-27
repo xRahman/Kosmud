@@ -1,3 +1,6 @@
+TODO: Scény přemístit do Scenes.ts
+[done]
+
 TODO: Scény vyrábět metodou, která je nacpe do setu a zkontroluje přitom,
   že je jméno unikátní.
 [done]

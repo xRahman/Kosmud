@@ -26,10 +26,10 @@ export class FlightSceneContents extends SceneContents
     this.waypoint = new Waypoint(scene);
   }
 
-  public static preload(scene: FlightScene)
+  public static loadAssets(scene: FlightScene)
   {
-    Background.preload(scene);
-    Waypoint.preload(scene);
+    Background.loadAssets(scene);
+    Waypoint.loadAssets(scene);
   }
 
   // ---------------- Public methods --------------------

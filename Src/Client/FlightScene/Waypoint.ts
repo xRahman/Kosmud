@@ -25,7 +25,7 @@ export class Waypoint
     this.hide();
   }
 
-  public static preload(scene: Scene)
+  public static loadAssets(scene: Scene)
   {
     scene.loadTexture
     (

@@ -25,7 +25,7 @@ export class Background
     this.resize(canvasWidth, canvasHeight);
   }
 
-  public static preload(scene: Scene)
+  public static loadAssets(scene: Scene)
   {
     scene.loadTexture
     (

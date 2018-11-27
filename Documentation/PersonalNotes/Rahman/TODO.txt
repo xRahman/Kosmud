@@ -1,7 +1,7 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Scény přemístit do Scenes.ts
+
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.

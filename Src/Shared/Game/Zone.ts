@@ -88,7 +88,8 @@ export abstract class Zone extends ContainerEntity
     if (shape === undefined)
     {
       throw new Error(`Failed to find physics shape with id '${shapeId}'`
-        + ` in zone ${this.debugId}. Make sure the shape is preloaded`);
+        + ` in zone ${this.debugId}. Make sure the shape is correctly`
+        + ` listed in zone assets`);
     }
 
     return shape;

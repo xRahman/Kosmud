@@ -69,14 +69,6 @@ function fakeCreateZone()
 
   zone.createPhysicsWorld();
 
-  /// TEST:
-  /// (lodě - obecně obsah zóny - by měly bejt poslaný rovnou se zónou)
-  /// Změna: Loď se bude do zóny přidávat až v creatu(). Před preloadem
-  /// to jednak není potřeba a navíc se pak loď snaží vložit do physics
-  /// worldu, který ještě není vytvořený (dá se vyrobit až v creatu, když
-  /// jsou naloadované physics shapy).
-  // zone.addShip(this.createShip());
-
   return zone;
 }
 

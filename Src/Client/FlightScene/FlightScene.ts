@@ -91,7 +91,7 @@ export class FlightScene extends Scene
     // ! Throws exception on error.
     this.getZone().loadAssets(this);
 
-    FlightSceneContents.preload(this);
+    FlightSceneContents.loadAssets(this);
   }
 
   // ! Throws exception on error.
