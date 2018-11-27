@@ -12,7 +12,9 @@
     "**/documentation/**/*.odt": true,
     "**/documentation/design/^bak": true,
     "amend": true,
+    "Build/": true,
     "commit": true,
+    "Keys/": true,
     "node_modules/": true,
     "RawData/": true
   },
@@ -28,11 +30,12 @@
     "**/*.json": true,
     "**/Src/Shared/Box2D/**": true,
     "amend": true,
+    "Build/": true,
     "Client/": true,
     "commit": true,
     "Documentation/": true,
-    "node_modules/": true,
-    "Server/": true
+    "Keys/": true,
+    "node_modules/": true
   },
 
   "editor.rulers": [80],

@@ -1,7 +1,6 @@
 ^bak
 .vs
 .ntvs_analysis.dat
-Client/js/client
+Build/js
+Client/js/Client
 Client/js/Shared
-Server/js/Server
-Server/js/Shared

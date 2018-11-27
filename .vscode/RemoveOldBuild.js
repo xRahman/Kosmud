@@ -12,8 +12,8 @@ console.log('Removing old build...');
 
 rmTree("./Client/js/Client");
 rmTree("./Client/js/Shared");
-rmTree("./Server/js/Server");
-rmTree("./Server/js/Shared");
+rmTree("./Build/js/Server");
+rmTree("./Build/js/Shared");
 
 // Removes directory 'path' even if it's not empty.
 function rmTree(path)

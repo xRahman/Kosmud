@@ -24,12 +24,12 @@
                 "NODE_ENV": "development"
                 // This is needed so we don't have to use '../../' in imports
                 // ('baseUrl' does this on the client).
-                // "NODE_PATH": "${cwd}/Server/js"
+                // "NODE_PATH": "${cwd}/Build/js"
             },
             "console": "externalTerminal",
             "sourceMaps": true,
             // "trace": true, // Enables logging.
-            "outFiles": [ "${workspaceRoot}/Server/js/**/*.js" ]
+            "outFiles": [ "${workspaceRoot}/Build/js/**/*.js" ]
         }
     ]
 }

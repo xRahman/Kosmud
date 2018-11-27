@@ -1,3 +1,22 @@
+TODO: Server root jsem vrátil na ${workspaceRoot} - server servuje
+  klienta, takže to dává smysl.
+  - možná by se Client mohl rovnou jmenovat WWW, wwwRoot, nebo tak něco
+    (i když, Client je asi ok).
+- Potom je taky otázka, jestli má vůbec smysl adresář /Server.
+  Spíš ne, je to akorát matoucí. Momentálně obsahuje /js a /Keys,
+  což obojí asi může bejt rovnou v rootu (/js by se možná mohlo jmenovat
+  /build, ale na clientu je to /js, tak asi dává smysl mít to stejně).
+(Tohle je teda zrovna dost blbý dělat, když se to nedá přeložit, pustit
+ a otestovat, takže to asi odložím.)
+- otázka je, co s adresářem /Server. Buď ho zrušit úplně a přesnout
+  /Server/js do rootu, nebo ho přejmenovat na Build, takže by bylo
+  /Build/js/...
+  - /Build by měl smysl, kdyby do něj časem přistálo víc věcí, než jen
+    javascript. A taky je idiomatický (líp vyjadřuje, o co jde, než čistě /js)
+  - hmm, nebo /bin? i když, /Bin by asi vypadalo blbě, takže spíš /Build
+Ok, přejmenuju /Server na /Build.
+[done]
+
 TODO: Umožnit na klientu víc lodí.
 - a pořádně to projít i na serveru, asi je to teď lehce zmatený.
   (getPlayerShip() je ale ok řešení, asi by šlo použít i na klientu).
