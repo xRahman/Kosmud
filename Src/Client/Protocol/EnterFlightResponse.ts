@@ -6,11 +6,12 @@
   (Part of client-server communication protocol.)
 */
 
+import { REPORT } from "../../Shared/Log/REPORT";
 import { Zone } from "../../Client/Game/Zone";
 import { Renderer } from "../../Client/Engine/Renderer";
 import { Connection } from "../../Client/Net/Connection";
+import { Scenes } from "../../Client/Engine/Scenes";
 import * as Shared from "../../Shared/Protocol/EnterFlightResponse";
-import { REPORT } from "../../Shared/Log/REPORT";
 
 export class EnterFlightResponse extends Shared.EnterFlightResponse
 {
@@ -37,11 +38,11 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
 
 async function loadFlightScene(zone: Zone)
 {
-  Renderer.flightScene.setZone(zone);
+  Scenes.flightScene.setZone(zone);
 
   try
   {
-    await Renderer.flightScene.load();
+    await Scenes.flightScene.load();
   }
   catch (error)
   {
@@ -53,7 +54,7 @@ function initFlightScene()
 {
   try
   {
-    Renderer.flightScene.init();
+    Scenes.flightScene.init();
   }
   catch (error)
   {

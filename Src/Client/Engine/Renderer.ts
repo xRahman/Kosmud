@@ -1,15 +1,11 @@
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
-import { Scene } from "../../Client/Engine/Scene";
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { Scenes } from "../../Client/Engine/Scenes";
 import { Body } from "../../Client/Gui/Body";
 
-const scenes = new Map<string, Scene>();
 let phaserGame: Phaser.Game | "Doesn't exist" = "Doesn't exist";
 
 export namespace Renderer
 {
-  export const flightScene = addScene(new FlightScene("Flight scene"));
-
   // ! Throws exception on error.
   export function init()
   {
@@ -21,13 +17,19 @@ export namespace Renderer
     // Note that 'flightScene' is not started automatically because it is
     // not passed to Phaser.Game in the config. We are not starting it even
     // here, we are just adding to phaserGame so it can be started later.
-    flightScene.addToPhaserGame(phaserGame);
-    flightScene.resize(canvasWidth, canvasHeight);
+    Scenes.flightScene.addToPhaserGame(phaserGame);
+    Scenes.flightScene.resize(canvasWidth, canvasHeight);
   }
 
   // ! Throws exception on error.
   export function startScene(name: string)
   {
+    if (!Scenes.exists(name))
+    {
+      throw new Error(`Failed to start scene '${name}' because`
+        + ` it doesn't exist`);
+    }
+
     // ! Throws exception on error.
     getPhaserGame().scene.start(name);
   }
@@ -39,29 +41,11 @@ export namespace Renderer
     getPhaserGame().resize(width, height);
 
     // ! Throws exception on error.
-    flightScene.resize(width, height);
-  }
-
-  export function isFlightSceneActive()
-  {
-    return flightScene.isActive();
+    Scenes.flightScene.resize(width, height);
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-// ! Throws exception on error.
-function addScene<T extends Scene>(scene: T): T
-{
-  if (scenes.has(scene.getName()))
-  {
-    throw new Error(`Scene ${scene.debugId} already exists`);
-  }
-
-  scenes.set(scene.getName(), scene);
-
-  return scene;
-}
 
 // ! Throws exception on error.
 function getPhaserGame(): Phaser.Game
