@@ -1,3 +1,43 @@
+TODO: Exhausty by měly být pod lodí, ne přes ní.
+  (obávám se, že to možná bude znamenat, dát je do samostatného layeru).
+  - nebo možná jen prohodit pořadí vytváření asetů.
+Prohození pořadí vytváření assetů pomohlo, zatím to nechám být.
+[done]
+
+TODO: Vyrábět v zóně seznam shapů
+- na serveru
+  - tam se to snad dělá
+- na klientu
+Začnu tím, že flight scénu nebudu předávat do konfigu Phaser.Game 
+(tím se totiž rovnou pustí preload() a create()), ale pouze ji vytvořím
+ a preload pustím později ručně.
+- FlightScene nesmí vyžadovat zónu.
+[done]
+
+TODO: Zkontrolovat, že se při vytvoření shipy na clientu
+  správně získá shape ze zóny.
+[done]
+
+TODO: Ship na clientu budu muset asi pojmout úplně jinak
+  - měla by být schopna existovat v zóně, i když ještě není ve scéně.
+I když, hmmm.
+  Možná, že ne - flight scéna přece jen asi může existovat už od začátku.
+  Jen je teda otázka, jak vyřeším preload...
+Zjevně se nějak řeší, jeslti je scéna "active", a tedy ji má Phaser automaticky
+  loadnout a pustit, viz:
+  http://www.html5gamedevs.com/topic/36148-phaser-3-scene-phaser-2-state-passing-data-to-init-when-start/
+[done]
+
+TODO: Loading scene: https://phaser.io/news/2018/05/phaser-3-preloader-tutorial
+[done]
+
+TODO: Ještě líp popsaný loading:  
+https://jwiese.eu/en/blog/2018/04/phaser-3---loading-screen--asset-organization/
+[done]
+
+TODO: Vyrobit client verzi Zóny.
+[done]
+
 TODO: Zajímavá myšlenka: Předělat klienta přes async funkce, stejně
   jako server (metody preload() a create() by resolvnuly promisu,
   což by spustilo moji vlastní load() případně init() funkci).

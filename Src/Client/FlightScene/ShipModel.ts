@@ -40,6 +40,11 @@ export class ShipModel
     this.graphicContainer = new GraphicContainer(scene);
     this.graphicContainer.setDepth(FlightScene.Z_ORDER_SHIPS);
 
+    this.audio = new ShipAudio(scene, engineSoundId);
+
+    // ! Throws exception on error.
+    this.exhausts = new ShipExhausts(this, this.audio);
+
     // ! Throws exception on error.
     this.shipSprites = this.createShipSprites();
     this.shapeGraphics = new ShapeGraphics
@@ -50,37 +55,7 @@ export class ShipModel
     );
 
     this.vectors = new VectorGraphics(scene);
-
-    this.audio = new ShipAudio(scene, engineSoundId);
-
-    // ! Throws exception on error.
-    this.exhausts = new ShipExhausts(this, this.audio);
   }
-
-  // ------------- Public static methods ----------------
-
-  /// Tohle se teď dělá v zone.preload()
-  // public static preload(scene: Scene)
-  // {
-  //   scene.loadTexture
-  //   (
-  //     BASIC_SHIPS_TEXTURE_ID,
-  //     "Textures/Ships/basic_ships.png"
-  //   );
-
-  //   scene.loadTextureAtlas
-  //   (
-  //     EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
-  //     "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
-  //     "Textures/Effects/Exhausts"
-  //   );
-
-  //   scene.loadTilemapData
-  //   (
-  //     BASIC_SHIPS_TILEMAP_DATA_ID,
-  //     "Tilemaps/Ships/basic_ships.json"
-  //   );
-  // }
 
   // ---------------- Public methods --------------------
 
