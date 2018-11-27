@@ -27,7 +27,7 @@ export class Waypoint
 
   public static preload(scene: Scene)
   {
-    scene.preloadTexture
+    scene.loadTexture
     (
       WAYPOINT_TEXTURE_ID,
       "Textures/Markers/waypoint_32x32.png"

@@ -304,7 +304,7 @@ function requestSaving
 (
   path: string
 )
-: Promise<{}> | "Saving is possible right now"
+: Promise<void> | "Saving is possible right now"
 {
   let queue = savingQueues.get(path);
 
@@ -343,7 +343,7 @@ function finishSaving(path: string)
     return;
   }
 
-  const resolveCallback: Types.ResolveFunction<{}> = pollResult;
+  const resolveCallback: Types.ResolveFunction<void> = pollResult;
 
   // By calling the resolve callback we finish savingAwaiter()
   // of whoever called us. That should lead to the next saving
@@ -403,7 +403,7 @@ async function write(path: string, data: string)
 // (This only makes sense if you also store resolve callback
 //  of the promise so you can call it to finish this awaiter.
 //  See SavingQueue.addRequest() for example how is it done.)
-async function saveAwaiter(promise: Promise<{}>)
+async function saveAwaiter(promise: Promise<void>)
 {
   return promise;
 }

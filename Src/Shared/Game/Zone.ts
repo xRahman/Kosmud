@@ -14,7 +14,7 @@ import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
 
 export abstract class Zone extends ContainerEntity
 {
-  protected readonly preloadData: Zone.PreloadData =
+  protected readonly assets: Zone.Assets =
   {
     textures:
     [
@@ -156,7 +156,7 @@ export abstract class Zone extends ContainerEntity
   // ! Throws exception on error.
   protected initShapes()
   {
-    for (const config of this.preloadData.shapes)
+    for (const config of this.assets.shapes)
     {
       // ! Throws exception on error.
       const tilemap = this.getTilemap(config.tilemapName);
@@ -251,7 +251,7 @@ export namespace Zone
     objectName: string;
   }
 
-  export interface PreloadData
+  export interface Assets
   {
     textures: Array<TextureConfig>;
     atlases: Array<TextureAtlasConfig>;

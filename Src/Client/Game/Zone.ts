@@ -21,16 +21,16 @@ export class Zone extends Shared.Zone
 
   // ---------------- Public methods --------------------
 
-  public preload(scene: FlightScene)
+  public loadAssets(scene: FlightScene)
   {
-    preloadTextures(scene, this.preloadData.textures);
-    preloadAtlases(scene, this.preloadData.atlases);
-    preloadSounds(scene, this.preloadData.sounds);
+    loadTextures(scene, this.assets.textures);
+    loadAtlases(scene, this.assets.atlases);
+    loadSounds(scene, this.assets.sounds);
 
-    preloadTilemaps(scene, this.preloadData.tilemaps);
+    loadTilemaps(scene, this.assets.tilemaps);
   }
 
-  public create(scene: FlightScene)
+  public initSceneData(scene: FlightScene)
   {
     this.scene = scene;
 
@@ -43,13 +43,14 @@ export class Zone extends Shared.Zone
     // this.createShips(scene);
   }
 
-  // ~ Overrides Shared.Zone.addShip().
   // ! Throws exception on error.
-  public addShip(ship: Ship)
+  public createModels()
   {
-    super.addShip(ship);
-
-    ship.createModel(this.getScene(), this);
+    for (const ship of this.ships.values())
+    {
+      // ! Throws exception on error.
+      ship.createModel(this.getScene(), this);
+    }
   }
 
   // ! Throws exception on error.
@@ -116,7 +117,7 @@ export class Zone extends Shared.Zone
 
   private createTilemaps(scene: FlightScene)
   {
-    for (const config of this.preloadData.tilemaps)
+    for (const config of this.assets.tilemaps)
     {
       const tilemapJsonData = scene.getTilemapJsonData(config.tilemapId);
 
@@ -150,7 +151,7 @@ export class Zone extends Shared.Zone
 
 // ----------------- Auxiliary Functions ---------------------
 
-function preloadTextures
+function loadTextures
 (
   scene: FlightScene,
   configs: Array<Shared.Zone.TextureConfig>
@@ -158,11 +159,11 @@ function preloadTextures
 {
   for (const config of configs)
   {
-    scene.preloadTexture(config.textureId, config.texturePath);
+    scene.loadTexture(config.textureId, config.texturePath);
   }
 }
 
-function preloadAtlases
+function loadAtlases
 (
   scene: FlightScene,
   configs: Array<Shared.Zone.TextureAtlasConfig>
@@ -170,7 +171,7 @@ function preloadAtlases
 {
   for (const config of configs)
   {
-    scene.preloadTextureAtlas
+    scene.loadTextureAtlas
     (
       config.atlasId,
       config.atlasJsonPath,
@@ -179,7 +180,7 @@ function preloadAtlases
   }
 }
 
-function preloadSounds
+function loadSounds
 (
   scene: FlightScene,
   configs: Array<Shared.Zone.SoundConfig>
@@ -187,11 +188,11 @@ function preloadSounds
 {
   for (const config of configs)
   {
-    scene.preloadSound(config.soundId, config.soundPath);
+    scene.loadSound(config.soundId, config.soundPath);
   }
 }
 
-function preloadTilemaps
+function loadTilemaps
 (
   scene: FlightScene,
   configs: Array<Shared.Zone.TilemapConfig>
@@ -199,6 +200,6 @@ function preloadTilemaps
 {
   for (const config of configs)
   {
-    scene.preloadTilemap(config.tilemapId, config.tilemapJsonPath);
+    scene.loadTilemap(config.tilemapId, config.tilemapJsonPath);
   }
 }

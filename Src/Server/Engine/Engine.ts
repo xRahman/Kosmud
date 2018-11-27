@@ -12,7 +12,7 @@ import { Game } from "../../Server/Game/Game";
 import * as Shared from "../../Shared/Engine/Engine";
 
 let loopInterval: NodeJS.Timeout | "Not looping" = "Not looping";
-let finishLoop: Types.ResolveFunction<{}> | "Not looping" = "Not looping";
+let finishLoop: Types.ResolveFunction<void> | "Not looping" = "Not looping";
 
 export namespace Engine
 {
@@ -24,7 +24,7 @@ export namespace Engine
       Shared.Engine.TICK_MILISECONDS
     );
 
-    return new Promise<{}>((resolve, reject) => { finishLoop = resolve; });
+    return new Promise<void>((resolve, reject) => { finishLoop = resolve; });
   }
 
   export function shutdown()

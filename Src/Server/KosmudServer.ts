@@ -34,6 +34,9 @@ async function start()
   {
     await HttpsServer.startServers();
     await Game.load();
+    /// Tohle si tu nechám kvůli budoucí teminologii. Na klientu
+    /// by to mělo bejt stejně.
+    // await Game.init();
   }
   catch (error)
   {

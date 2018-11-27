@@ -1,3 +1,16 @@
+TODO: Zajímavá myšlenka: Předělat klienta přes async funkce, stejně
+  jako server (metody preload() a create() by resolvnuly promisu,
+  což by spustilo moji vlastní load() případně init() funkci).
+- při té příležitosti používat flagu zone.active.
+  (když budu z něčeho volat create(), tak tam můžu rovnou zavolat
+   zone.activate()).
+Renderer.startFlightZone() by to mohl spouštět
+- respektive rozdělit ho na await Renderer.loadFlightZone() a následně
+  create(), init(), nebo tak něco.
+  - postload() asi radši ne, to by mátlo v souvislosti s preloadem (kterej)
+    teda bude skrytej, ale i tak.
+[done]
+
 TODO: Pořešit TODO v Client/SceneUpdate.process().
 [done]
 

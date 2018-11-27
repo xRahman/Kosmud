@@ -1,12 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Zajímavá myšlenka: Předělat klienta přes async funkce, stejně
-  jako server (metody preload() a create() by resolvnuly promisu,
-  což by spustilo moji vlastní load() případně init() funkci).
-- při té příležitosti používat flagu zone.active.
-  (když budu z něčeho volat create(), tak tam můžu setnout zone.active = true;
-
+TODO: Scény vyrábět metodou, která je nacpe do setu a zkontroluje přitom,
+  že je jméno unikátní.
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.
@@ -78,6 +74,10 @@ Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
   - Možná bych to ale mohl předělat, vrátit properties do PhysicsConfigu,
     nebo tak něčeho a PhysicsBody vyrábat opravdu až v addToPhysicsWorld().
     - asi jo.
+
+TODO: Exhausty by měly být pod lodí, ne přes ní.
+  (obávám se, že to možná bude znamenat, dát je do samostatného layeru).
+  - nebo možná jen prohodit pořadí vytváření asetů.
 
 -----
 

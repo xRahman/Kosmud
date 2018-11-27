@@ -20,22 +20,22 @@ export class SavingQueue
   // ----------------- Private data ---------------------
 
   private readonly requestQueue =
-    new Types.PriorityQueue<Types.ResolveFunction<{}>>();
+    new Types.PriorityQueue<Types.ResolveFunction<void>>();
 
   // ---------------- Public methods --------------------
 
   // Whoever initiated saving request needs to wait using
   // 'await saveAwaiter(promise)'. See FileSystem.saveAwaiter().
-  public async addRequest(): Promise<{}>
+  public async addRequest(): Promise<void>
   {
-    return new Promise<{}>
+    return new Promise<void>
     (
       (resolve, reject) => { this.requestQueue.add(resolve); }
     );
   }
 
   // Removes and returns one item from the start of the queue.
-  public pollRequest(): Types.ResolveFunction<{}> | "Queue is empty"
+  public pollRequest(): Types.ResolveFunction<void> | "Queue is empty"
   {
     return this.requestQueue.poll();
   }

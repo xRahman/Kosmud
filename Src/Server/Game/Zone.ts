@@ -43,9 +43,9 @@ export class Zone extends Shared.Zone
 
   private async loadTilemaps()
   {
-    for (const config of this.preloadData.tilemaps)
+    for (const tilemapConfig of this.assets.tilemaps)
     {
-      const tilemap = await createTilemap(config);
+      const tilemap = await createTilemap(tilemapConfig);
 
       this.addTilemap(tilemap);
     }

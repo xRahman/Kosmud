@@ -25,11 +25,10 @@ export namespace Renderer
   }
 
   // ! Throws exception on error.
-  export function startFlightScene(zone: Zone)
+  export function startScene(name: string)
   {
-    flightScene.setZone(zone);
     // ! Throws exception on error.
-    flightScene.start(getPhaserGame());
+    getPhaserGame().scene.start(name);
   }
 
   // ! Throws exception on error.

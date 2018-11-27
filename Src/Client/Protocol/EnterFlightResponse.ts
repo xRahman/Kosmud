@@ -10,6 +10,7 @@ import { Zone } from "../../Client/Game/Zone";
 import { Renderer } from "../../Client/Engine/Renderer";
 import { Connection } from "../../Client/Net/Connection";
 import * as Shared from "../../Shared/Protocol/EnterFlightResponse";
+import { REPORT } from "../../Shared/Log/REPORT";
 
 export class EnterFlightResponse extends Shared.EnterFlightResponse
 {
@@ -19,24 +20,14 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
-    /// TODO: V rámci tohohle packetu by měla být data zóny
-    ///   (co se má preloadnout, co player vidí).
-    /// Tzn. tady je potřeba creatnout zónu (nebo ji prostě
-    /// deserializovat z packetu).
+    const zone = fakeCreateZone();
 
-    const zone = createZone();
+    await loadFlightScene(zone);
 
-    /// TODO: Následně se tady vyrobí flight scéna z dat zóny.
+    initFlightScene();
 
-    /// TODO: Tohle by se mělo udělat o řádek vejš automaticky
-    /// při vytváření zóny.
-    /// (Zatím ale budu loď přidávat rovnou do zóny)
-    // Renderer.getFlightScene().addShip(this);
-
-    // This will cause Phaser engine to call preload() and creat()
-    // on the flight scene and then periodically call update() and
-    // draw the scene.
-    Renderer.startFlightScene(zone);
+    /// Tady by asi mělo bejt ještě setnutí stavu GUI, aby se
+    /// shownula/hidnula příslušná okna.
   }
 
   // ---------------- Private methods -------------------
@@ -44,8 +35,34 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
 
 // ----------------- Auxiliary Functions ---------------------
 
+async function loadFlightScene(zone: Zone)
+{
+  Renderer.flightScene.setZone(zone);
+
+  try
+  {
+    await Renderer.flightScene.load();
+  }
+  catch (error)
+  {
+    REPORT(error, `Failed to load flight scene`);
+  }
+}
+
+function initFlightScene()
+{
+  try
+  {
+    Renderer.flightScene.init();
+  }
+  catch (error)
+  {
+    REPORT(error, `Failed to init flight scene`);
+  }
+}
+
 /// TEST
-function createZone()
+function fakeCreateZone()
 {
   const zone = new Zone();
 

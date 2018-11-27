@@ -10,8 +10,10 @@
     Client/Engine classes are wrappers, Scene is a wrapper too.
 */
 
+import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { SceneContents } from "../../Client/Engine/SceneContents";
+import { Renderer } from "../../Client/Engine/Renderer";
 
 const INFINITE_REPEAT = -1;
 
@@ -30,13 +32,22 @@ export abstract class Scene
 
   protected active = false;
 
+  private loadingStarter: Types.ResolveFunction<void> | "Not awaiting loading"
+    = "Not awaiting loading";
+
+  private finishLoading: Types.ResolveFunction<void> | "Not loading"
+    = "Not loading";
+
   constructor(protected name: string)
   {
     this.phaserScene = new Phaser.Scene(name);
 
-    this.phaserScene.preload = () => { this.preload(); };
-    this.phaserScene.create = () => { this.create(); };
-    this.phaserScene.update = () => { this.update(); };
+    // It turns out that we do need to register preload() callback
+    // even though we don't use it because if we don't, Phaser
+    // will think that no loading is happening.
+    this.phaserScene.preload = () => { this.onPreload(); };
+    this.phaserScene.create = () => { this.onCreate(); };
+    this.phaserScene.update = () => { this.onUpdate(); };
   }
 
   // ---------------- Public methods --------------------
@@ -51,19 +62,22 @@ export abstract class Scene
     phaserGame.scene.add(this.name, this.phaserScene);
   }
 
-  public start(phaserGame: Phaser.Game)
+  // ! Throws exception on error.
+  public async load()
   {
-    phaserGame.scene.start(this.name);
+    // When the scene is started, Phaser calls preload() callback
+    // which we handle by onPreload() method - the loading happens
+    // there.
+    // (There is no way around it, because Phaser checks if preload()
+    //  even exists and if any loading is planned from it and skips
+    //  loading otherwise).
+    // So just imagine that 'onPreload()' is called here.
+    Renderer.startScene(this.name);
+
+    // Here we wait for Phaser to call create() callback
+    // (which means that loading is finished).
+    await this.loadingIsFinished();
   }
-
-  // This method is run by Phaser.
-  public abstract preload(): void;
-
-  // This method is run by Phaser.
-  public abstract create(): void;
-
-  // This method is run periodically by Phaser.
-  public abstract update(): void;
 
   public resize(width: number, height: number)
   {
@@ -71,12 +85,12 @@ export abstract class Scene
     this.height = height;
   }
 
-  public preloadTexture(textureId: string, textureFilePath: string)
+  public loadTexture(textureId: string, textureFilePath: string)
   {
     this.phaserScene.load.image(textureId, textureFilePath);
   }
 
-  public preloadTextureAtlas
+  public loadTextureAtlas
   (
     atlasId: string,
     atlasJsonFilePath: string,
@@ -91,12 +105,12 @@ export abstract class Scene
     );
   }
 
-  public preloadTilemap(tilemapDataId: string, tilemapJsonFilePath: string)
+  public loadTilemap(tilemapDataId: string, tilemapJsonFilePath: string)
   {
     this.phaserScene.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
   }
 
-  public preloadScenePlugin
+  public loadScenePlugin
   (
     config: Phaser.Loader.FileTypes.ScenePluginFileConfig
   )
@@ -104,7 +118,7 @@ export abstract class Scene
     this.phaserScene.load.scenePlugin(config);
   }
 
-  public preloadSound(audioId: string, path: string)
+  public loadSound(audioId: string, path: string)
   {
     this.phaserScene.load.audio(audioId, path);
   }
@@ -175,13 +189,20 @@ export abstract class Scene
     {
       throw new Error(`Failed to find tilemap json data for tilemap`
         + ` id '${tilemapId}'. Make sure that tilemap with this id`
-        + ` is preloaded`);
+        + ` is loaded`);
     }
 
     return jsonData as object;
   }
 
   // --------------- Protected methods ------------------
+
+  // ! Throws exception on error.
+  // tslint:disable-next-line
+  protected loadPlugins() {}
+
+  // ! Throws exception on error.
+  protected abstract loadAssets(): void;
 
   protected activate()
   {
@@ -191,6 +212,22 @@ export abstract class Scene
   protected deactivate()
   {
     this.active = false;
+  }
+
+  protected async startLoading(): Promise<void>
+  {
+    return new Promise<void>
+    (
+      (resolve, reject) => { this.loadingStarter = resolve; }
+    );
+  }
+
+  protected async loadingIsFinished(): Promise<void>
+  {
+    return new Promise<void>
+    (
+      (resolve, reject) => { this.finishLoading = resolve; }
+    );
   }
 
   // ---------------- Private methods -------------------
@@ -219,6 +256,36 @@ export abstract class Scene
       }
     );
   }
+
+  // ---------------- Event handlers --------------------
+
+  // ! Throws exception on error.
+  private onPreload()
+  {
+    // ! Throws exception on error.
+    this.loadPlugins();
+
+    // ! Throws exception on error.
+    this.loadAssets();
+  }
+
+  // ! Throws exception on error.
+  private onCreate()
+  {
+    if (this.finishLoading === "Not loading")
+    {
+      throw new Error(`Unable to finish loading of scene '${this.name}'`
+        + ` because loading has not even started`);
+    }
+
+    // Method create() is called by the Phaser engine when loading
+    // of scene assets is complete. We translate it to the end of
+    // async method load() by calling its resolve function.
+    this.finishLoading();
+  }
+
+  // This method is run periodically by Phaser.
+  protected abstract onUpdate(): void;
 }
 
 // ------------------ Type Declarations ----------------------
