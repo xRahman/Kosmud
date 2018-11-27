@@ -11,39 +11,8 @@ TODO: FlightSceneContents v původním významu postrádá smysl,
 {zatím to nechám být - je v tom background a waypoint}
 
 
-TODO: Mrknout se na serveru, jestli se initShapes() v zone.preload()
-  nemůže volat až v creatu (na serveru to je všechno async, ale i tak
-  by asi bylo lepší, aby to bylo stejně jako na klientu).
-- zone.create() na serveru vůbec nemám, ale mám tam createPhysicsWorld(),
-  s tím by se to možná dalo sloučit.
-
 TODO: zone.steerVehicles() by se možná dalo hodit do update()
   (opět aby to bylo koncepčně stejně jako na klientu).
-
-TODO: FlightScene.preload()
-- loadovat podle seznamu v zóně.
-
-TODO: Vyházet z konstructoru Client/Ship() vyrábění grafiky a tak
-  a dělat to až z FlightScene.create()
-  (nejspíš provolat scene.create(), která provolá create() jednotlivých
-   lodí ve scéně).
-- problém je, že pak grafické bazmeky v Shipu nebudou inicializované
-  v konstruktoru. Možná je všechny sloučit do ShipGraphics?
-  - ono to tak vlastně i je, jen exhausty a zvuky jsou mimo.
-    (což možná není nutný, exhausty jsou očividně grafickej bazmek,
-     takže klidně mohou být v shipGraphics.
-  - Zvuky by tam ideálně měly bejt taky.
-    - V tom případě by se to ale asi nemělo jmenovat ShipGraphics. Jak?
-      - ShipMedia? ShipMultimedia? ShipAudiovisuals?
-      ShipModel, ha!
-
-TODO: zone.update() se nikde nevolá
-  (tzn. se nevolá ani steerVehicles()).
-
-
-TODO: Vyhodit vyrábění tilemapy z konstruktoru ShipModelu
-  (tilemapa se bude vyrábět v creatu flightScény).
-
 
 
 TODO: Animation by asi mohla bejt samostatná classa
@@ -67,49 +36,9 @@ Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
 -----
 
 
-
-
-Otázka je, jestli se má shape posílat v rámci přidávání lodě do scény,
-nebo spíš na klientu vyrobit z dat tilemapy stejně jako na serveru.
-- logičtější by asi bylo ho tam vyrobit, protože data tilemapy musí
-  načíst tak jako tak.
-  - bude tam ale pak chybět kontrola, že to má opravdu takovej shape, jako
-    si myslím (jakej to má na serveru).
-  - na druhou stranu posílat shape pro každou tilesu je blbost, stejně jako
-    posílat ho pro každou loď znova.
-Pak je ještě otázka, co všechno se má poslat s lodí, aby se dala na klientu
-správně zobrazit.
-- ideálně asi poslat celou entitu (její Shared část) a neřešit to...
-- každopádně teď ale asi budu muset poslat shapeId
-
-TODO: Na clientu loadovat tilemapy ve scéně
-- na to asi budu muset dát klientu vědět, jakou scénu má loadovat.
-  (v rámci EnterGame?)
-  - jednotlivé zóny budou instance stejné classy, takže bude opravdu
-    potřeba ta data poslat.
-  - místo ShipToScene pak taky budu posílat UpdateZone, nebo tak něco
-    (a přibalit do toho celou shared Ship, místo abych z ní musel něco
-     vytahovat).
-  Posílat entity zatím nebudu - vezmu to natvrdo ze Zone.preloadData.
-  - ok, to bych měl dělat v rámci preloadu scény.
-TODO: A vyčíst z nich shapy
-TODO: Ve FlightScene.createShip() použít shape loadnutej z tilemapy
-  místo shapu poslaného ze serveru.
-
-
-Scéna nepotřebuje odkaz na zónu - renderuje se zóna do scény, ne naopak.
-- tzn. asi bych měl nejdřív vyrobit flight scénu a až pak si říct serveru
-  o zónu (tzn. poslat EnterFlightRequest).
-    Díky tomu pak bude existovat flightScene ve chvíli, kdy dostanu scénu
-  a věci v ní, a tudíž jim můžu dát scénu jako parametru.
-
-Takže TODO:
-- posílat EnterFlightRequest až poté, co je vyrobená (ne preloadnutá)
-  flight scéna.
-
 TODO: Server/Zone.getSceneUpdate() by se asi mohlo jemnovat prostě
   getUpdate().
-A ScenUpdate (packet) by se mohl jmenovat ZoneUpdate.
+A SceneUpdate (packet) by se mohl jmenovat ZoneUpdate.
 (updatuje se stav zóny, kterej si pak klient promítne do scény).
 
 
@@ -136,19 +65,10 @@ TODO: V Client/EnterFlightRequest.process() creatnout zónu z poslaných dat
   (zatím ji tam budu natvrdo vyrábět).
 
 
-TODO: Výhledově zdědit Client/Ship ze Shared/Ship
-- ještě to dotáhnout.
-
 TODO: Pokud nebudou potřeba data tilemapy po načtení shapů, tak je
   nedržet (tj. dát to do dočasné proměnné).
   (tzn. Zone.tilemaps by asi mělo být dočasné a ne class property)
 - shapy v paměti držet budu.
-
-Problém: Jak se dostat k json datům tilemapy, které loadnul Phaser?
-  Možná takhle:
-    let data = this.cache.json.get('levelData');
-  JSON se případně preloaduje takhle (ale je blbost ho loadovat dvakrát):
-    this.load.json("yourkey", "your.json")
 
 TODO: V EnterShip.fakeLoadFighter() setovat i ostatní physics properties.
   (ve Vehicle budou jen defaultní).
@@ -162,12 +82,6 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
     jim properties (efektivně to je totéž jako load entity z disku).
 {tohle si tu nechám, ať vím, kam směřuju}
 
-
-
-TODO: Umožnit na klientu víc lodí.
-- a pořádně to projít i na serveru, asi je to teď lehce zmatený.
-  (getPlayerShip() je ale ok řešení, asi by šlo použít i na klientu).
-- tohle pořeší předělání na scény, ale i tak to projít
 
 
 TODO: doladit vizuály exhaustů
