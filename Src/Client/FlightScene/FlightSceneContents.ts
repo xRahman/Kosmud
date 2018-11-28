@@ -1,12 +1,9 @@
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { Background } from "../../Client/FlightScene/Background";
-import { Ship } from "../../Client/Game/Ship";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Waypoint } from "../../Client/FlightScene/Waypoint";
 
 export class FlightSceneContents extends SceneContents
 {
-  public background: Background;
   public waypoint: Waypoint;
   /// Lodě jsou teď ve scéně.
   // public ship: Ship | "Doesn't exist" = "Doesn't exist";
@@ -21,14 +18,11 @@ export class FlightSceneContents extends SceneContents
   {
     super(input);
 
-    this.background = new Background(scene, canvasWidth, canvasHeight);
-
     this.waypoint = new Waypoint(scene);
   }
 
   public static loadAssets(scene: FlightScene)
   {
-    Background.loadAssets(scene);
     Waypoint.loadAssets(scene);
   }
 

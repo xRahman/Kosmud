@@ -3,7 +3,7 @@ import { Scene } from "../../Client/Engine/Scene";
 
 const BACKGROUND_TEXTURE_ID = "Background Texture";
 
-export class Background
+export class BackgroundModel
 {
   private readonly sprite: Sprite;
 

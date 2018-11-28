@@ -1,10 +1,19 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Udělat FlightBackgroundScene
+TODO: Udělat BackgroundScene
+(BackgroundModel možná vůbec nebudu potřebovat - v BackgroundScene
+ beztak bude jen jedna sprita).
+
+TODO: Zrušit SceneContents
+
+TODO: Waypoint dát do SceneGUI
 
 TODO: Aktivita scény by se mohla zapisovat přímo do scény místo extra flagy.
   (sleep/wake, nebo tak něco).
+- scene manager má přímo setActive() a isActive(), to by mohlo stačit
+  (tzn. v konstruktoru by se setovalo setActive(false)).
+(Aha a můžu použít setActive(boolean) místo activate/deactivate).
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.

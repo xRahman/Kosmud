@@ -1,20 +1,11 @@
 import { Scene } from "../../Client/Engine/Scene";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { Renderer } from "../../Client/Engine/Renderer";
 
 const scenes = new Map<string, Scene>();
 
 export namespace Scenes
 {
   export const flightScene = addScene(new FlightScene("Flight scene"));
-
-  /// To be deleted (Scene.startLoading() is used instead).
-  // // ! Throws exception on error.
-  // export function startScene(sceneName: string)
-  // {
-  //   // ! Throws exception on error.
-  //   Renderer.startScene(sceneName);
-  // }
 
   export function exists(sceneName: string)
   {

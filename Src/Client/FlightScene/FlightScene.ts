@@ -20,11 +20,6 @@ export class FlightScene extends Scene
 
   private zone: Zone | "Not assigned" = "Not assigned";
 
-  constructor(name: string)
-  {
-    super(name);
-  }
-
   // ---------------- Public methods --------------------
 
   public setZone(zone: Zone)
@@ -47,27 +42,6 @@ export class FlightScene extends Scene
     this.initContents();
 
     this.activate();
-  }
-
-  // ! Throws exception on error.
-  // ~ Overrides Scene.resize().
-  public resize(width: number, height: number)
-  {
-    super.resize(width, height);
-
-    // If scene contents isn't created yet, there is nothing
-    // to resize (this can happen when loading takes a long time
-    // and user toggles Chrome debug console, resizes browser
-    // window or something like that).
-    if (this.contents === "Doesn't exist")
-      return;
-
-    // ! Throws exception on error.
-    this.contents.background.resize(width, height);
-
-    /// (Musí se tohle volat?)
-    /// - Nejspíš nemusí.
-    // this.cameras.resize(width, height);
   }
 
   // --------------- Protected methods ------------------
@@ -167,6 +141,8 @@ export namespace FlightScene
   export const Z_ORDER_SHIPS = Z_ORDER_WAYPOINTS + 1;
   export const Z_ORDER_DEBUG = Z_ORDER_SHIPS + 1;
 }
+
+// ----------------- Auxiliary Functions ---------------------
 
 // ! Throws exception on error.
 function fakeCreateShip()
