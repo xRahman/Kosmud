@@ -1,7 +1,10 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Udělat FlightBackgroundScene
 
+TODO: Aktivita scény by se mohla zapisovat přímo do scény místo extra flagy.
+  (sleep/wake, nebo tak něco).
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.

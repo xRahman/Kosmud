@@ -8,12 +8,13 @@ export namespace Scenes
 {
   export const flightScene = addScene(new FlightScene("Flight scene"));
 
-  // ! Throws exception on error.
-  export function startScene(sceneName: string)
-  {
-    // ! Throws exception on error.
-    Renderer.startScene(sceneName);
-  }
+  /// To be deleted (Scene.startLoading() is used instead).
+  // // ! Throws exception on error.
+  // export function startScene(sceneName: string)
+  // {
+  //   // ! Throws exception on error.
+  //   Renderer.startScene(sceneName);
+  // }
 
   export function exists(sceneName: string)
   {

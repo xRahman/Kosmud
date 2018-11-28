@@ -21,18 +21,19 @@ export namespace Renderer
     Scenes.flightScene.resize(canvasWidth, canvasHeight);
   }
 
-  // ! Throws exception on error.
-  export function startScene(name: string)
-  {
-    if (!Scenes.exists(name))
-    {
-      throw new Error(`Failed to start scene '${name}' because`
-        + ` it doesn't exist`);
-    }
+  /// To be deleted (Scene.startLoading() is used instead).
+  // // ! Throws exception on error.
+  // export function startScene(name: string)
+  // {
+  //   if (!Scenes.exists(name))
+  //   {
+  //     throw new Error(`Failed to start scene '${name}' because`
+  //       + ` it doesn't exist`);
+  //   }
 
-    // ! Throws exception on error.
-    getPhaserGame().scene.start(name);
-  }
+  //   // ! Throws exception on error.
+  //   getPhaserGame().scene.start(name);
+  // }
 
   // ! Throws exception on error.
   export function resize(width: number, height: number)

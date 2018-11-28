@@ -71,15 +71,7 @@ export abstract class Scene
   // ! Throws exception on error.
   public async load()
   {
-    // When the scene is started, Phaser calls preload() callback
-    // which we handle by onPreload() method - the loading happens
-    // there.
-    // (There is no way around it, because Phaser checks if preload()
-    //  even exists on scene object and if any loading is planned from
-    //  it and skips loading otherwise).
-    // So just imagine that 'onPreload()' is called here (which it is,
-    //  indirectly).
-    Renderer.startScene(this.name);
+    this.startLoading();
 
     // Here we wait for Phaser to call create() callback
     // (which means that loading is finished).
@@ -233,6 +225,19 @@ export abstract class Scene
   }
 
   // ---------------- Private methods -------------------
+
+  private startLoading()
+  {
+    // When the scene is started, Phaser calls preload() callback
+    // which we handle by onPreload() method - the loading happens
+    // there.
+    // (There is no way around it, because Phaser checks if preload()
+    //  even exists on scene object and if any loading is planned from
+    //  it and skips loading otherwise).
+    // So just imagine that 'onPreload()' is called here (which it is,
+    //  indirectly).
+    this.phaserScene.scene.start(this.getName());
+  }
 
   // ! Throws exception on error.
   private generateFrameNames(animation: Sprite.Animation)

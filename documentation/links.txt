@@ -97,6 +97,14 @@ Sprite Sheet Packer (free)
 
 https://www.codeandweb.com/free-sprite-sheet-packer
 
+Další varianta:
+https://www.leshylabs.com/apps/sstool/
+
+
+Fonty:
+--------
+http://kvazars.com/littera/
+
 
 ==============================================================
 
