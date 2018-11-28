@@ -4,6 +4,10 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 TODO: Udělat BackgroundScene
 (BackgroundModel možná vůbec nebudu potřebovat - v BackgroundScene
  beztak bude jen jedna sprita).
+- Background model jsem nechal, třeba do něj časem něco přibude.
+
+TODO: Opravit resizování backgroundu
+  (nejspíš se mi neprovolává resize() kam má).
 
 TODO: Zrušit SceneContents
 

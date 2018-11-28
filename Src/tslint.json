@@ -13,6 +13,7 @@
   // },
   "rules":
   {
+    "no-debugger": false,
     "newline-before-return": false,
     "no-parameter-properties": false,
     "cyclomatic-complexity": false,

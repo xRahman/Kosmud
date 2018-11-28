@@ -18,7 +18,7 @@ export class SceneUpdate extends Shared.SceneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    if (Scenes.isFlightSceneActive())
+    if (Scenes.getFlightScene().isActive())
       connection.getZone().updateShips(this.shipStates);
   }
 }

@@ -8,7 +8,6 @@
 
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Zone } from "../../Client/Game/Zone";
-import { Renderer } from "../../Client/Engine/Renderer";
 import { Connection } from "../../Client/Net/Connection";
 import { Scenes } from "../../Client/Engine/Scenes";
 import * as Shared from "../../Shared/Protocol/EnterFlightResponse";
@@ -25,6 +24,7 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
 
     await loadFlightScene(zone);
 
+    initBackgroundScene();
     initFlightScene();
 
     /// Tady by asi mělo bejt ještě setnutí stavu GUI, aby se
@@ -38,11 +38,11 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
 
 async function loadFlightScene(zone: Zone)
 {
-  Scenes.flightScene.setZone(zone);
+  Scenes.getFlightScene().setZone(zone);
 
   try
   {
-    await Scenes.flightScene.load();
+    await Scenes.getFlightScene().load();
   }
   catch (error)
   {
@@ -54,11 +54,23 @@ function initFlightScene()
 {
   try
   {
-    Scenes.flightScene.init();
+    Scenes.getFlightScene().init();
   }
   catch (error)
   {
     REPORT(error, `Failed to init flight scene`);
+  }
+}
+
+function initBackgroundScene()
+{
+  try
+  {
+    Scenes.getBackgroundScene().init();
+  }
+  catch (error)
+  {
+    REPORT(error, `Failed to init background scene`);
   }
 }
 

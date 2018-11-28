@@ -12,7 +12,7 @@ export class BackgroundScene extends Scene
     // ! Throws exception on error.
     this.createBackgroundModel();
 
-    this.activate();
+    this.setActive(true);
   }
 
   // ! Throws exception on error.

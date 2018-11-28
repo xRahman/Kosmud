@@ -1,34 +1,60 @@
 import { Scene } from "../../Client/Engine/Scene";
+import { Renderer } from "../../Client/Engine/Renderer";
 import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { BackgroundScene } from "../../Client/BackgroundScene/BackgroundScene";
 
-const scenes = new Map<string, Scene>();
-
-export namespace Scenes
+export class Scenes
 {
-  export const flightScene = addScene(new FlightScene("Flight scene"));
+  public static sceneList = new Map<string, Scene>();
 
-  export function exists(sceneName: string)
+  private readonly backgroundScene: BackgroundScene;
+  private readonly flightScene: FlightScene;
+
+  constructor(phaserGame: Phaser.Game, width: number, height: number)
   {
-    return scenes.has(sceneName);
+    // Order of creation determines drawing order
+    // (unless scenes are rearranged later).
+
+    this.backgroundScene = new BackgroundScene
+    (
+      "Background scene", phaserGame, width, height
+    );
+
+    this.flightScene = new FlightScene
+    (
+      "Flight scene", phaserGame, width, height
+    );
   }
 
-  export function isFlightSceneActive()
+  // ! Throws exception on error.
+  public static addScene<T extends Scene>(scene: T): T
   {
-    return flightScene.isActive();
-  }
-}
+    if (Scenes.sceneList.has(scene.getName()))
+    {
+      throw new Error(`Scene ${scene.debugId} already exists`);
+    }
 
-// ----------------- Auxiliary Functions ---------------------
+    Scenes.sceneList.set(scene.getName(), scene);
 
-// ! Throws exception on error.
-function addScene<T extends Scene>(scene: T): T
-{
-  if (scenes.has(scene.getName()))
-  {
-    throw new Error(`Scene ${scene.debugId} already exists`);
+    return scene;
   }
 
-  scenes.set(scene.getName(), scene);
+  public static exists(sceneName: string)
+  {
+    return Scenes.sceneList.has(sceneName);
+  }
 
-  return scene;
+  // ! Throws exception on error.
+  public static getFlightScene()
+  {
+    // ! Throws exception on error.
+    return Renderer.getScenes().flightScene;
+  }
+
+  // ! Throws exception on error.
+  public static getBackgroundScene()
+  {
+    // ! Throws exception on error.
+    return Renderer.getScenes().backgroundScene;
+  }
 }

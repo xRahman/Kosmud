@@ -15,7 +15,7 @@ import { REPORT } from "../../Shared/Log/REPORT";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { SceneContents } from "../../Client/Engine/SceneContents";
-import { Renderer } from "../../Client/Engine/Renderer";
+import { Scenes } from "./Scenes";
 
 const INFINITE_REPEAT = -1;
 
@@ -27,26 +27,31 @@ interface PhaserScene extends Phaser.Scene
 
 export abstract class Scene
 {
-  protected width = 0;
-  protected height = 0;
   protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
   protected phaserScene: PhaserScene;
 
-  protected active = false;
+  // protected active = false;
 
   private finishLoading: Types.ResolveFunction<void> | "Not loading"
     = "Not loading";
 
-  constructor(protected name: string)
+  constructor
+  (
+    protected name: string,
+    private readonly phaserGame: Phaser.Game,
+    protected width = 0,
+    protected height = 0
+  )
   {
     this.phaserScene = new Phaser.Scene(name);
+    this.setActive(false);
+    phaserGame.scene.add(name, this.phaserScene);
 
-    // It turns out that we do need to register preload() callback
-    // even though we don't use it because if we don't, Phaser
-    // will think that no loading is happening.
     this.phaserScene.preload = () => { this.onPreload(); };
     this.phaserScene.create = () => { this.onCreate(); };
     this.phaserScene.update = () => { this.onUpdate(); };
+
+    Scenes.addScene(this);
   }
 
   // ---------------- Public methods --------------------
@@ -60,12 +65,8 @@ export abstract class Scene
 
   public isActive()
   {
-    return this.active;
-  }
-
-  public addToPhaserGame(phaserGame: Phaser.Game)
-  {
-    phaserGame.scene.add(this.name, this.phaserScene);
+    // return this.active;
+    return this.phaserScene.sys.isActive();
   }
 
   // ! Throws exception on error.
@@ -203,15 +204,20 @@ export abstract class Scene
   // ! Throws exception on error.
   protected abstract loadAssets(): void;
 
-  protected activate()
+  protected setActive(active: boolean)
   {
-    this.active = true;
+    this.phaserScene.sys.setActive(active);
   }
 
-  protected deactivate()
-  {
-    this.active = false;
-  }
+  // protected activate()
+  // {
+  //   this.active = true;
+  // }
+
+  // protected deactivate()
+  // {
+  //   this.active = false;
+  // }
 
   // ! Throws exception on error.
   // tslint:disable-next-line:prefer-function-over-method
@@ -241,7 +247,9 @@ export abstract class Scene
     //  it and skips loading otherwise).
     // So just imagine that 'onPreload()' is called here (which it is,
     //  indirectly).
-    this.phaserScene.scene.start(this.getName());
+    // this.getScenePlugin().start(this.getName());
+    // this.phaserScene.sys.scenePlugin.start(this.getName());
+    this.phaserGame.scene.start(this.getName());
   }
 
   // ! Throws exception on error.

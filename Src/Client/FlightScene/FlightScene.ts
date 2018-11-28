@@ -49,7 +49,7 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.activate().
   protected activate()
   {
-    super.activate();
+    super.setActive(true);
 
     Connection.setZone(this.getZone());
   }

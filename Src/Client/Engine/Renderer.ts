@@ -1,8 +1,10 @@
+import { REPORT } from "../../Shared/Log/REPORT";
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Body } from "../../Client/Gui/Body";
 
 let phaserGame: Phaser.Game | "Doesn't exist" = "Doesn't exist";
+let scenes: Scenes | "Doesn't exist" = "Doesn't exist";
 
 export namespace Renderer
 {
@@ -12,13 +14,30 @@ export namespace Renderer
     const canvasWidth = Body.getCanvasDiv().getWidth();
     const canvasHeight = Body.getCanvasDiv().getHeight();
 
+    // ! Throws exception on error.
     phaserGame = createPhaserGame(canvasWidth, canvasHeight);
 
-    // Note that 'flightScene' is not started automatically because it is
-    // not passed to Phaser.Game in the config. We are not starting it even
-    // here, we are just adding to phaserGame so it can be started later.
-    Scenes.flightScene.addToPhaserGame(phaserGame);
-    Scenes.flightScene.resize(canvasWidth, canvasHeight);
+    scenes = new Scenes(phaserGame, canvasWidth, canvasHeight);
+
+    try
+    {
+      const fireAndForget = Scenes.getBackgroundScene().load();
+    }
+    catch (error)
+    {
+      REPORT(error, `Failed to load background scene`);
+    }
+  }
+
+  // ! Throws exception on error.
+  export function getScenes()
+  {
+    if (scenes === "Doesn't exist")
+    {
+      throw new Error(`Instance of 'Scenes' doesn't exist yet`);
+    }
+
+    return scenes;
   }
 
   // ! Throws exception on error.
@@ -28,7 +47,7 @@ export namespace Renderer
     getPhaserGame().resize(width, height);
 
     // ! Throws exception on error.
-    Scenes.flightScene.resize(width, height);
+    Scenes.getFlightScene().resize(width, height);
   }
 }
 
