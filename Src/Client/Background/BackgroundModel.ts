@@ -146,11 +146,13 @@ function createBackgroundSprite
     }
   );
 
-  // 'scrollFactor' 0 means that the background won't move
-  // along with camera (note that camera must be moved using
-  // '.scrollX' and '.scrollY' rather than '.x' and '.y' for
-  // scrollFactor to work.
-  backgroundSprite.setScrollFactor(0);
+  /// We no longer need to set 'scrollFactor' because background
+  /// is rendered in it's own scene.
+  // // 'scrollFactor' 0 means that the background won't move
+  // // along with camera (note that camera must be moved using
+  // // '.scrollX' and '.scrollY' rather than '.x' and '.y' for
+  // // scrollFactor to work.
+  // backgroundSprite.setScrollFactor(0);
 
   return backgroundSprite;
 }
