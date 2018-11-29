@@ -8,10 +8,10 @@ import { Scene } from "../../Client/Engine/Scene";
 
 const WAYPOINT_TEXTURE_ID = "Waypoint Texture";
 
-export class Waypoint
+export class WaypointModel
 {
   private visible = false;
-  private readonly sprite: Sprite;
+  private readonly waypointSprite: Sprite;
 
   constructor
   (
@@ -20,7 +20,7 @@ export class Waypoint
     private readonly rotation = 0
   )
   {
-    this.sprite = createSprite(scene, position, rotation);
+    this.waypointSprite = createSprite(scene, position, rotation);
 
     this.hide();
   }
@@ -42,7 +42,7 @@ export class Waypoint
   {
     this.position.set(position);
 
-    this.sprite.setPosition(position);
+    this.waypointSprite.setPosition(position);
 
     sendWaypoint(position);
   }
@@ -70,7 +70,7 @@ export class Waypoint
     if (!this.visible)
     {
       this.visible = true;
-      this.sprite.setVisible(true);
+      this.waypointSprite.setVisible(true);
     }
   }
 
@@ -79,7 +79,7 @@ export class Waypoint
     if (this.visible)
     {
       this.visible = false;
-      this.sprite.setVisible(false);
+      this.waypointSprite.setVisible(false);
     }
   }
 }

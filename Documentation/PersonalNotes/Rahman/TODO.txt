@@ -1,6 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Posílání změny waypointu by nemělo být ve WaypointModelu.
+
 TODO: Graphics (a vůbec všechn phaser object wrappery) by měl
   v konstruktoru přijímat options (a možná i config) stejně jako
   Sprite.

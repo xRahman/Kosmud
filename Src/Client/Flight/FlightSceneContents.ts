@@ -1,10 +1,10 @@
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { SceneContents } from "../../Client/Engine/SceneContents";
-import { Waypoint } from "../../Client/Flight/Waypoint";
+import { WaypointModel } from "../../Client/Flight/WaypointModel";
 
 export class FlightSceneContents extends SceneContents
 {
-  public waypoint: Waypoint;
+  public waypointModel: WaypointModel;
   /// Lodě jsou teď ve scéně.
   // public ship: Ship | "Doesn't exist" = "Doesn't exist";
 
@@ -18,12 +18,12 @@ export class FlightSceneContents extends SceneContents
   {
     super(input);
 
-    this.waypoint = new Waypoint(scene);
+    this.waypointModel = new WaypointModel(scene);
   }
 
   public static loadAssets(scene: FlightScene)
   {
-    Waypoint.loadAssets(scene);
+    WaypointModel.loadAssets(scene);
   }
 
   // ---------------- Public methods --------------------
@@ -37,7 +37,7 @@ export class FlightSceneContents extends SceneContents
 
   public update()
   {
-    this.waypoint.update(this.mouse);
+    this.waypointModel.update(this.mouse);
 
     this.mouse.update();
     // this.camera.update();
