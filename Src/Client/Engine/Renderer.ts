@@ -47,6 +47,7 @@ export namespace Renderer
     getPhaserGame().resize(width, height);
 
     // ! Throws exception on error.
+    Scenes.getBackgroundScene().resize(width, height);
     Scenes.getFlightScene().resize(width, height);
   }
 }

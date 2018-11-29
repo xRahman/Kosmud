@@ -1,3 +1,14 @@
+TODO: Opravit resizování backgroundu
+  (nejspíš se mi neprovolává resize() kam má).
+{ Zatím to nechám takhle - funguje to, to stačí }
+[done]
+
+TODO: Udělat BackgroundScene
+(BackgroundModel možná vůbec nebudu potřebovat - v BackgroundScene
+ beztak bude jen jedna sprita).
+- Background model jsem nechal, třeba do něj časem něco přibude.
+[done]
+
 TODO: Fyziku přesunout do shared kódu (ve finálu tam bude muset bejt,
   aby šlo dělat client-side simulaci, tak bych s tím rovnou mohl počítat.
   (klient-side simulaci ale zatím dělat nebudu).

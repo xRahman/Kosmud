@@ -1,13 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Udělat BackgroundScene
-(BackgroundModel možná vůbec nebudu potřebovat - v BackgroundScene
- beztak bude jen jedna sprita).
-- Background model jsem nechal, třeba do něj časem něco přibude.
-
-TODO: Opravit resizování backgroundu
-  (nejspíš se mi neprovolává resize() kam má).
+TODO: adresář FlightScene možná přejmenovat na Flight a BackgroundScene
+  na Background?
 
 TODO: Zrušit SceneContents
 
@@ -224,6 +219,9 @@ TODO: Možná by stálo za to transformaci souřadnic ještě upravit, aby [0, 0
   bylo uprostřed obrazovky.
   (protože typicky budu chtít loď uprostřed obrazovky...)
   - i když, to možná bude lepší vyřešit kamerou.
+{ Asi by to fakt chtělo - teď když resizuju hru, tak se objekty ve flight
+ scéně držej vlevo nahoře, protože tam mají origin. Správně by asi mělo
+ to, co je veprostřed obrazovky, zůstat uprostřed }
 
 
 TODO: Zapínání a vypínání debug grafiky.
