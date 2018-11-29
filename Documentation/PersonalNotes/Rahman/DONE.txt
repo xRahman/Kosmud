@@ -1,3 +1,45 @@
+TODO: Neměl by se PhaserObject.Config aplikovat v konstruktoru PhaserObjectu?
+- asi jo, no. Chci po scéně věci, které by vůbec neměla dělat.
+  Měla by prostě jen vyrobit příslušnej phaserObject a konec, setovat
+  mu properties by měly wrappery.
+V konstruktoru to nejde, ale je na to metoda applyConfig()
+[done]
+
+Hmm, ono by to asi celý mělo bejt tak, že scene.createNěco() vytvoří
+  a vrátí rovnou wrapper, nikoliv interní phaserovou property.
+  - takže createAnimation() by mělo vrátit Animation,
+    createSound() by mělo vrátit sound, atd.
+  - čili konstruktory wrapperů pak nebudou dostávat jako parametr
+    Scene, ale to, co mají wrappovat.
+{ Tohle asi nebrat - intuitivnější je udělat 'new Sprite()'. }
+Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
+  v body si Vehicle drží fyzikální properties (a má ho tudíž od začátku,
+  přestože ještě není v physics worldu).
+  - Možná bych to ale mohl předělat, vrátit properties do PhysicsConfigu,
+    nebo tak něčeho a PhysicsBody vyrábat opravdu až v addToPhysicsWorld().
+    - asi jo.
+[won't do]
+
+TODO: Aktivita scény by se mohla zapisovat přímo do scény místo extra flagy.
+  (sleep/wake, nebo tak něco).
+- scene manager má přímo setActive() a isActive(), to by mohlo stačit
+  (tzn. v konstruktoru by se setovalo setActive(false)).
+(Aha a můžu použít setActive(boolean) místo activate/deactivate).
+[done]
+
+TODO: Graphics (a vůbec všechn phaser object wrappery) by měl
+  v konstruktoru přijímat options (a možná i config) stejně jako
+  Sprite.
+- a měl by tam být container.
+[done]
+
+TODO: Potřebuju vůbec u phaser object wrapperů rozlišovat Config a Options?
+- co brání tomu, aby to bylo v jednom objektu?
+TODO: Config by mohl být zděděný z nějakýho základního Configu
+  (PhaserObject.Config asi)
+  - position, rotation, depth, container, ať neopakuju pořád stejnej kód.
+[done]
+
 TODO: Přejmenovat všechny modely na XxxModel.
   (a asi bych taky mohl sjednotit, jestli se dědí z Phaser object wrapperů,
    nebo se tyhle objekty wrappujou).

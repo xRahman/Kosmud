@@ -3,26 +3,18 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 
 TODO: Posílání změny waypointu by nemělo být ve WaypointModelu.
 
-TODO: Graphics (a vůbec všechn phaser object wrappery) by měl
-  v konstruktoru přijímat options (a možná i config) stejně jako
-  Sprite.
-- a měl by tam být container.
+TODO: Animation by asi mohla bejt samostatná classa
+  (teď se to dělá přes Scene).
+- scene.createAnimation() by mohla vrátit rovnou Animation.
+  - problém je, že frameNames vyrábí taky scéna...
+Tohle by fakt řešilo, kdyby se Sprity a podobně vyráběly metodama Scény.
+  Pak by prostě scéna do jejich konstruktoru passnula příslušný vyráběcí
+  bazmek (třeba anims) a bylo by...
 
-TODO: Potřebuju vůbec u phaser object wrapperů rozlišovat Config a Options?
-- co brání tomu, aby to bylo v jednom objektu?
-TODO: Config by mohl být zděděný z nějakýho základního Configu
-  (PhaserObject.Config asi)
-  - position, rotation, depth, container, ať neopakuju pořád stejnej kód.
-
-TODO: Waypoint dát do SceneGUI
+TODO: WaypointModel dát do FlightSceneGUI
 
 TODO: Zrušit SceneContents
 
-TODO: Aktivita scény by se mohla zapisovat přímo do scény místo extra flagy.
-  (sleep/wake, nebo tak něco).
-- scene manager má přímo setActive() a isActive(), to by mohlo stačit
-  (tzn. v konstruktoru by se setovalo setActive(false)).
-(Aha a můžu použít setActive(boolean) místo activate/deactivate).
 
 TODO: FlightSceneContents v původním významu postrádá smysl,
   lodě a objekty teď budou ve scéně.
@@ -34,24 +26,6 @@ TODO: FlightSceneContents v původním významu postrádá smysl,
 
 TODO: zone.steerVehicles() by se možná dalo hodit do update()
   (opět aby to bylo koncepčně stejně jako na klientu).
-
-
-TODO: Animation by asi mohla bejt samostatná classa
-  (teď se to dělá přes Scene).
-- scene.createAnimation() by mohla vrátit rovnou Animation.
-
-Hmm, ono by to asi celý mělo bejt tak, že scene.createNěco() vytvoří
-  a vrátí rovnou wrapper, nikoliv interní phaserovou property.
-  - takže createAnimation() by mělo vrátit Animation,
-    createSound() by mělo vrátit sound, atd.
-  - čili konstruktory wrapperů pak nebudou dostávat jako parametr
-    Scene, ale to, co mají wrappovat.
-Bohužel teda u PhysicsWorld a createBody() to takhle nepůjde, protože
-  v body si Vehicle drží fyzikální properties (a má ho tudíž od začátku,
-  přestože ještě není v physics worldu).
-  - Možná bych to ale mohl předělat, vrátit properties do PhysicsConfigu,
-    nebo tak něčeho a PhysicsBody vyrábat opravdu až v addToPhysicsWorld().
-    - asi jo.
 
 
 -----

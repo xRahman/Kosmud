@@ -57,6 +57,20 @@ export abstract class PhaserObject
   {
     this.phaserObject.setVisible(visibility);
   }
+
+  // --------------- Protected methods ------------------
+
+  protected applyConfig(config: PhaserObject.Config)
+  {
+    if (config.rotation !== undefined)
+      this.phaserObject.setRotation(config.rotation);
+
+    if (config.depth !== undefined)
+      this.phaserObject.setDepth(config.depth);
+
+    if (config.graphicContainer !== undefined)
+      config.graphicContainer.add(this.phaserObject);
+  }
 }
 
 // ------------------ Type Declarations ----------------------

@@ -15,7 +15,6 @@ import { Vector } from "../../Shared/Physics/Vector";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Scene } from "../../Client/Engine/Scene";
-import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Graphics extends PhaserObject
@@ -27,6 +26,8 @@ export class Graphics extends PhaserObject
     super(scene);
 
     this.phaserObject = scene.createGraphics(config);
+
+    this.applyConfig(config);
   }
 
   // ----------------- Private data ---------------------

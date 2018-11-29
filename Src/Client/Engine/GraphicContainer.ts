@@ -16,11 +16,13 @@ export class GraphicContainer extends PhaserObject
     super(scene);
 
     this.phaserObject = scene.createContainer(config);
+
+    this.applyConfig(config);
   }
 
   // ---------------- Public methods --------------------
 
-  public add(gameObject: Phaser.GameObjects.GameObject)
+  public add(gameObject: PhaserObject.GameObject)
   {
     this.phaserObject.add(gameObject);
   }

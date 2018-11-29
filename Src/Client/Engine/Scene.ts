@@ -12,7 +12,6 @@
 
 import { ERROR } from "../../Shared/Log/ERROR";
 import { REPORT } from "../../Shared/Log/REPORT";
-import { applyDefaults } from "../../Shared/Utils/Object";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { Graphics } from "../../Client/Engine/Graphics";
@@ -129,15 +128,11 @@ export abstract class Scene
 
   public createContainer(config: GraphicContainer.Config)
   {
-    const graphicsContainer = this.phaserScene.add.container
+    return this.phaserScene.add.container
     (
       config.position ? config.position.x : 0,
       config.position ? config.position.y : 0
     );
-
-    applyCommonConfig(graphicsContainer, config);
-
-    return graphicsContainer;
   }
 
   public createGraphics(config: Graphics.Config)
@@ -150,25 +145,17 @@ export abstract class Scene
       fillStyle: config.fillStyle
     };
 
-    const graphics = this.phaserScene.add.graphics(graphicsOptions);
-
-    applyCommonConfig(graphics, config);
-
-    return graphics;
+    return this.phaserScene.add.graphics(graphicsOptions);
   }
 
   public createSprite(config: Sprite.Config)
   {
-    const sprite = this.phaserScene.add.sprite
+    return this.phaserScene.add.sprite
     (
       config.position ? config.position.x : 0,
       config.position ? config.position.y : 0,
       config.textureOrAtlasId
     );
-
-    applyCommonConfig(sprite, config);
-
-    return sprite;
   }
 
   public createTilemap(tilemapJsonDataId: string)
@@ -182,7 +169,7 @@ export abstract class Scene
     // ! Throws exception on error.
     const frameNames = this.generateFrameNames(animation);
 
-    this.phaserScene.anims.create
+    return this.phaserScene.anims.create
     (
       {
         key: animation.name,
@@ -326,24 +313,6 @@ export abstract class Scene
       REPORT(error, `Failed to update ${this.debugId}`);
     }
   }
-}
-
-// ----------------- Auxiliary Functions ---------------------
-
-function applyCommonConfig
-(
-  phaserObject: PhaserObject.GameObject,
-  config: PhaserObject.Config
-)
-{
-  if (config.rotation !== undefined)
-    phaserObject.setRotation(config.rotation);
-
-  if (config.depth !== undefined)
-    phaserObject.setDepth(config.depth);
-
-  if (config.graphicContainer !== undefined)
-    config.graphicContainer.add(phaserObject);
 }
 
 // ------------------ Type Declarations ----------------------

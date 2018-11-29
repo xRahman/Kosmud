@@ -24,20 +24,16 @@ export class Sprite extends PhaserObject
   {
     super(scene);
 
-    if (sprite !== undefined)
+    if (sprite === undefined)
     {
-      this.phaserObject = this.useExistingSprite(sprite, config);
+      this.phaserObject = this.scene.createSprite(config);
     }
     else
     {
-      this.phaserObject = this.createSprite(config);
+      this.phaserObject = this.useSprite(sprite, config);
     }
 
-    if (config.animationName !== undefined)
-      this.playAnimation(config.animationName);
-
-    if (config.origin)
-      this.setOrigin(config.origin);
+    this.applyConfig(config);
   }
 
   // ---------------- Public methods --------------------
@@ -69,9 +65,27 @@ export class Sprite extends PhaserObject
     this.phaserObject.scaleY = scale * this.baseScaleY;
   }
 
-  // ---------------- Private methods -------------------
+  // --------------- Protected methods ------------------
 
-  private useExistingSprite
+  // ~ Overrides PhaserObject.applyConfig().
+  protected applyConfig(config: Sprite.Config)
+  {
+    super.applyConfig(config);
+
+    if (config.baseScaleX !== undefined)
+      this.baseScaleX = config.baseScaleX;
+
+    if (config.baseScaleY !== undefined)
+      this.baseScaleY = config.baseScaleY;
+
+    if (config.animationName !== undefined)
+      this.playAnimation(config.animationName);
+
+    if (config.origin !== undefined)
+      this.setOrigin(config.origin);
+  }
+
+  private useSprite
   (
     sprite: Phaser.GameObjects.Sprite,
     config: Sprite.Config
@@ -80,20 +94,11 @@ export class Sprite extends PhaserObject
     this.baseScaleX = sprite.scaleX;
     this.baseScaleY = sprite.scaleY;
 
-    if (config.position)
+    if (config.position !== undefined)
     {
       sprite.x = config.position.x;
       sprite.y = config.position.y;
     }
-
-    if (config.rotation !== undefined)
-      sprite.setRotation(config.rotation);
-
-    if (config.depth !== undefined)
-      sprite.setDepth(config.depth);
-
-    if (config.graphicContainer !== undefined)
-      config.graphicContainer.add(sprite);
 
     return sprite;
   }
@@ -124,19 +129,6 @@ export class Sprite extends PhaserObject
     // Translate the sprite back to original visual position.
     this.phaserObject.x += offset.x;
     this.phaserObject.y += offset.y;
-  }
-
-  private createSprite(config: Sprite.Config)
-  {
-    const sprite = this.scene.createSprite(config);
-
-    if (config.baseScaleX !== undefined)
-      this.baseScaleX = config.baseScaleX;
-
-    if (config.baseScaleY !== undefined)
-      this.baseScaleY = config.baseScaleY;
-
-    return sprite;
   }
 }
 
