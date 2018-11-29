@@ -4,7 +4,7 @@ import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Graphics } from "../../Client/Engine/Graphics";
 
-export class ShapeGraphics extends Graphics
+export class ShapeModel extends Graphics
 {
   constructor
   (

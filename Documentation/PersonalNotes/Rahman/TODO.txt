@@ -1,14 +1,13 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Vyhodit z BackgroundScene scrollFactor.
-
-TODO: adresář FlightScene možná přejmenovat na Flight a BackgroundScene
-  na Background?
-
-TODO: Zrušit SceneContents
+TODO: Přejmenovat všechny modely na XxxModel.
+  (a asi bych taky mohl sjednotit, jestli se dědí z Phaser object wrapperů,
+   nebo se tyhle objekty wrappujou).
 
 TODO: Waypoint dát do SceneGUI
+
+TODO: Zrušit SceneContents
 
 TODO: Aktivita scény by se mohla zapisovat přímo do scény místo extra flagy.
   (sleep/wake, nebo tak něco).

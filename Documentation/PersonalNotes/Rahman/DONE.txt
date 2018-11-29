@@ -1,3 +1,10 @@
+TODO: Vyhodit z BackgroundScene scrollFactor.
+[done]
+
+TODO: adresář FlightScene možná přejmenovat na Flight a BackgroundScene
+  na Background?
+[done]
+
 TODO: Opravit resizování backgroundu
   (nejspíš se mi neprovolává resize() kam má).
 { Zatím to nechám takhle - funguje to, to stačí }

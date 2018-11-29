@@ -3,7 +3,7 @@ import { Sprite } from "../../Client/Engine/Sprite";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 import { FlightScene } from "../../Client/Flight/FlightScene";
-import { ShapeGraphics } from "../../Client/Flight/ShapeGraphics";
+import { ShapeModel } from "../../Client/Flight/ShapeModel";
 import { VectorGraphics } from "../../Client/Flight/VectorsGraphics";
 import { ShipAudio } from "../../Client/Flight/ShipAudio";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
@@ -26,7 +26,7 @@ export class ShipModel
   private readonly exhausts: ShipExhausts;
   private readonly audio: ShipAudio;
 
-  private readonly shapeGraphics: ShapeGraphics;
+  private readonly shapeModel: ShapeModel;
 
   // ! Throws exception on error.
   constructor
@@ -47,7 +47,7 @@ export class ShipModel
 
     // ! Throws exception on error.
     this.shipSprites = this.createShipSprites();
-    this.shapeGraphics = new ShapeGraphics
+    this.shapeModel = new ShapeModel
     (
       scene,
       shape,

@@ -5,7 +5,7 @@ const BACKGROUND_TEXTURE_ID = "Background Texture";
 
 export class BackgroundModel
 {
-  private readonly sprite: Sprite;
+  private readonly backgroundSprite: Sprite;
 
   constructor
   (
@@ -14,7 +14,7 @@ export class BackgroundModel
     canvasHeight: number
   )
   {
-    this.sprite = createBackgroundSprite
+    this.backgroundSprite = createBackgroundSprite
     (
       scene,
       canvasWidth,
@@ -39,8 +39,8 @@ export class BackgroundModel
   // ! Throws exception on error.
   public resize(canvasWidth: number, canvasHeight: number)
   {
-    const imageWidth = this.sprite.getWidth();
-    const imageHeight = this.sprite.getHeight();
+    const imageWidth = this.backgroundSprite.getWidth();
+    const imageHeight = this.backgroundSprite.getHeight();
 
     if (canvasWidth <= 0)
     {
@@ -102,7 +102,7 @@ export class BackgroundModel
     //   + ' (ratio : ' + width / height + ')'
     // );
 
-    this.sprite.setDisplaySize(width, height);
+    this.backgroundSprite.setDisplaySize(width, height);
 
     // Position of background needs to be in the middle of
     // canvas so it depends on cavas size too and we need to
@@ -110,7 +110,7 @@ export class BackgroundModel
 
     // Topleft is [0, 0] but y axis points up so 'y' needs to
     // be negative to be in the middle of canvas.
-    this.sprite.setPosition({ x: (canvasWidth / 2), y: -(canvasHeight / 2) });
+    this.backgroundSprite.setPosition({ x: (canvasWidth / 2), y: -(canvasHeight / 2) });
   }
 }
 
