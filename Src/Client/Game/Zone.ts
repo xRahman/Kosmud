@@ -121,7 +121,7 @@ export class Zone extends Shared.Zone
     {
       const tilemapJsonData = scene.getTilemapJsonData(config.tilemapId);
 
-      this.addTilemap(new Tilemap(scene, config, tilemapJsonData));
+      this.addTilemap(scene.createTilemap(config, tilemapJsonData));
     }
   }
 

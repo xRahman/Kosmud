@@ -18,6 +18,8 @@ import { Graphics } from "../../Client/Engine/Graphics";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Scenes } from "../../Client/Engine/Scenes";
+import { Zone } from "../../Shared/Game/Zone";
+import { Tilemap } from "../../Client/Engine/Tilemap";
 
 const INFINITE_REPEAT = -1;
 
@@ -138,9 +140,18 @@ export abstract class Scene
     return new Sprite(this.phaserScene, config, sprite);
   }
 
-  public createTilemap(tilemapJsonDataId: string)
+  public createTilemap
+  (
+    tilemapConfig: Zone.TilemapConfig,
+    tilemapJsonData: object
+  )
   {
-    return this.phaserScene.make.tilemap({ key: tilemapJsonDataId });
+    return new Tilemap
+    (
+      this.phaserScene,
+      tilemapConfig,
+      tilemapJsonData
+    );
   }
 
   // ! Throws exception on error.

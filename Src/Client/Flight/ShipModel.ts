@@ -104,6 +104,7 @@ export class ShipModel
     // ! Throws exception on error.
     return this.tilemap.createSprites
     (
+      this.scene,
       BASIC_FIGHTER_TILEMAP_LAYER,
       tilemapObjectName,
       {
@@ -141,6 +142,7 @@ export class ShipModel
     // ! Throws exception on error.
     return this.tilemap.createSprites
     (
+      this.scene,
       BASIC_FIGHTER_TILEMAP_LAYER,
       HULL_TILEMAP_OBJECT_NAME,
       {

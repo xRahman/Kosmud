@@ -1,3 +1,6 @@
+TODO: Předělat Scene.createTilemap()
+[done]
+
 TODO: Neměl by se PhaserObject.Config aplikovat v konstruktoru PhaserObjectu?
 - asi jo, no. Chci po scéně věci, které by vůbec neměla dělat.
   Měla by prostě jen vyrobit příslušnej phaserObject a konec, setovat

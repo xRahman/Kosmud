@@ -14,14 +14,14 @@ export class Tilemap extends Shared.Tilemap
 
   constructor
   (
-    private readonly scene: Scene,
+    scene: Scene.PhaserScene,
     config: Zone.TilemapConfig,
     tilemapJsonData: object
   )
   {
     super(config.tilemapId, tilemapJsonData);
 
-    this.phaserTilemap = scene.createTilemap(config.tilemapId);
+    this.phaserTilemap = scene.make.tilemap({ key: config.tilemapId });
   }
 
   // ---------------- Public methods --------------------
@@ -29,6 +29,7 @@ export class Tilemap extends Shared.Tilemap
   // ! Throws exception on error.
   public createSprites
   (
+    scene: Scene,
     // Object layer name in Tiled editor.
     tilemapObjectLayerName: string,
     // Object name in Tiled editor.
@@ -60,7 +61,7 @@ export class Tilemap extends Shared.Tilemap
         tileHeight
       );
 
-      const sprite = this.scene.createSprite(config, phaserSprite);
+      const sprite = scene.createSprite(config, phaserSprite);
 
       result.push(sprite);
     }
