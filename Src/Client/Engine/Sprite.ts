@@ -17,20 +17,20 @@ export class Sprite extends PhaserObject
 
   constructor
   (
-    scene: Scene.PhaserScene,
+    phaserScene: Scene.PhaserScene,
     config: Sprite.Config,
-    sprite?: Phaser.GameObjects.Sprite
+    phaserSprite?: Phaser.GameObjects.Sprite
   )
   {
     super();
 
-    if (sprite === undefined)
+    if (phaserSprite === undefined)
     {
-      this.phaserObject = createPhaserSprite(scene, config);
+      this.phaserObject = createPhaserSprite(phaserScene, config);
     }
     else
     {
-      this.phaserObject = this.usePhaserSprite(sprite, config);
+      this.phaserObject = this.usePhaserSprite(phaserSprite, config);
     }
 
     this.applyConfig(config);
@@ -136,9 +136,13 @@ export class Sprite extends PhaserObject
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createPhaserSprite(scene: Scene.PhaserScene, config: Sprite.Config)
+function createPhaserSprite
+(
+  phaserScene: Scene.PhaserScene,
+  config: Sprite.Config
+)
 {
-  return scene.add.sprite
+  return phaserScene.add.sprite
   (
     config.position ? config.position.x : 0,
     config.position ? config.position.y : 0,

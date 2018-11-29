@@ -11,11 +11,11 @@ export class GraphicContainer extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Container;
 
-  constructor(scene: Scene.PhaserScene, config: PhaserObject.Config)
+  constructor(phaserScene: Scene.PhaserScene, config: PhaserObject.Config)
   {
     super();
 
-    this.phaserObject = createPhaserObjectContainer(scene, config);
+    this.phaserObject = createPhaserObjectContainer(phaserScene, config);
 
     this.applyConfig(config);
   }
@@ -32,11 +32,11 @@ export class GraphicContainer extends PhaserObject
 
 function createPhaserObjectContainer
 (
-  scene: Scene.PhaserScene,
+  phaserScene: Scene.PhaserScene,
   config: GraphicContainer.Config
 )
 {
-  return scene.add.container
+  return phaserScene.add.container
   (
     config.position ? config.position.x : 0,
     config.position ? config.position.y : 0

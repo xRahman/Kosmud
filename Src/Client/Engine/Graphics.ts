@@ -21,11 +21,11 @@ export class Graphics extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Scene.PhaserScene, config: Graphics.Config)
+  constructor(phaserScene: Scene.PhaserScene, config: Graphics.Config)
   {
     super();
 
-    this.phaserObject = createPhaserGraphics(scene, config);
+    this.phaserObject = createPhaserGraphics(phaserScene, config);
 
     this.applyConfig(config);
   }
@@ -123,7 +123,7 @@ export class Graphics extends PhaserObject
 
 function createPhaserGraphics
 (
-  scene: Scene.PhaserScene,
+  phaserScene: Scene.PhaserScene,
   config: Graphics.Config
 )
 {
@@ -135,7 +135,7 @@ function createPhaserGraphics
     fillStyle: config.fillStyle
   };
 
-  return scene.add.graphics(graphicsOptions);
+  return phaserScene.add.graphics(graphicsOptions);
 }
 
 // ------------------ Type declarations ----------------------

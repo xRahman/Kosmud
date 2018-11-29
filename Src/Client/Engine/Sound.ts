@@ -15,12 +15,12 @@ export class Sound
 
   constructor
   (
-    scene: Scene.PhaserScene,
+    phaserScene: Scene.PhaserScene,
     soundId: string,
     baseVolume = 1
   )
   {
-    this.phaserSound = createPhaserSound(scene, soundId);
+    this.phaserSound = createPhaserSound(phaserScene, soundId);
 
     this.setBaseVolume(baseVolume);
   }
@@ -92,9 +92,9 @@ export class Sound
 
 function createPhaserSound
 (
-  scene: Scene.PhaserScene,
+  phaserScene: Scene.PhaserScene,
   soundId: string
 )
 {
-  return scene.sound.add(soundId);
+  return phaserScene.sound.add(soundId);
 }
