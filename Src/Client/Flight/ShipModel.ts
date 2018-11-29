@@ -4,7 +4,7 @@ import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { ShapeModel } from "../../Client/Flight/ShapeModel";
-import { VectorGraphics } from "../../Client/Flight/VectorsGraphics";
+import { VectorsModel } from "../../Client/Flight/VectorsModel";
 import { ShipAudio } from "../../Client/Flight/ShipAudio";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
 import { Ship } from "../../Client/Game/Ship";
@@ -21,7 +21,7 @@ export class ShipModel
 {
   private readonly graphicContainer: GraphicContainer;
   private readonly shipSprites: Array<Sprite>;
-  private readonly vectors: VectorGraphics;
+  private readonly vectorsModel: VectorsModel;
 
   private readonly exhausts: ShipExhausts;
   private readonly audio: ShipAudio;
@@ -54,7 +54,7 @@ export class ShipModel
       this.graphicContainer
     );
 
-    this.vectors = new VectorGraphics(scene);
+    this.vectorsModel = new VectorsModel(scene);
   }
 
   // ---------------- Public methods --------------------
@@ -62,7 +62,7 @@ export class ShipModel
   public setPosition(position: Vector)
   {
     this.graphicContainer.setPosition(position);
-    this.vectors.update(position);
+    this.vectorsModel.update(position);
   }
 
   public setRotation(rotation: number)
@@ -72,7 +72,7 @@ export class ShipModel
 
   public drawVectors(vectors: Ship.Vectors)
   {
-    this.vectors.draw(vectors);
+    this.vectorsModel.draw(vectors);
   }
 
   // ! Throws exception on error.
