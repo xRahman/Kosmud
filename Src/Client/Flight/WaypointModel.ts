@@ -86,7 +86,12 @@ export class WaypointModel
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createSprite(scene: Scene, position: Vector, rotation: number)
+function createSprite
+(
+  scene: Scene,
+  position: { x: number; y: number },
+  rotation: number
+)
 {
   const sprite = new Sprite
   (

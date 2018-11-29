@@ -8,6 +8,7 @@
     ('y' axis and angles are inverted).
 */
 
+import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Scene } from "../../Client/Engine/Scene";
 
@@ -73,9 +74,17 @@ export abstract class PhaserObject
   {
     this.phaserObject.setVisible(visibility);
   }
+}
 
-  public addToContainer(container: Phaser.GameObjects.Container)
+// ------------------ Type Declarations ----------------------
+
+export namespace PhaserObject
+{
+  export interface Config
   {
-    container.add(this.phaserObject);
+    position?: { x: number; y: number };
+    rotation?: number;
+    depth?: number;
+    graphicContainer?: GraphicContainer;
   }
 }

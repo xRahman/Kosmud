@@ -15,18 +15,18 @@ import { Vector } from "../../Shared/Physics/Vector";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Scene } from "../../Client/Engine/Scene";
+import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
 
 export class Graphics extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Scene, depth = 0, position = { x: 0, y: 0 })
+  constructor(scene: Scene, config: Graphics.Config)
   {
     super(scene);
 
-    this.phaserObject = scene.createGraphics(position);
-    this.phaserObject.setDepth(depth);
+    this.phaserObject = scene.createGraphics(config);
   }
 
   // ----------------- Private data ---------------------
@@ -127,4 +127,8 @@ export class Graphics extends PhaserObject
 export namespace Graphics
 {
   export type RGB = { r: number; g: number; b: number };
+
+  export interface Config extends PhaserObject.Config, GraphicsStyles
+  {
+  }
 }

@@ -12,7 +12,11 @@ export class VectorsModel
 
   constructor(scene: Scene)
   {
-    this.vectorsGraphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
+    this.vectorsGraphics = new Graphics
+    (
+      scene,
+      { depth: FlightScene.Z_ORDER_DEBUG }
+    );
   }
 
   // ---------------- Public methods --------------------

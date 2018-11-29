@@ -11,7 +11,7 @@ import { Packet } from "../../Shared/Protocol/Packet";
 
 export class SetWaypoint extends Packet
 {
-  constructor(protected waypoint: Vector)
+  constructor(protected waypoint: { x: number; y: number })
   {
     super();
   }

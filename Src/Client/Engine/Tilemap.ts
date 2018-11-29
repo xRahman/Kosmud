@@ -33,9 +33,7 @@ export class Tilemap extends Shared.Tilemap
     tilemapObjectLayerName: string,
     // Object name in Tiled editor.
     tilemapObjectName: string,
-    // Id of texture or texture atlas to be used.
-    textureOrAtlasId: string,
-    options: Sprite.Options
+    config: Sprite.Config
   )
   : Array<Sprite>
   {
@@ -43,7 +41,7 @@ export class Tilemap extends Shared.Tilemap
     (
       tilemapObjectLayerName,
       tilemapObjectName,
-      { key: textureOrAtlasId }
+      { key: config.textureOrAtlasId }
     );
 
     const tileWidth = this.phaserTilemap.tileWidth;
@@ -65,8 +63,8 @@ export class Tilemap extends Shared.Tilemap
       const sprite = new Sprite
       (
         this.scene,
-        phaserSprite,
-        options
+        config,
+        phaserSprite
       );
 
       result.push(sprite);

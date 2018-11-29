@@ -20,8 +20,8 @@ export class GraphicContainer extends PhaserObject
 
   // ---------------- Public methods --------------------
 
-  public add(phaserObject: PhaserObject)
+  public add(gameObject: Phaser.GameObjects.GameObject)
   {
-    phaserObject.addToContainer(this.phaserObject);
+    this.phaserObject.add(gameObject);
   }
 }

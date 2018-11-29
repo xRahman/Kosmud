@@ -12,10 +12,13 @@
 
 import { ERROR } from "../../Shared/Log/ERROR";
 import { REPORT } from "../../Shared/Log/REPORT";
+import { applyDefaults } from "../../Shared/Utils/Object";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
+import { Graphics } from "../../Client/Engine/Graphics";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Scenes } from "./Scenes";
+import { PhaserObject } from "./PhaserObject";
 
 const INFINITE_REPEAT = -1;
 
@@ -128,26 +131,47 @@ export abstract class Scene
     return this.phaserScene.add.container(position.x, position.y);
   }
 
-  public createGraphics(position: { x: number; y: number })
+  public createGraphics(config: Graphics.Config)
   {
-    return this.phaserScene.add.graphics(position);
+    const graphicsOptions: GraphicsOptions =
+    {
+      x: config.position ? config.position.x : 0,
+      y: config.position ? config.position.y : 0,
+      lineStyle: config.lineStyle,
+      fillStyle: config.fillStyle
+    };
+
+    const graphics = this.phaserScene.add.graphics(graphicsOptions);
+
+    if (config.rotation !== undefined)
+      graphics.setRotation(config.rotation);
+
+    if (config.depth !== undefined)
+      graphics.setDepth(config.depth);
+
+    if (config.graphicContainer !== undefined)
+      config.graphicContainer.add(graphics);
+
+    return graphics;
   }
 
-  public createSprite
-  (
-    position: { x: number; y: number },
-    rotation: number,
-    textureOrAtlasId: string
-  )
+  public createSprite(config: Sprite.Config)
   {
     const sprite = this.phaserScene.add.sprite
     (
-      position.x,
-      position.y,
-      textureOrAtlasId
+      config.position ? config.position.x : 0,
+      config.position ? config.position.y : 0,
+      config.textureOrAtlasId
     );
 
-    sprite.setRotation(rotation);
+    if (config.rotation !== undefined)
+      sprite.setRotation(config.rotation);
+
+    if (config.depth !== undefined)
+      sprite.setDepth(config.depth);
+
+    if (config.graphicContainer !== undefined)
+      config.graphicContainer.add(sprite);
 
     return sprite;
   }
@@ -208,16 +232,6 @@ export abstract class Scene
   {
     this.phaserScene.sys.setActive(active);
   }
-
-  // protected activate()
-  // {
-  //   this.active = true;
-  // }
-
-  // protected deactivate()
-  // {
-  //   this.active = false;
-  // }
 
   // ! Throws exception on error.
   // tslint:disable-next-line:prefer-function-over-method

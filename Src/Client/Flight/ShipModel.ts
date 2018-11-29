@@ -106,13 +106,13 @@ export class ShipModel
     (
       BASIC_FIGHTER_TILEMAP_LAYER,
       tilemapObjectName,
-      EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
       {
         animationName,
         graphicContainer: this.graphicContainer,
         // This allows us to scale exhausts animations from the
         // start rather than from the middle.
-        origin: { x: 0, y: 0.5 }
+        origin: { x: 0, y: 0.5 },
+        textureOrAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID
       }
     );
   }
@@ -143,9 +143,9 @@ export class ShipModel
     (
       BASIC_FIGHTER_TILEMAP_LAYER,
       HULL_TILEMAP_OBJECT_NAME,
-      BASIC_SHIPS_TEXTURE_ID,
       {
-        graphicContainer: this.graphicContainer
+        graphicContainer: this.graphicContainer,
+        textureOrAtlasId: BASIC_SHIPS_TEXTURE_ID
       }
     );
   }

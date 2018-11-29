@@ -91,7 +91,7 @@ export abstract class Vehicle extends GameEntity
     return this.torque / this.TORQUE;
   }
 
-  public setWaypoint(waypoint: Vector)
+  public setWaypoint(waypoint: { x: number; y: number })
   {
     this.waypoint.set(waypoint);
   }

@@ -110,7 +110,10 @@ export class BackgroundModel
 
     // Topleft is [0, 0] but y axis points up so 'y' needs to
     // be negative to be in the middle of canvas.
-    this.backgroundSprite.setPosition({ x: (canvasWidth / 2), y: -(canvasHeight / 2) });
+    this.backgroundSprite.setPosition
+    (
+      { x: (canvasWidth / 2), y: -(canvasHeight / 2) }
+    );
   }
 }
 
@@ -130,7 +133,6 @@ function createBackgroundSprite
     // be negative to be in the middle of canvas.
     y: -canvasHeight / 2
   };
-  const rotation = 0;
 
   // Display origin of the sprite is in the middle but origin
   // of canvas coords is at the bottom right. We want to center
@@ -141,7 +143,6 @@ function createBackgroundSprite
     scene,
     {
       position,
-      rotation,
       textureOrAtlasId: BACKGROUND_TEXTURE_ID
     }
   );

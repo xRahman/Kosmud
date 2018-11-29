@@ -1,3 +1,8 @@
+TODO: Přejmenovat všechny modely na XxxModel.
+  (a asi bych taky mohl sjednotit, jestli se dědí z Phaser object wrapperů,
+   nebo se tyhle objekty wrappujou).
+[done]
+
 TODO: Vyhodit z BackgroundScene scrollFactor.
 [done]
 

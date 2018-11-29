@@ -7,7 +7,6 @@
 */
 
 import { Connection } from "../../Server/Net/Connection";
-import { Game } from "../../Server/Game/Game";
 import * as Shared from "../../Shared/Protocol/SetWaypoint";
 
 export class SetWaypoint extends Shared.SetWaypoint

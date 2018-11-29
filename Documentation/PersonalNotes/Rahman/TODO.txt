@@ -8,9 +8,11 @@ TODO: Graphics (a vůbec všechn phaser object wrappery) by měl
   Sprite.
 - a měl by tam být container.
 
-TODO: Přejmenovat všechny modely na XxxModel.
-  (a asi bych taky mohl sjednotit, jestli se dědí z Phaser object wrapperů,
-   nebo se tyhle objekty wrappujou).
+TODO: Potřebuju vůbec u phaser object wrapperů rozlišovat Config a Options?
+- co brání tomu, aby to bylo v jednom objektu?
+TODO: Config by mohl být zděděný z nějakýho základního Configu
+  (PhaserObject.Config asi)
+  - position, rotation, depth, container, ať neopakuju pořád stejnej kód.
 
 TODO: Waypoint dát do SceneGUI
 

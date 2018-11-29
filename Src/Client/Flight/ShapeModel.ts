@@ -15,11 +15,15 @@ export class ShapeModel
     graphicContainer?: GraphicContainer
   )
   {
-    this.shapeGraphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
+    this.shapeGraphics = new Graphics
+    (
+      scene,
+      {
+        depth: FlightScene.Z_ORDER_DEBUG,
+        graphicContainer
+      }
+    );
 
     this.shapeGraphics.drawShape(shape, 1, Graphics.rgb(0, 255, 255), 0.8);
-
-    if (graphicContainer !== undefined)
-      graphicContainer.add(this.shapeGraphics);
   }
 }
