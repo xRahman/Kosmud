@@ -60,12 +60,7 @@ export class Tilemap extends Shared.Tilemap
         tileHeight
       );
 
-      const sprite = new Sprite
-      (
-        this.scene,
-        config,
-        phaserSprite
-      );
+      const sprite = this.scene.createSprite(config, phaserSprite);
 
       result.push(sprite);
     }

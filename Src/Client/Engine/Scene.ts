@@ -15,23 +15,16 @@ import { REPORT } from "../../Shared/Log/REPORT";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { Graphics } from "../../Client/Engine/Graphics";
+import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { SceneContents } from "../../Client/Engine/SceneContents";
-import { Scenes } from "./Scenes";
-import { PhaserObject } from "./PhaserObject";
-import { GraphicContainer } from "./GraphicContainer";
+import { Scenes } from "../../Client/Engine/Scenes";
 
 const INFINITE_REPEAT = -1;
-
-interface PhaserScene extends Phaser.Scene
-{
-  preload?(): void;
-  create?(): void;
-}
 
 export abstract class Scene
 {
   protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
-  protected phaserScene: PhaserScene;
+  protected phaserScene: Scene.PhaserScene;
 
   // protected active = false;
 
@@ -126,36 +119,23 @@ export abstract class Scene
     this.phaserScene.load.audio(audioId, path);
   }
 
-  public createContainer(config: GraphicContainer.Config)
+  public createGraphicContainer(config: GraphicContainer.Config = {})
   {
-    return this.phaserScene.add.container
-    (
-      config.position ? config.position.x : 0,
-      config.position ? config.position.y : 0
-    );
+    return new GraphicContainer(this.phaserScene, config);
   }
 
   public createGraphics(config: Graphics.Config)
   {
-    const graphicsOptions: GraphicsOptions =
-    {
-      x: config.position ? config.position.x : 0,
-      y: config.position ? config.position.y : 0,
-      lineStyle: config.lineStyle,
-      fillStyle: config.fillStyle
-    };
-
-    return this.phaserScene.add.graphics(graphicsOptions);
+    return new Graphics(this.phaserScene, config);
   }
 
-  public createSprite(config: Sprite.Config)
+  public createSprite
+  (
+    config: Sprite.Config,
+    sprite?: Phaser.GameObjects.Sprite
+  )
   {
-    return this.phaserScene.add.sprite
-    (
-      config.position ? config.position.x : 0,
-      config.position ? config.position.y : 0,
-      config.textureOrAtlasId
-    );
+    return new Sprite(this.phaserScene, config, sprite);
   }
 
   public createTilemap(tilemapJsonDataId: string)
@@ -320,4 +300,10 @@ export abstract class Scene
 export namespace Scene
 {
   export const Z_ORDER_DEFAULT = 0;
+
+  export interface PhaserScene extends Phaser.Scene
+  {
+    preload?(): void;
+    create?(): void;
+  }
 }

@@ -17,7 +17,6 @@ export class StaticTilemapLayer extends PhaserObject
 
   constructor
   (
-    scene: Scene,
     x: number,
     y: number,
     tilemapLayerName: string,
@@ -25,7 +24,7 @@ export class StaticTilemapLayer extends PhaserObject
     tilemap: Phaser.Tilemaps.Tilemap
   )
   {
-    super(scene);
+    super();
 
     this.phaserObject = tilemap.createStaticLayer
     (

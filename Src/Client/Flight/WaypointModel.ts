@@ -20,7 +20,15 @@ export class WaypointModel
     private readonly rotation = 0
   )
   {
-    this.waypointSprite = createSprite(scene, position, rotation);
+    this.waypointSprite = scene.createSprite
+    (
+      {
+        position,
+        rotation,
+        depth: FlightScene.Z_ORDER_WAYPOINTS,
+        textureOrAtlasId: WAYPOINT_TEXTURE_ID
+      }
+    );
 
     this.hide();
   }
@@ -85,28 +93,6 @@ export class WaypointModel
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-function createSprite
-(
-  scene: Scene,
-  position: { x: number; y: number },
-  rotation: number
-)
-{
-  const sprite = new Sprite
-  (
-    scene,
-    {
-      position,
-      rotation,
-      textureOrAtlasId: WAYPOINT_TEXTURE_ID
-    }
-  );
-
-  sprite.setDepth(FlightScene.Z_ORDER_WAYPOINTS);
-
-  return sprite;
-}
 
 function sendWaypoint(waypoint: Vector)
 {

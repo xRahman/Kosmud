@@ -37,7 +37,7 @@ export class ShipModel
     engineSoundId: string
   )
   {
-    this.graphicContainer = new GraphicContainer(scene);
+    this.graphicContainer = scene.createGraphicContainer();
     this.graphicContainer.setDepth(FlightScene.Z_ORDER_SHIPS);
 
     this.audio = new ShipAudio(scene, engineSoundId);

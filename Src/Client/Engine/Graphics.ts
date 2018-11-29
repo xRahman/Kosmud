@@ -21,16 +21,14 @@ export class Graphics extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Scene, config: Graphics.Config)
+  constructor(scene: Scene.PhaserScene, config: Graphics.Config)
   {
-    super(scene);
+    super();
 
-    this.phaserObject = scene.createGraphics(config);
+    this.phaserObject = createGraphics(scene, config);
 
     this.applyConfig(config);
   }
-
-  // ----------------- Private data ---------------------
 
   public static rgb(red: number, green: number, blue: number)
   {
@@ -119,6 +117,21 @@ export class Graphics extends PhaserObject
     this.phaserObject.moveTo(transformedFrom.x, transformedFrom.y);
     this.phaserObject.lineTo(transformedTo.x, transformedTo.y);
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function createGraphics(scene: Scene.PhaserScene, config: Graphics.Config)
+{
+  const graphicsOptions: GraphicsOptions =
+  {
+    x: config.position ? config.position.x : 0,
+    y: config.position ? config.position.y : 0,
+    lineStyle: config.lineStyle,
+    fillStyle: config.fillStyle
+  };
+
+  return scene.add.graphics(graphicsOptions);
 }
 
 // ------------------ Type declarations ----------------------

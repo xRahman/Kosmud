@@ -15,13 +15,9 @@ export class ShapeModel
     graphicContainer?: GraphicContainer
   )
   {
-    this.shapeGraphics = new Graphics
+    this.shapeGraphics = scene.createGraphics
     (
-      scene,
-      {
-        depth: FlightScene.Z_ORDER_DEBUG,
-        graphicContainer
-      }
+      { depth: FlightScene.Z_ORDER_DEBUG, graphicContainer }
     );
 
     this.shapeGraphics.drawShape(shape, 1, Graphics.rgb(0, 255, 255), 0.8);

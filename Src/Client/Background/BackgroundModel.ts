@@ -138,13 +138,9 @@ function createBackgroundSprite
   // of canvas coords is at the bottom right. We want to center
   // the background in the canvas so we need to place it
   // to [canvasWidth / 2, canvasHeight / 2] coordinates.
-  const backgroundSprite = new Sprite
+  const backgroundSprite = scene.createSprite
   (
-    scene,
-    {
-      position,
-      textureOrAtlasId: BACKGROUND_TEXTURE_ID
-    }
+    { position, textureOrAtlasId: BACKGROUND_TEXTURE_ID }
   );
 
   /// We no longer need to set 'scrollFactor' because background

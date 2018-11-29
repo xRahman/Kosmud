@@ -12,9 +12,8 @@ export class VectorsModel
 
   constructor(scene: Scene)
   {
-    this.vectorsGraphics = new Graphics
+    this.vectorsGraphics = scene.createGraphics
     (
-      scene,
       { depth: FlightScene.Z_ORDER_DEBUG }
     );
   }

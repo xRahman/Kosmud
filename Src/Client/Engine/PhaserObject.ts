@@ -10,13 +10,10 @@
 
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
-import { Scene } from "../../Client/Engine/Scene";
 
 export abstract class PhaserObject
 {
   protected abstract phaserObject: PhaserObject.GameObject;
-
-  constructor(protected scene: Scene) {}
 
   // ---------------- Public methods --------------------
 
@@ -77,10 +74,10 @@ export abstract class PhaserObject
 
 export namespace PhaserObject
 {
-  // Phaser.GameObjects.GameObject technicaly is an ancestor of
-  // Sprite, Container, Graphics etc., but we need to use common
-  // metods of such phaser objects that are not present on it.
-  //   The solution is to declare the interface ourselves.
+  // We need some extra properties that are not in
+  // Phaser.GameObjects.GameObject interface but they
+  // are in actual phaser game objects like Sprite,
+  // Graphics etc.
   export interface GameObject extends Phaser.GameObjects.GameObject
   {
     x: number;

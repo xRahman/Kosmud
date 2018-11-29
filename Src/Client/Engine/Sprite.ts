@@ -17,16 +17,16 @@ export class Sprite extends PhaserObject
 
   constructor
   (
-    scene: Scene,
+    scene: Scene.PhaserScene,
     config: Sprite.Config,
     sprite?: Phaser.GameObjects.Sprite
   )
   {
-    super(scene);
+    super();
 
     if (sprite === undefined)
     {
-      this.phaserObject = this.scene.createSprite(config);
+      this.phaserObject = createSprite(scene, config);
     }
     else
     {
@@ -85,6 +85,8 @@ export class Sprite extends PhaserObject
       this.setOrigin(config.origin);
   }
 
+  // ---------------- Private methods -------------------
+
   private useSprite
   (
     sprite: Phaser.GameObjects.Sprite,
@@ -130,6 +132,18 @@ export class Sprite extends PhaserObject
     this.phaserObject.x += offset.x;
     this.phaserObject.y += offset.y;
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function createSprite(scene: Scene.PhaserScene, config: Sprite.Config)
+{
+  return scene.add.sprite
+  (
+    config.position ? config.position.x : 0,
+    config.position ? config.position.y : 0,
+    config.textureOrAtlasId
+  );
 }
 
 // ------------------ Type Declarations ----------------------
