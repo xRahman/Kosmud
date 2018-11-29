@@ -1,6 +1,7 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Sound volume občas není v povoleném intervalu.
 
 TODO: Mrknout se i na vyrábění PhysicsBody.
 

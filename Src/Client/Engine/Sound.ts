@@ -42,7 +42,8 @@ export class Sound
   {
     if (baseVolume < 0 || baseVolume > 1)
     {
-      throw new Error(`Base volume needs to be in <0, 1> interval`);
+      throw new Error(`Base volume (${baseVolume}) needs`
+        + ` to be in <0, 1> interval`);
     }
 
     // Prevent possible division by zero.
@@ -58,7 +59,7 @@ export class Sound
   {
     if (volume < 0 || volume > 1)
     {
-      throw new Error(`Volume needs to be in <0, 1> interval`);
+      throw new Error(`Volume (${volume}) needs to be in <0, 1> interval`);
     }
 
     /// Tohle je hack - v Phaser.Sound.BaseSound není property
