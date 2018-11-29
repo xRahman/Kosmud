@@ -1,6 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Vyhodit z BackgroundScene scrollFactor.
+
 TODO: adresář FlightScene možná přejmenovat na Flight a BackgroundScene
   na Background?
 

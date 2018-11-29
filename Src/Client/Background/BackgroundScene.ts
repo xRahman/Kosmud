@@ -1,4 +1,4 @@
-import { BackgroundModel } from "../../Client/BackgroundScene/BackgroundModel";
+import { BackgroundModel } from "../../Client/Background/BackgroundModel";
 import { Scene } from "../../Client/Engine/Scene";
 
 export class BackgroundScene extends Scene

@@ -1,7 +1,7 @@
 import { Scene } from "../../Client/Engine/Scene";
 import { Renderer } from "../../Client/Engine/Renderer";
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
-import { BackgroundScene } from "../../Client/BackgroundScene/BackgroundScene";
+import { FlightScene } from "../../Client/Flight/FlightScene";
+import { BackgroundScene } from "../../Client/Background/BackgroundScene";
 
 export class Scenes
 {

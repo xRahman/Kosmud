@@ -2,7 +2,7 @@ import { Scene } from "../../Client/Engine/Scene";
 import { Ship } from "../../Client/Game/Ship";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { FlightScene } from "../../Client/Flight/FlightScene";
 
 const origin = new Vector({ x: 0, y: 0 });
 

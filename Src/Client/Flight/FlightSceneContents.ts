@@ -1,6 +1,6 @@
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { FlightScene } from "../../Client/Flight/FlightScene";
 import { SceneContents } from "../../Client/Engine/SceneContents";
-import { Waypoint } from "../../Client/FlightScene/Waypoint";
+import { Waypoint } from "../../Client/Flight/Waypoint";
 
 export class FlightSceneContents extends SceneContents
 {

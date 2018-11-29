@@ -6,7 +6,7 @@
 */
 
 import { Ship } from "../../Client/Game/Ship";
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 import * as Shared from "../../Shared/Game/Zone";

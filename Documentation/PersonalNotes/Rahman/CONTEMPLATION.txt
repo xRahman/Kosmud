@@ -573,6 +573,9 @@ Nehybnost backgroundu by šla kromě scrollFactoru 0 vyřešit
 ještě tím, že by se renderoval do samostatné scény. Viz sceneManager.
 (Pokud budu mít ui, tak na to asi stejně dojde).
 
+Mrknout taky na:
+https://codepen.io/samme/pen/paOjMO
+http://www.html5gamedevs.com/topic/33206-scalemanagershow_all/
 
 -----------------------------------------------------------------------
 

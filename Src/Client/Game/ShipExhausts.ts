@@ -1,8 +1,8 @@
 import { lowerBound } from "../../Shared/Utils/Math";
 import { Sound } from "../../Client/Engine/Sound";
 import { Sprite } from "../../Client/Engine/Sprite";
-import { ShipAudio } from "../../Client/FlightScene/ShipAudio";
-import { ShipModel } from "../../Client/FlightScene/ShipModel";
+import { ShipAudio } from "../../Client/Flight/ShipAudio";
+import { ShipModel } from "../../Client/Flight/ShipModel";
 
 const FRONT_VOLUME = 0.1;
 const SIDE_VOLUME = 0.04;

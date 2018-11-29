@@ -1,7 +1,7 @@
 import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
 import { Vector } from "../../Shared/Physics/Vector";
-import { ShipModel } from "../../Client/FlightScene/ShipModel";
-import { FlightScene } from "../../Client/FlightScene/FlightScene";
+import { ShipModel } from "../../Client/Flight/ShipModel";
+import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Zone } from "../../Client/Game/Zone";
 import * as Shared from "../../Shared/Game/Ship";
 

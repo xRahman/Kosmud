@@ -1,7 +1,7 @@
 import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneContents }
-  from "../../Client/FlightScene/FlightSceneContents";
+  from "../../Client/Flight/FlightSceneContents";
 import { Scene } from "../../Client/Engine/Scene";
 import { Connection } from "../Net/Connection";
 
