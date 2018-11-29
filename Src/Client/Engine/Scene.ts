@@ -19,6 +19,7 @@ import { Graphics } from "../../Client/Engine/Graphics";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Scenes } from "./Scenes";
 import { PhaserObject } from "./PhaserObject";
+import { GraphicContainer } from "./GraphicContainer";
 
 const INFINITE_REPEAT = -1;
 
@@ -126,9 +127,17 @@ export abstract class Scene
     this.phaserScene.load.audio(audioId, path);
   }
 
-  public createContainer(position: { x: number; y: number })
+  public createContainer(config: GraphicContainer.Config)
   {
-    return this.phaserScene.add.container(position.x, position.y);
+    const graphicsContainer = this.phaserScene.add.container
+    (
+      config.position ? config.position.x : 0,
+      config.position ? config.position.y : 0
+    );
+
+    applyCommonConfig(graphicsContainer, config);
+
+    return graphicsContainer;
   }
 
   public createGraphics(config: Graphics.Config)
@@ -143,14 +152,7 @@ export abstract class Scene
 
     const graphics = this.phaserScene.add.graphics(graphicsOptions);
 
-    if (config.rotation !== undefined)
-      graphics.setRotation(config.rotation);
-
-    if (config.depth !== undefined)
-      graphics.setDepth(config.depth);
-
-    if (config.graphicContainer !== undefined)
-      config.graphicContainer.add(graphics);
+    applyCommonConfig(graphics, config);
 
     return graphics;
   }
@@ -164,14 +166,7 @@ export abstract class Scene
       config.textureOrAtlasId
     );
 
-    if (config.rotation !== undefined)
-      sprite.setRotation(config.rotation);
-
-    if (config.depth !== undefined)
-      sprite.setDepth(config.depth);
-
-    if (config.graphicContainer !== undefined)
-      config.graphicContainer.add(sprite);
+    applyCommonConfig(sprite, config);
 
     return sprite;
   }
@@ -331,6 +326,24 @@ export abstract class Scene
       REPORT(error, `Failed to update ${this.debugId}`);
     }
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function applyCommonConfig
+(
+  phaserObject: PhaserObject.GameObject,
+  config: PhaserObject.Config
+)
+{
+  if (config.rotation !== undefined)
+    phaserObject.setRotation(config.rotation);
+
+  if (config.depth !== undefined)
+    phaserObject.setDepth(config.depth);
+
+  if (config.graphicContainer !== undefined)
+    config.graphicContainer.add(phaserObject);
 }
 
 // ------------------ Type Declarations ----------------------

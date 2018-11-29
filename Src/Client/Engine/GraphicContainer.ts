@@ -11,11 +11,11 @@ export class GraphicContainer extends PhaserObject
 {
   protected phaserObject: Phaser.GameObjects.Container;
 
-  constructor(scene: Scene, position = { x: 0, y: 0 })
+  constructor(scene: Scene, config: PhaserObject.Config = {})
   {
     super(scene);
 
-    this.phaserObject = scene.createContainer(position);
+    this.phaserObject = scene.createContainer(config);
   }
 
   // ---------------- Public methods --------------------
@@ -23,5 +23,14 @@ export class GraphicContainer extends PhaserObject
   public add(gameObject: Phaser.GameObjects.GameObject)
   {
     this.phaserObject.add(gameObject);
+  }
+}
+
+// ------------------ Type Declarations ----------------------
+
+export namespace GraphicContainer
+{
+  export interface Config extends PhaserObject.Config
+  {
   }
 }

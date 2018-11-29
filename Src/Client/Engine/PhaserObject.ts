@@ -12,26 +12,9 @@ import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Scene } from "../../Client/Engine/Scene";
 
-// Phaser.GameObjects.GameObject technicaly is an ancestor of
-// Sprite, Container, Graphics etc., but we need to use common
-// metods of such phaser objects that are not present on it.
-//   The solution is to declare the interface ourselves.
-interface PhaserGameObject extends Phaser.GameObjects.GameObject
-{
-  x: number;
-  y: number;
-  rotation: number;
-  setX(x: number): void;
-  setY(y: number): void;
-  setRotation(rotation: number): void;
-  setDepth(depth: number): void;
-  setScrollFactor(scrollFactor: number): void;
-  setVisible(visibility: boolean): void;
-}
-
 export abstract class PhaserObject
 {
-  protected abstract phaserObject: PhaserGameObject;
+  protected abstract phaserObject: PhaserObject.GameObject;
 
   constructor(protected scene: Scene) {}
 
@@ -80,6 +63,23 @@ export abstract class PhaserObject
 
 export namespace PhaserObject
 {
+  // Phaser.GameObjects.GameObject technicaly is an ancestor of
+  // Sprite, Container, Graphics etc., but we need to use common
+  // metods of such phaser objects that are not present on it.
+  //   The solution is to declare the interface ourselves.
+  export interface GameObject extends Phaser.GameObjects.GameObject
+  {
+    x: number;
+    y: number;
+    rotation: number;
+    setX(x: number): void;
+    setY(y: number): void;
+    setRotation(rotation: number): void;
+    setDepth(depth: number): void;
+    setScrollFactor(scrollFactor: number): void;
+    setVisible(visibility: boolean): void;
+  }
+
   export interface Config
   {
     position?: { x: number; y: number };

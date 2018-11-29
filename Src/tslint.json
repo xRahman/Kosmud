@@ -18,6 +18,7 @@
     "no-parameter-properties": false,
     "cyclomatic-complexity": false,
     "completed-docs": false,
+    "no-empty-interface": false,
     "no-any": false,
     // This would be nice but it's too strict to be useful.
     "no-magic-numbers": false,
