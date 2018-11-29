@@ -15,7 +15,7 @@ export class GraphicContainer extends PhaserObject
   {
     super();
 
-    this.phaserObject = createContainer(scene, config);
+    this.phaserObject = createPhaserObjectContainer(scene, config);
 
     this.applyConfig(config);
   }
@@ -30,7 +30,7 @@ export class GraphicContainer extends PhaserObject
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createContainer
+function createPhaserObjectContainer
 (
   scene: Scene.PhaserScene,
   config: GraphicContainer.Config

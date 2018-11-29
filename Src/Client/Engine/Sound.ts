@@ -9,20 +9,20 @@ import { Scene } from "../../Client/Engine/Scene";
 
 export class Sound
 {
-  protected baseVolume0to1 = 1;
+  protected baseVolume = 1;   // Number between 0 and 1.
 
   private readonly phaserSound: Phaser.Sound.BaseSound;
 
   constructor
   (
-    scene: Scene,
+    scene: Scene.PhaserScene,
     soundId: string,
-    baseVolume0to1 = 1
+    baseVolume = 1
   )
   {
-    this.phaserSound = createSound(scene, soundId);
+    this.phaserSound = createPhaserSound(scene, soundId);
 
-    this.setBaseVolume(baseVolume0to1);
+    this.setBaseVolume(baseVolume);
   }
 
   // ---------------- Public methods --------------------
@@ -37,19 +37,30 @@ export class Sound
     this.phaserSound.stop();
   }
 
-  public setBaseVolume(baseVolume0to1: number)
+  // ! Throws exception on error.
+  public setBaseVolume(baseVolume: number)
   {
+    if (baseVolume < 0 || baseVolume > 1)
+    {
+      throw new Error(`Base volume needs to be in <0, 1> interval`);
+    }
+
     // Prevent possible division by zero.
     const oldbaseVolume =
-      (this.baseVolume0to1 !== 0) ? this.baseVolume0to1 : 1;
+      (this.baseVolume !== 0) ? this.baseVolume : 1;
 
-    this.baseVolume0to1 = baseVolume0to1;
+    this.baseVolume = baseVolume;
 
-    this.setVolume(this.getVolume() * baseVolume0to1 / oldbaseVolume);
+    this.setVolume(this.getVolume() * baseVolume / oldbaseVolume);
   }
 
-  public setVolume(volume0to1: number)
+  public setVolume(volume: number)
   {
+    if (volume < 0 || volume > 1)
+    {
+      throw new Error(`Volume needs to be in <0, 1> interval`);
+    }
+
     /// Tohle je hack - v Phaser.Sound.BaseSound není property
     /// volume, ale používáme nejspíš webaudio, kde ta property je.
     ///   Zrada: "volume" je setter, takže i když existuje, může to
@@ -57,7 +68,7 @@ export class Sound
     if ("volume" in this.phaserSound && "volumeNode" in this.phaserSound)
     {
       // tslint:disable-next-line:no-string-literal
-      (this.phaserSound as any)["volume"] = volume0to1 * this.baseVolume0to1;
+      (this.phaserSound as any)["volume"] = volume * this.baseVolume;
     }
   }
 
@@ -79,11 +90,11 @@ export class Sound
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createSound
+function createPhaserSound
 (
-  scene: Scene,
+  scene: Scene.PhaserScene,
   soundId: string
 )
 {
-  return scene.createSound(soundId);
+  return scene.sound.add(soundId);
 }

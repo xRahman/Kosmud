@@ -26,11 +26,11 @@ export class Sprite extends PhaserObject
 
     if (sprite === undefined)
     {
-      this.phaserObject = createSprite(scene, config);
+      this.phaserObject = createPhaserSprite(scene, config);
     }
     else
     {
-      this.phaserObject = this.useSprite(sprite, config);
+      this.phaserObject = this.usePhaserSprite(sprite, config);
     }
 
     this.applyConfig(config);
@@ -87,7 +87,7 @@ export class Sprite extends PhaserObject
 
   // ---------------- Private methods -------------------
 
-  private useSprite
+  private usePhaserSprite
   (
     sprite: Phaser.GameObjects.Sprite,
     config: Sprite.Config
@@ -136,7 +136,7 @@ export class Sprite extends PhaserObject
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createSprite(scene: Scene.PhaserScene, config: Sprite.Config)
+function createPhaserSprite(scene: Scene.PhaserScene, config: Sprite.Config)
 {
   return scene.add.sprite
   (

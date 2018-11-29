@@ -16,6 +16,7 @@ import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
+import { Sound } from "../../Client/Engine/Sound";
 import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Zone } from "../../Shared/Game/Zone";
@@ -171,9 +172,9 @@ export abstract class Scene
     );
   }
 
-  public createSound(soundId: string)
+  public createSound(soundId: string, baseVolume: number)
   {
-    return this.phaserScene.sound.add(soundId);
+    return new Sound(this.phaserScene, soundId, baseVolume);
   }
 
   // ! Throws exception on error.

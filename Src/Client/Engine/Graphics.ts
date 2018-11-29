@@ -25,7 +25,7 @@ export class Graphics extends PhaserObject
   {
     super();
 
-    this.phaserObject = createGraphics(scene, config);
+    this.phaserObject = createPhaserGraphics(scene, config);
 
     this.applyConfig(config);
   }
@@ -121,7 +121,11 @@ export class Graphics extends PhaserObject
 
 // ----------------- Auxiliary Functions ---------------------
 
-function createGraphics(scene: Scene.PhaserScene, config: Graphics.Config)
+function createPhaserGraphics
+(
+  scene: Scene.PhaserScene,
+  config: Graphics.Config
+)
 {
   const graphicsOptions: GraphicsOptions =
   {

@@ -1,7 +1,7 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Předělat Scene.createSound()
+
 TODO: Předělat vyrábění StaticTilemapLayer a DynamicTilemapLayer
   (ty teda vyrábí tilemapa, ale princip by měl bejt stejnej).
 TODO: Mrknout se i na vyrábění PhysicsBody.
