@@ -4,8 +4,10 @@ import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Graphics } from "../../Client/Engine/Graphics";
 
-export class ShapeModel extends Graphics
+export class ShapeModel
 {
+  private readonly shapeGraphics: Graphics;
+
   constructor
   (
     scene: Scene,
@@ -13,11 +15,11 @@ export class ShapeModel extends Graphics
     graphicContainer?: GraphicContainer
   )
   {
-    super(scene, FlightScene.Z_ORDER_DEBUG);
+    this.shapeGraphics = new Graphics(scene, FlightScene.Z_ORDER_DEBUG);
 
-    this.drawShape(shape, 1, Graphics.rgb(0, 255, 255), 0.8);
+    this.shapeGraphics.drawShape(shape, 1, Graphics.rgb(0, 255, 255), 0.8);
 
     if (graphicContainer !== undefined)
-      graphicContainer.add(this);
+      graphicContainer.add(this.shapeGraphics);
   }
 }
