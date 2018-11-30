@@ -8,7 +8,7 @@ import { ShapeModel } from "../../Client/Flight/ShapeModel";
 import { VectorsModel } from "../../Client/Flight/VectorsModel";
 import { ShipAudio } from "../../Client/Flight/ShipAudio";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
-import { Ship } from "../../Client/Game/Ship";
+import { Vehicle } from "../../Shared/Physics/Vehicle";
 import { Physics } from "../../Shared/Physics/Physics";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
@@ -71,9 +71,9 @@ export class ShipModel
     this.graphicContainer.setRotation(rotation);
   }
 
-  public drawVectors(vectors: Ship.Vectors)
+  public drawVectors(vehicle: Vehicle)
   {
-    this.vectorsModel.draw(vectors);
+    this.vectorsModel.draw(vehicle);
   }
 
   // ! Throws exception on error.

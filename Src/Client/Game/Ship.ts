@@ -103,8 +103,8 @@ export class Ship extends Shared.Ship
       vectors.desiredLeftwardSteeringForce
     );
 
-    /// TODO: Znovu zprovoznit.
-    // this.graphics.drawVectors(this.vectors);
+    // ! Throws exception on error.
+    this.getModel().drawVectors(this);
   }
 
   // ---------------- Private methods -------------------

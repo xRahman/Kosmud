@@ -1,3 +1,6 @@
+TODO: Někde jsem potratil vektory.
+[fixed]
+
 TODO: Předělat vyrábění StaticTilemapLayer a DynamicTilemapLayer
   (ty teda vyrábí tilemapa, ale princip by měl bejt stejnej).
 - Ty se zatím nikde nevyráběj a jako parametr dostávají phaser tilemapu,

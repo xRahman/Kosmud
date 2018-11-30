@@ -1,5 +1,5 @@
 import { Scene } from "../../Client/Engine/Scene";
-import { Ship } from "../../Client/Game/Ship";
+import { Vehicle } from "../../Shared/Physics/Vehicle";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
 import { FlightScene } from "../../Client/Flight/FlightScene";
@@ -25,7 +25,7 @@ export class VectorsModel
     this.vectorsGraphics.setPosition(shipPosition);
   }
 
-  public draw(vectors: Ship.Vectors)
+  public draw(vehicle: Vehicle)
   {
     this.vectorsGraphics.clear();
 
@@ -33,34 +33,35 @@ export class VectorsModel
 
     this.vectorsGraphics.drawVector
     (
-      vectors.shipVelocity, origin, 1, Graphics.rgb(255, 0, 255), 1
+      vehicle.getVelocity(), origin, 1, Graphics.rgb(255, 0, 255), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vectors.desiredVelocity, origin, 1, Graphics.rgb(0, 0, 255), 1
+      vehicle.getDesiredVelocity(), origin, 1, Graphics.rgb(0, 0, 255), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vectors.desiredSteeringForce, origin, 1, Graphics.rgb(160, 160, 0), 1
+      vehicle.getDesiredSteeringForce(),
+      origin, 1, Graphics.rgb(160, 160, 0), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vectors.desiredForwardSteeringForce,
+      vehicle.getDesiredForwardSteeringForce(),
       origin, 1, Graphics.rgb(110, 110, 0), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vectors.desiredLeftwardSteeringForce,
+      vehicle.getDesiredLeftwardSteeringForce(),
       origin, 1, Graphics.rgb(110, 110, 0), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vectors.steeringForce, origin, 1, Graphics.rgb(255, 255, 0), 1
+      vehicle.getSteeringForce(), origin, 1, Graphics.rgb(255, 255, 0), 1
     );
   }
 }
