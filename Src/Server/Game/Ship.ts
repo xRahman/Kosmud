@@ -13,7 +13,7 @@ export class Ship extends Shared.Ship
 
   public getStateUpdate(): SceneUpdate.ShipState
   {
-    const shipState =
+    const shipState: SceneUpdate.ShipState =
     {
       shipId: this.getId(),
       shipPosition: this.getPosition(),

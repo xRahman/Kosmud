@@ -50,9 +50,29 @@ export abstract class PhaserObject
     this.phaserObject.setScrollFactor(scrollFactor);
   }
 
+  public show()
+  {
+    this.setVisible(true);
+  }
+
+  public hide()
+  {
+    this.setVisible(false);
+  }
+
   public setVisible(visibility: boolean)
   {
     this.phaserObject.setVisible(visibility);
+  }
+
+  public isHidden()
+  {
+    return !this.phaserObject.visible;
+  }
+
+  public isVisible()
+  {
+    return this.phaserObject.visible;
   }
 
   // --------------- Protected methods ------------------
@@ -83,6 +103,7 @@ export namespace PhaserObject
     x: number;
     y: number;
     rotation: number;
+    visible: boolean;
     setX(x: number): void;
     setY(y: number): void;
     setRotation(rotation: number): void;

@@ -1,4 +1,5 @@
-import { lowerBound } from "../../Shared/Utils/Math";
+import { UnitRatio } from "../../Shared/Utils/UnitRatio";
+import { PositiveUnitRatio } from "../../Shared/Utils/PositiveUnitRatio";
 import { Sound } from "../../Client/Engine/Sound";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { ShipAudio } from "../../Client/Flight/ShipAudio";
@@ -109,52 +110,81 @@ export class ShipExhausts
 
   public update
   (
-    forwardThrustRatio: number,
-    leftwardThrustRatio: number,
-    torqueRatio: number
+    forwardThrustRatio: UnitRatio,
+    leftwardThrustRatio: UnitRatio,
+    torqueRatio: UnitRatio
   )
   {
-    updateExhaust(this.front, lowerBound(-forwardThrustRatio, 0));
+    const frontExhaustScale =
+      PositiveUnitRatio.clamp(-forwardThrustRatio.value);
+    const rearExhaustScale =
+      PositiveUnitRatio.clamp(forwardThrustRatio.value);
+
+    setMinimumExhaustScale(rearExhaustScale, 0.1);
+
+    updateExhaust(this.front, frontExhaustScale);
+    updateExhaust(this.rear, rearExhaustScale);
 
     // Side thrusters get 50% of their length from left-right
     // thrust and another 50% from torque thrust.
 
+    const leftThrustPortion =
+      PositiveUnitRatio.clamp(leftwardThrustRatio.value / 2).value;
+    const rightThrustPortion =
+      PositiveUnitRatio.clamp(-leftwardThrustRatio.value / 2).value;
+    const leftTorquePortion =
+      PositiveUnitRatio.clamp(torqueRatio.value / 2).value;
+    const rightTorquePortion =
+      PositiveUnitRatio.clamp(-torqueRatio.value / 2).value;
+
     updateExhaust
     (
       this.frontLeft,
-      lowerBound(leftwardThrustRatio / 2, 0) + lowerBound(-torqueRatio / 2, 0)
+      new PositiveUnitRatio(rightThrustPortion + rightTorquePortion)
     );
 
     updateExhaust
     (
       this.frontRight,
-      lowerBound(-leftwardThrustRatio / 2, 0) + lowerBound(torqueRatio / 2, 0)
+      new PositiveUnitRatio(leftThrustPortion + leftTorquePortion)
     );
 
     updateExhaust
     (
       this.rearLeft,
-      lowerBound(leftwardThrustRatio / 2, 0) + lowerBound(torqueRatio / 2, 0)
+      new PositiveUnitRatio(rightThrustPortion + leftTorquePortion)
     );
 
     updateExhaust
     (
       this.rearRight,
-      lowerBound(-leftwardThrustRatio / 2, 0) + lowerBound(-torqueRatio / 2, 0)
+      new PositiveUnitRatio(leftThrustPortion + rightTorquePortion)
     );
-
-    updateExhaust(this.rear, lowerBound(forwardThrustRatio, 0.05));
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-function updateExhaust(exhaust: Exhaust, scale: number)
+function setMinimumExhaustScale(thrust: PositiveUnitRatio, minimum: number)
+{
+  thrust.atLeast(minimum);
+}
+
+function updateExhaust(exhaust: Exhaust, scale: PositiveUnitRatio)
 {
   for (const sprite of exhaust.sprites)
   {
-    sprite.setScaleX(scale);
+    if (scale.value <= 0.01)
+    {
+      sprite.hide();
+    }
+    else
+    {
+      sprite.show();
+
+      sprite.setScaleX(scale.value);
+    }
   }
 
-  exhaust.sound.setVolume(scale);
+  exhaust.sound.setVolume(scale.value);
 }

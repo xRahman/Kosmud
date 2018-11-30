@@ -5,6 +5,7 @@
 */
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
+import { UnitRatio } from "../../Shared/Utils/UnitRatio";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -23,7 +24,7 @@ export abstract class Vehicle extends GameEntity
   protected readonly BACKWARD_THRUST = 20;
   protected readonly STRAFE_THRUST = 5;
   protected readonly ANGULAR_VELOCITY = Math.PI * 2;
-  protected readonly TORQUE = 3000;
+  protected readonly TORQUE = 500;
   protected readonly STOPPING_DISTANCE = 20;
   protected readonly STOPPING_SPEED = this.MAX_SPEED / 100;
 
@@ -73,22 +74,22 @@ export abstract class Vehicle extends GameEntity
   }
   public getVelocity() { return this.physicsBody.getVelocity(); }
 
-  public getForwardThrustRatio()
+  public getForwardThrustRatio(): UnitRatio
   {
     if (this.forwardThrust >= 0)
-      return this.forwardThrust / this.FORWARD_THRUST;
+      return UnitRatio.clamp(this.forwardThrust / this.FORWARD_THRUST);
     else
-      return this.forwardThrust / this.BACKWARD_THRUST;
+      return UnitRatio.clamp(this.forwardThrust / this.BACKWARD_THRUST);
   }
 
   public getLeftwardThrustRatio()
   {
-    return this.leftwardThrust / this.STRAFE_THRUST;
+    return UnitRatio.clamp(this.leftwardThrust / this.STRAFE_THRUST);
   }
 
   public getTorqueRatio()
   {
-    return this.torque / this.TORQUE;
+    return UnitRatio.clamp(this.torque / this.TORQUE);
   }
 
   public setWaypoint(waypoint: { x: number; y: number })
