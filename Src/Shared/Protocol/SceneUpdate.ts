@@ -6,7 +6,7 @@
   (Part of client-server communication protocol.)
 */
 
-import { UnitRatio } from "../../Shared/Utils/UnitRatio";
+import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { Vector } from "../../Shared/Physics/Vector";
 
@@ -42,8 +42,8 @@ export namespace SceneUpdate
     desiredSteeringForce: Vector;
     desiredForwardSteeringForce: Vector;
     desiredLeftwardSteeringForce: Vector;
-    forwardThrustRatio: UnitRatio;
-    leftwardThrustRatio: UnitRatio;
-    torqueRatio: UnitRatio;
+    forwardThrustRatio: MinusOneToOne;
+    leftwardThrustRatio: MinusOneToOne;
+    torqueRatio: MinusOneToOne;
   }
 }

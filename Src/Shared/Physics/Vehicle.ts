@@ -5,7 +5,7 @@
 */
 
 import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
-import { UnitRatio } from "../../Shared/Utils/UnitRatio";
+import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -74,22 +74,22 @@ export abstract class Vehicle extends GameEntity
   }
   public getVelocity() { return this.physicsBody.getVelocity(); }
 
-  public getForwardThrustRatio(): UnitRatio
+  public getForwardThrustRatio(): MinusOneToOne
   {
     if (this.forwardThrust >= 0)
-      return UnitRatio.clamp(this.forwardThrust / this.FORWARD_THRUST);
+      return MinusOneToOne.clamp(this.forwardThrust / this.FORWARD_THRUST);
     else
-      return UnitRatio.clamp(this.forwardThrust / this.BACKWARD_THRUST);
+      return MinusOneToOne.clamp(this.forwardThrust / this.BACKWARD_THRUST);
   }
 
   public getLeftwardThrustRatio()
   {
-    return UnitRatio.clamp(this.leftwardThrust / this.STRAFE_THRUST);
+    return MinusOneToOne.clamp(this.leftwardThrust / this.STRAFE_THRUST);
   }
 
   public getTorqueRatio()
   {
-    return UnitRatio.clamp(this.torque / this.TORQUE);
+    return MinusOneToOne.clamp(this.torque / this.TORQUE);
   }
 
   public setWaypoint(waypoint: { x: number; y: number })

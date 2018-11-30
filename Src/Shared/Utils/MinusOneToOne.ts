@@ -7,7 +7,7 @@
 import { Classes } from "../../Shared/Class/Classes";
 import { Number } from "../../Shared/Utils/Number";
 
-export class UnitRatio extends Number
+export class MinusOneToOne extends Number
 {
   protected static readonly MINIMUM = -1;
   protected static readonly MAXIMUM = 1;
@@ -19,16 +19,16 @@ export class UnitRatio extends Number
     super(value);
 
     // ! Throws exception on error.
-    Number.validate(value, UnitRatio.MINIMUM, UnitRatio.MAXIMUM);
+    Number.validate(value, MinusOneToOne.MINIMUM, MinusOneToOne.MAXIMUM);
   }
 
   public static clamp(value: number)
   {
-    return new UnitRatio
+    return new MinusOneToOne
     (
       Number.clampValue(value, this.MINIMUM, this.MAXIMUM)
     );
   }
 }
 
-Classes.registerSerializableClass(UnitRatio);
+Classes.registerSerializableClass(MinusOneToOne);

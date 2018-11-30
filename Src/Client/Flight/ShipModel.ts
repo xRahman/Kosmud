@@ -1,4 +1,4 @@
-import { UnitRatio } from "../../Shared/Utils/UnitRatio";
+import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
@@ -122,9 +122,9 @@ export class ShipModel
   /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
   public updateExhausts
   (
-    forwardThrustRatio: UnitRatio,
-    leftwardThrustRatio: UnitRatio,
-    torqueRatio: UnitRatio
+    forwardThrustRatio: MinusOneToOne,
+    leftwardThrustRatio: MinusOneToOne,
+    torqueRatio: MinusOneToOne
   )
   {
     this.exhausts.update

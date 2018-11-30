@@ -1,9 +1,6 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Zvážit SymmetricUnitRatio a UnitRatio
-      místo UnitRatio a PositiveUnitRatio.
-
 TODO: Občas se mi nenačte background :\
 
 TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
