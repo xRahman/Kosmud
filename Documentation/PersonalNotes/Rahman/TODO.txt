@@ -1,36 +1,21 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Importovat celé Utils.String místo jednotlivých metod
+  (skryje to String, který se stejně nemá používat, takže v pohodě).
+
 TODO: Občas se mi nenačte background :\
+- asi jen v práci
 
 TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
+- asi ho budu muset posílat ze serveru spolu se scénou
+  (tzn. s lodí).
 
-TODO: Po reloadu tabu zůstává pravý přední exhaust naplno.
-[fixed]
-
-TODO: Mám prohozený směry thrusterů.
-
-TODO: Možná kromě exhaustů vypínat i zvuky, když je nulovej thrust.
-
-TODO: Zvážit, jestli neclampovat v konstruktoru UnitRatio
-  místo házení výjimky.
-  - i když asi ne. Lepší je, když se musí explicitně napst UnitRatio.clamp().
-
-TODO: Classy UnitRatio a PositiveUnitRatio by asi nemusely držet
-  minimum a maximum jako instance properties (stačí static)
-[done]
-
-TODO: invertovat výpočet ForwardThrustRatio
-
-TODO: Number, IntervalNumber a Ratio by měly být Serializable
-  (nebo musím upravit Serializale, aby je umělo savovat).
-[done]
-
-TODO: Přehodit Utils/Math to Utils/Number.
-
-TODO: Sound volume občas není v povoleném intervalu.
+TODO: Přehodit obsah Utils/Math to Utils/Number.
+(a možná do Number hodit MIN_INTEGER)
 
 TODO: Mrknout se i na vyrábění PhysicsBody.
+- asi by to mělo bejt stejně jako grafické objekty
 
 TODO: Posílání změny waypointu by nemělo být ve WaypointModelu.
 

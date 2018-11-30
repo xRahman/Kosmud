@@ -27,6 +27,21 @@ export class Sound
 
   // ---------------- Public methods --------------------
 
+  public isPaused()
+  {
+    return this.phaserSound.isPaused;
+  }
+
+  public pause()
+  {
+    this.phaserSound.pause();
+  }
+
+  public resume()
+  {
+    this.phaserSound.resume();
+  }
+
   public play(loop: boolean, volume0to1: number)
   {
     this.phaserSound.play("", { loop, volume: volume0to1 });

@@ -1,3 +1,28 @@
+TODO: Možná kromě exhaustů vypínat i zvuky, když je nulovej thrust.
+[done]
+
+TODO: Zvážit, jestli neclampovat v konstruktoru UnitRatio
+  místo házení výjimky.
+  - i když asi ne. Lepší je, když se musí explicitně napst UnitRatio.clamp().
+[won't do]
+
+TODO: Sound volume občas není v povoleném intervalu.
+[fixed]
+
+TODO: Number, IntervalNumber a Ratio by měly být Serializable
+  (nebo musím upravit Serializale, aby je umělo savovat).
+[done]
+
+TODO: Classy UnitRatio a PositiveUnitRatio by asi nemusely držet
+  minimum a maximum jako instance properties (stačí static)
+[done]
+
+TODO: Po reloadu tabu zůstává pravý přední exhaust naplno.
+[fixed]
+
+TODO: Mám prohozený směry thrusterů.
+[fixed]
+
 TODO: Zvážit SymmetricUnitRatio a UnitRatio
       místo UnitRatio a PositiveUnitRatio.
 - UnitRatio je ve skutečnosti blbě, to může bejt třeba i 7:1
