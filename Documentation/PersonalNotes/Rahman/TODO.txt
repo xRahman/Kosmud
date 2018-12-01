@@ -2,9 +2,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
 
-TODO: class PriorityQueue si zaslouží vlastní file.
-
-
 TODO: Občas se mi nenačte background :\
 - asi jen v práci
 
@@ -175,6 +172,9 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 Odložené TODO:
 ---------------
+
+TODO: Napsat serializaci/deserializaci PriorityQueue
+  (a rovnou to opravit, protože to prakticky určitě nebude dobře).
 
 TODO: Hmm, možná kdybych důsledně používal wrapper na bitvector a byl
   zděděnej ze Serializable, tak bych ho nemusel v Serializable

@@ -192,7 +192,7 @@ export class Serializable extends Attributable
   // This method can be overriden to change how is a certain
   // property serialized.
   // tslint:disable-next-line:prefer-function-over-method
-  protected customSerializeProperty(param: SerializeParam): any
+  protected customSerializeProperty(param: Serializable.SerializeParam): any
   {
     return "Property isn't serialized customly";
   }
@@ -200,7 +200,7 @@ export class Serializable extends Attributable
   // This method can be overriden to change how is a certain
   // property deserialized.
   // tslint:disable-next-line:prefer-function-over-method
-  protected customDeserializeProperty(param: DeserializeParam)
+  protected customDeserializeProperty(param: Serializable.DeserializeParam)
   {
     return "Property isn't deserialized customly";
   }
@@ -336,7 +336,7 @@ export class Serializable extends Attributable
   // ! Throws exception on error.
   // Writes a single property to a corresponding JSON object.
   // -> Returns JSON object representing 'param.sourceProperty'.
-  private serializeProperty(param: SerializeParam): any
+  private serializeProperty(param: Serializable.SerializeParam): any
   {
     const property = param.property;
     const mode = param.mode;
@@ -403,7 +403,11 @@ export class Serializable extends Attributable
   }
 
   // Saves a property of type Array to a corresponding JSON Array object.
-  private serializeArray(param: SerializeParam, sourceArray: Array<any>)
+  private serializeArray
+  (
+    param: Serializable.SerializeParam,
+    sourceArray: Array<any>
+  )
   {
     const jsonArray = [];
 
@@ -429,7 +433,7 @@ export class Serializable extends Attributable
   // ! Throws exception on error.
   private serializePlainObject
   (
-    param: SerializeParam,
+    param: Serializable.SerializeParam,
     sourceObject: ObjectType
   )
   : object
@@ -468,7 +472,7 @@ export class Serializable extends Attributable
   // Converts from serializable format to original data type as needed
   // (for example Set class is saved to JSON as an Array so it has to be
   //  reconstructed here).
-  private deserializeProperty(param: DeserializeParam): any
+  private deserializeProperty(param: Serializable.DeserializeParam): any
   {
     {
       // Allow custom property deserialization in descendants.
@@ -595,7 +599,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private deserializeAsSet(param: DeserializeParam)
+  private deserializeAsSet(param: Serializable.DeserializeParam)
   {
     if (!isSetRecord(param.sourceProperty))
       return "Property is not a Set";
@@ -616,7 +620,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private deserializeAsMap(param: DeserializeParam)
+  private deserializeAsMap(param: Serializable.DeserializeParam)
   {
     if (!isMapRecord(param.sourceProperty))
       return "Property is not a Map";
@@ -637,7 +641,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private deserializeAsArray(param: DeserializeParam)
+  private deserializeAsArray(param: Serializable.DeserializeParam)
   {
     if (!Array.isArray(param.sourceProperty))
       return "Property is not an Array";
@@ -661,7 +665,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private deserializeAsObject(param: DeserializeParam)
+  private deserializeAsObject(param: Serializable.DeserializeParam)
   {
     if (Types.isPrimitiveType(param.sourceProperty))
       return "Property is not an object";
@@ -682,7 +686,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private readObject(param: DeserializeParam)
+  private readObject(param: Serializable.DeserializeParam)
   {
     let instance = param.targetProperty;
 
@@ -730,7 +734,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private deserializePlainObject(param: DeserializeParam)
+  private deserializePlainObject(param: Serializable.DeserializeParam)
   {
     const sourceObject = param.sourceProperty;
 
@@ -771,7 +775,7 @@ export class Serializable extends Attributable
   }
 
   // ! Throws exception on error.
-  private readSet(param: DeserializeParam): Set<any>
+  private readSet(param: Serializable.DeserializeParam): Set<any>
   {
     // ! Throws exception on error.
     // In order to deserialize a Set object, we need to load all items
@@ -793,7 +797,7 @@ export class Serializable extends Attributable
 
   // ! Throws exception on error.
   // Converts 'param.sourceProperty' to a Map object.
-  private readMap(param: DeserializeParam): Map<any, any>
+  private readMap(param: Serializable.DeserializeParam): Map<any, any>
   {
     // ! Throws exception on error.
     // In order to deserialize a Map object, we need to load all items
@@ -815,7 +819,7 @@ export class Serializable extends Attributable
 
   // ! Throws exception on error.
   // Converts 'param.sourceProperty' to Array.
-  private readArray(param: DeserializeParam): Array<any>
+  private readArray(param: Serializable.DeserializeParam): Array<any>
   {
     const array = param.sourceProperty;
 
@@ -1020,7 +1024,7 @@ function createVectorSaver(vector: Vector)
 function createEntitySaver
 (
   entity: ObjectType,
-  param: SerializeParam
+  param: Serializable.SerializeParam
 )
 : Serializable
 {
@@ -1068,7 +1072,11 @@ function inFile(path?: string)
 }
 
 // ! Throws exception on error.
-function getProperty(param: DeserializeParam, propertyName: string)
+function getProperty
+(
+  param: Serializable.DeserializeParam,
+  propertyName: string
+)
 {
   if (!param.sourceProperty)
   {
@@ -1090,7 +1098,7 @@ function getProperty(param: DeserializeParam, propertyName: string)
 // ! Throws exception on error.
 // Reads 'className' from 'param.sourceProperty'
 // and creates an instance of that class.
-function createNew(param: DeserializeParam): object
+function createNew(param: Serializable.DeserializeParam): object
 {
   const className = param.sourceProperty[CLASS_NAME];
 
@@ -1134,13 +1142,13 @@ function createNew(param: DeserializeParam): object
 }
 
 // Converts 'param.sourceProperty' to a FastBitSet object.
-function readBitvector(param: DeserializeParam)
+function readBitvector(param: Serializable.DeserializeParam)
 {
   return new FastBitSet(getProperty(param, BITVECTOR));
 }
 
 // Converts 'param.sourceProperty' to a Vector object.
-function readVector(param: DeserializeParam)
+function readVector(param: Serializable.DeserializeParam)
 {
   const vector =
   {
@@ -1152,7 +1160,7 @@ function readVector(param: DeserializeParam)
 }
 
 // ! Throws exception on error.
-function deserializeAsBitvector(param: DeserializeParam)
+function deserializeAsBitvector(param: Serializable.DeserializeParam)
 {
   if (!isBitvectorRecord(param.sourceProperty))
     return "Property is not a bitvector";
@@ -1174,7 +1182,7 @@ function deserializeAsBitvector(param: DeserializeParam)
 }
 
 // ! Throws exception on error.
-function deserializeAsVector(param: DeserializeParam)
+function deserializeAsVector(param: Serializable.DeserializeParam)
 {
   if (!isVectorRecord(param.sourceProperty))
     return "Property is not a Vector";
@@ -1201,7 +1209,7 @@ function deserializeAsVector(param: DeserializeParam)
 // entity will be returned. Otherwise an 'invalid'
 // entity reference will be created and returned.
 // -> Retuns an existing entity or an invalid entity reference.
-function readEntityReference(param: DeserializeParam)
+function readEntityReference(param: Serializable.DeserializeParam)
 {
   const id = getProperty(param, ID);
 
@@ -1215,7 +1223,7 @@ function readEntityReference(param: DeserializeParam)
 }
 
 // Attempts to convert 'param.sourceProperty' to reference to an Entity.
-function deserializeAsEntityReference(param: DeserializeParam)
+function deserializeAsEntityReference(param: Serializable.DeserializeParam)
 {
   if (!isReference(param.sourceProperty))
     return "Property is not a reference to an Entity";
@@ -1232,7 +1240,7 @@ function isEntity(variable: ObjectType)
 }
 
 // ! Throws exception on error.
-function getEntityId(entity: ObjectType, param: SerializeParam)
+function getEntityId(entity: ObjectType, param: Serializable.SerializeParam)
 {
   const id = entity[ID];
 
@@ -1249,22 +1257,6 @@ function getEntityId(entity: ObjectType, param: SerializeParam)
 
 // ------------------ Type declarations ----------------------
 
-interface DeserializeParam
-{
-  propertyName: string;
-  sourceProperty: any;
-  targetProperty: any;
-  path?: string;
-}
-
-interface SerializeParam
-{
-  property: any;
-  description: string; // Used for error messages.
-  className: string;
-  mode: Serializable.Mode;
-}
-
 export namespace Serializable
 {
   export type Mode =
@@ -1272,4 +1264,20 @@ export namespace Serializable
   | "Send to Client"
   | "Send to Server"
   | "Send to Editor";
+
+  export interface DeserializeParam
+  {
+    propertyName: string;
+    sourceProperty: any;
+    targetProperty: any;
+    path?: string;
+  }
+
+  export interface SerializeParam
+  {
+    property: any;
+    description: string; // Used for error messages.
+    className: string;
+    mode: Serializable.Mode;
+  }
 }

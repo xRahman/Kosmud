@@ -14,13 +14,14 @@
 */
 
 import { Types } from "../../Shared/Utils/Types";
+import { PriorityQueue } from "../../Shared/Class/PriorityQueue";
 
 export class SavingQueue
 {
   // ----------------- Private data ---------------------
 
   private readonly requestQueue =
-    new Types.PriorityQueue<Types.ResolveFunction<void>>();
+    new PriorityQueue<Types.ResolveFunction<void>>();
 
   // ---------------- Public methods --------------------
 

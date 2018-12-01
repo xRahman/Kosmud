@@ -7,12 +7,6 @@
 import { Vector } from "../../Shared/Physics/Vector";
 import { Serializable } from "../../Shared/Class/Serializable";
 
-// 3rd party modules.
-// Note: Disable tslint check for 'const x = require()' because we
-//   don't have type definitions for 'fastbitset' module so it cannot
-//   be imported using 'import' keyword.
-// tslint:disable-next-line:no-var-requires
-const FastPriorityQueue = require("fastpriorityqueue");
 // Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from "isomorphic-ws";
 
@@ -122,19 +116,6 @@ export namespace Types
     return variable.constructor.name === "Object";
   }
 
-// /// Pokus udělat type guard funkci, které bude typescript rozumět.
-// /// Funguje to, ale použijí je poněkud clumsy...
-// export function asArray(variable: any): Array<any> | "Not an array"
-// {
-//   if (variable === null || variable === undefined || !variable.constructor)
-//     return "Not an array";
-
-//   if (variable.constructor.name !== "Array")
-//     return "Not an array";
-
-//   return (variable as Array<any>);
-// }
-
   export function isArray(variable: any)
   {
     if (variable === null || variable === undefined || !variable.constructor)
@@ -168,41 +149,5 @@ export namespace Types
   export function isNumber(variable: any)
   {
     return typeof variable === "number";
-  }
-
-  export class PriorityQueue<T>
-  {
-    private readonly queue = new FastPriorityQueue();
-
-    public get size() { return this.queue.size; }
-
-    public add(item: T) { this.queue.add(item); }
-
-    // Removes the item.
-    public poll(): T | "Queue is empty"
-    {
-      const item = this.queue.poll();
-
-      if (item === undefined)
-        return "Queue is empty";
-
-      return item;
-    }
-
-    // Does not remove the item.
-    public peek(): T | "Queue is empty"
-    {
-      const item = this.queue.peek();
-
-      if (item === undefined)
-        return "Queue is empty";
-
-      return item;
-    }
-
-    // Optimizes memory usage (optional).
-    public trim() { this.queue.trim(); }
-
-    public isEmpty() { return this.queue.isEmpty(); }
   }
 }
