@@ -1,3 +1,7 @@
+TODO: Importovat celé Utils.String místo jednotlivých metod
+  (skryje to String, který se stejně nemá používat, takže v pohodě).
+[done]
+
 TODO: Přehodit obsah Utils/Math to Utils/Number.
 - to bude trochu složitější, Vehicle používá intervalBound a normalizeAngle.
 Asi se to nebude moct jmenovat Number. Možná NumberValue?

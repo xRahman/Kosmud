@@ -4,8 +4,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 
 TODO: class PriorityQueue si zaslouží vlastní file.
 
-TODO: Importovat celé Utils.String místo jednotlivých metod
-  (skryje to String, který se stejně nemá používat, takže v pohodě).
 
 TODO: Občas se mi nenačte background :\
 - asi jen v práci

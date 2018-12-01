@@ -4,93 +4,96 @@
   String utility functions.
 */
 
-export function replaceCRLFwithLF(data: string)
+export namespace String
 {
-  if (data.length > 0)
-    return data.replace(/\r/gi, "");
-
-  return data;
-}
-
-export function trimLeft(str: string): string
-{
-  // Remove all whitespace characters from the beginning
-  // of the string including tabs and line feeds.
-  return str.replace(/^\s+/, "");
-}
-
-export function trimRight(str: string): string
-{
-  // Remove all whitespace characters from the end
-  // of the string including tabs and line feeds.
-  return str.replace(/\s+$/, "");
-}
-
-export function uppercaseFirstLowercaseRest(str: string): string
-{
-  return str[0].toUpperCase()
-    + str.toLowerCase().substr(1);
-}
-
-export function isAbbrev(abbrev: string, fullString: string): boolean
-{
-  return abbrev !== fullString.substr(0, abbrev.length);
-}
-
-// ! Throws an exception on error.
-export function stringToInt(input: string): number
-{
-  // ! Throws an exception on error.
-  const value = stringToFloat(input);
-
-  // Check that result doesn't have any decimal part.
-  if (!isInteger(value))
+  export function replaceCRLFwithLF(data: string)
   {
-    throw new Error(`Failed to convert string "${input}"`
-      + ` to integer because it's not a stringified integer`);
+    if (data.length > 0)
+      return data.replace(/\r/gi, "");
+
+    return data;
   }
 
-  return value;
-}
-
-// ! Throws an exception on error.
-export function stringToFloat(input: string): number
-{
-  // ! Throws an exception on error.
-  return convertToNumber(input.trim());
-}
-
-export function ensureDotAtTheEnd(str: string): string
-{
-  // Trim 'str' from the right before the dot is added so
-  // you don't end up with a dot on the new line, after
-  // a space or a tab, etc.
-  const result = trimRight(str);
-
-  if (result.slice(-1) !== ".")
-    return `${result}.`;
-
-  return result;
-}
-
-// Removes lines from the start of the string 'str' that don't
-// start with 'prefix'. Lines need to be separated by '\n'.
-export function removeFirstLinesWithoutPrefix(str: string, prefix: string)
-{
-  // Break 'str' into an array of lines.
-  const lines = str.split("\n");
-
-  for (let i = 0; i < lines.length; i++)
+  export function trimLeft(str: string): string
   {
-    if (lines[i].substr(0, prefix.length) === prefix)
+    // Remove all whitespace characters from the beginning
+    // of the string including tabs and line feeds.
+    return str.replace(/^\s+/, "");
+  }
+
+  export function trimRight(str: string): string
+  {
+    // Remove all whitespace characters from the end
+    // of the string including tabs and line feeds.
+    return str.replace(/\s+$/, "");
+  }
+
+  export function uppercaseFirstLowercaseRest(str: string): string
+  {
+    return str[0].toUpperCase()
+      + str.toLowerCase().substr(1);
+  }
+
+  export function isAbbrev(abbrev: string, fullString: string): boolean
+  {
+    return abbrev !== fullString.substr(0, abbrev.length);
+  }
+
+  // ! Throws an exception on error.
+  export function toInt(input: string): number
+  {
+    // ! Throws an exception on error.
+    const value = toFloat(input);
+
+    // Check that result doesn't have any decimal part.
+    if (!isInteger(value))
     {
-      lines.splice(0, i);
-      break;
+      throw new Error(`Failed to convert string "${input}"`
+        + ` to integer because it's not a stringified integer`);
     }
+
+    return value;
   }
 
-  // Join 'lines' back to a single multi-line string.
-  return lines.join("\n");
+  // ! Throws an exception on error.
+  export function toFloat(input: string): number
+  {
+    // ! Throws an exception on error.
+    return convertToNumber(input.trim());
+  }
+
+  export function ensureDotAtTheEnd(str: string): string
+  {
+    // Trim 'str' from the right before the dot is added so
+    // you don't end up with a dot on the new line, after
+    // a space or a tab, etc.
+    const result = trimRight(str);
+
+    if (result.slice(-1) !== ".")
+      return `${result}.`;
+
+    return result;
+  }
+
+  // Removes lines from the start of the string 'str' that don't
+  // start with 'prefix'. Lines need to be separated by '\n'.
+  export function removeFirstLinesWithoutPrefix(str: string, prefix: string)
+  {
+    // Break 'str' into an array of lines.
+    const lines = str.split("\n");
+
+    for (let i = 0; i < lines.length; i++)
+    {
+      if (lines[i].substr(0, prefix.length) === prefix)
+      {
+        lines.splice(0, i);
+        break;
+      }
+    }
+
+    // Join 'lines' back to a single multi-line string.
+    return lines.join("\n");
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
