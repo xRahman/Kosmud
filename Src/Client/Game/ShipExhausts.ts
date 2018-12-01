@@ -84,36 +84,44 @@ export class ShipExhausts
     torqueRatio: MinusOneToOne
   )
   {
-    const frontExhaustScale = ZeroToOne.clamp(-forwardThrustRatio.value);
-    const rearExhaustScale = ZeroToOne.clamp(forwardThrustRatio.value);
+    const frontExhaustScale = new ZeroToOne(-forwardThrustRatio.valueOf());
+    const rearExhaustScale = new ZeroToOne(forwardThrustRatio.valueOf());
 
-    setMinimumExhaustScale(rearExhaustScale, 0.1);
+    // ! Throws exception on error.
+    setMinimumExhaustScale(rearExhaustScale, new ZeroToOne(0.1));
 
-    this.front.update(frontExhaustScale.value);
-    this.rear.update(rearExhaustScale.value);
+    this.front.update(frontExhaustScale);
+    this.rear.update(rearExhaustScale);
 
     // Side thrusters get 50% of their length from left-right
     // thrust and another 50% from torque thrust.
 
     const leftThrustPortion =
-      ZeroToOne.clamp(leftwardThrustRatio.value / 2).value;
+      new ZeroToOne(leftwardThrustRatio.valueOf() / 2).valueOf();
     const rightThrustPortion =
-      ZeroToOne.clamp(-leftwardThrustRatio.value / 2).value;
+      new ZeroToOne(-leftwardThrustRatio.valueOf() / 2).valueOf();
     const leftTorquePortion =
-      ZeroToOne.clamp(torqueRatio.value / 2).value;
+      new ZeroToOne(torqueRatio.valueOf() / 2).valueOf();
     const rightTorquePortion =
-      ZeroToOne.clamp(-torqueRatio.value / 2).value;
+      new ZeroToOne(-torqueRatio.valueOf() / 2).valueOf();
 
-    this.frontLeft.update(rightThrustPortion + rightTorquePortion);
-    this.frontRight.update(leftThrustPortion + leftTorquePortion);
-    this.rearLeft.update(rightThrustPortion + leftTorquePortion);
-    this.rearRight.update(leftThrustPortion + rightTorquePortion);
+    const frontLeftExhaustScale = rightThrustPortion + rightTorquePortion;
+    const frontRightExhaustScale = leftThrustPortion + leftTorquePortion;
+    const rearLeftExhaustScale = rightThrustPortion + leftTorquePortion;
+    const rearRightExhaustScale = leftThrustPortion + rightTorquePortion;
+
+    this.frontLeft.update(new ZeroToOne(frontLeftExhaustScale));
+    this.frontRight.update(new ZeroToOne(frontRightExhaustScale));
+    this.rearLeft.update(new ZeroToOne(rearLeftExhaustScale));
+    this.rearRight.update(new ZeroToOne(rearRightExhaustScale));
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-function setMinimumExhaustScale(thrust: ZeroToOne, minimum: number)
+// ! Throws exception on error.
+function setMinimumExhaustScale(thrust: ZeroToOne, minimum: ZeroToOne)
 {
-  thrust.atLeast(minimum);
+  // ! Throws exception on error.
+  thrust.atLeast(minimum.valueOf());
 }

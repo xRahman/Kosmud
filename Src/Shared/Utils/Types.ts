@@ -9,7 +9,7 @@ import { Serializable } from "../../Shared/Class/Serializable";
 
 // 3rd party modules.
 // Note: Disable tslint check for 'const x = require()' because we
-//   don't havetype definitions for 'fastbitset' module so it cannot
+//   don't have type definitions for 'fastbitset' module so it cannot
 //   be imported using 'import' keyword.
 // tslint:disable-next-line:no-var-requires
 const FastPriorityQueue = require("fastpriorityqueue");

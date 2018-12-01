@@ -77,19 +77,19 @@ export abstract class Vehicle extends GameEntity
   public getForwardThrustRatio(): MinusOneToOne
   {
     if (this.forwardThrust >= 0)
-      return MinusOneToOne.clamp(this.forwardThrust / this.FORWARD_THRUST);
+      return new MinusOneToOne(this.forwardThrust / this.FORWARD_THRUST);
     else
-      return MinusOneToOne.clamp(this.forwardThrust / this.BACKWARD_THRUST);
+      return new MinusOneToOne(this.forwardThrust / this.BACKWARD_THRUST);
   }
 
   public getLeftwardThrustRatio()
   {
-    return MinusOneToOne.clamp(this.leftwardThrust / this.STRAFE_THRUST);
+    return new MinusOneToOne(this.leftwardThrust / this.STRAFE_THRUST);
   }
 
   public getTorqueRatio()
   {
-    return MinusOneToOne.clamp(this.torque / this.TORQUE);
+    return new MinusOneToOne(this.torque / this.TORQUE);
   }
 
   public setWaypoint(waypoint: { x: number; y: number })

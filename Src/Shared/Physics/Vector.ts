@@ -10,6 +10,7 @@
     Static methods always return a new Vector.
 */
 
+import "../../Shared/Utils/Number";
 import { b2Vec2 } from "../../Shared/Box2D/Box2D";
 
 export class Vector

@@ -5,30 +5,12 @@
 */
 
 import { Classes } from "../../Shared/Class/Classes";
-import { Number } from "../../Shared/Utils/Number";
+import { NumberInInterval } from "../../Shared/Class/NumberInInterval";
 
-export class MinusOneToOne extends Number
+export class MinusOneToOne extends NumberInInterval
 {
-  protected static readonly MINIMUM = -1;
-  protected static readonly MAXIMUM = 1;
-
-  // ! Throws exception on error.
-  constructor(value = 0)
-  {
-    // ! Throws exception on error.
-    super(value);
-
-    // ! Throws exception on error.
-    Number.validate(value, MinusOneToOne.MINIMUM, MinusOneToOne.MAXIMUM);
-  }
-
-  public static clamp(value: number)
-  {
-    return new MinusOneToOne
-    (
-      Number.clampValue(value, this.MINIMUM, this.MAXIMUM)
-    );
-  }
+  public static minimum = -1;
+  public static maximum = 1;
 }
 
 Classes.registerSerializableClass(MinusOneToOne);

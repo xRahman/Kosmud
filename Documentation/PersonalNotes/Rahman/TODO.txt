@@ -1,6 +1,26 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Number asi není serializovatelný.
+ - Možná ale ani nemusí bejt, pokud ho budu používat pouze jako knihovnu
+   funkcí.
+
+
+TODO: class PriorityQueue si zaslouží vlastní file.
+
+TODO: Přehodit obsah Utils/Math to Utils/Number.
+- to bude trochu složitější, Vehicle používá intervalBound a normalizeAngle.
+Asi se to nebude moct jmenovat Number. Možná NumberValue?
+
+IDEA: Interval by neměl value, jen by ořezával.
+value = new Interval(10, 12).clamp(x);
+- nevím, jak by bylo atLeast
+result = new Value(x).clampTo(10, 12);
+result = new Value(x).atLeast(13);
+
+TODO: možná do Number hodit MIN_INTEGER
+- to nepůjde. Uvnitř classy Number je ten identifikátor maskovanej.
+
 TODO: Importovat celé Utils.String místo jednotlivých metod
   (skryje to String, který se stejně nemá používat, takže v pohodě).
 
@@ -10,9 +30,6 @@ TODO: Občas se mi nenačte background :\
 TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
 - asi ho budu muset posílat ze serveru spolu se scénou
   (tzn. s lodí).
-
-TODO: Přehodit obsah Utils/Math to Utils/Number.
-(a možná do Number hodit MIN_INTEGER)
 
 TODO: Mrknout se i na vyrábění PhysicsBody.
 - asi by to mělo bejt stejně jako grafické objekty
@@ -93,11 +110,6 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
     jim properties (efektivně to je totéž jako load entity z disku).
 {tohle si tu nechám, ať vím, kam směřuju}
 
-
-
-TODO: doladit vizuály exhaustů
-- úlně je schovávat, když nejsou aktivní.
-- dát jim nějakou minimální délku (jako u zadních).
 
 
 TODO: odchytávat výjimky z Tilemap.getShape().

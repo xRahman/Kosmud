@@ -12,6 +12,7 @@
 
 import { ERROR } from "../../Shared/Log/ERROR";
 import { REPORT } from "../../Shared/Log/REPORT";
+import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { Graphics } from "../../Client/Engine/Graphics";
@@ -172,7 +173,7 @@ export abstract class Scene
     );
   }
 
-  public createSound(soundId: string, baseVolume: number)
+  public createSound(soundId: string, baseVolume: ZeroToOne)
   {
     return new Sound(this.phaserScene, soundId, baseVolume);
   }

@@ -26,14 +26,14 @@ export class ShipExhaust
       animationName
     );
 
-    this.sound = shipAudio.createExhaustSound(volume.value);
+    this.sound = shipAudio.createExhaustSound(volume);
   }
 
   // ---------------- Public methods --------------------
 
-  public update(scale: number)
+  public update(scale: ZeroToOne)
   {
-    if (scale <= 0.01)
+    if (scale.valueOf() <= 0.01)
     {
       this.sound.pause();
 
@@ -44,7 +44,7 @@ export class ShipExhaust
       this.sound.setVolume(scale);
       this.sound.resume();
 
-      this.showAndScaleSprites(scale);
+      this.showAndScaleSprites(scale.valueOf());
     }
   }
 

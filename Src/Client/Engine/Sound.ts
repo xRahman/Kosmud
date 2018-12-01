@@ -5,11 +5,12 @@
   /// Teda az na to, ze chci nastavovat volume, ktera v BaseSound neni...
 */
 
+import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { Scene } from "../../Client/Engine/Scene";
 
 export class Sound
 {
-  protected baseVolume = 1;   // Number between 0 and 1.
+  protected baseVolume = new ZeroToOne(1);
 
   private readonly phaserSound: Phaser.Sound.BaseSound;
 
@@ -17,7 +18,7 @@ export class Sound
   (
     phaserScene: Scene.PhaserScene,
     soundId: string,
-    baseVolume = 1
+    baseVolume = new ZeroToOne(1)
   )
   {
     this.phaserSound = createPhaserSound(phaserScene, soundId);
@@ -53,29 +54,23 @@ export class Sound
   }
 
   // ! Throws exception on error.
-  public setBaseVolume(baseVolume: number)
+  public setBaseVolume(baseVolume: ZeroToOne)
   {
-    if (baseVolume < 0 || baseVolume > 1)
-    {
-      throw new Error(`Base volume (${baseVolume}) needs`
-        + ` to be in <0, 1> interval`);
-    }
+    const oldbaseVolumeValue = this.baseVolume.valueOf();
+    const newBaseVolumeValue = baseVolume.valueOf();
 
-    // Prevent possible division by zero.
-    const oldbaseVolume =
-      (this.baseVolume !== 0) ? this.baseVolume : 1;
+    let newVolumeValue = this.getVolume().valueOf();
+    if (oldbaseVolumeValue !== 0)
+      newVolumeValue = newBaseVolumeValue / oldbaseVolumeValue;
 
+    this.setVolume(new ZeroToOne(newVolumeValue));
     this.baseVolume = baseVolume;
-
-    this.setVolume(this.getVolume() * baseVolume / oldbaseVolume);
   }
 
-  public setVolume(volume: number)
+  public setVolume(volume: ZeroToOne)
   {
-    if (volume < 0 || volume > 1)
-    {
-      throw new Error(`Volume (${volume}) needs to be in <0, 1> interval`);
-    }
+    const value = volume.valueOf();
+    const baseValue = this.baseVolume.valueOf();
 
     /// Tohle je hack - v Phaser.Sound.BaseSound není property
     /// volume, ale používáme nejspíš webaudio, kde ta property je.
@@ -84,7 +79,7 @@ export class Sound
     if ("volume" in this.phaserSound && "volumeNode" in this.phaserSound)
     {
       // tslint:disable-next-line:no-string-literal
-      (this.phaserSound as any)["volume"] = volume * this.baseVolume;
+      (this.phaserSound as any)["volume"] = value * baseValue;
     }
   }
 
@@ -97,10 +92,12 @@ export class Sound
     if ("volume" in this.phaserSound && "volumeNode" in this.phaserSound)
     {
       // tslint:disable-next-line:no-string-literal
-      return ((this.phaserSound as any)["volume"] as number);
+      const volume = ((this.phaserSound as any)["volume"] as number);
+
+      return new ZeroToOne(volume);
     }
 
-    return 1;
+    return new ZeroToOne(1);
   }
 }
 

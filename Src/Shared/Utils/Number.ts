@@ -1,91 +1,159 @@
 /*
   Part of Kosmud
 
-  Enriched 'number' type.
+  Augments global 'Number' type.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
-import { Serializable } from "../../Shared/Class/Serializable";
+/*
+  Note:
+    To use this module, you need to force typescript to execute
+    it's code. It means to import it like this:
 
-export class Number extends Serializable
+      import "../../Shared/Utils/Number";
+*/
+
+import { ERROR } from "../../Shared/Log/ERROR";
+
+declare global
 {
-  private internalValue: number;
-
-  constructor(value = 0)
+  export interface Number
   {
-    super();
+    // Clamps number to give interval.
+    clampTo(minimum: number, maximum: number): number;
 
-    this.internalValue = value;
-  }
+    atLeast(minimum: number): number;
 
-  public static clampValue
-  (
-    value: number,
-    minimum: number,
-    maximum: number
-  )
-  : number
-  {
-    if (value < minimum)
-      return minimum;
+    atMost(maximum: number): number;
 
-    if (value > maximum)
-      return maximum;
+    // ! Throws exception on error.
+    // Throws an exception if number isn't in given interval.
+    validateToInterval(minimum: number, maximum: number): void;
 
-    return value;
-  }
+    // ! Throws exception on error.
+    // Throws an exception if number is lesser than given minimum.
+    validateToAtLeast(minimum: number): void;
 
-  // ! Throws exception on error.
-  protected static validate
-  (
-    value: number,
-    minimum: number,
-    maximum: number
-  )
-  {
-    if (value < minimum || value > maximum)
-    {
-      throw new Error(`Value '${value}' is not in required interval`
-        + ` <${minimum}, ${maximum}>`);
-    }
-  }
+    // ! Throws exception on error.
+    // Throws an exception if number is greater than given maximum.
+    validateToAtMost(maximum: number): void;
 
-  public set value(value: number)
-  {
-    this.internalValue = value;
-  }
+    // Clamps number to given interval and logs ERROR if it didn't fit.
+    forceToInterval(minimum: number, maximum: number): number;
 
-  public get value()
-  {
-    return this.internalValue;
-  }
+    // Clamps number to given given minimum and logs ERROR if it were lesser.
+    forceToAtLeast(minimum: number): void;
 
-  public atLeast(minimum: number): this
-  {
-    if (this.internalValue < minimum)
-      this.internalValue = minimum;
-
-    return this;
-  }
-
-  public atMost(maximum: number): this
-  {
-    if (this.internalValue > maximum)
-      this.internalValue = maximum;
-
-    return this;
-  }
-
-  public clampTo(minimum: number, maximum: number): this
-  {
-    if (this.internalValue < minimum)
-      this.internalValue = minimum;
-
-    if (this.internalValue > maximum)
-      this.internalValue = maximum;
-
-    return this;
+    // Clamps number to given givenn maximum and logs ERROR if it were greater.
+    forceToAtMost(maximum: number): void;
   }
 }
 
-Classes.registerSerializableClass(Number);
+Number.prototype.clampTo = function(minimum: number, maximum: number): number
+{
+  if (this < minimum)
+    return minimum;
+
+  if (this > maximum)
+    return maximum;
+
+  return this.valueOf();
+};
+
+Number.prototype.atLeast = function(minimum: number): number
+{
+  if (this < minimum)
+    return minimum;
+
+  return this.valueOf();
+};
+
+Number.prototype.atMost = function(maximum: number): number
+{
+  if (this > maximum)
+    return maximum;
+
+  return this.valueOf();
+};
+
+// ! Throws exception on error.
+Number.prototype.validateToInterval = function
+(
+  minimum: number,
+  maximum: number
+)
+{
+  if (this < minimum || this > maximum)
+  {
+    throw new Error(`Value '${this.valueOf()}' is not in`
+      + ` allowed interval <${minimum}, ${maximum}>`);
+  }
+};
+
+// ! Throws exception on error.
+Number.prototype.validateToAtLeast = function(minimum: number)
+{
+  if (this < minimum)
+  {
+    throw new Error(`Value '${this.valueOf()}' is lesser`
+      + ` than allowed minimum '${minimum}'`);
+  }
+};
+
+// ! Throws exception on error.
+Number.prototype.validateToAtMost = function(maximum: number)
+{
+  if (this > maximum)
+  {
+    throw new Error(`Value '${this.valueOf()}' is greater`
+      + ` than allowed maximum '${maximum}'`);
+  }
+};
+
+// ! Throws exception on error.
+Number.prototype.forceToInterval = function
+(
+  minimum: number,
+  maximum: number
+)
+: number
+{
+  const forcedValue = this.clampTo(minimum, maximum);
+
+  if (this !== forcedValue)
+  {
+    ERROR(`Value '${this.valueOf()}' is not in allowed interval`
+      + ` <${minimum}, ${maximum}>. Changing it to '${forcedValue}'`);
+
+    return forcedValue;
+  }
+
+  return this.valueOf();
+};
+
+// ! Throws exception on error.
+Number.prototype.forceToAtLeast = function(minimum: number): number
+{
+  if (this < minimum)
+  {
+    ERROR(`Value '${this.valueOf()}' is lesser than allowed`
+      + ` minimum '${minimum}'. Changing it to '${minimum}'`);
+
+    return minimum;
+  }
+
+  return this.valueOf();
+};
+
+// ! Throws exception on error.
+Number.prototype.forceToAtMost = function(maximum: number): number
+{
+  if (this > maximum)
+  {
+    ERROR(`Value '${this.valueOf()}' is greater than allowed`
+      + ` maximum ${maximum}'. Changing it to '${maximum}'`);
+
+    return maximum;
+  }
+
+  return this.valueOf();
+};

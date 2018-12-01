@@ -19,6 +19,7 @@
     "cyclomatic-complexity": false,
     "completed-docs": false,
     "no-empty-interface": false,
+    "no-import-side-effect": false,
     "no-any": false,
     // This would be nice but it's too strict to be useful.
     "no-magic-numbers": false,
@@ -74,7 +75,7 @@
         // ["Function", "Avoid using the `Function` type. Prefer a specific
         //   function type, like `() => void`."],
         ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
-        ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+        // ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
         ["String", "Avoid using the `String` type. Did you mean `string`?"],
         ["Symbol", "Avoid using the `Symbol` type. Did you mean `symbol`?"]
       ]
