@@ -1,3 +1,14 @@
+TODO: Přehodit obsah Utils/Math to Utils/Number.
+- to bude trochu složitější, Vehicle používá intervalBound a normalizeAngle.
+Asi se to nebude moct jmenovat Number. Možná NumberValue?
+- ale jo, bude to Number.
+[done]
+
+TODO: Number asi není serializovatelný.
+ - Možná ale ani nemusí bejt, pokud ho budu používat pouze jako knihovnu
+   funkcí.
+[won't do now]
+
 TODO: doladit vizuály exhaustů
 - úlně je schovávat, když nejsou aktivní.
 - dát jim nějakou minimální délku (jako u zadních).

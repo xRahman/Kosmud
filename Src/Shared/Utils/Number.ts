@@ -1,13 +1,13 @@
 /*
   Part of Kosmud
 
-  Augments global 'Number' type.
+  Augments global namespace with number-related functions and constants.
 */
 
 /*
   Note:
     To use this module, you need to force typescript to execute
-    it's code. It means to import it like this:
+    it's code. It means importing it like this:
 
       import "../../Shared/Utils/Number";
 */
@@ -18,6 +18,11 @@ declare global
 {
   export interface Number
   {
+    isValid(): boolean;
+
+    // ! Throws exception on error.
+    validate(): number;
+
     // Clamps number to give interval.
     clampTo(minimum: number, maximum: number): number;
 
@@ -47,6 +52,21 @@ declare global
     forceToAtMost(maximum: number): void;
   }
 }
+
+Number.prototype.isValid = function(): boolean
+{
+  return this.valueOf() !== null && this.valueOf() !== undefined
+    && !Number.isNaN(this.valueOf()) && Number.isFinite(this.valueOf());
+};
+
+// ! Throws exception on error.
+Number.prototype.validate = function(): number
+{
+  if (!this.isValid())
+    throw new Error(`Invalid number: ${this.valueOf()}`);
+
+  return this.valueOf();
+};
 
 Number.prototype.clampTo = function(minimum: number, maximum: number): number
 {

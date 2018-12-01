@@ -4,7 +4,10 @@
   Steering behavior of autonomous vehicles.
 */
 
-import { intervalBound, normalizeAngle } from "../../Shared/Utils/Math";
+// Augment global namespace with number-related functions and constants.
+import "../../Shared/Utils/Number";
+
+import { Angle } from "../../Shared/Utils/Angle";
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
@@ -212,11 +215,11 @@ export abstract class Vehicle extends GameEntity
 
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
-    const currentRotation = normalizeAngle(vehicleRotation);
+    const currentRotation = Angle.normalize(vehicleRotation);
 
     /// Zkusím se točit k desiredSteeringForce místo k desiredRotation.
     // let desiredRotation = desiredVelocity.getRotation();
-    let desiredRotation = normalizeAngle
+    let desiredRotation = Angle.normalize
     (
       /// 'rotationFlip' je 0 při zrychlování a PI při zpomalování,
       /// protože při brždění musí čumák koukat na opačnou stranu než
@@ -258,7 +261,7 @@ export abstract class Vehicle extends GameEntity
 
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
-    const currentRotation = normalizeAngle(vehicleRotation);
+    const currentRotation = Angle.normalize(vehicleRotation);
     const desiredRotation = desiredVelocity.getRotation();
 
     this.computeAngularForces(currentRotation, desiredRotation);
@@ -349,7 +352,7 @@ export abstract class Vehicle extends GameEntity
   {
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
-    const currentRotation = normalizeAngle(vehicleRotation);
+    const currentRotation = Angle.normalize(vehicleRotation);
 
     // 3. 'steering force' = 'desired velocity' - 'current velocity'.
     const desiredSteeringForce = Vector.v1MinusV2
@@ -365,7 +368,7 @@ export abstract class Vehicle extends GameEntity
     // https://math.oregonstate.edu/home/programs/undergrad/
     //   CalculusQuestStudyGuides/vcalc/dotprod/dotprod.html
 
-    const leftwardRotation = normalizeAngle(currentRotation + Math.PI / 2);
+    const leftwardRotation = Angle.normalize(currentRotation + Math.PI / 2);
     const forwardUnitVector = Vector.rotate({ x: 1, y: 0 }, currentRotation);
     const leftwardUnitVector = Vector.rotate({ x: 1, y: 0 }, leftwardRotation);
 
@@ -465,10 +468,9 @@ export abstract class Vehicle extends GameEntity
       desiredRotation, currentRotation
     );
 
-    const newAngularVelocity = intervalBound
+    const newAngularVelocity = Number(desiredAngularVelocity).clampTo
     (
-      desiredAngularVelocity,
-      { from: -this.ANGULAR_VELOCITY, to: this.ANGULAR_VELOCITY }
+      -this.ANGULAR_VELOCITY, this.ANGULAR_VELOCITY
     );
 
     // Multiplication by 'FPS' prevents overturning the desired angle
@@ -476,7 +478,7 @@ export abstract class Vehicle extends GameEntity
     let torque =
       inertia * (newAngularVelocity - oldAngularVelocity) * Engine.FPS;
 
-    torque = intervalBound(torque, { from: -this.TORQUE, to: this.TORQUE });
+    torque = Number(torque).clampTo(-this.TORQUE, this.TORQUE);
 
     this.torque = torque;
   }

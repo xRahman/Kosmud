@@ -4,7 +4,6 @@
   Rigid body.
 */
 
-import { validateNumber, validateVector } from "../../Shared/Utils/Math";
 import { Zone } from "../../Shared/Game/Zone";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
@@ -50,66 +49,66 @@ export class PhysicsBody
 
   public getPosition()
   {
-    return validateVector(this.getBody().GetPosition());
+    return new Vector(this.getBody().GetPosition()).validate();
   }
 
   public getX()
   {
-    return validateNumber(this.getBody().GetPosition().x);
+    return Number(this.getBody().GetPosition().x).validate();
   }
 
   public getY()
   {
-    return validateNumber(this.getBody().GetPosition().y);
+    return Number(this.getBody().GetPosition().y).validate();
   }
 
   public getRotation()
   {
-    return validateNumber(this.getBody().GetAngle());
+    return Number(this.getBody().GetAngle()).validate();
   }
 
   public getAngularVelocity()
   {
-    return validateNumber(this.getBody().GetAngularVelocity());
+    return Number(this.getBody().GetAngularVelocity()).validate();
   }
 
   // Inertia is resistance to torque.
   public getInertia()
   {
-    return validateNumber(this.getBody().GetInertia());
+    return Number(this.getBody().GetInertia()).validate();
   }
 
   // Mass is resistance to linear force.
   public getMass()
   {
-    return validateNumber(this.getBody().GetMass());
+    return Number(this.getBody().GetMass()).validate();
   }
 
   // public setVelocity(velocity: number)
   // {
-  //   this.velocity = validateNumber(velocity);
+  //   this.velocity = Number(velocity).validate();
 
   //   this.updateVelocityDirection();
   // }
 
   public setAngularVelocity(angularVelocity: number)
   {
-    this.getBody().SetAngularVelocity(validateNumber(angularVelocity));
+    this.getBody().SetAngularVelocity(Number(angularVelocity).validate());
   }
 
   public applyForce(force: Vector)
   {
-    this.getBody().ApplyForceToCenter(validateVector(force));
+    this.getBody().ApplyForceToCenter(Vector.validate(force));
   }
 
   public applyTorque(torque: number)
   {
-    this.getBody().ApplyTorque(validateNumber(torque));
+    this.getBody().ApplyTorque(Number(torque).validate());
   }
 
   public getVelocity(): Vector
   {
-    return validateVector(this.getBody().GetLinearVelocity());
+    return new Vector(this.getBody().GetLinearVelocity()).validate();
   }
 
   // private getVelocityVector(velocity: number)
@@ -152,8 +151,8 @@ export class PhysicsBody
           polygon.push
           (
             {
-              x: validateNumber(vertex.x),
-              y: validateNumber(vertex.y)
+              x: Number(vertex.x).validate(),
+              y: Number(vertex.y).validate()
             }
           );
         }

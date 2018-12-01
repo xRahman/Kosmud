@@ -1,25 +1,8 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Number asi není serializovatelný.
- - Možná ale ani nemusí bejt, pokud ho budu používat pouze jako knihovnu
-   funkcí.
-
 
 TODO: class PriorityQueue si zaslouží vlastní file.
-
-TODO: Přehodit obsah Utils/Math to Utils/Number.
-- to bude trochu složitější, Vehicle používá intervalBound a normalizeAngle.
-Asi se to nebude moct jmenovat Number. Možná NumberValue?
-
-IDEA: Interval by neměl value, jen by ořezával.
-value = new Interval(10, 12).clamp(x);
-- nevím, jak by bylo atLeast
-result = new Value(x).clampTo(10, 12);
-result = new Value(x).atLeast(13);
-
-TODO: možná do Number hodit MIN_INTEGER
-- to nepůjde. Uvnitř classy Number je ten identifikátor maskovanej.
 
 TODO: Importovat celé Utils.String místo jednotlivých metod
   (skryje to String, který se stejně nemá používat, takže v pohodě).

@@ -7,7 +7,6 @@
 const MINIMUM = "minimum";
 const MAXIMUM = "maximum";
 
-import "../../Shared/Utils/Number";
 import { Serializable } from "../../Shared/Class/Serializable";
 
 export abstract class NumberInInterval extends Serializable
@@ -76,43 +75,4 @@ export abstract class NumberInInterval extends Serializable
   {
     return this.value;
   }
-
-  // public clamp(value: number): this
-  // {
-  //   const min = (this.constructor as any)[MINIMUM];
-  //   const max = (this.constructor as any)[MAXIMUM];
-
-  //   if (value < min)
-  //   {
-  //     this.value = min;
-  //   }
-  //   else if (value > max)
-  //   {
-  //     this.value = max;
-  //   }
-  //   else
-  //   {
-  //     this.value = value;
-  //   }
-
-  //   return this;
-  // }
-
-  // // ! Throws exception on error.
-  // public set value(value: number)
-  // {
-  //   // ! Throws exception on error.
-  //   Number.validate(value, this.minimum, this.maximum);
-
-  //   super.value = value;
-  // }
-
-  // public clamp(value: number): this
-  // {
-  //   super.value = Number.clampValue(value, this.minimum, this.maximum);
-
-  //   return this;
-  // }
 }
-
-// Classes.registerSerializableClass(IntervalNumber);

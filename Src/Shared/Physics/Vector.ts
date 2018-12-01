@@ -10,7 +10,6 @@
     Static methods always return a new Vector.
 */
 
-import "../../Shared/Utils/Number";
 import { b2Vec2 } from "../../Shared/Box2D/Box2D";
 
 export class Vector
@@ -100,6 +99,24 @@ export class Vector
   public static negate({ x, y }: { x: number; y: number }): Vector
   {
     return new Vector({ x: -x, y: -y });
+  }
+
+  public static isValid({ x, y }: { x: number; y: number }): boolean
+  {
+    return Number(x).isValid() && Number(y).isValid();
+  }
+
+  // ! Throws exception on error.
+  public static validate({ x, y }: { x: number; y: number })
+  : { x: number; y: number }
+  {
+    if (!Number(x).isValid())
+      throw new Error(`Invalid 'x' in vector: ${x}`);
+
+    if (!Number(y).isValid())
+      throw new Error(`Invalid 'y' in vector: ${y}`);
+
+    return { x, y };
   }
 
   // ---------------- Public methods --------------------
@@ -223,7 +240,19 @@ export class Vector
 
   public isValid(): boolean
   {
-    return isFinite(this.x) && isFinite(this.y);
+    return Number(this.x).isValid() && Number(this.y).isValid();
+  }
+
+  // ! Throws exception on error.
+  public validate(): this
+  {
+    if (!Number(this.x).isValid())
+      throw new Error(`Invalid 'x' in vector: ${this.x}`);
+
+    if (!Number(this.y).isValid())
+      throw new Error(`Invalid 'y' in vector: ${this.y}`);
+
+    return this;
   }
 
   public equals({ x, y }: { x: number; y: number }): boolean
