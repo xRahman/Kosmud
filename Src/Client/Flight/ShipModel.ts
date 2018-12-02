@@ -6,14 +6,11 @@ import { Tilemap } from "../../Client/Engine/Tilemap";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { ShapeModel } from "../../Client/Flight/ShapeModel";
 import { VectorsModel } from "../../Client/Flight/VectorsModel";
-import { ShipAudio } from "../../Client/Flight/ShipAudio";
-import { ShipExhausts } from "../../Client/Game/ShipExhausts";
+import { ExhaustsModel } from "../../Client/Flight/ExhaustsModel";
 import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Physics } from "../../Shared/Physics/Physics";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
-const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID =
-  "Exhaust yellow rectangular Texture atlas";
 
 const BASIC_FIGHTER_TILEMAP_LAYER = "Basic fighter";
 const HULL_TILEMAP_OBJECT_NAME = "Hull";
@@ -21,12 +18,11 @@ const HULL_TILEMAP_OBJECT_NAME = "Hull";
 export class ShipModel
 {
   private readonly graphicContainer: GraphicContainer;
+
   private readonly shipSprites: Array<Sprite>;
+
   private readonly vectorsModel: VectorsModel;
-
-  private readonly exhausts: ShipExhausts;
-  private readonly audio: ShipAudio;
-
+  private readonly exhaustsModel: ExhaustsModel;
   private readonly shapeModel: ShapeModel;
 
   // ! Throws exception on error.
@@ -35,16 +31,21 @@ export class ShipModel
     private readonly scene: FlightScene,
     private readonly tilemap: Tilemap,
     shape: Physics.Shape,
-    engineSoundId: string
+    exhaustSoundId: string
   )
   {
     this.graphicContainer = scene.createGraphicContainer();
     this.graphicContainer.setDepth(FlightScene.Z_ORDER_SHIPS);
 
-    this.audio = new ShipAudio(scene, engineSoundId);
-
     // ! Throws exception on error.
-    this.exhausts = new ShipExhausts(this, this.audio);
+    this.exhaustsModel = new ExhaustsModel
+    (
+      scene,
+      tilemap,
+      BASIC_FIGHTER_TILEMAP_LAYER,
+      this.graphicContainer,
+      exhaustSoundId
+    );
 
     // ! Throws exception on error.
     this.shipSprites = this.createShipSprites();
@@ -76,49 +77,6 @@ export class ShipModel
     this.vectorsModel.draw(vehicle);
   }
 
-  // ! Throws exception on error.
-  public createExhaustSpriteAnimation(name: string)
-  {
-    /// TODO: Výhledově používat tile animaci vytvořenou v Tiled
-    ///   editoru a číst ji z dat tilemapy.
-    const animation: Sprite.Animation =
-    {
-      name,
-      textureAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
-      pathInTextureAtlas: "ExhaustYellowRectangular/",
-      numberOfFrames: 8,
-      frameRate: 25
-    };
-
-    // ! Throws exception on error.
-    this.scene.createAnimation(animation);
-  }
-
-  // ! Throws exception on error.
-  public createExhaustSprites
-  (
-    tilemapObjectName: string,
-    animationName: string
-  )
-  : Array<Sprite>
-  {
-    // ! Throws exception on error.
-    return this.tilemap.createSprites
-    (
-      this.scene,
-      BASIC_FIGHTER_TILEMAP_LAYER,
-      tilemapObjectName,
-      {
-        animationName,
-        graphicContainer: this.graphicContainer,
-        // This allows us to scale exhausts animations from the
-        // start rather than from the middle.
-        origin: { x: 0, y: 0.5 },
-        textureOrAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID
-      }
-    );
-  }
-
   /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
   public updateExhausts
   (
@@ -127,7 +85,7 @@ export class ShipModel
     torqueRatio: MinusOneToOne
   )
   {
-    this.exhausts.update
+    this.exhaustsModel.update
     (
       forwardThrustRatio,
       leftwardThrustRatio,

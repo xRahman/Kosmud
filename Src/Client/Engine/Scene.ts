@@ -15,6 +15,7 @@ import { REPORT } from "../../Shared/Log/REPORT";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { Types } from "../../Shared/Utils/Types";
 import { Sprite } from "../../Client/Engine/Sprite";
+import { SpriteAnimation } from "../../Client/Engine/SpriteAnimation";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Sound } from "../../Client/Engine/Sound";
@@ -22,8 +23,6 @@ import { SceneContents } from "../../Client/Engine/SceneContents";
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Zone } from "../../Shared/Game/Zone";
 import { Tilemap } from "../../Client/Engine/Tilemap";
-
-const INFINITE_REPEAT = -1;
 
 export abstract class Scene
 {
@@ -156,21 +155,30 @@ export abstract class Scene
     );
   }
 
-  // ! Throws exception on error.
-  public createAnimation(animation: Sprite.Animation, repeat = INFINITE_REPEAT)
-  {
-    // ! Throws exception on error.
-    const frameNames = this.generateFrameNames(animation);
+// // ! Throws exception on error.
+// public createAnimation
+// (
+//   animation: Sprite.Animation,
+//   repeat = INFINITE_REPEAT
+// )
+// {
+//   // ! Throws exception on error.
+//   const frameNames = this.generateFrameNames(animation);
 
-    return this.phaserScene.anims.create
-    (
-      {
-        key: animation.name,
-        frames: frameNames,
-        frameRate: animation.frameRate,
-        repeat
-      }
-    );
+//   return this.phaserScene.anims.create
+//   (
+//     {
+//       key: animation.name,
+//       frames: frameNames,
+//       frameRate: animation.frameRate,
+//       repeat
+//     }
+//   );
+// }
+  // ! Throws exception on error.
+  public createAnimation(animationConfig: SpriteAnimation.Config)
+  {
+    return new SpriteAnimation(this.phaserScene, animationConfig);
   }
 
   public createSound(soundId: string, baseVolume: ZeroToOne)
@@ -239,31 +247,6 @@ export abstract class Scene
     // this.getScenePlugin().start(this.getName());
     // this.phaserScene.sys.scenePlugin.start(this.getName());
     this.phaserGame.scene.start(this.getName());
-  }
-
-  // ! Throws exception on error.
-  private generateFrameNames(animation: Sprite.Animation)
-  {
-    if (animation.pathInTextureAtlas.slice(-1) !== "/")
-    {
-      throw new Error(`Failed to generate animation frame names because`
-        + ` path '${animation.pathInTextureAtlas}' doesn't end with '/'`);
-    }
-
-    // Use names like "001.png"
-    const THREE_PLACES = 3;
-
-    return this.phaserScene.anims.generateFrameNames
-    (
-      animation.textureAtlasId,
-      {
-        start: 1,
-        end: animation.numberOfFrames,
-        zeroPad: THREE_PLACES,
-        prefix: animation.pathInTextureAtlas,
-        suffix: ".png"
-      }
-    );
   }
 
   // ---------------- Event handlers --------------------

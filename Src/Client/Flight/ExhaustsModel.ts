@@ -1,8 +1,13 @@
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
-import { ShipExhaust } from "../../Client/Game/ShipExhaust";
-import { ShipAudio } from "../../Client/Flight/ShipAudio";
-import { ShipModel } from "../../Client/Flight/ShipModel";
+import { FlightScene } from "../../Client/Flight/FlightScene";
+import { ExhaustModel } from "../../Client/Flight/ExhaustModel";
+import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
+import { Tilemap } from "../../Client/Engine/Tilemap";
+import { SpriteAnimation } from "../Engine/SpriteAnimation";
+
+const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID =
+  "Exhaust yellow rectangular Texture atlas";
 
 const FRONT_VOLUME = new ZeroToOne(0.1);
 const SIDE_VOLUME = new ZeroToOne(0.04);
@@ -15,63 +20,76 @@ const REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME = "Rear left exhaust";
 const REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME = "Rear right exhaust";
 const REAR_EXHAUST_TILEMAP_OBJECT_NAME = "Rear exhaust";
 
-export class ShipExhausts
+export class ExhaustsModel
 {
-  private readonly front: ShipExhaust;
-  private readonly frontLeft: ShipExhaust;
-  private readonly frontRight: ShipExhaust;
-  private readonly rearLeft: ShipExhaust;
-  private readonly rearRight: ShipExhaust;
-  private readonly rear: ShipExhaust;
+  private readonly exhaustAnimationName =
+    "Exhaust yellow rectangular Animation";
+  private readonly exhaustSpriteAnimation: SpriteAnimation;
+
+  private readonly front: ExhaustModel;
+  private readonly frontLeft: ExhaustModel;
+  private readonly frontRight: ExhaustModel;
+  private readonly rearLeft: ExhaustModel;
+  private readonly rearRight: ExhaustModel;
+  private readonly rear: ExhaustModel;
 
   // ! Throws exception on error.
-  constructor(shipModel: ShipModel, shipAudio: ShipAudio)
+  constructor
+  (
+    scene: FlightScene,
+    tilemap: Tilemap,
+    tilemapObjectLayerName: string,
+    graphicContainer: GraphicContainer,
+    exhaustSoundId: string
+  )
   {
-    const animationName = "Exhaust yellow rectangular Animation";
+    this.exhaustSpriteAnimation = this.createExhaustAnimation(scene);
+
+    const exhaustConfig: ExhaustModel.Config =
+    {
+      scene,
+      tilemap,
+      tilemapObjectLayerName,
+      exhaustTextureOrAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+      graphicContainer,
+      exhaustAnimationName: this.exhaustAnimationName,
+      exhaustSoundId
+    };
 
     // ! Throws exception on error.
-    shipModel.createExhaustSpriteAnimation(animationName);
-
-    // ! Throws exception on error.
-    this.front = new ShipExhaust
+    this.front = new ExhaustModel
     (
-      shipModel, shipAudio, animationName,
-      FRONT_EXHAUST_TILEMAP_OBJECT_NAME, FRONT_VOLUME
+      exhaustConfig, FRONT_EXHAUST_TILEMAP_OBJECT_NAME, FRONT_VOLUME
     );
 
     // ! Throws exception on error.
-    this.frontLeft = new ShipExhaust
+    this.frontLeft = new ExhaustModel
     (
-      shipModel, shipAudio, animationName,
-      FRONT_LEFT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
+      exhaustConfig, FRONT_LEFT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
     );
 
     // ! Throws exception on error.
-    this.frontRight = new ShipExhaust
+    this.frontRight = new ExhaustModel
     (
-      shipModel, shipAudio, animationName,
-      FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
+      exhaustConfig, FRONT_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
     );
 
     // ! Throws exception on error.
-    this.rearLeft = new ShipExhaust
+    this.rearLeft = new ExhaustModel
     (
-      shipModel, shipAudio, animationName,
-      REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
+      exhaustConfig, REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
     );
 
     // ! Throws exception on error.
-    this.rearRight = new ShipExhaust
+    this.rearRight = new ExhaustModel
     (
-      shipModel, shipAudio, animationName,
-      REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
+      exhaustConfig, REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME, SIDE_VOLUME
     );
 
     // ! Throws exception on error.
-    this.rear = new ShipExhaust
+    this.rear = new ExhaustModel
     (
-      shipModel, shipAudio, animationName,
-      REAR_EXHAUST_TILEMAP_OBJECT_NAME, REAR_VOLUME
+      exhaustConfig, REAR_EXHAUST_TILEMAP_OBJECT_NAME, REAR_VOLUME
     );
   }
 
@@ -114,6 +132,23 @@ export class ShipExhausts
     this.frontRight.update(new ZeroToOne(frontRightExhaustScale));
     this.rearLeft.update(new ZeroToOne(rearLeftExhaustScale));
     this.rearRight.update(new ZeroToOne(rearRightExhaustScale));
+  }
+
+  // ---------------- Private methods -------------------
+
+  private createExhaustAnimation(scene: FlightScene)
+  {
+    const exhaustAnimationConfig: SpriteAnimation.Config =
+    {
+      animationName: this.exhaustAnimationName,
+      textureAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+      pathInTextureAtlas: "ExhaustYellowRectangular/",
+      numberOfFrames: 8,
+      frameRate: 25,
+      repeat: SpriteAnimation.INFINITE_REPEAT
+    };
+
+    return scene.createAnimation(exhaustAnimationConfig);
   }
 }
 

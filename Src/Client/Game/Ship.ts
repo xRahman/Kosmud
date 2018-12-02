@@ -28,7 +28,7 @@ export class Ship extends Shared.Ship
       // ! Throws exception on error.
       zone.getTilemap(this.tilemapId),
       zone.getPhysicsShape(this.physicsShapeId),
-      this.engineSoundId
+      this.exhaustSoundId
     );
   }
 

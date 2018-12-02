@@ -43,9 +43,9 @@ export class Sound
     this.phaserSound.resume();
   }
 
-  public play(loop: boolean, volume0to1: number)
+  public play(loop: boolean, volume: ZeroToOne)
   {
-    this.phaserSound.play("", { loop, volume: volume0to1 });
+    this.phaserSound.play("", { loop, volume: volume.valueOf() });
   }
 
   public stop()

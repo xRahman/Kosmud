@@ -2,6 +2,10 @@ TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
 
+TODO: ShipAudio asi nebudu potřebovat, zvuky budou přímo v modelech.
+  (to asi dává větší smysl).
+
+
 TODO: Občas se mi nenačte background :\
 - asi jen v práci
 
@@ -19,6 +23,9 @@ TODO: Animation by asi mohla bejt samostatná classa
 Tohle by fakt řešilo, kdyby se Sprity a podobně vyráběly metodama Scény.
   Pak by prostě scéna do jejich konstruktoru passnula příslušný vyráběcí
   bazmek (třeba anims) a bylo by...
+
+TODO: ShipModel by asi nemusel vyrábě exhaust spirty a animace,
+  to by měl dělat Exahusts (ExhaustsModel?).
 
 TODO: WaypointModel dát do FlightSceneGUI
 

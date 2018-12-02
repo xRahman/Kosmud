@@ -154,15 +154,6 @@ function createPhaserSprite
 
 export namespace Sprite
 {
-  export interface Animation
-  {
-    name: string;
-    textureAtlasId: string;
-    pathInTextureAtlas: string;
-    numberOfFrames: number;
-    frameRate: number;
-  }
-
   export interface Config extends PhaserObject.Config
   {
     textureOrAtlasId: string;

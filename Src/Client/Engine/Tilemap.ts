@@ -26,7 +26,6 @@ export class Tilemap extends Shared.Tilemap
 
   // ---------------- Public methods --------------------
 
-  // ! Throws exception on error.
   public createSprites
   (
     scene: Scene,
