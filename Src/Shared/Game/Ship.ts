@@ -5,7 +5,7 @@
 */
 
 import { Zone } from "../../Shared/Game/Zone";
-import { Vehicle } from "../../Shared/Physics/Vehicle";
+import { Vehicle } from "../../Shared/Game/Vehicle";
 
 export class Ship extends Vehicle
 {

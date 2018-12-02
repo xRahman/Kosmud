@@ -12,6 +12,7 @@ import * as Shared from "../../Shared/Protocol/EnterFlightRequest";
 /// TEST
 import { Ship } from "../../Server/Game/Ship";
 import { Game } from "../../Server/Game/Game";
+import { Zone } from "../../Server/Game/Zone";
 import { EnterFlightResponse } from
   "../../Shared/Protocol/EnterFlightResponse";
 
@@ -55,6 +56,7 @@ function fakeLoadFighter()
 
   /// TEST
   fighter.setId("TEST_FIGHTER_ID");
+  fighter.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
 
   /// Tímhle se ship dostane do zóny.
   Game.addShip(fighter);

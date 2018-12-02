@@ -8,7 +8,7 @@ import { ShapeModel } from "../../Client/Flight/ShapeModel";
 import { VectorsModel } from "../../Client/Flight/VectorsModel";
 import { ShipAudio } from "../../Client/Flight/ShipAudio";
 import { ShipExhausts } from "../../Client/Game/ShipExhausts";
-import { Vehicle } from "../../Shared/Physics/Vehicle";
+import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Physics } from "../../Shared/Physics/Physics";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";

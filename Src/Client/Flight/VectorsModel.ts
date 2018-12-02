@@ -1,5 +1,5 @@
 import { Scene } from "../../Client/Engine/Scene";
-import { Vehicle } from "../../Shared/Physics/Vehicle";
+import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { Vector } from "../../Shared/Physics/Vector";
 import { FlightScene } from "../../Client/Flight/FlightScene";

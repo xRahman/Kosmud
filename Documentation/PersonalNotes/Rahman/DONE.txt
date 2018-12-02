@@ -1,3 +1,29 @@
+TODO: Vyrobit plugin classu Physics/VehiclePhysics a přesunout do ní
+  většinu toho, co je ve Vehicle.
+- Vehicle potom může bejt v Game (nebo prostě tam co ostatní entity).
+- Ve vehicle asi zůstane jen obecná logika steeringu (skládání jednotlivých
+  behaviourů, respektive nastavování vah).
+[done]
+
+TODO: Mrknout se i na vyrábění PhysicsBody.
+- asi by to mělo bejt stejně jako grafické objekty
+- to bych ovšem musel udělat ještě jinou classu, nejspíš VehiclePhysics,
+  která by v sobě držela fyzikální properties lodi (vehiclu) a vyráběla
+  physics body.
+- Taky by to mohlo bejt řešené dědičností. Vehicle by dědilo z PhysicsObjectu,
+  kde by byly příslušné properties (možná budou static bodies jinak, ale to
+  můžu řešit, až je budu mít).
+Každopádně takhle:
+- PhysicsBody je wrapper classa.
+- vyrábí ji PhysicsWorld
+{err, zatím na to kašlu}
+  i když...
+Každopádně mít všechno v rootu entity je blbost, to bude za chvíli strašně
+  nepřehledný. Takže určitě musí existovat nějakej kontejner.
+  - ten může mít buď physicsBody v sobě, nebo to může bejt čistě config
+    a physics body bude stranou.
+[done]
+
 TODO: class PriorityQueue si zaslouží vlastní file.
 [done]
 

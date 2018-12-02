@@ -36,7 +36,7 @@ export class VehiclePhysics extends Serializable
   /// V zásadě asi není důvod, proč by 'shapeId' nemohlo být setnuté vždycky.
   /// Entita ho zdědí z prototypy a přepíše.
   /// (A výhledově tady beztak bude reference na entitu Shape).
-  public shapeId = Zone.FIGHTER_SHAPE_ID;
+  public shapeId = "<missing physics shape id>";
   /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
   /// bejt mnohem větší všechny thrusty, torques a tak a vektory
   /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to

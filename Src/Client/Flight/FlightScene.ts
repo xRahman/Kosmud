@@ -149,6 +149,7 @@ function fakeCreateShip()
 {
   const ship = new Ship();
   ship.setId("TEST_FIGHTER_ID");
+  ship.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
 
   return ship;
 }
