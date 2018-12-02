@@ -10,7 +10,6 @@ import { Connection } from "../../Server/Net/Connection";
 import * as Shared from "../../Shared/Protocol/EnterFlightRequest";
 
 /// TEST
-import { Zone } from "../../Server/Game/Zone";
 import { Ship } from "../../Server/Game/Ship";
 import { Game } from "../../Server/Game/Game";
 import { EnterFlightResponse } from
@@ -56,10 +55,6 @@ function fakeLoadFighter()
 
   /// TEST
   fighter.setId("TEST_FIGHTER_ID");
-
-  /// TODO: Nasetovat properties, které se časem budou setovat
-  /// editorem a loadovat.
-  fighter.setShapeId(Zone.FIGHTER_SHAPE_ID);
 
   /// Tímhle se ship dostane do zóny.
   Game.addShip(fighter);

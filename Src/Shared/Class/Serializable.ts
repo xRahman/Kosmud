@@ -1278,6 +1278,6 @@ export namespace Serializable
     property: any;
     description: string; // Used for error messages.
     className: string;
-    mode: Serializable.Mode;
+    mode: Mode;
   }
 }

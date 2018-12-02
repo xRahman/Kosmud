@@ -150,12 +150,5 @@ function fakeCreateShip()
   const ship = new Ship();
   ship.setId("TEST_FIGHTER_ID");
 
-  /// Pozice se bude posílat ze serveru.
-  // ship.setInitialPosition(this.shipPosition);
-  // ship.setInitialRotation(this.shipRotation);
-
-  /// TEST
-  ship.setShapeId(Zone.FIGHTER_SHAPE_ID);
-
   return ship;
 }

@@ -33,35 +33,38 @@ export class VectorsModel
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.getVelocity(), origin, 1, Graphics.rgb(255, 0, 255), 1
+      vehicle.physics.getVelocity(),
+      origin, 1, Graphics.rgb(255, 0, 255), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.getDesiredVelocity(), origin, 1, Graphics.rgb(0, 0, 255), 1
+      vehicle.physics.getDesiredVelocity(),
+      origin, 1, Graphics.rgb(0, 0, 255), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.getDesiredSteeringForce(),
+      vehicle.physics.getDesiredSteeringForce(),
       origin, 1, Graphics.rgb(160, 160, 0), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.getDesiredForwardSteeringForce(),
+      vehicle.physics.getDesiredForwardSteeringForce(),
       origin, 1, Graphics.rgb(110, 110, 0), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.getDesiredLeftwardSteeringForce(),
+      vehicle.physics.getDesiredLeftwardSteeringForce(),
       origin, 1, Graphics.rgb(110, 110, 0), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.getSteeringForce(), origin, 1, Graphics.rgb(255, 255, 0), 1
+      vehicle.physics.getSteeringForce(),
+      origin, 1, Graphics.rgb(255, 255, 0), 1
     );
   }
 }

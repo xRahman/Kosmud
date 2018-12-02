@@ -4,84 +4,67 @@
   Rigid body.
 */
 
-import { Zone } from "../../Shared/Game/Zone";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
-import { Vehicle } from "../../Shared/Physics/Vehicle";
+import { Entity } from "../../Shared/Class/Entity";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
   b2FixtureDef, b2Shape, b2ShapeType } from "../../Shared/Box2D/Box2D";
+import { VehiclePhysics } from "./VehiclePhysics";
 
 export class PhysicsBody
 {
-  public shapeId: string | "Not set" = "Not set";
-  /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
-  /// bejt mnohem větší všechny thrusty, torques a tak a vektory
-  /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to
-  /// příjde).
-  public density = 0.00001;
-  public friction = 0.5;       // Value: 0 to 1.
-  // 0 - almost no bouncing, 1 - maximum bouncing.
-  public restitution = 1;      // Value: 0 to 1.
-
-  /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
-  ///   Property 'initialPosition' se totiž používá jen při vkládání
-  /// do physics worldu - getPosition() potom vytahuje pozici s physicsBody.
-  ///   Možná to bude chtít custom savování/loadování, protože při savu
-  /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
-  /// savnout. A při loadu se pak zas musí body vytvořit.
-  public readonly initialPosition = { x: 0, y: 0 };
-  public initialRotation = 0;
-
-  // private readonly velocity = 0;
-  /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
-  private body: b2Body | "Doesn't exist" = "Doesn't exist";
+  private readonly box2dBody: b2Body;
 
   // ! Throws exception on error.
   constructor
   (
     /// TODO: Tohle nesavovat.
-    private readonly vehicle: Vehicle
+    private readonly entity: Entity,
+    box2dWorld: b2World,
+    entityPhysics: VehiclePhysics,
+    physicsShape: Physics.Shape
   )
   {
+    this.box2dBody = createBody(box2dWorld, physicsShape, entityPhysics);
   }
 
   public getPosition()
   {
-    return new Vector(this.getBody().GetPosition()).validate();
+    return new Vector(this.box2dBody.GetPosition()).validate();
   }
 
   public getX()
   {
-    return Number(this.getBody().GetPosition().x).validate();
+    return Number(this.box2dBody.GetPosition().x).validate();
   }
 
   public getY()
   {
-    return Number(this.getBody().GetPosition().y).validate();
+    return Number(this.box2dBody.GetPosition().y).validate();
   }
 
   public getRotation()
   {
-    return Number(this.getBody().GetAngle()).validate();
+    return Number(this.box2dBody.GetAngle()).validate();
   }
 
   public getAngularVelocity()
   {
-    return Number(this.getBody().GetAngularVelocity()).validate();
+    return Number(this.box2dBody.GetAngularVelocity()).validate();
   }
 
   // Inertia is resistance to torque.
   public getInertia()
   {
-    return Number(this.getBody().GetInertia()).validate();
+    return Number(this.box2dBody.GetInertia()).validate();
   }
 
   // Mass is resistance to linear force.
   public getMass()
   {
-    return Number(this.getBody().GetMass()).validate();
+    return Number(this.box2dBody.GetMass()).validate();
   }
 
   // public setVelocity(velocity: number)
@@ -93,22 +76,22 @@ export class PhysicsBody
 
   public setAngularVelocity(angularVelocity: number)
   {
-    this.getBody().SetAngularVelocity(Number(angularVelocity).validate());
+    this.box2dBody.SetAngularVelocity(Number(angularVelocity).validate());
   }
 
   public applyForce(force: Vector)
   {
-    this.getBody().ApplyForceToCenter(Vector.validate(force));
+    this.box2dBody.ApplyForceToCenter(Vector.validate(force));
   }
 
   public applyTorque(torque: number)
   {
-    this.getBody().ApplyTorque(Number(torque).validate());
+    this.box2dBody.ApplyTorque(Number(torque).validate());
   }
 
   public getVelocity(): Vector
   {
-    return new Vector(this.getBody().GetLinearVelocity()).validate();
+    return new Vector(this.box2dBody.GetLinearVelocity()).validate();
   }
 
   // private getVelocityVector(velocity: number)
@@ -133,7 +116,7 @@ export class PhysicsBody
 
     for
     (
-      let fixture = this.getBody().GetFixtureList();
+      let fixture = this.box2dBody.GetFixtureList();
       fixture !== null;
       fixture = fixture.GetNext()
     )
@@ -163,88 +146,73 @@ export class PhysicsBody
 
     return shape;
   }
+}
 
-  // ! Throws exception on error.
-  public create(world: b2World, zone: Zone)
+// ----------------- Auxiliary Functions ---------------------
+
+function createBody
+(
+  box2dWorld: b2World,
+  physicsShape: Physics.Shape,
+  entityPhysics: VehiclePhysics
+)
+{
+  const bodyDefinition = new b2BodyDef();
+
+  bodyDefinition.position.Set
+  (
+    entityPhysics.initialPosition.x,
+    entityPhysics.initialPosition.y
+  );
+  bodyDefinition.angle = entityPhysics.initialRotation;
+  bodyDefinition.type = b2BodyType.b2_dynamicBody;
+
+  const box2dBody = box2dWorld.CreateBody(bodyDefinition);
+
+  createFixtures(box2dBody, physicsShape, entityPhysics);
+
+  return box2dBody;
+}
+
+function createFixtures
+(
+  box2dBody: b2Body,
+  shape: Physics.Shape,
+  entityPhysics: VehiclePhysics
+)
+{
+  for (const polygon of shape)
   {
-    if (this.body !== "Doesn't exist")
-    {
-      throw new Error(`Vehicle ${this.vehicle.debugId}`
-        + ` is already added to a physics world`);
-    }
-
-    if (this.shapeId === "Not set")
-    {
-      throw new Error(`Failed to create physics body of vehicle`
-        + ` '${this.vehicle.debugId}' because it doesn't have a`
-        + ` 'shapeId'. Make sure you set 'shapeId' before you add`
-        + ` the vehicle to physics world`);
-    }
-
-    const shape = zone.getPhysicsShape(this.shapeId);
-
-    // ! Throws exception on error.
-    this.createBody(world, shape);
-  }
-
-  // ---------------- Private methods -------------------
-
-  // ! Throws exception on error.
-  private getBody()
-  {
-    if (this.body === "Doesn't exist")
-    {
-      throw new Error(`Vehicle ${this.vehicle.debugId} isn't`
-        + ` added to a physics world yet`);
-    }
-
-    return this.body;
-  }
-
-  private createBody(world: b2World, shape: Physics.Shape)
-  {
-    const bodyDefinition = new b2BodyDef();
-
-    bodyDefinition.position.Set
+    const fixtureDefinition = createFixtureDefinition
     (
-      this.initialPosition.x,
-      this.initialPosition.y
+      polygon, entityPhysics
     );
-    bodyDefinition.angle = this.initialRotation;
-    bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
-    this.body = world.CreateBody(bodyDefinition);
-
-    this.createFixtures(this.body, shape);
+    box2dBody.CreateFixture(fixtureDefinition);
   }
+}
 
-  private createFixtures(body: b2Body, shape: Physics.Shape)
-  {
-    for (const polygon of shape)
-    {
-      const fixtureDefinition = this.createFixtureDefinition(polygon);
+function createFixtureDefinition
+(
+  polygon: Physics.Polygon,
+  entityPhysics: VehiclePhysics
+)
+: b2FixtureDef
+{
+  const shape = new b2PolygonShape();
 
-      body.CreateFixture(fixtureDefinition);
-    }
-  }
+  shape.Set(polygon);
 
-  private createFixtureDefinition(polygon: Physics.Polygon): b2FixtureDef
-  {
-    const shape = new b2PolygonShape();
+  const fixtureDefinition = new b2FixtureDef();
 
-    shape.Set(polygon);
+  fixtureDefinition.shape = shape;
 
-    const fixtureDefinition = new b2FixtureDef();
+  // density * area = mass
+  fixtureDefinition.density = entityPhysics.density;
+  // 0 - no friction, 1 - maximum friction
+  fixtureDefinition.friction = entityPhysics.friction;
+  // 0 - almost no bouncing, 1 - maximum bouncing.
+  fixtureDefinition.restitution = entityPhysics.restitution;
 
-    fixtureDefinition.shape = shape;
-
-    // density * area = mass
-    fixtureDefinition.density = this.density;
-    // 0 - no friction, 1 - maximum friction
-    fixtureDefinition.friction = this.friction;
-    // 0 - almost no bouncing, 1 - maximum bouncing.
-    fixtureDefinition.restitution = this.restitution;
-
-    return fixtureDefinition;
-  }
+  return fixtureDefinition;
 }

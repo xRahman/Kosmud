@@ -9,27 +9,9 @@ export class Ship extends Shared.Ship
 {
   private model: ShipModel | "Not created" = "Not created";
 
-  /// Tohle je zděděný z Vehicle.
-  // private readonly vectors: Ship.Vectors =
-  // {
-  //   shipVelocity: new Vector(),
-  //   desiredVelocity: new Vector(),
-  //   steeringForce: new Vector(),
-  //   desiredSteeringForce: new Vector(),
-  //   desiredForwardSteeringForce: new Vector(),
-  //   desiredLeftwardSteeringForce: new Vector()
-  // };
-
-  // // ! Throws exception on error.
-  // constructor(private readonly scene: FlightScene)
-  // {
-  //   super();
-  // }
-
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  /// TODO: Tohle by se možná mohlo jmenovat createModel().
   /// TODO: Ship (obecně game entity) asi má odkaz na zónu, ve které
   ///   se nachází - takže parametr asi není potřeba.
   public createModel(scene: FlightScene, zone: Zone)
@@ -91,14 +73,14 @@ export class Ship extends Shared.Ship
   public setVectors(vectors: Ship.Vectors)
   {
     // this.velocity.set(vectors.shipVelocity);
-    this.desiredVelocity.set(vectors.desiredVelocity);
-    this.steeringForce.set(vectors.steeringForce);
-    this.desiredSteeringForce.set(vectors.desiredSteeringForce);
-    this.desiredForwardSteeringForce.set
+    this.physics.desiredVelocity.set(vectors.desiredVelocity);
+    this.physics.steeringForce.set(vectors.steeringForce);
+    this.physics.desiredSteeringForce.set(vectors.desiredSteeringForce);
+    this.physics.desiredForwardSteeringForce.set
     (
       vectors.desiredForwardSteeringForce
     );
-    this.desiredLeftwardSteeringForce.set
+    this.physics.desiredLeftwardSteeringForce.set
     (
       vectors.desiredLeftwardSteeringForce
     );

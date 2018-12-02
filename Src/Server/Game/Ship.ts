@@ -16,17 +16,19 @@ export class Ship extends Shared.Ship
     const shipState: SceneUpdate.ShipState =
     {
       shipId: this.getId(),
-      shipPosition: this.getPosition(),
-      shipRotation: this.getRotation(),
-      shipVelocity: this.getVelocity(),
-      desiredVelocity: this.getDesiredVelocity(),
-      steeringForce: this.getSteeringForce(),
-      desiredSteeringForce: this.getDesiredSteeringForce(),
-      desiredForwardSteeringForce: this.getDesiredForwardSteeringForce(),
-      desiredLeftwardSteeringForce: this.getDesiredLeftwardSteeringForce(),
-      forwardThrustRatio: this.getForwardThrustRatio(),
-      leftwardThrustRatio: this.getLeftwardThrustRatio(),
-      torqueRatio: this.getTorqueRatio()
+      shipPosition: this.physics.getPosition(),
+      shipRotation: this.physics.getRotation(),
+      shipVelocity: this.physics.getVelocity(),
+      desiredVelocity: this.physics.getDesiredVelocity(),
+      steeringForce: this.physics.getSteeringForce(),
+      desiredSteeringForce: this.physics.getDesiredSteeringForce(),
+      desiredForwardSteeringForce:
+        this.physics.getDesiredForwardSteeringForce(),
+      desiredLeftwardSteeringForce:
+        this.physics.getDesiredLeftwardSteeringForce(),
+      forwardThrustRatio: this.physics.getForwardThrustRatio(),
+      leftwardThrustRatio: this.physics.getLeftwardThrustRatio(),
+      torqueRatio: this.physics.getTorqueRatio()
     };
 
     return shipState;

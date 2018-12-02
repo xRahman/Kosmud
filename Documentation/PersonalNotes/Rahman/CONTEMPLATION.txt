@@ -1,3 +1,20 @@
+Wrapper classy
+----------------
+
+Instance wrapper class se nevyrábí přímo přes new WrapperClass, ale přes
+  wrapper classu objektu, který vyrábí wrapované objekty.
+
+Příklad:
+  Sprite (class wrapující Phaser.Sprite) se vyrábí přes Scene.createSprite(),
+  kde je return new Sprite() (Scene wrapuje Phaser.Scene).
+
+  Scene.createSprite() předá konstruktoru Sprite() phaser scénu a kostruktor
+  Sprite() pak do ní přidá nový Phaser.Sprite.
+
+- Stejně funguje třeba PhysicsBody (vyrábí ho PhysicsWorld).
+
+-----------------------------------------------------------------------
+
 Factory functions
 -------------------
 
