@@ -6,7 +6,7 @@ import { Tilemap } from "../../Client/Engine/Tilemap";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { ShapeModel } from "../../Client/Flight/ShapeModel";
 import { VectorsModel } from "../../Client/Flight/VectorsModel";
-import { ExhaustsModel } from "../../Client/Flight/ExhaustsModel";
+import { Exhausts } from "../../Client/Flight/Exhausts";
 import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Physics } from "../../Shared/Physics/Physics";
 
@@ -22,7 +22,7 @@ export class ShipModel
   private readonly shipSprites: Array<Sprite>;
 
   private readonly vectorsModel: VectorsModel;
-  private readonly exhaustsModel: ExhaustsModel;
+  private readonly exhausts: Exhausts;
   private readonly shapeModel: ShapeModel;
 
   // ! Throws exception on error.
@@ -38,7 +38,7 @@ export class ShipModel
     this.graphicContainer.setDepth(FlightScene.Z_ORDER_SHIPS);
 
     // ! Throws exception on error.
-    this.exhaustsModel = new ExhaustsModel
+    this.exhausts = new Exhausts
     (
       scene,
       tilemap,
@@ -85,7 +85,7 @@ export class ShipModel
     torqueRatio: MinusOneToOne
   )
   {
-    this.exhaustsModel.update
+    this.exhausts.update
     (
       forwardThrustRatio,
       leftwardThrustRatio,

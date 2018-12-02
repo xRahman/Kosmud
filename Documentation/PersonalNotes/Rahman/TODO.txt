@@ -1,10 +1,14 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Hmm, dědění Myši je možná zbytečný, můžu to obsloužit ve SceneInput.
+  (případné callbacky se dají provolat zpět do sceneInput a tam zpracovat).
+FlightSceneMouse zrušena.
+[done]
 
-TODO: ShipAudio asi nebudu potřebovat, zvuky budou přímo v modelech.
-  (to asi dává větší smysl).
+TODO: Keyboard a Mouse by měla creatovat Scéna (jsou to taky wrapper objecty).
 
+TODO: V MousegetPosition() použít CoordsTransform.
 
 TODO: Občas se mi nenačte background :\
 - asi jen v práci
@@ -16,20 +20,10 @@ TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
 
 TODO: Posílání změny waypointu by nemělo být ve WaypointModelu.
 
-TODO: Animation by asi mohla bejt samostatná classa
-  (teď se to dělá přes Scene).
-- scene.createAnimation() by mohla vrátit rovnou Animation.
-  - problém je, že frameNames vyrábí taky scéna...
-Tohle by fakt řešilo, kdyby se Sprity a podobně vyráběly metodama Scény.
-  Pak by prostě scéna do jejich konstruktoru passnula příslušný vyráběcí
-  bazmek (třeba anims) a bylo by...
-
-TODO: ShipModel by asi nemusel vyrábě exhaust spirty a animace,
-  to by měl dělat Exahusts (ExhaustsModel?).
-
 TODO: WaypointModel dát do FlightSceneGUI
-
-TODO: Zrušit SceneContents
+TODO: Mouse dát do FlightSceneInput
+  (nebo možná nechat přímo ve FlightScene)
+- SceneContents přejmenovat na SceneInput
 
 
 TODO: FlightSceneContents v původním významu postrádá smysl,

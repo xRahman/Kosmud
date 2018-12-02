@@ -1,3 +1,20 @@
+TODO: Animation by asi mohla bejt samostatná classa
+  (teď se to dělá přes Scene).
+- scene.createAnimation() by mohla vrátit rovnou Animation.
+  - problém je, že frameNames vyrábí taky scéna...
+Tohle by fakt řešilo, kdyby se Sprity a podobně vyráběly metodama Scény.
+  Pak by prostě scéna do jejich konstruktoru passnula příslušný vyráběcí
+  bazmek (třeba anims) a bylo by...
+[done]
+
+TODO: ShipModel by asi nemusel vyrábě exhaust spirty a animace,
+  to by měl dělat Exahusts (ExhaustsModel?).
+[done]
+
+TODO: ShipAudio asi nebudu potřebovat, zvuky budou přímo v modelech.
+  (to asi dává větší smysl).
+[done]
+
 TODO: Vyrobit plugin classu Physics/VehiclePhysics a přesunout do ní
   většinu toho, co je ve Vehicle.
 - Vehicle potom může bejt v Game (nebo prostě tam co ostatní entity).

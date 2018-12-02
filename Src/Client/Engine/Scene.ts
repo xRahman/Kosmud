@@ -19,17 +19,16 @@ import { SpriteAnimation } from "../../Client/Engine/SpriteAnimation";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Sound } from "../../Client/Engine/Sound";
-import { SceneContents } from "../../Client/Engine/SceneContents";
+import { SceneInput } from "../../Client/Engine/SceneInput";
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Zone } from "../../Shared/Game/Zone";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 
 export abstract class Scene
 {
-  protected contents: SceneContents | "Doesn't exist" = "Doesn't exist";
   protected phaserScene: Scene.PhaserScene;
 
-  // protected active = false;
+  protected input: SceneInput | "Doesn't exist" = "Doesn't exist";
 
   private finishLoading: Types.ResolveFunction<void> | "Not loading"
     = "Not loading";

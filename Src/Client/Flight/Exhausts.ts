@@ -20,7 +20,7 @@ const REAR_LEFT_EXHAUST_TILEMAP_OBJECT_NAME = "Rear left exhaust";
 const REAR_RIGHT_EXHAUST_TILEMAP_OBJECT_NAME = "Rear right exhaust";
 const REAR_EXHAUST_TILEMAP_OBJECT_NAME = "Rear exhaust";
 
-export class ExhaustsModel
+export class Exhausts
 {
   private readonly exhaustAnimationName =
     "Exhaust yellow rectangular Animation";

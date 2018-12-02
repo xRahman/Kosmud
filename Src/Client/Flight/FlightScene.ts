@@ -1,7 +1,7 @@
 import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
-import { FlightSceneContents }
-  from "../../Client/Flight/FlightSceneContents";
+import { FlightSceneInput } from "../../Client/Flight/FlightSceneInput";
+import { FlightSceneGUI } from "../../Client/Flight/FlightSceneGUI";
 import { Scene } from "../../Client/Engine/Scene";
 import { Connection } from "../Net/Connection";
 
@@ -15,10 +15,12 @@ export class FlightScene extends Scene
   public animatedTilesPlugin: AnimatedTilesPlugin | "Not loaded" =
     "Not loaded";
 
-  // ~ Overrides Scene.contents.
-  protected contents: FlightSceneContents | "Doesn't exist" = "Doesn't exist";
+  // ~ Overrides Scene.input.
+  protected input: FlightSceneInput | "Doesn't exist" = "Doesn't exist";
 
   private zone: Zone | "Not assigned" = "Not assigned";
+
+  private sceneGUI: FlightSceneGUI | "Doesn't exist" = "Doesn't exist";
 
   // ---------------- Public methods --------------------
 
@@ -39,9 +41,17 @@ export class FlightScene extends Scene
     this.getZone().createModels();
 
     // ! Throws exception on error.
-    this.initContents();
+    this.createSceneGUI();
+
+    // ! Throws exception on error.
+    this.createInput();
 
     this.activate();
+  }
+
+  public moveWaypoint(position: { x: number; y: number })
+  {
+    return this.getSceneGUI().moveWaypoint(position);
   }
 
   // --------------- Protected methods ------------------
@@ -62,10 +72,10 @@ export class FlightScene extends Scene
   // ! Throws exception on error.
   protected loadAssets()
   {
+    FlightSceneGUI.loadAssets(this);
+
     // ! Throws exception on error.
     this.getZone().loadAssets(this);
-
-    FlightSceneContents.loadAssets(this);
   }
 
   // ! Throws exception on error.
@@ -73,15 +83,48 @@ export class FlightScene extends Scene
   // 'update()' is called in every rendering tick.
   protected update()
   {
-    if (this.contents === "Doesn't exist")
-    {
-      throw new Error(`Scene contents doesn't exist`);
-    }
+    super.update();
 
-    this.contents.update();
+    // // ! Throws exception on error.
+    // this.getSceneGUI().update();
+
+    this.getInput().update();
   }
 
   // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private getInput()
+  {
+    if (this.input === "Doesn't exist")
+    {
+      throw new Error(`Scene ${this.debugId} doesn't have input active yet`);
+    }
+
+    return this.input;
+  }
+
+  // ! Throws exception on error.
+  private getSceneGUI()
+  {
+    if (this.sceneGUI === "Doesn't exist")
+    {
+      throw new Error(`Scene GUI doesn't exists yet in ${this.debugId}`);
+    }
+
+    return this.sceneGUI;
+  }
+
+  // ! Throws exception on error.
+  private createSceneGUI()
+  {
+    if (this.sceneGUI !== "Doesn't exist")
+    {
+      throw new Error(`Scene GUI already exists in ${this.debugId}`);
+    }
+
+    this.sceneGUI = new FlightSceneGUI(this);
+  }
 
   private loadAnimatedTilesPlugin()
   {
@@ -114,21 +157,15 @@ export class FlightScene extends Scene
   }
 
   // ! Throws exception on error.
-  private initContents()
+  private createInput()
   {
-    if (this.contents !== "Doesn't exist")
+    if (this.input !== "Doesn't exist")
     {
       throw new Error(`Failed to create ${this.debugId}`
         + ` because scene contents already exists`);
     }
 
-    this.contents = new FlightSceneContents
-    (
-      this,
-      this.phaserScene.input,
-      this.width,
-      this.height
-    );
+    this.input = new FlightSceneInput(this, this.phaserScene.input);
   }
 }
 

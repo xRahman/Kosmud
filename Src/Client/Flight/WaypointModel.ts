@@ -1,6 +1,4 @@
 import { FlightScene } from "../../Client/Flight/FlightScene";
-import { SetWaypoint } from "../../Shared/Protocol/SetWaypoint";
-import { Connection } from "../../Client/Net/Connection";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Mouse } from "../../Client/Engine/Mouse";
 import { Sprite } from "../../Client/Engine/Sprite";
@@ -46,30 +44,42 @@ export class WaypointModel
 
   public isVisible() { return this.visible; }
 
-  public setPosition(position: Vector)
+  public setPosition(position: { x: number; y: number })
   {
     this.position.set(position);
 
     this.waypointSprite.setPosition(position);
-
-    sendWaypoint(position);
   }
 
-  public update(mouse: Mouse)
+  public move(position: { x: number; y: number })
   {
-    // Only update marker position if left button is down.
-    if (!mouse.isLeftButtonDown())
-      return;
-
     this.show();
 
-    const mousePosition = mouse.getPosition();
-
-    if (!this.position.equals(mousePosition))
+    if (!this.position.equals(position))
     {
-      this.setPosition(mousePosition);
+      this.setPosition(position);
+
+      return "Position changed";
     }
+
+    return "Position unchanged";
   }
+
+  // public update(mouse: Mouse)
+  // {
+  //   // Only update marker position if left button is down.
+  //   if (!mouse.isLeftButtonDown())
+  //     return;
+
+  //   this.show();
+
+  //   const mousePosition = mouse.getPosition();
+
+  //   if (!this.position.equals(mousePosition))
+  //   {
+  //     this.setPosition(mousePosition);
+  //   }
+  // }
 
   // ---------------- Private methods -------------------
 
@@ -93,8 +103,3 @@ export class WaypointModel
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-function sendWaypoint(waypoint: Vector)
-{
-  Connection.send(new SetWaypoint(waypoint));
-}
