@@ -1,9 +1,20 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-
+Ok, co dřív?
+  Zprovoznit entity, nebo se chvíli hrabat ve steeringu?
+  - asi steering.
 
 -----
+
+Zprovoznit entity
+- Savovat/loadovat lodě z disku.
+- Savovat/loadovat zónu z disku.
+- Posílat v rámci packetů zónu/lodě místo ručně vytažených properties.
+  (ZoneUpdate se asi bude muset pořád vyrábět ručně, uvidíme...)
+- Udělat entity pro textury, zvuky, shapy a podobně
+  - používat idčko entity jako idčko resourcu v Phaseru.
+
 
 
 
