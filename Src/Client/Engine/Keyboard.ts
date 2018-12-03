@@ -6,10 +6,13 @@ import { REPORT } from "../../Shared/Log/REPORT";
 /// Návod:
 /// http://www.html5gamedevs.com/topic/36693-problems-with-keyboard-events/
 
+// tslint:disable-next-line:no-unnecessary-class
 export class Keyboard
 {
-  constructor(private readonly keyboard: Phaser.Input.Keyboard.KeyboardPlugin)
+  constructor(input: Phaser.Input.InputPlugin)
   {
+    const keyboard = input.keyboard;
+
     keyboard.on
     (
       "keydown_A",

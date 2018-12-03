@@ -25,6 +25,9 @@ export class Mouse
 
     // this.mouseManager.disableContextMenu();
 
+    /// TODO: Případný callbacky provolávat vejš do SceneInputu,
+    /// ať se nemusí ve zděděných přetěžovat jak SceneInput, tak Mouse.
+
     // input.on
     // (
     //   "pointerup",

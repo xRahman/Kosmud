@@ -1,5 +1,6 @@
 import { Keyboard } from "../../Client/Engine/Keyboard";
 import { Mouse } from "../../Client/Engine/Mouse";
+import { Scene } from "../../Client/Engine/Scene";
 
 export abstract class SceneInput
 {
@@ -7,9 +8,9 @@ export abstract class SceneInput
   protected keyboard: Keyboard;
   protected mouse: Mouse;
 
-  constructor(input: Phaser.Input.InputPlugin)
+  constructor(protected readonly scene: Scene)
   {
-    this.keyboard = new Keyboard(input.keyboard);
-    this.mouse = new Mouse(input);
+    this.keyboard = scene.createKeyboard();
+    this.mouse = scene.createMouse();
   }
 }

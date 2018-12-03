@@ -1,3 +1,11 @@
+TODO: Keyboard a Mouse by měla creatovat Scéna (jsou to taky wrapper objecty).
+[done]
+
+TODO: Hmm, dědění Myši je možná zbytečný, můžu to obsloužit ve SceneInput.
+  (případné callbacky se dají provolat zpět do sceneInput a tam zpracovat).
+FlightSceneMouse zrušena.
+[done]
+
 TODO: Animation by asi mohla bejt samostatná classa
   (teď se to dělá přes Scene).
 - scene.createAnimation() by mohla vrátit rovnou Animation.

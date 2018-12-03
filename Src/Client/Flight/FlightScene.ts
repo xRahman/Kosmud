@@ -161,11 +161,11 @@ export class FlightScene extends Scene
   {
     if (this.input !== "Doesn't exist")
     {
-      throw new Error(`Failed to create ${this.debugId}`
-        + ` because scene contents already exists`);
+      throw new Error(`Failed to create input in ${this.debugId}`
+        + ` because it already exists`);
     }
 
-    this.input = new FlightSceneInput(this, this.phaserScene.input);
+    this.input = new FlightSceneInput(this);
   }
 }
 

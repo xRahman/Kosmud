@@ -5,15 +5,9 @@ import { SceneInput } from "../../Client/Engine/SceneInput";
 
 export class FlightSceneInput extends SceneInput
 {
-  constructor
-  (
-    private readonly scene: FlightScene,
-    input: Phaser.Input.InputPlugin
-    // canvasWidth: number,
-    // canvasHeight: number
-  )
+  constructor(protected readonly scene: FlightScene)
   {
-    super(input);
+    super(scene);
   }
 
   // ---------------- Public methods --------------------
@@ -21,7 +15,6 @@ export class FlightSceneInput extends SceneInput
   public update()
   {
     this.mouse.update();
-    // this.camera.update();
 
     if (this.mouse.isLeftButtonDown())
     {

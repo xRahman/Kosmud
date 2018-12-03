@@ -1,8 +1,6 @@
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Vector } from "../../Shared/Physics/Vector";
-import { Mouse } from "../../Client/Engine/Mouse";
 import { Sprite } from "../../Client/Engine/Sprite";
-import { Scene } from "../../Client/Engine/Scene";
 
 const WAYPOINT_TEXTURE_ID = "Waypoint Texture";
 
@@ -13,7 +11,7 @@ export class WaypointModel
 
   constructor
   (
-    scene: Scene,
+    scene: FlightScene,
     private readonly position = new Vector({ x: 0, y: 0 }),
     private readonly rotation = 0
   )
@@ -31,7 +29,7 @@ export class WaypointModel
     this.hide();
   }
 
-  public static loadAssets(scene: Scene)
+  public static loadAssets(scene: FlightScene)
   {
     scene.loadTexture
     (

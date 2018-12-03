@@ -18,6 +18,8 @@ import { Sprite } from "../../Client/Engine/Sprite";
 import { SpriteAnimation } from "../../Client/Engine/SpriteAnimation";
 import { Graphics } from "../../Client/Engine/Graphics";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
+import { Mouse } from "../../Client/Engine/Mouse";
+import { Keyboard } from "../../Client/Engine/Keyboard";
 import { Sound } from "../../Client/Engine/Sound";
 import { SceneInput } from "../../Client/Engine/SceneInput";
 import { Scenes } from "../../Client/Engine/Scenes";
@@ -154,26 +156,6 @@ export abstract class Scene
     );
   }
 
-// // ! Throws exception on error.
-// public createAnimation
-// (
-//   animation: Sprite.Animation,
-//   repeat = INFINITE_REPEAT
-// )
-// {
-//   // ! Throws exception on error.
-//   const frameNames = this.generateFrameNames(animation);
-
-//   return this.phaserScene.anims.create
-//   (
-//     {
-//       key: animation.name,
-//       frames: frameNames,
-//       frameRate: animation.frameRate,
-//       repeat
-//     }
-//   );
-// }
   // ! Throws exception on error.
   public createAnimation(animationConfig: SpriteAnimation.Config)
   {
@@ -183,6 +165,16 @@ export abstract class Scene
   public createSound(soundId: string, baseVolume: ZeroToOne)
   {
     return new Sound(this.phaserScene, soundId, baseVolume);
+  }
+
+  public createKeyboard()
+  {
+    return new Keyboard(this.phaserScene.input);
+  }
+
+  public createMouse()
+  {
+    return new Mouse(this.phaserScene.input);
   }
 
   // ! Throws exception on error.
