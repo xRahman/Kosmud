@@ -9,7 +9,7 @@ import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Ship } from "../../Server/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
-import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
+import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
@@ -27,16 +27,16 @@ export class Zone extends Shared.Zone
     this.initShapes();
   }
 
-  public getSceneUpdate()
+  public getUpdate()
   {
-    const shipStates: Array<SceneUpdate.ShipState> = [];
+    const shipStates: Array<ZoneUpdate.ShipState> = [];
 
     for (const ship of this.ships.values())
     {
       shipStates.push(ship.getStateUpdate());
     }
 
-    return new SceneUpdate(shipStates);
+    return new ZoneUpdate(shipStates);
   }
 
   // ---------------- Private methods -------------------

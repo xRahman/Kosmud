@@ -1,4 +1,4 @@
-import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
+import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/Flight/ShipModel";
 import { FlightScene } from "../../Client/Flight/FlightScene";
@@ -33,7 +33,7 @@ export class Ship extends Shared.Ship
   }
 
   // ! Throws exception on error.
-  public update(shipState: SceneUpdate.ShipState)
+  public update(shipState: ZoneUpdate.ShipState)
   {
     this.setPosition(shipState.shipPosition);
     this.setRotation(shipState.shipRotation);

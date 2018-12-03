@@ -10,18 +10,18 @@ import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { Vector } from "../../Shared/Physics/Vector";
 
-export class SceneUpdate extends Packet
+export class ZoneUpdate extends Packet
 {
-  // public shipStates: Array<SceneUpdate.ShipState> = [];
+  // public shipStates: Array<ZoneUpdate.ShipState> = [];
 
-  // constructor(shipStates: Array<SceneUpdate.ShipState>)
+  // constructor(shipStates: Array<ZoneUpdate.ShipState>)
   // {
   //   super();
 
   //   this.shipStates = shipStates;
   // }
 
-  constructor(public shipStates: Array<SceneUpdate.ShipState> = [])
+  constructor(public shipStates: Array<ZoneUpdate.ShipState> = [])
   {
     super();
   }
@@ -29,7 +29,7 @@ export class SceneUpdate extends Packet
 
 // ------------------ Type Declarations ----------------------
 
-export namespace SceneUpdate
+export namespace ZoneUpdate
 {
   export interface ShipState
   {

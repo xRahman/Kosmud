@@ -10,7 +10,7 @@ import { Types } from "../../Shared/Utils/Types";
 import { Zone } from "../../Client/Game/Zone";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { SystemMessage } from "../../Shared/Protocol/SystemMessage";
-import { SceneUpdate } from "../../Client/Protocol/SceneUpdate";
+import { ZoneUpdate } from "../../Client/Protocol/ZoneUpdate";
 import { EnterFlightResponse } from
   "../../Client/Protocol/EnterFlightResponse";
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
@@ -27,7 +27,7 @@ import * as WebSocket from "isomorphic-ws";
 // We need to registr packet classes here because when a module is
 // imported and not used, typescript doesn't execute it's code.
 Classes.registerSerializableClass(SystemMessage);
-Classes.registerSerializableClass(SceneUpdate);
+Classes.registerSerializableClass(ZoneUpdate);
 Classes.registerSerializableClass(EnterFlightResponse);
 Classes.registerSerializableClass(KeyboardInput);
 Classes.registerSerializableClass(MouseInput);

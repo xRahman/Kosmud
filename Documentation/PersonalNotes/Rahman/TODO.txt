@@ -2,33 +2,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
 
-TODO: Občas se mi nenačte background :\
-- asi jen v práci
-
-TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
-- asi ho budu muset posílat ze serveru spolu se scénou
-  (tzn. s lodí).
-
-
-TODO: Posílání změny waypointu by nemělo být ve WaypointModelu.
-
-TODO: WaypointModel dát do FlightSceneGUI
-TODO: Mouse dát do FlightSceneInput
-  (nebo možná nechat přímo ve FlightScene)
-- SceneContents přejmenovat na SceneInput
-
-
-TODO: FlightSceneContents v původním významu postrádá smysl,
-  lodě a objekty teď budou ve scéně.
-  - pořád někde musí být waypoint (i když ten možná může bejt v ShipModelu)
-    a background (ten by zas mohl bejt v úplně jiný scéně...).
-  - každopádně pokud to zůstane, mělo by se to asi jmenovat jinak.
-{zatím to nechám být - je v tom background a waypoint}
-
-
-TODO: zone.steerVehicles() by se možná dalo hodit do update()
-  (opět aby to bylo koncepčně stejně jako na klientu).
-
 
 -----
 
@@ -163,6 +136,13 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 Odložené TODO:
 ---------------
+
+TODO: Občas se mi nenačte background :\
+- asi jen v práci
+
+TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
+- asi ho budu muset posílat ze serveru spolu se scénou
+  (tzn. s lodí).
 
 TODO: Udělat classu wrapující fastbitvector.
 TODO: Udlělat ji Serializable a vyhodit serializační hack ze Serializable.

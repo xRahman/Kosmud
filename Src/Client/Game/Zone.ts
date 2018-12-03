@@ -8,7 +8,7 @@
 import { Ship } from "../../Client/Game/Ship";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Tilemap } from "../../Client/Engine/Tilemap";
-import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
+import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
@@ -61,7 +61,7 @@ export class Zone extends Shared.Zone
     return super.getTilemap(name) as Tilemap;
   }
 
-  public updateShips(shipStates: Array<SceneUpdate.ShipState>)
+  public updateShips(shipStates: Array<ZoneUpdate.ShipState>)
   {
     for (const shipState of shipStates)
     {

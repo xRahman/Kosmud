@@ -32,18 +32,18 @@ export namespace Game
 
   export function tick()
   {
-    steer(zones);
+    update(zones);
   }
 
   export function updateClients()
   {
     for (const zone of zones)
     {
-      const sceneUpdate = zone.getSceneUpdate();
+      const zoneUpdate = zone.getUpdate();
 
       /// TODO: Neposílat všem playerům updaty všech zón, stačí
       /// každému poslat update zóny, ve které se nachází.
-      Connections.broadcast(sceneUpdate);
+      Connections.broadcast(zoneUpdate);
     }
   }
 
@@ -79,9 +79,9 @@ async function loadZones(zones: Array<Zone>)
   }
 }
 
-// function getShipsState(): Array<SceneUpdate.ShipState>
+// function getShipsState(): Array<ZoneUpdate.ShipState>
 // {
-//   const result: Array<SceneUpdate.ShipState> = [];
+//   const result: Array<ZoneUpdate.ShipState> = [];
 
 //   for (const ship of Game.ships)
 //   {
@@ -91,7 +91,7 @@ async function loadZones(zones: Array<Zone>)
 //   return result;
 // }
 
-function steer(zones: Array<Zone>)
+function update(zones: Array<Zone>)
 {
   for (const zone of zones)
   {

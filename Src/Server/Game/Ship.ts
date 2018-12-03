@@ -4,16 +4,16 @@
   TEST - a ship.
 */
 
-import { SceneUpdate } from "../../Shared/Protocol/SceneUpdate";
+import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
   // ---------------- Public methods --------------------
 
-  public getStateUpdate(): SceneUpdate.ShipState
+  public getStateUpdate(): ZoneUpdate.ShipState
   {
-    const shipState: SceneUpdate.ShipState =
+    const shipState: ZoneUpdate.ShipState =
     {
       shipId: this.getId(),
       shipPosition: this.physics.getPosition(),
