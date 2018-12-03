@@ -1,3 +1,6 @@
+TODO: V Mouse.getPosition() použít CoordsTransform.
+[done]
+
 TODO: Keyboard a Mouse by měla creatovat Scéna (jsou to taky wrapper objecty).
 [done]
 

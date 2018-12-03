@@ -8,6 +8,7 @@ import { REPORT } from "../../Shared/Log/REPORT";
 import { Vector } from "../../Shared/Physics/Vector";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Connection } from "../../Client/Net/Connection";
+import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 
 export class Mouse
 {
@@ -58,8 +59,10 @@ export class Mouse
 
   public getPosition()
   {
-    // Note: Coordinates transform ('y' axis is inverted).
-    return new Vector({ x: this.mousePointer.x, y: -this.mousePointer.y });
+    return CoordsTransform.transformVector
+    (
+      { x: this.mousePointer.x, y: this.mousePointer.y }
+    );
   }
 
   // ---------------- Event handlers --------------------
@@ -102,10 +105,6 @@ export class Mouse
 
 function sendMouseInput(mousePosition: Vector)
 {
-  /// TODO: All keyboard event handling should be disabled when
-  /// the player gets disconnected (reconnect window should be
-  /// shown instead).
-  ///   For now, we just avoid sending packets to closed connection.
   if (!Connection.isOpen())
     return;
 

@@ -2,8 +2,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
 
-TODO: V Mouse.getPosition() použít CoordsTransform.
-
 TODO: Občas se mi nenačte background :\
 - asi jen v práci
 
