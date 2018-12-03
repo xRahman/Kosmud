@@ -71,10 +71,12 @@ export namespace Game
 
 // ----------------- Auxiliary Functions ---------------------
 
+// ! Throws exception on error.
 async function loadZones(zones: Array<Zone>)
 {
   for (const zone of zones)
   {
+    // ! Throws exception on error.
     await zone.load();
   }
 }

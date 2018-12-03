@@ -1,3 +1,12 @@
+TODO: odchytávat výjimky z Tilemap.getShape().
+[done]
+
+TODO: Server/Zone.getSceneUpdate() by se asi mohlo jemnovat prostě
+  getUpdate().
+A SceneUpdate (packet) by se mohl jmenovat ZoneUpdate.
+(updatuje se stav zóny, kterej si pak klient promítne do scény).
+[done]
+
 TODO: zone.steerVehicles() by se možná dalo hodit do update()
   (opět aby to bylo koncepčně stejně jako na klientu).
 [done, sort of]

@@ -20,10 +20,13 @@ export class Zone extends Shared.Zone
 
   // ---------------- Public methods --------------------
 
+  // ! Throws exception on error.
   public async load()
   {
+    // ! Throws exception on error.
     await this.loadTilemaps();
 
+    // ! Throws exception on error.
     this.initShapes();
   }
 
@@ -41,10 +44,12 @@ export class Zone extends Shared.Zone
 
   // ---------------- Private methods -------------------
 
+  // ! Throws exception on error.
   private async loadTilemaps()
   {
     for (const tilemapConfig of this.assets.tilemaps)
     {
+      // ! Throws exception on error.
       const tilemap = await createTilemap(tilemapConfig);
 
       this.addTilemap(tilemap);
@@ -64,6 +69,7 @@ async function createTilemap(config: Shared.Zone.TilemapConfig)
   const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
   const jsonData = await loadTilemapJsonData(tilemapJsonPath);
 
+  // ! Throws exception on error.
   return new Tilemap(config.tilemapId, jsonData);
 }
 

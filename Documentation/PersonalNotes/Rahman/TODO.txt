@@ -6,12 +6,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 -----
 
 
-TODO: Server/Zone.getSceneUpdate() by se asi mohlo jemnovat prostě
-  getUpdate().
-A SceneUpdate (packet) by se mohl jmenovat ZoneUpdate.
-(updatuje se stav zóny, kterej si pak klient promítne do scény).
-
-
 
 Upřesnění aktuálního cíle:
 ---------------------------
@@ -53,8 +47,6 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
 {tohle si tu nechám, ať vím, kam směřuju}
 
 
-
-TODO: odchytávat výjimky z Tilemap.getShape().
 
 
 

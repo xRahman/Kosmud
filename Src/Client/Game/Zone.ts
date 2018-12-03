@@ -30,11 +30,15 @@ export class Zone extends Shared.Zone
     loadTilemaps(scene, this.assets.tilemaps);
   }
 
+  // ! Throws exception on error.
   public initSceneData(scene: FlightScene)
   {
     this.scene = scene;
 
+    // ! Throws exception on error.
     this.createTilemaps(scene);
+
+    // ! Throws exception on error.
     this.initShapes();
 
     /// V tenhle moment ještě nemůžou bejt v zóně lodě,
@@ -115,10 +119,12 @@ export class Zone extends Shared.Zone
 
   // ---------------- Private methods -------------------
 
+  // ! Throws exception on error.
   private createTilemaps(scene: FlightScene)
   {
     for (const config of this.assets.tilemaps)
     {
+      // ! Throws exception on error.
       const tilemapJsonData = scene.getTilemapJsonData(config.tilemapId);
 
       this.addTilemap(scene.createTilemap(config, tilemapJsonData));
