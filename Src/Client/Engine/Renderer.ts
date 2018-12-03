@@ -9,7 +9,7 @@ let scenes: Scenes | "Doesn't exist" = "Doesn't exist";
 export namespace Renderer
 {
   // ! Throws exception on error.
-  export function init()
+  export async function init()
   {
     const canvasWidth = Body.getCanvasDiv().getWidth();
     const canvasHeight = Body.getCanvasDiv().getHeight();
@@ -21,7 +21,8 @@ export namespace Renderer
 
     try
     {
-      const fireAndForget = Scenes.getBackgroundScene().load();
+      // const fireAndForget = Scenes.getBackgroundScene().load();
+      await Scenes.getBackgroundScene().load();
     }
     catch (error)
     {

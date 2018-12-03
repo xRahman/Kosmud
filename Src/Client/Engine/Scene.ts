@@ -4,12 +4,6 @@
   Wraps Phaser.GameObjects.Container
 */
 
-/*
-  Notes:
-    It would be easier to just extend Phaser.Scene but since all other
-    Client/Engine classes are wrappers, Scene is a wrapper too.
-*/
-
 import { ERROR } from "../../Shared/Log/ERROR";
 import { REPORT } from "../../Shared/Log/REPORT";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";

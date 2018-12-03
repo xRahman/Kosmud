@@ -15,14 +15,14 @@ import { Gui } from "../Client/Gui/Gui";
 import { Renderer } from "../Client/Engine/Renderer";
 import { Connection } from "../Client/Net/Connection";
 
-function start()
+async function start()
 {
   Syslog.log("[INFO]", "Starting Kosmud client...");
 
   try
   {
     Gui.init();
-    Renderer.init();
+    await Renderer.init();
     Connection.connect();
   }
   catch (error)

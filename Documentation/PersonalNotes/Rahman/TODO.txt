@@ -51,12 +51,6 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
 
 
 TODO: Refactoriiiing!
-- Místo Phaser.Scene všude předávat Scene
-  (což je z ní beztak zděděné, ale je to můj interní typ).
-
-TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
-
-TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
 
 
 Opravy steeringu
@@ -66,9 +60,6 @@ TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
 - vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
 - a taky je divný, že se pořád letí na maximum thrust
   (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
-
-TODO: Odchytávání výjimek ze Steeringu.
-- to už možná je, ale chce to zkontrolovat.
 
  Refactorovat steering
 - různá chování počítají jen desired velocity
@@ -82,6 +73,7 @@ TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
 
 TODO: Steering by se možná choval líp, kdyby se prostě loď nejdřív otočila
   do požadovaného směru a pak se aplikoval jen forward/backward thrust.
+- tohle asi dělat, jen když je loď blízko k cíli.
 - rozhodně to budu muset ještě poladit.
 TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
   je vidět, jak se to občas chová divně.
@@ -128,9 +120,6 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 Odložené TODO:
 ---------------
-
-TODO: Občas se mi nenačte background :\
-- asi jen v práci
 
 TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
 - asi ho budu muset posílat ze serveru spolu se scénou

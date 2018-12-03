@@ -30,7 +30,7 @@ export class FlightSceneInput extends SceneInput
 
     if (this.moveWaypoint(mousePosition) === "Position changed")
     {
-      Connection.send(new SetWaypoint(mousePosition));
+      sendWaypointUpdate(mousePosition);
     }
   }
 
@@ -38,4 +38,10 @@ export class FlightSceneInput extends SceneInput
   {
     return this.scene.moveWaypoint(mousePosition);
   }
+}
+
+function sendWaypointUpdate(mousePosition: { x: number; y: number })
+{
+  if (Connection.isOpen())
+    Connection.send(new SetWaypoint(mousePosition));
 }

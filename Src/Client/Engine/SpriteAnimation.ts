@@ -46,7 +46,7 @@ export class SpriteAnimation
 // ! Throws exception on error.
 function generateFrameNames
 (
-  phaserScene: Phaser.Scene,
+  phaserScene: Scene.PhaserScene,
   animationConfig: SpriteAnimation.Config
 )
 {

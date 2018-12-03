@@ -1,3 +1,22 @@
+TODO: Občas se mi nenačte background :\
+- asi jen v práci
+[snad fixed]
+
+TODO: Když umře server tak SendWaypoint na klientu hodí Uncaught Error.
+[fixed]
+
+TODO: Odchytávání výjimek ze Steeringu.
+- to už možná je, ale chce to zkontrolovat.
+[done]
+
+TODO: Projít všechny metody ve Vehicle, jestli musejí být public.
+- funkcionalita přesunuta do VehiclePhysics
+[done]
+
+- Místo Phaser.Scene všude předávat Scene
+  (což je z ní beztak zděděné, ale je to můj interní typ).
+[done]
+
 TODO: odchytávat výjimky z Tilemap.getShape().
 [done]
 
