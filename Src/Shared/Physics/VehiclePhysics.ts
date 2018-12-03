@@ -103,6 +103,13 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   public getVelocity() { return this.getPhysicsBody().getVelocity(); }
 
+  // ! Throws exception on error.
+  public setVelocity(velocity: Vector)
+  {
+    // ! Throws exception on error.
+    this.getPhysicsBody().setVelocity(velocity);
+  }
+
   public getForwardThrustRatio(): MinusOneToOne
   {
     if (this.forwardThrust >= 0)
@@ -426,6 +433,8 @@ export class VehiclePhysics extends Serializable
       leftwardUnitVector,
       desiredLeftwardComponentMagnitude
     );
+
+  // console.log(`${desiredForwardComponentMagnitude} ${this.FORWARD_THRUST}`);
 
     /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.

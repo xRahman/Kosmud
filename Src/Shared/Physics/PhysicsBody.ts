@@ -30,86 +30,94 @@ export class PhysicsBody
     this.box2dBody = createBody(box2dWorld, physicsShape, entityPhysics);
   }
 
+  // ! Throws exception on error.
   public getPosition()
   {
+    // ! Throws exception on error.
     return new Vector(this.box2dBody.GetPosition()).validate();
   }
 
+  // ! Throws exception on error.
   public getX()
   {
+    // ! Throws exception on error.
     return Number(this.box2dBody.GetPosition().x).validate();
   }
 
+  // ! Throws exception on error.
   public getY()
   {
+    // ! Throws exception on error.
     return Number(this.box2dBody.GetPosition().y).validate();
   }
 
+  // ! Throws exception on error.
   public getRotation()
   {
+    // ! Throws exception on error.
     return Number(this.box2dBody.GetAngle()).validate();
   }
 
+  // ! Throws exception on error.
   public getAngularVelocity()
   {
+    // ! Throws exception on error.
     return Number(this.box2dBody.GetAngularVelocity()).validate();
   }
 
+  // ! Throws exception on error.
   // Inertia is resistance to torque.
   public getInertia()
   {
+    // ! Throws exception on error.
     return Number(this.box2dBody.GetInertia()).validate();
   }
 
+  // ! Throws exception on error.
   // Mass is resistance to linear force.
   public getMass()
   {
+    // ! Throws exception on error.
     return Number(this.box2dBody.GetMass()).validate();
   }
 
-  // public setVelocity(velocity: number)
-  // {
-  //   this.velocity = Number(velocity).validate();
-
-  //   this.updateVelocityDirection();
-  // }
-
+  // ! Throws exception on error.
   public setAngularVelocity(angularVelocity: number)
   {
+    // ! Throws exception on error.
     this.box2dBody.SetAngularVelocity(Number(angularVelocity).validate());
   }
 
+  // ! Throws exception on error.
   public applyForce(force: Vector)
   {
+    // ! Throws exception on error.
     this.box2dBody.ApplyForceToCenter(Vector.validate(force));
   }
 
+  // ! Throws exception on error.
   public applyTorque(torque: number)
   {
+    // ! Throws exception on error.
     this.box2dBody.ApplyTorque(Number(torque).validate());
   }
 
+  // This should only be used on the client. Only forces should be
+  // set to physics body on the server.
+  public setVelocity(velocity: Vector)
+  {
+    // ! Throws exception on error.
+    this.box2dBody.SetLinearVelocity(velocity.validate());
+  }
+
+  // ! Throws exception on error.
   public getVelocity(): Vector
   {
+    // ! Throws exception on error.
     return new Vector(this.box2dBody.GetLinearVelocity()).validate();
   }
 
-  // private getVelocityVector(velocity: number)
-  // {
-  //   let velocityVector =
-  //   {
-  //     x: velocity * Math.cos(this.getRotation()),
-  //     y: velocity * Math.sin(this.getRotation())
-  //   }
-
-  //   return velocityVector;
-  // }
-
-  // public updateVelocityDirection()
-  // {
-  //   this.getBody().SetLinearVelocity(this.getVelocity());
-  // }
-
+  // ! Throws exception on error.
   public getShape()
   {
     const shape: Physics.Shape = [];
@@ -134,7 +142,9 @@ export class PhysicsBody
           polygon.push
           (
             {
+              // ! Throws exception on error.
               x: Number(vertex.x).validate(),
+              // ! Throws exception on error.
               y: Number(vertex.y).validate()
             }
           );

@@ -33,14 +33,14 @@ export class VectorsModel
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.physics.getVelocity(),
-      origin, 1, Graphics.rgb(255, 0, 255), 1
+      vehicle.physics.getDesiredVelocity(),
+      origin, 1, Graphics.rgb(0, 0, 255), 1
     );
 
     this.vectorsGraphics.drawVector
     (
-      vehicle.physics.getDesiredVelocity(),
-      origin, 1, Graphics.rgb(0, 0, 255), 1
+      vehicle.physics.getVelocity(),
+      origin, 1, Graphics.rgb(106, 90, 255), 1
     );
 
     this.vectorsGraphics.drawVector

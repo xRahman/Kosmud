@@ -5,6 +5,46 @@ Ok, co dřív?
   Zprovoznit entity, nebo se chvíli hrabat ve steeringu?
   - asi steering.
 
+TODO: Vector.scale by se mohl jmenovat Vector.multiplyByScalar...
+
+TODO: Speed lodi na clientu je nulová, takže se nezobrazuje
+  (nejspíš ji nesetuju do physicsBody)
+- ale jo, potřebuju ji - musím vidět, jak se aktuální velocity lodi
+  blíží desiredVelocity.
+  - asi to ale můžu posílat jako skalár a jen tím pronásobit vektor
+    desiredVelocity.
+
+desiredForwardComponentMagnitude může bejt záporná,
+  s tím asi nepočítám.
+- i když, asi jo. A zjednodušit to nejde, protože dozadu je jinej
+  thrust než dopředu.
+
+Opravy steeringu
+-----------------
+
+TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
+- vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
+- a taky je divný, že se pořád letí na maximum thrust
+  (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
+
+ Refactorovat steering
+- různá chování počítají jen desired velocity
+  I když, to je otázka.
+  - Za prvé nevím, jestli bude fungovat skládání behaviourů přes rychlosti
+    (nejspíš je nějakej důvod, proč se skládaj až výsledné steering forces)
+  - Za druhé nevím, co složitější behaviours s těma silama dělaj...
+Ok, asi se raději budu držet skládání sil.
+
+TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
+
+TODO: Steering by se možná choval líp, kdyby se prostě loď nejdřív otočila
+  do požadovaného směru a pak se aplikoval jen forward/backward thrust.
+- tohle asi dělat, jen když je loď blízko k cíli.
+- rozhodně to budu muset ještě poladit.
+TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
+  je vidět, jak se to občas chová divně.
+TODO: Opravit "backlash" při zastavování.
+
 -----
 
 Zprovoznit entity
@@ -57,38 +97,6 @@ Obecně se mi nechce dělat classy pro jednotlivé typy lodí.
     jim properties (efektivně to je totéž jako load entity z disku).
 {tohle si tu nechám, ať vím, kam směřuju}
 
-
-
-
-
-TODO: Refactoriiiing!
-
-
-Opravy steeringu
------------------
-
-TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
-- vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
-- a taky je divný, že se pořád letí na maximum thrust
-  (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
-
- Refactorovat steering
-- různá chování počítají jen desired velocity
-  I když, to je otázka.
-  - Za prvé nevím, jestli bude fungovat skládání behaviourů přes rychlosti
-    (nejspíš je nějakej důvod, proč se skládaj až výsledné steering forces)
-  - Za druhé nevím, co složitější behaviours s těma silama dělaj...
-Ok, asi se raději budu držet skládání sil.
-
-TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
-
-TODO: Steering by se možná choval líp, kdyby se prostě loď nejdřív otočila
-  do požadovaného směru a pak se aplikoval jen forward/backward thrust.
-- tohle asi dělat, jen když je loď blízko k cíli.
-- rozhodně to budu muset ještě poladit.
-TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
-  je vidět, jak se to občas chová divně.
-TODO: Opravit "backlash" při zastavování.
 
 
 Far TODO:

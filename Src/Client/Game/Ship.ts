@@ -72,7 +72,7 @@ export class Ship extends Shared.Ship
 
   public setVectors(vectors: Ship.Vectors)
   {
-    // this.velocity.set(vectors.shipVelocity);
+    this.physics.setVelocity(vectors.shipVelocity);
     this.physics.desiredVelocity.set(vectors.desiredVelocity);
     this.physics.steeringForce.set(vectors.steeringForce);
     this.physics.desiredSteeringForce.set(vectors.desiredSteeringForce);
