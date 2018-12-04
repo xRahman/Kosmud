@@ -1,9 +1,24 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-Ok, co dřív?
-  Zprovoznit entity, nebo se chvíli hrabat ve steeringu?
-  - asi steering.
+SUPER IMPORTANT:
+https://stackoverflow.com/questions/44866044/libgdx-box2d-velocity-not-increasing-enough
+
+Jak řešit, když fyzika nestíhá:
+https://gafferongames.com/post/fix_your_timestep/
+
+Ok, takže každopádně:
+TODO: Zavést Physics.MAXIMUMUM_POSSIBLE_SPEED
+  a checkovat ve steeringu, že se nesnažím jít vejš.
+
+TODO: Zavést měřítko do CoordsTransform (nejspíš 1:1000)
+
+TODO: Při té příležitosti asi změnit FPS fyziky (klient se klidně může
+  renderovat častějš).
+  - otázka je, jestli 50 nebo ještě míň (asi to bude chtít vyzkoušet).
+
+
+
 
 TODO: Vector.scale by se mohl jmenovat Vector.multiplyByScalar...
 
