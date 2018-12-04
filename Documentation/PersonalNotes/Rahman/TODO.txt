@@ -25,6 +25,7 @@ Refactoring steeringu
 Mohl bych asi na začátku arrive() vyrobit
   const phase = "Accelerating" | "Braking" | "Stopping"
 a předávat ji pak dalším fcím, aby podle ní mohly switchovat.
+[done]
 Možná pak nebude potřeba předávat všude distance a tak.
 - v computeLinearForces to totiž asi budu potřebovat switchovat taky
   (a je vůbec otázka, jestli to nerozdělit do víc funkcí, protože

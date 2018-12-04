@@ -191,13 +191,11 @@ export class VehiclePhysics extends Serializable
 
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
     const distance = targetVector.length();
-
     const brakingDistance = this.computeBrakingDistance(currentVelocity);
-    const desiredVelocity = new Vector(targetVector);
 
     const maneuverPhase = this.getManeuverPhase(distance, brakingDistance);
 
-    desiredVelocity.setLength
+    const desiredVelocity = new Vector(targetVector).setLength
     (
       this.computeDesiredVelocityLength(maneuverPhase, distance)
     );
