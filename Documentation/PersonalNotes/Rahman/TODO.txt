@@ -19,6 +19,20 @@ desiredForwardComponentMagnitude může bejt záporná,
 - i když, asi jo. A zjednodušit to nejde, protože dozadu je jinej
   thrust než dopředu.
 
+Refactoring steeringu
+----------------------
+
+Mohl bych asi na začátku arrive() vyrobit
+  const phase = "Accelerating" | "Braking" | "Stopping"
+a předávat ji pak dalším fcím, aby podle ní mohly switchovat.
+Možná pak nebude potřeba předávat všude distance a tak.
+- v computeLinearForces to totiž asi budu potřebovat switchovat taky
+  (a je vůbec otázka, jestli to nerozdělit do víc funkcí, protože
+   třeba seek() dobržďovací část vůbec nebude potřebovat).
+Takže:
+- computeSeekLinearForces()
+- computeArriveLinearForces()
+
 Opravy steeringu
 -----------------
 

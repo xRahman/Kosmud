@@ -7,6 +7,7 @@
 // Augment global namespace with number-related functions and constants.
 import "../../Shared/Utils/Number";
 
+import { Syslog } from "../../Shared/Log/Syslog";
 import { Angle } from "../../Shared/Utils/Angle";
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Vector } from "../../Shared/Physics/Vector";
@@ -29,8 +30,8 @@ export class VehiclePhysics extends Serializable
   public readonly STRAFE_THRUST = 5;
   public readonly ANGULAR_VELOCITY = Math.PI * 2;
   public readonly TORQUE = 500;
-  public readonly STOPPING_DISTANCE = 20;
-  public readonly STOPPING_SPEED = this.MAX_SPEED / 100;
+  public readonly BRAKING_DISTANCE = 20;
+  public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
   /// V zásadě asi není důvod, proč by 'shapeId' nemohlo být setnuté vždycky.
@@ -194,14 +195,16 @@ export class VehiclePhysics extends Serializable
     const brakingDistance = this.computeBrakingDistance(currentVelocity);
     const desiredVelocity = new Vector(targetVector);
 
+    const maneuverPhase = this.getManeuverPhase(distance, brakingDistance);
+
     desiredVelocity.setLength
     (
-      this.computeDesiredVelocityLength(distance, brakingDistance)
+      this.computeDesiredVelocityLength(maneuverPhase, distance)
     );
 
     const desiredRotation = this.computeDesiredRotation
     (
-      distance, brakingDistance, currentRotation
+      maneuverPhase, currentRotation
     );
 
     this.computeLinearForces
@@ -359,7 +362,7 @@ export class VehiclePhysics extends Serializable
 
     /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
     /// ale jednotkový, takže lomeno 1.
-    const desiredForwardComponentMagnitude = Vector.v1DotV2
+    const desiredForwardComponentLength = Vector.v1DotV2
     (
       desiredSteeringForce,
       forwardUnitVector
@@ -367,7 +370,7 @@ export class VehiclePhysics extends Serializable
 
     /// Lomeno velikost vektoru, do kterého se projektujeme. Ten je
     /// ale jednotkový, takže lomeno 1.
-    const desiredLeftwardComponentMagnitude = Vector.v1DotV2
+    const desiredLeftwardComponentLength = Vector.v1DotV2
     (
       desiredSteeringForce,
       leftwardUnitVector
@@ -376,41 +379,41 @@ export class VehiclePhysics extends Serializable
     const desiredForwardSteeringForce = Vector.scale
     (
       forwardUnitVector,
-      desiredForwardComponentMagnitude
+      desiredForwardComponentLength
     );
 
     const desiredLeftwardSteeringForce = Vector.scale
     (
       leftwardUnitVector,
-      desiredLeftwardComponentMagnitude
+      desiredLeftwardComponentLength
     );
 
-    console.log(`${desiredForwardComponentMagnitude} ${this.FORWARD_THRUST}`);
+    console.log(`${desiredForwardComponentLength} ${this.FORWARD_THRUST}`);
 
     /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.
     // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
     let forwardLimitRatio = 1;
-    if (desiredForwardComponentMagnitude > this.FORWARD_THRUST)
+    if (desiredForwardComponentLength > this.FORWARD_THRUST)
     {
       forwardLimitRatio =
-        this.FORWARD_THRUST / desiredForwardComponentMagnitude;
+        this.FORWARD_THRUST / desiredForwardComponentLength;
     }
-    else if (desiredForwardComponentMagnitude < -this.BACKWARD_THRUST)
+    else if (desiredForwardComponentLength < -this.BACKWARD_THRUST)
     {
       forwardLimitRatio =
-        -this.BACKWARD_THRUST / desiredForwardComponentMagnitude;
+        -this.BACKWARD_THRUST / desiredForwardComponentLength;
     }
     let strafeLimitRatio = 1;
-    if (desiredLeftwardComponentMagnitude > this.STRAFE_THRUST)
+    if (desiredLeftwardComponentLength > this.STRAFE_THRUST)
     {
       strafeLimitRatio =
-        this.STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+        this.STRAFE_THRUST / desiredLeftwardComponentLength;
     }
-    else if (desiredLeftwardComponentMagnitude < -this.STRAFE_THRUST)
+    else if (desiredLeftwardComponentLength < -this.STRAFE_THRUST)
     {
       strafeLimitRatio =
-        -this.STRAFE_THRUST / desiredLeftwardComponentMagnitude;
+        -this.STRAFE_THRUST / desiredLeftwardComponentLength;
     }
     const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
 
@@ -481,70 +484,129 @@ export class VehiclePhysics extends Serializable
 
     // d = (1/2 * mass * v^2) / Force;
     const stoppingDistance =
-      this.STOPPING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
+      this.BRAKING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
 
     return stoppingDistance;
   }
 
-  private computeDesiredVelocityLength
+  private getManeuverPhase
   (
     distance: number,
     brakingDistance: number
   )
   {
     if (distance > brakingDistance)
-    {
-      console.log(`Accelerating`);
+      return "Accelerating";
 
-      // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
-      return this.MAX_SPEED;
-    }
-
-    if (distance > this.STOPPING_DISTANCE)
-    {
-      console.log(`Braking`);
-
-      // Break almost to zero velocity (exactly zero velocity is not
-      // a good idea because zero vector has undefined direction).
-      return this.STOPPING_SPEED;
-    }
+    if (distance > this.BRAKING_DISTANCE)
+      return "Braking";
 
     if (distance > 1)
-    {
-      console.log("Stopping");
+      return "Stopping";
 
-      // Use gradual approach at STOPPING_DISTANCE.
-      return this.STOPPING_SPEED * distance / this.STOPPING_DISTANCE;
+    return "Stopped";
+  }
+
+  private computeDesiredVelocityLength
+  (
+    maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
+    distance: number
+  )
+  {
+    switch (maneuverPhase)
+    {
+      case "Accelerating":
+        return this.MAX_SPEED;
+
+      case "Braking":
+        // Break almost to zero velocity (exactly zero velocity is not
+        // a good idea because zero vector has undefined direction).
+        return this.BRAKING_SPEED;
+
+      case "Stopping":
+        // Gradual approach at the last few meters.
+        return this.BRAKING_SPEED * distance / this.BRAKING_DISTANCE;
+
+      case "Stopped":
+        return 0;
+
+      default:
+        throw Syslog.reportMissingCase(maneuverPhase);
     }
 
-    return 0;
+  // if (distance > brakingDistance)
+  // {
+  //   console.log(`Accelerating`);
+
+  //   // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
+  //   return this.MAX_SPEED;
+  // }
+
+  // if (distance > this.STOPPING_DISTANCE)
+  // {
+  //   console.log(`Braking`);
+
+  //   // Break almost to zero velocity (exactly zero velocity is not
+  //   // a good idea because zero vector has undefined direction).
+  //   return this.STOPPING_SPEED;
+  // }
+
+  // if (distance > 1)
+  // {
+  //   console.log("Stopping");
+
+  //   // Use gradual approach at STOPPING_DISTANCE.
+  //   return this.STOPPING_SPEED * distance / this.STOPPING_DISTANCE;
+  // }
+
+  // return 0;
   }
 
   private computeDesiredRotation
   (
-    distance: number,
-    brakingDistance: number,
+    maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
     currentRotation: number
   )
   {
     let desiredRotation = this.desiredSteeringForce.getRotation();
 
-    if (distance <= this.STOPPING_DISTANCE)
+    switch (maneuverPhase)
     {
-      // If we are in final "stopping" phase, pass current
-      // rotation as desired rotation to prevent tuning in-place
-      // (it doesn't work perfectly but it helps a bit).
-      return Angle.normalize(desiredRotation = currentRotation);
+      case "Accelerating":
+        return Angle.normalize(desiredRotation);
+
+      case "Braking":
+        // When we are braking, desired rotation is opposite to
+        // desired steering force direction.
+        return Angle.normalize(desiredRotation += Math.PI);
+
+      case "Stopping":
+      case "Stopped":
+        // If we are stopped or nearly stopped, pass current rotation
+        // as desired rotation to prevent rotating in-place
+        // (it doesn't work perfectly but it helps a bit).
+        return Angle.normalize(desiredRotation = currentRotation);
+
+      default:
+        throw Syslog.reportMissingCase(maneuverPhase);
     }
 
-    if (distance < brakingDistance)
-    {
-      // When we are braking, desired rotation is opposite to
-      // desired steering force direction.
-      return Angle.normalize(desiredRotation += Math.PI);
-    }
+    // if (distance <= this.BRAKING_DISTANCE)
+    // {
+    //   // If we are in final "stopping" phase, pass current
+    //   // rotation as desired rotation to prevent tuning in-place
+    //   // (it doesn't work perfectly but it helps a bit).
+    //   return Angle.normalize(desiredRotation = currentRotation);
+    // }
 
-    return Angle.normalize(desiredRotation);
+    // if (distance < brakingDistance)
+    // {
+    //   // When we are braking, desired rotation is opposite to
+    //   // desired steering force direction.
+    //   return Angle.normalize(desiredRotation += Math.PI);
+    // }
+
+    // return Angle.normalize(desiredRotation);
   }
 }
 
