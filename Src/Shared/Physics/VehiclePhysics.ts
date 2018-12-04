@@ -179,82 +179,37 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   protected arrive()
   {
-    const vehiclePosition = this.getPosition();
-    const targetPosition = this.waypoint;
+    const currentPosition = this.getPosition();
+    const desiredPosition = this.waypoint;
     // ! Throws exception on error.
-    const oldVelocity = this.getPhysicsBody().getVelocity();
+    const currentVelocity = this.getVelocity();
     // ! Throws exception on error.
-    const vehicleRotation = this.getPhysicsBody().getRotation();
+    // Rotation in Box2D can be negative or even greater than 2π.
+    // We need to fix that so we can correcly subtract angles.
+    const currentRotation = Angle.normalize(this.getRotation());
 
-    const targetVector = Vector.v1MinusV2(targetPosition, vehiclePosition);
+    const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
     const distance = targetVector.length();
 
-    const brakingDistance = this.computeBrakingDistance(oldVelocity);
+    const brakingDistance = this.computeBrakingDistance(currentVelocity);
     const desiredVelocity = new Vector(targetVector);
 
-    let rotationFlip = 0;
+    desiredVelocity.setLength
+    (
+      this.computeDesiredVelocityLength(distance, brakingDistance)
+    );
 
-    if (distance > brakingDistance)
-    {
-      // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
-      desiredVelocity.setLength(this.MAX_SPEED);
-
-      rotationFlip = 0;
-    }
-    else if (distance > this.STOPPING_DISTANCE)
-    {
-      rotationFlip = Math.PI;
-
-      // Break almost to zero velocity
-      // (zero velocity is not a good idea because zero vector
-      //  has undefined direction).
-      desiredVelocity.setLength(this.STOPPING_SPEED);
-    }
-    else if (distance > 1)
-    {
-      // console.log("stopping...");
-
-      rotationFlip = Math.PI;
-      // Use gradual approach at STOPPING_DISTANCE.
-      desiredVelocity.setLength
-      (
-        this.STOPPING_SPEED * distance / this.STOPPING_DISTANCE
-      );
-    }
-    else
-    {
-      rotationFlip = 0;
-      desiredVelocity.setLength(0);
-    }
+    const desiredRotation = this.computeDesiredRotation
+    (
+      distance, brakingDistance, currentRotation
+    );
 
     this.computeLinearForces
     (
       desiredVelocity,
-      oldVelocity,
-      vehicleRotation
+      currentVelocity,
+      currentRotation
     );
-
-    // Rotation in Box2D can be negative or even greater than 2π.
-    // We need to fix that so we can correcly subtract angles.
-    const currentRotation = Angle.normalize(vehicleRotation);
-
-    /// Zkusím se točit k desiredSteeringForce místo k desiredRotation.
-    // let desiredRotation = desiredVelocity.getRotation();
-    let desiredRotation = Angle.normalize
-    (
-      /// 'rotationFlip' je 0 při zrychlování a PI při zpomalování,
-      /// protože při brždění musí čumák koukat na opačnou stranu než
-      /// kam směřuje desiredSteeringForce.
-      this.desiredSteeringForce.getRotation() + rotationFlip
-    );
-
-    if (distance <= this.STOPPING_DISTANCE)
-    {
-      // If we are in final "braking down" phase, pass current
-      // rotation as desired rotation to prevent tuning in-place
-      // (it doesn't work wery well but it helps a bit).
-      desiredRotation = currentRotation;
-    }
 
     this.computeAngularForces(currentRotation, desiredRotation);
   }
@@ -263,13 +218,17 @@ export class VehiclePhysics extends Serializable
   protected seek()
   {
     // ! Throws exception on error.
-    const vehicleVelocity = this.getPhysicsBody().getVelocity();
-    const vehiclePosition = this.getPosition();
-    const targetPosition = this.waypoint;
-    const vehicleRotation = this.getRotation();
+    const currentVelocity = this.getPhysicsBody().getVelocity();
+    // ! Throws exception on error.
+    // Rotation in Box2D can be negative or even greater than 2π.
+    // We need to fix that so we can correcly subtract angles.
+    const currentRotation = Angle.normalize(this.getRotation());
+    // ! Throws exception on error.
+    const currentPosition = this.getPosition();
+    const desiredPosition = this.waypoint;
 
-    // 1. 'desired velocity' = 'target position' - 'vehicle position'.
-    const desiredVelocity = Vector.v1MinusV2(targetPosition, vehiclePosition);
+    // 1. 'desired velocity' = 'desired position' - 'current position'.
+    const desiredVelocity = Vector.v1MinusV2(desiredPosition, currentPosition);
 
     // 2. Scale 'desired velocity' to maximum speed.
     desiredVelocity.setLength(this.MAX_SPEED);
@@ -277,13 +236,9 @@ export class VehiclePhysics extends Serializable
     this.computeLinearForces
     (
       desiredVelocity,
-      vehicleVelocity,
-      vehicleRotation
+      currentVelocity,
+      currentRotation
     );
-
-    // Rotation in Box2D can be negative or even greater than 2π.
-    // We need to fix that so we can correcly subtract angles.
-    const currentRotation = Angle.normalize(vehicleRotation);
     const desiredRotation = desiredVelocity.getRotation();
 
     this.computeAngularForces(currentRotation, desiredRotation);
@@ -380,19 +335,15 @@ export class VehiclePhysics extends Serializable
   private computeLinearForces
   (
     desiredVelocity: Vector,
-    vehicleVelocity: Vector,
-    vehicleRotation: number,
+    currentVelocity: Vector,
+    currentRotation: number,
   )
   {
-    // Rotation in Box2D can be negative or even greater than 2π.
-    // We need to fix that so we can correcly subtract angles.
-    const currentRotation = Angle.normalize(vehicleRotation);
-
     // 3. 'steering force' = 'desired velocity' - 'current velocity'.
     const desiredSteeringForce = Vector.v1MinusV2
     (
       desiredVelocity,
-      vehicleVelocity
+      currentVelocity
     );
 
     // 3.5 Split desiredSteeringForce to it's Forward/Backward and
@@ -434,7 +385,7 @@ export class VehiclePhysics extends Serializable
       desiredLeftwardComponentMagnitude
     );
 
-  // console.log(`${desiredForwardComponentMagnitude} ${this.FORWARD_THRUST}`);
+    console.log(`${desiredForwardComponentMagnitude} ${this.FORWARD_THRUST}`);
 
     /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.
@@ -533,6 +484,67 @@ export class VehiclePhysics extends Serializable
       this.STOPPING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
 
     return stoppingDistance;
+  }
+
+  private computeDesiredVelocityLength
+  (
+    distance: number,
+    brakingDistance: number
+  )
+  {
+    if (distance > brakingDistance)
+    {
+      console.log(`Accelerating`);
+
+      // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
+      return this.MAX_SPEED;
+    }
+
+    if (distance > this.STOPPING_DISTANCE)
+    {
+      console.log(`Braking`);
+
+      // Break almost to zero velocity (exactly zero velocity is not
+      // a good idea because zero vector has undefined direction).
+      return this.STOPPING_SPEED;
+    }
+
+    if (distance > 1)
+    {
+      console.log("Stopping");
+
+      // Use gradual approach at STOPPING_DISTANCE.
+      return this.STOPPING_SPEED * distance / this.STOPPING_DISTANCE;
+    }
+
+    return 0;
+  }
+
+  private computeDesiredRotation
+  (
+    distance: number,
+    brakingDistance: number,
+    currentRotation: number
+  )
+  {
+    let desiredRotation = this.desiredSteeringForce.getRotation();
+
+    if (distance <= this.STOPPING_DISTANCE)
+    {
+      // If we are in final "stopping" phase, pass current
+      // rotation as desired rotation to prevent tuning in-place
+      // (it doesn't work perfectly but it helps a bit).
+      return Angle.normalize(desiredRotation = currentRotation);
+    }
+
+    if (distance < brakingDistance)
+    {
+      // When we are braking, desired rotation is opposite to
+      // desired steering force direction.
+      return Angle.normalize(desiredRotation += Math.PI);
+    }
+
+    return Angle.normalize(desiredRotation);
   }
 }
 
