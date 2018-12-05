@@ -6,10 +6,10 @@
   Note:
     This class transforms coordinates from Box2D to Phaser coords
     ('y' axis and angles are inverted).
-
-    Actual transformation functions should only be in PhaserObject class
-    (see PhaserObject.transformVector() and PhaserObject.transformPolygon()).
 */
+
+// Augment global namespace with number-related functions and constants.
+import "../../Shared/Utils/Number";
 
 import { Vector } from "../../Shared/Physics/Vector";
 import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
@@ -71,7 +71,7 @@ export class Graphics extends PhaserObject
   {
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
-    const tranformedPolygon = CoordsTransform.transformPolygon(polygon);
+    const tranformedPolygon = CoordsTransform.ServerToClient.polygon(polygon);
 
     this.phaserObject.strokePoints(tranformedPolygon, true);
   }
@@ -85,14 +85,18 @@ export class Graphics extends PhaserObject
     alpha0to1: number
   )
   {
+    // Limit arrow fletching length to 20 pixels.
+    const MAX_FLETCHING_LENGTH = CoordsTransform.ClientToServer.length(20);
+
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
     this.phaserObject.beginPath();
 
     const arrowTip = Vector.v1PlusV2(origin, vector);
-    const fletchingLength = Math.min(20, vector.length() / 2);
     const fletchingLeft = Vector.rotate(vector, Math.PI * 5 / 6);
     const fletchingRight = Vector.rotate(vector, -Math.PI * 5 / 6);
+    const fletchingLength =
+      Number(vector.length() / 2).atMost(MAX_FLETCHING_LENGTH);
 
     fletchingLeft.setLength(fletchingLength);
     fletchingRight.setLength(fletchingLength);
@@ -111,8 +115,8 @@ export class Graphics extends PhaserObject
   /// and followed by 'this.graphics.closePath(); this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
-    const transformedFrom = CoordsTransform.transformVector(from);
-    const transformedTo = CoordsTransform.transformVector(to);
+    const transformedFrom = CoordsTransform.ServerToClient.vector(from);
+    const transformedTo = CoordsTransform.ServerToClient.vector(to);
 
     this.phaserObject.moveTo(transformedFrom.x, transformedFrom.y);
     this.phaserObject.lineTo(transformedTo.x, transformedTo.y);

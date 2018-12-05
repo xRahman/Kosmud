@@ -25,13 +25,21 @@ export class VehiclePhysics extends Serializable
   /// (protože se budou měnit debufama a tak, tak to pak případně
   ///  přejmenuju. Ale popravdě by asi bylo lepší nechat základ konstantní
   ///  a případný modifikátor přičítat/přinásobovat)
-  public readonly MAX_SPEED = 200;
-  public readonly FORWARD_THRUST = 100;
-  public readonly BACKWARD_THRUST = 20;
-  public readonly STRAFE_THRUST = 5;
+  // public readonly MAX_SPEED = 200;
+  // public readonly FORWARD_THRUST = 100;
+  // public readonly BACKWARD_THRUST = 20;
+  // public readonly STRAFE_THRUST = 5;
+  // public readonly ANGULAR_VELOCITY = Math.PI * 2;
+  // public readonly TORQUE = 500;
+  // public readonly BRAKING_DISTANCE = 20;
+  // public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
+  public readonly MAX_SPEED = 2;
+  public readonly FORWARD_THRUST = 1;
+  public readonly BACKWARD_THRUST = 0.2;
+  public readonly STRAFE_THRUST = 0.5;
   public readonly ANGULAR_VELOCITY = Math.PI * 2;
-  public readonly TORQUE = 500;
-  public readonly BRAKING_DISTANCE = 20;
+  public readonly TORQUE = 5;
+  public readonly BRAKING_DISTANCE = 0.2;
   public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
@@ -142,8 +150,6 @@ export class VehiclePhysics extends Serializable
     return this.getPhysicsBody().getShape();
   }
 
-  /// Něco v tomhle smyslu tu asi zůstane, ale bude to vyrábět
-  /// this.physicsBody().
   // ! Throws exception on error.
   public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
   {
@@ -153,9 +159,6 @@ export class VehiclePhysics extends Serializable
     (
       this.entity, this, physicsShape
     );
-
-    // // ! Throws exception on error.
-    // physicsWorld.add(this.getPhysicsBody(), zone);
 
     // ! Throws exception on error.
     // Set waypoint to the new position so the vehicle doesn't
@@ -199,6 +202,8 @@ export class VehiclePhysics extends Serializable
     this.validateSpeed(desiredSpeed);
 
     const desiredVelocity = new Vector(targetVector).setLength(desiredSpeed);
+
+    console.log(desiredPosition, currentPosition);
 
     const desiredRotation = this.computeDesiredRotation
     (

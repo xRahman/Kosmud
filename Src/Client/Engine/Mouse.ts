@@ -59,7 +59,7 @@ export class Mouse
 
   public getPosition()
   {
-    return CoordsTransform.transformVector
+    return CoordsTransform.ClientToServer.vector
     (
       { x: this.mousePointer.x, y: this.mousePointer.y }
     );

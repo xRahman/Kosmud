@@ -1,3 +1,9 @@
+TODO: Při té příležitosti asi změnit FPS fyziky (klient se klidně může
+  renderovat častějš).
+  - otázka je, jestli 50 nebo ještě míň (asi to bude chtít vyzkoušet).
+Dal jsem 50.
+[done]
+
 Ok, takže každopádně:
 TODO: Zavést Physics.MAXIMUMUM_POSSIBLE_SPEED
   a checkovat ve steeringu, že se nesnažím jít vejš.

@@ -36,12 +36,6 @@ export class Tilemap
   // ! Throws exception on error.
   public getShape(objectLayerName: string, objectName: string)
   {
-    // if (this.data === "Not loaded")
-    // {
-    //   throw new Error(`Failed to get physics shape from tilemap`
-    //     + ` '${this.getName()}' because the tilemap is not loaded`);
-    // }
-
     // ! Throws exception on error.
     const hullTileGid = getHullTileGid
     (
@@ -311,13 +305,25 @@ function getPolygon
   // We also need to translate to the middle of the tile,
   // because Tiled tiles have their origin at top left but
   // sprites in Phaser have their origin in the midle.
-  offset = CoordsTransform.transformTileObject(offset, tileWidth, tileHeight);
+  offset = CoordsTransform.ClientToServer.tileObject
+  (
+    offset, tileWidth, tileHeight
+  );
 
   const polygon: Physics.Polygon = [];
 
   for (const point of object.polygon)
   {
-    polygon.push({ x: (point.x + offset.x), y: (point.y + offset.y) });
+    polygon.push
+    (
+      CoordsTransform.ClientToServer.vector
+      (
+        {
+          x: (point.x + offset.x),
+          y: (point.y + offset.y)
+        }
+      )
+    );
   }
 
   return polygon;

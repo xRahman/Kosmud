@@ -31,6 +31,8 @@ export class VectorsModel
 
     // Order of calling determines order of drawing (the last will be on top).
 
+    console.log(vehicle.physics.getDesiredVelocity());
+
     this.vectorsGraphics.drawVector
     (
       vehicle.physics.getDesiredVelocity(),

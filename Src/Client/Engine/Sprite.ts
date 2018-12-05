@@ -38,12 +38,12 @@ export class Sprite extends PhaserObject
 
   // ---------------- Public methods --------------------
 
-  public getWidth() { return this.phaserObject.width; }
-  public getHeight() { return this.phaserObject.height; }
+  public getPixelWidth() { return this.phaserObject.width; }
+  public getPixelHeight() { return this.phaserObject.height; }
 
-  public setDisplaySize(width: number, height: number)
+  public setDisplaySize(pixelWidth: number, pixelHeight: number)
   {
-    this.phaserObject.setDisplaySize(width, height);
+    this.phaserObject.setDisplaySize(pixelWidth, pixelHeight);
   }
 
   public getScaleX() { return this.phaserObject.scaleX; }

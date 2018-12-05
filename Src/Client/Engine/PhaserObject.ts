@@ -19,17 +19,21 @@ export abstract class PhaserObject
 
   public setRotation(rotation: number)
   {
-    this.phaserObject.setRotation(CoordsTransform.transformAngle(rotation));
+    this.phaserObject.setRotation
+    (
+      CoordsTransform.ServerToClient.angle(rotation)
+    );
   }
 
   public getRotation()
   {
-    return CoordsTransform.transformAngle(this.phaserObject.rotation);
+    return CoordsTransform.ClientToServer.angle(this.phaserObject.rotation);
   }
 
   public setPosition(position: { x: number; y: number })
   {
-    const transformedPosition = CoordsTransform.transformVector(position);
+    const transformedPosition =
+      CoordsTransform.ServerToClient.vector(position);
 
     this.phaserObject.setX(transformedPosition.x);
     this.phaserObject.setY(transformedPosition.y);
@@ -37,7 +41,13 @@ export abstract class PhaserObject
 
   public getPosition()
   {
-    return CoordsTransform.transformVector(this.phaserObject);
+    return CoordsTransform.ClientToServer.vector(this.phaserObject);
+  }
+
+  public setPixelPosition({ x, y }: { x: number; y: number })
+  {
+    this.phaserObject.setX(x);
+    this.phaserObject.setY(y);
   }
 
   public setDepth(depth: number)

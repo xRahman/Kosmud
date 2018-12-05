@@ -39,8 +39,8 @@ export class BackgroundModel
   // ! Throws exception on error.
   public resize(canvasWidth: number, canvasHeight: number)
   {
-    const imageWidth = this.backgroundSprite.getWidth();
-    const imageHeight = this.backgroundSprite.getHeight();
+    const imageWidth = this.backgroundSprite.getPixelWidth();
+    const imageHeight = this.backgroundSprite.getPixelHeight();
 
     if (canvasWidth <= 0)
     {
@@ -108,11 +108,9 @@ export class BackgroundModel
     // canvas so it depends on cavas size too and we need to
     // update it.
 
-    // Topleft is [0, 0] but y axis points up so 'y' needs to
-    // be negative to be in the middle of canvas.
-    this.backgroundSprite.setPosition
+    this.backgroundSprite.setPixelPosition
     (
-      { x: (canvasWidth / 2), y: -(canvasHeight / 2) }
+      { x: (canvasWidth / 2), y: (canvasHeight / 2) }
     );
   }
 }

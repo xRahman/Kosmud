@@ -53,7 +53,7 @@ export class Tilemap extends Shared.Tilemap
       // Translate by half the tile size because tiles in Tiled
       // editor have their origin at top left  but sprites in
       // Phaser engine have their origin  in the middle.
-      phaserSprite = CoordsTransform.transformTileObject
+      phaserSprite = CoordsTransform.ClientToServer.tileObject
       (
         phaserSprite,
         tileWidth,

@@ -1,20 +1,33 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+Shape se vytahuje z tilemapy:
+  Na clientu: Ship.createModel()
+  Na serveru: VehiclePhysics.addToPhysicsWorld()
+
 SUPER IMPORTANT:
 https://stackoverflow.com/questions/44866044/libgdx-box2d-velocity-not-increasing-enough
 
 Jak řešit, když fyzika nestíhá:
 https://gafferongames.com/post/fix_your_timestep/
 
+TODO: CoordsTransform.tileObject() by možná mohlo rovnou i ztransformovat
+  souřadnice, ne jen posouvat o půlku tily.
+
 TODO: Zavést měřítko do CoordsTransform (nejspíš 1:1000)
 
-TODO: Při té příležitosti asi změnit FPS fyziky (klient se klidně může
-  renderovat častějš).
-  - otázka je, jestli 50 nebo ještě míň (asi to bude chtít vyzkoušet).
+TODO: CoordsTransform možná dát do /Client/Engine, je to čistě zobrazovací
+  záležitost a týká se to konkrétně Phaseru.
+  - tak ne, CoordsTransform se používá i v Shared/Tilemap
+    (data tilemapy jsou v client koordinátech)
+Ale mohla by bejt v Shared/Engine místo v Shared/Physics
 
+TODO: V CoordsTransform volat parametrizované funkce (deduplikace kódu).
 
-TODO: Vector.scale by se mohl jmenovat Vector.multiplyByScalar...
+TODO: Zamyslet se nad parametrem pro akceleraci lodi (kterým by se asi
+  násobila steering force). Momentálně je omezené pouze maximum, což
+  může vést k tomu, že se silnější motory až tak moc neprojevěj.
+
 
 TODO: Speed lodi na clientu je nulová, takže se nezobrazuje
   (nejspíš ji nesetuju do physicsBody)
