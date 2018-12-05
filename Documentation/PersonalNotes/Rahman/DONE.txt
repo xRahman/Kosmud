@@ -1,3 +1,8 @@
+Ok, takže každopádně:
+TODO: Zavést Physics.MAXIMUMUM_POSSIBLE_SPEED
+  a checkovat ve steeringu, že se nesnažím jít vejš.
+[done]
+
 TODO: Občas se mi nenačte background :\
 - asi jen v práci
 [snad fixed]

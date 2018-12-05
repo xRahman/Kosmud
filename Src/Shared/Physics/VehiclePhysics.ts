@@ -17,13 +17,14 @@ import { Engine } from "../../Shared/Engine/Engine";
 import { Zone } from "../../Shared/Game/Zone";
 import { Entity } from "../../Shared/Class/Entity";
 import { Serializable } from "../../Shared/Class/Serializable";
+import { Physics } from "./Physics";
 
 export class VehiclePhysics extends Serializable
 {
   /// Nechám to zatím CAPSEM. Časem to možná nebudou konstanty
   /// (protože se budou měnit debufama a tak, tak to pak případně
   ///  přejmenuju. Ale popravdě by asi bylo lepší nechat základ konstantní
-  ///  a případný modifikátor přičítat/přinásobovat až )
+  ///  a případný modifikátor přičítat/přinásobovat)
   public readonly MAX_SPEED = 200;
   public readonly FORWARD_THRUST = 100;
   public readonly BACKWARD_THRUST = 20;
@@ -188,17 +189,16 @@ export class VehiclePhysics extends Serializable
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
     const currentRotation = Angle.normalize(this.getRotation());
-
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
     const distance = targetVector.length();
     const brakingDistance = this.computeBrakingDistance(currentVelocity);
-
     const maneuverPhase = this.getManeuverPhase(distance, brakingDistance);
+    const desiredSpeed = this.computeDesiredSpeed(maneuverPhase, distance);
 
-    const desiredVelocity = new Vector(targetVector).setLength
-    (
-      this.computeDesiredVelocityLength(maneuverPhase, distance)
-    );
+    // ! Throws exception on error.
+    this.validateSpeed(desiredSpeed);
+
+    const desiredVelocity = new Vector(targetVector).setLength(desiredSpeed);
 
     const desiredRotation = this.computeDesiredRotation
     (
@@ -386,8 +386,6 @@ export class VehiclePhysics extends Serializable
       desiredLeftwardComponentLength
     );
 
-    console.log(`${desiredForwardComponentLength} ${this.FORWARD_THRUST}`);
-
     /// Update: Zjistím, ve kterém směru se force redukuje ve větším poměru
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.
     // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
@@ -505,7 +503,7 @@ export class VehiclePhysics extends Serializable
     return "Stopped";
   }
 
-  private computeDesiredVelocityLength
+  private computeDesiredSpeed
   (
     maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
     distance: number
@@ -531,33 +529,6 @@ export class VehiclePhysics extends Serializable
       default:
         throw Syslog.reportMissingCase(maneuverPhase);
     }
-
-  // if (distance > brakingDistance)
-  // {
-  //   console.log(`Accelerating`);
-
-  //   // Same as 'seek' behaviour (scale 'desired velocity' to maximum speed).
-  //   return this.MAX_SPEED;
-  // }
-
-  // if (distance > this.STOPPING_DISTANCE)
-  // {
-  //   console.log(`Braking`);
-
-  //   // Break almost to zero velocity (exactly zero velocity is not
-  //   // a good idea because zero vector has undefined direction).
-  //   return this.STOPPING_SPEED;
-  // }
-
-  // if (distance > 1)
-  // {
-  //   console.log("Stopping");
-
-  //   // Use gradual approach at STOPPING_DISTANCE.
-  //   return this.STOPPING_SPEED * distance / this.STOPPING_DISTANCE;
-  // }
-
-  // return 0;
   }
 
   private computeDesiredRotation
@@ -588,23 +559,22 @@ export class VehiclePhysics extends Serializable
       default:
         throw Syslog.reportMissingCase(maneuverPhase);
     }
+  }
 
-    // if (distance <= this.BRAKING_DISTANCE)
-    // {
-    //   // If we are in final "stopping" phase, pass current
-    //   // rotation as desired rotation to prevent tuning in-place
-    //   // (it doesn't work perfectly but it helps a bit).
-    //   return Angle.normalize(desiredRotation = currentRotation);
-    // }
-
-    // if (distance < brakingDistance)
-    // {
-    //   // When we are braking, desired rotation is opposite to
-    //   // desired steering force direction.
-    //   return Angle.normalize(desiredRotation += Math.PI);
-    // }
-
-    // return Angle.normalize(desiredRotation);
+  // ! Throws exception on error.
+  private validateSpeed(desiredSpeed: number)
+  {
+    if (desiredSpeed > Physics.MAXIMUM_POSSIBLE_SPEED)
+    {
+      throw new Error(`Vehicle ${this.entity.debugId} attempts to reach`
+        + ` speed '${desiredSpeed}' which is greater than maximum speed`
+        + ` allowed by physics engine (${Physics.MAXIMUM_POSSIBLE_SPEED}).`
+        + ` There are three ways to handle this: 1 - set lower maximum`
+        + ` speed for this vehicle, 2 - change coords transformation ratio in`
+        + ` CoordsTransform so the same speed in pixels translates to lower`
+        + ` speed in physics engine, 3 - increase engine FPS (that effectively`
+        + ` increases maximum possible speed)`);
+    }
   }
 }
 

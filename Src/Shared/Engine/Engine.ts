@@ -6,6 +6,6 @@
 
 export namespace Engine
 {
-  export const FPS = 60;
+  export const FPS = 50;
   export const TICK_MILISECONDS = 1000 / FPS;
 }
