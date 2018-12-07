@@ -70,25 +70,6 @@ export class Ship extends Shared.Ship
     this.getModel().setRotation(rotation);
   }
 
-  public setVectors(vectors: Ship.Vectors)
-  {
-    this.physics.setVelocity(vectors.shipVelocity);
-    this.physics.desiredVelocity.set(vectors.desiredVelocity);
-    this.physics.steeringForce.set(vectors.steeringForce);
-    this.physics.desiredSteeringForce.set(vectors.desiredSteeringForce);
-    this.physics.desiredForwardSteeringForce.set
-    (
-      vectors.desiredForwardSteeringForce
-    );
-    this.physics.desiredLeftwardSteeringForce.set
-    (
-      vectors.desiredLeftwardSteeringForce
-    );
-
-    // ! Throws exception on error.
-    this.getModel().drawVectors(this);
-  }
-
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
@@ -102,6 +83,28 @@ export class Ship extends Shared.Ship
     }
 
     return this.model;
+  }
+
+  private setVectors(shipState: ZoneUpdate.ShipState)
+  {
+    this.physics.setVelocity(shipState.shipVelocity);
+    this.physics.desiredVelocity.set(shipState.desiredVelocity);
+    this.physics.steeringForce.set(shipState.steeringForce);
+    this.physics.desiredSteeringForce.set(shipState.desiredSteeringForce);
+    this.physics.desiredForwardSteeringForce.set
+    (
+      shipState.desiredForwardSteeringForce
+    );
+    this.physics.desiredLeftwardSteeringForce.set
+    (
+      shipState.desiredLeftwardSteeringForce
+    );
+
+    this.physics.brakingDistance = shipState.brakingDistance;
+    this.physics.stoppingDistance = shipState.stoppingDistance;
+
+    // ! Throws exception on error.
+    this.getModel().drawVectors(this);
   }
 }
 

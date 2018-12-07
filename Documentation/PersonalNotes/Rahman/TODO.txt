@@ -1,6 +1,16 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: ShipVectors kreslí i kruhy a tak, asi by se to mělo jmenovat jinak
+  (ShipDebugGraphics?)
+
+TODO: Problém je, že braking distance se dynamicky updatuje, takže se může
+  stát, že zahájím braking manévr a následně se opět dostanu ven z braking
+  distance.
+- asi bych měl braking distanci měnit jen dokud jsem v accelerating fázi,
+  případně po updatu waypointu (čímž se ovšem vrátím k problému, protože
+  dokud držím lmb, tak se pozice waypoint updatuje každej tik).
+
 Shape se vytahuje z tilemapy:
   Na clientu: Ship.createModel()
   Na serveru: VehiclePhysics.addToPhysicsWorld()

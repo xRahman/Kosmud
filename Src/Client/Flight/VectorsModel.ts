@@ -31,7 +31,24 @@ export class VectorsModel
 
     // Order of calling determines order of drawing (the last will be on top).
 
-    console.log(vehicle.physics.getDesiredVelocity());
+    // console.log(vehicle.physics.getDesiredVelocity());
+    console.log
+    (
+      vehicle.physics.brakingDistance,
+      vehicle.physics.stoppingDistance
+    );
+
+    this.vectorsGraphics.drawCircle
+    (
+      origin, vehicle.physics.brakingDistance,
+      1, Graphics.rgb(150, 150, 150), 1
+    );
+
+    this.vectorsGraphics.drawCircle
+    (
+      origin, vehicle.physics.stoppingDistance,
+      1, Graphics.rgb(80, 80, 80), 1
+    );
 
     this.vectorsGraphics.drawVector
     (

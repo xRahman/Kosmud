@@ -47,6 +47,28 @@ export class Graphics extends PhaserObject
     this.phaserObject.clear();
   }
 
+  public drawCircle
+  (
+    origin: Vector,
+    radius: number,
+    lineWidth: number,
+    color: number,
+    alpha0to1: number
+  )
+  {
+    this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
+
+    const transformedOrigin = CoordsTransform.ServerToClient.vector(origin);
+    const transformedRadius = CoordsTransform.ServerToClient.distance(radius);
+
+    this.phaserObject.strokeCircle
+    (
+      transformedOrigin.x,
+      transformedOrigin.y,
+      transformedRadius
+    );
+  }
+
   public drawShape
   (
     shape: Physics.Shape,
@@ -86,7 +108,7 @@ export class Graphics extends PhaserObject
   )
   {
     // Limit arrow fletching length to 20 pixels.
-    const MAX_FLETCHING_LENGTH = CoordsTransform.ClientToServer.length(20);
+    const MAX_FLETCHING_LENGTH = CoordsTransform.ClientToServer.distance(20);
 
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 

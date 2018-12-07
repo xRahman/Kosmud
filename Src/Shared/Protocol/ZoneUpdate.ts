@@ -45,5 +45,7 @@ export namespace ZoneUpdate
     forwardThrustRatio: MinusOneToOne;
     leftwardThrustRatio: MinusOneToOne;
     torqueRatio: MinusOneToOne;
+    brakingDistance: number;
+    stoppingDistance: number;
   }
 }

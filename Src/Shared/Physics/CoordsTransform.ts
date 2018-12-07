@@ -9,8 +9,7 @@
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
 
-// const SERVER_TO_CLIENT_SCALE = 1000;
-const SERVER_TO_CLIENT_SCALE = 1;
+const SERVER_TO_CLIENT_SCALE = 1000;
 const CLIENT_TO_SERVER_SCALE = 1 / SERVER_TO_CLIENT_SCALE;
 
 export namespace CoordsTransform
@@ -22,7 +21,7 @@ export namespace CoordsTransform
       return -value;
     }
 
-    export function length(value: number): number
+    export function distance(value: number): number
     {
       return value * CLIENT_TO_SERVER_SCALE;
     }
@@ -74,7 +73,7 @@ export namespace CoordsTransform
       return -value;
     }
 
-    export function length(value: number): number
+    export function distance(value: number): number
     {
       return value * SERVER_TO_CLIENT_SCALE;
     }

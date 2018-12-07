@@ -16,8 +16,9 @@ import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Engine } from "../../Shared/Engine/Engine";
 import { Zone } from "../../Shared/Game/Zone";
 import { Entity } from "../../Shared/Class/Entity";
+import { Physics } from "../../Shared/Physics/Physics";
+import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
 import { Serializable } from "../../Shared/Class/Serializable";
-import { Physics } from "./Physics";
 
 export class VehiclePhysics extends Serializable
 {
@@ -39,7 +40,7 @@ export class VehiclePhysics extends Serializable
   public readonly STRAFE_THRUST = 0.5;
   public readonly ANGULAR_VELOCITY = Math.PI * 2;
   public readonly TORQUE = 5;
-  public readonly STOPPING_DISTANCE = 0.2;
+  public readonly STOPPING_DISTANCE = pixels(100);
   public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
@@ -51,7 +52,7 @@ export class VehiclePhysics extends Serializable
   /// bejt mnohem větší všechny thrusty, torques a tak a vektory
   /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to
   /// příjde).
-  public density = 0.00001;
+  public density = 1000;
   public friction = 0.5;       // Value: 0 to 1.
   // 0 - almost no bouncing, 1 - maximum bouncing.
   public restitution = 1;      // Value: 0 to 1.
@@ -76,6 +77,9 @@ export class VehiclePhysics extends Serializable
   public forwardThrust = 0;
   public leftwardThrust = 0;
   public torque = 0;
+
+  public brakingDistance = 0;
+  public stoppingDistance = 0;
 
   /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
   // protected readonly physicsBody = new PhysicsBody(this);
@@ -218,6 +222,9 @@ export class VehiclePhysics extends Serializable
     );
 
     this.computeAngularForces(currentRotation, desiredRotation);
+
+    this.brakingDistance = brakingDistance;
+    this.stoppingDistance = this.STOPPING_DISTANCE;
   }
 
   // ! Throws exception on error.
@@ -480,12 +487,12 @@ export class VehiclePhysics extends Serializable
   private computeBrakingDistance(velocity: Vector)
   {
     // ! Throws exception on error.
-    const mass = this.getPhysicsBody().getMass();
+    const m = this.getPhysicsBody().getMass();
     const v = velocity.length();
+    const F = this.BACKWARD_THRUST;
 
     // d = (1/2 * mass * v^2) / Force;
-    const brakingDistance =
-      this.STOPPING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
+    const brakingDistance = this.STOPPING_DISTANCE + (m * v * v) / (F * 2);
 
     return brakingDistance;
   }
@@ -584,6 +591,11 @@ export class VehiclePhysics extends Serializable
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+function pixels(value: number)
+{
+  return CoordsTransform.ClientToServer.distance(value);
+}
 
 function computeDesiredAngularVelocity
 (
