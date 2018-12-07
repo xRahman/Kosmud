@@ -39,7 +39,7 @@ export class VehiclePhysics extends Serializable
   public readonly STRAFE_THRUST = 0.5;
   public readonly ANGULAR_VELOCITY = Math.PI * 2;
   public readonly TORQUE = 5;
-  public readonly BRAKING_DISTANCE = 0.2;
+  public readonly STOPPING_DISTANCE = 0.2;
   public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
@@ -484,10 +484,10 @@ export class VehiclePhysics extends Serializable
     const v = velocity.length();
 
     // d = (1/2 * mass * v^2) / Force;
-    const stoppingDistance =
-      this.BRAKING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
+    const brakingDistance =
+      this.STOPPING_DISTANCE + (mass * v * v) / (this.BACKWARD_THRUST * 2);
 
-    return stoppingDistance;
+    return brakingDistance;
   }
 
   private getManeuverPhase
@@ -499,7 +499,7 @@ export class VehiclePhysics extends Serializable
     if (distance > brakingDistance)
       return "Accelerating";
 
-    if (distance > this.BRAKING_DISTANCE)
+    if (distance > this.STOPPING_DISTANCE)
       return "Braking";
 
     if (distance > 1)
@@ -526,7 +526,7 @@ export class VehiclePhysics extends Serializable
 
       case "Stopping":
         // Gradual approach at the last few meters.
-        return this.BRAKING_SPEED * distance / this.BRAKING_DISTANCE;
+        return this.BRAKING_SPEED * distance / this.STOPPING_DISTANCE;
 
       case "Stopped":
         return 0;
