@@ -31,6 +31,8 @@ export class FlightScene extends Scene
 
   public init()
   {
+    this.updateCamera();
+
     // ! Throws exception on error.
     this.getZone().initSceneData(this);
 

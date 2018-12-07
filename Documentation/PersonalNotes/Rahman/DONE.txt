@@ -1,3 +1,8 @@
+TODO: Vyzkoušet translaci kamery ve FlightScene, aby byl vizuálně počátek
+  uprostřed obrazovky (je to asi lepší, než tranformovat všechny souřadnice.
+  (a možná to pak udělat i v background scene)
+[done]
+
 TODO: Zobrazovat desiredRotation.
 [done]
 

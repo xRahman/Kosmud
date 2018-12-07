@@ -12,10 +12,6 @@ TODO: Problém je, že braking distance se dynamicky updatuje, takže se může
   dokud držím lmb, tak se pozice waypoint updatuje každej tik).
 { Ono to možná vadit nebude, pokud bude správně fungovat natáčení }
 
-TODO: Vyzkoušet translaci kamery ve FlightScene, aby byl vizuálně počátek
-  uprostřed obrazovky (je to asi lepší, než tranformovat všechny souřadnice.
-  (a možná to pak udělat i v background scene)
-
 
 SUPER IMPORTANT:
 https://stackoverflow.com/questions/44866044/libgdx-box2d-velocity-not-increasing-enough

@@ -9,20 +9,23 @@ import { Vector } from "../../Shared/Physics/Vector";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Connection } from "../../Client/Net/Connection";
 import { Coords } from "../../Shared/Engine/Coords";
+import { Scene } from "../../Client/Engine/Scene";
 
 export class Mouse
 {
   private readonly mousePointer: Phaser.Input.Pointer;
   private readonly mouseManager: Phaser.Input.Mouse.MouseManager;
+  private readonly camera: Phaser.Cameras.Scene2D.Camera;
 
   // private leftButtonDown = false;
   // private middleButtonDown = false;
   // private rightButtonDown = false;
 
-  constructor(input: Phaser.Input.InputPlugin)
+  constructor(scene: Scene.PhaserScene)
   {
-    this.mousePointer = input.activePointer;
-    this.mouseManager = input.mouse;
+    this.mousePointer = scene.input.activePointer;
+    this.mouseManager = scene.input.mouse;
+    this.camera = scene.cameras.main;
 
     // this.mouseManager.disableContextMenu();
 
@@ -59,10 +62,10 @@ export class Mouse
 
   public getPosition()
   {
-    return Coords.ClientToServer.vector
-    (
-      { x: this.mousePointer.x, y: this.mousePointer.y }
-    );
+    const x = this.mousePointer.x + this.camera.scrollX;
+    const y = this.mousePointer.y + this.camera.scrollY;
+
+    return Coords.ClientToServer.vector({ x, y });
   }
 
   // ---------------- Event handlers --------------------

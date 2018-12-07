@@ -77,6 +77,8 @@ export abstract class Scene
   {
     this.width = width;
     this.height = height;
+
+    this.updateCamera();
   }
 
   public loadTexture(textureId: string, textureFilePath: string)
@@ -168,7 +170,7 @@ export abstract class Scene
 
   public createMouse()
   {
-    return new Mouse(this.phaserScene.input);
+    return new Mouse(this.phaserScene);
   }
 
   // ! Throws exception on error.
@@ -215,6 +217,12 @@ export abstract class Scene
     (
       (resolve, reject) => { this.finishLoading = resolve; }
     );
+  }
+
+  protected updateCamera()
+  {
+    this.phaserScene.cameras.main.scrollX = -this.width / 2;
+    this.phaserScene.cameras.main.scrollY = -this.height / 2;
   }
 
   // ---------------- Private methods -------------------
