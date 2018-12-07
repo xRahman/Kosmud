@@ -1,6 +1,11 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Předělat otáčení lodi (dotáčení je strašně pomalé).
+- spočítat, od jakého úhlu musím začít "brzdit".
+- nastavit -MAX_TORQUE.
+
+
 TODO: ShipVectors kreslí i kruhy a tak, asi by se to mělo jmenovat jinak
   (ShipDebugGraphics?)
 
