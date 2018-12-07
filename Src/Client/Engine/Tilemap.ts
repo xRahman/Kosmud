@@ -2,7 +2,7 @@
   This class is not a graphic element, it only stores tilemap data.
 */
 
-import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Coords } from "../../Shared/Engine/Coords";
 import { Zone } from "../../Shared/Game/Zone";
 import { Scene } from "../../Client/Engine/Scene";
 import { Sprite } from "../../Client/Engine/Sprite";
@@ -53,7 +53,7 @@ export class Tilemap extends Shared.Tilemap
       // Translate by half the tile size because tiles in Tiled
       // editor have their origin at top left  but sprites in
       // Phaser engine have their origin  in the middle.
-      phaserSprite = CoordsTransform.ClientToServer.tileObject
+      phaserSprite = Coords.ClientToServer.tileObject
       (
         phaserSprite,
         tileWidth,

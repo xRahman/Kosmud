@@ -9,10 +9,10 @@
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
 
-const SERVER_TO_CLIENT_SCALE = 1000;
-const CLIENT_TO_SERVER_SCALE = 1 / SERVER_TO_CLIENT_SCALE;
+const SERVER_TO_CLIENT_RATIO = 1000;
+const CLIENT_TO_SERVER_RATIO = 1 / SERVER_TO_CLIENT_RATIO;
 
-export namespace CoordsTransform
+export namespace Coords
 {
   export namespace ClientToServer
   {
@@ -23,30 +23,17 @@ export namespace CoordsTransform
 
     export function distance(value: number): number
     {
-      return value * CLIENT_TO_SERVER_SCALE;
+      return transformDistance(value, CLIENT_TO_SERVER_RATIO);
     }
 
-    export function vector({ x, y }: { x: number; y: number }): Vector
+    export function vector(value: { x: number; y: number }): Vector
     {
-      return new Vector
-      (
-        {
-          x: x * CLIENT_TO_SERVER_SCALE,
-          y: -y * CLIENT_TO_SERVER_SCALE
-        }
-      );
+      return transformVector(value, CLIENT_TO_SERVER_RATIO);
     }
 
     export function polygon(points: Physics.Polygon): Physics.Polygon
     {
-      const result = [];
-
-      for (const point of points)
-      {
-        result.push(vector(point));
-      }
-
-      return result;
+      return transformPolygon(points, CLIENT_TO_SERVER_RATIO);
     }
 
     export function tileObject<T extends { x: number; y: number }>
@@ -75,30 +62,47 @@ export namespace CoordsTransform
 
     export function distance(value: number): number
     {
-      return value * SERVER_TO_CLIENT_SCALE;
+      return transformDistance(value, SERVER_TO_CLIENT_RATIO);
     }
 
-    export function vector({ x, y }: { x: number; y: number }): Vector
+    export function vector(value: { x: number; y: number }): Vector
     {
-      return new Vector
-      (
-        {
-          x: x * SERVER_TO_CLIENT_SCALE,
-          y: -y * SERVER_TO_CLIENT_SCALE
-        }
-      );
+      return transformVector(value, SERVER_TO_CLIENT_RATIO);
     }
 
     export function polygon(points: Physics.Polygon): Physics.Polygon
     {
-      const result = [];
-
-      for (const point of points)
-      {
-        result.push(vector(point));
-      }
-
-      return result;
+      return transformPolygon(points, SERVER_TO_CLIENT_RATIO);
     }
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function transformDistance(value: number, ratio: number): number
+{
+  return value * ratio;
+}
+
+function transformVector({ x, y }: { x: number; y: number }, ratio: number)
+{
+  return new Vector
+  (
+    {
+      x: x * ratio,
+      y: -y * ratio
+    }
+  );
+}
+
+function transformPolygon(points: Physics.Polygon, ratio: number)
+{
+  const result = [];
+
+  for (const point of points)
+  {
+    result.push(transformVector(point, ratio));
+  }
+
+  return result;
 }

@@ -8,7 +8,7 @@ import { REPORT } from "../../Shared/Log/REPORT";
 import { Vector } from "../../Shared/Physics/Vector";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Connection } from "../../Client/Net/Connection";
-import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Coords } from "../../Shared/Engine/Coords";
 
 export class Mouse
 {
@@ -59,7 +59,7 @@ export class Mouse
 
   public getPosition()
   {
-    return CoordsTransform.ClientToServer.vector
+    return Coords.ClientToServer.vector
     (
       { x: this.mousePointer.x, y: this.mousePointer.y }
     );

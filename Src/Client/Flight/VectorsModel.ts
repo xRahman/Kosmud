@@ -32,10 +32,11 @@ export class VectorsModel
     // Order of calling determines order of drawing (the last will be on top).
 
     // console.log(vehicle.physics.getDesiredVelocity());
-    console.log
+
+    this.vectorsGraphics.drawVector
     (
-      vehicle.physics.brakingDistance,
-      vehicle.physics.stoppingDistance
+      new Vector({ x: 1, y: 0}).rotate(vehicle.physics.desiredRotation),
+      origin, 1, Graphics.rgb(50, 50, 155), 1
     );
 
     this.vectorsGraphics.drawCircle
@@ -68,17 +69,17 @@ export class VectorsModel
       origin, 1, Graphics.rgb(160, 160, 0), 1
     );
 
-    this.vectorsGraphics.drawVector
-    (
-      vehicle.physics.getDesiredForwardSteeringForce(),
-      origin, 1, Graphics.rgb(110, 110, 0), 1
-    );
+    // this.vectorsGraphics.drawVector
+    // (
+    //   vehicle.physics.getDesiredForwardSteeringForce(),
+    //   origin, 1, Graphics.rgb(110, 110, 0), 1
+    // );
 
-    this.vectorsGraphics.drawVector
-    (
-      vehicle.physics.getDesiredLeftwardSteeringForce(),
-      origin, 1, Graphics.rgb(110, 110, 0), 1
-    );
+    // this.vectorsGraphics.drawVector
+    // (
+    //   vehicle.physics.getDesiredLeftwardSteeringForce(),
+    //   origin, 1, Graphics.rgb(110, 110, 0), 1
+    // );
 
     this.vectorsGraphics.drawVector
     (

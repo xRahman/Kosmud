@@ -17,8 +17,10 @@ import { Engine } from "../../Shared/Engine/Engine";
 import { Zone } from "../../Shared/Game/Zone";
 import { Entity } from "../../Shared/Class/Entity";
 import { Physics } from "../../Shared/Physics/Physics";
-import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Coords } from "../../Shared/Engine/Coords";
 import { Serializable } from "../../Shared/Class/Serializable";
+
+const STOPPED_DISTANCE = pixels(1);
 
 export class VehiclePhysics extends Serializable
 {
@@ -40,7 +42,7 @@ export class VehiclePhysics extends Serializable
   public readonly STRAFE_THRUST = 0.5;
   public readonly ANGULAR_VELOCITY = Math.PI * 2;
   public readonly TORQUE = 5;
-  public readonly STOPPING_DISTANCE = pixels(100);
+  public readonly STOPPING_DISTANCE = pixels(20);
   public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
@@ -80,6 +82,7 @@ export class VehiclePhysics extends Serializable
 
   public brakingDistance = 0;
   public stoppingDistance = 0;
+  public desiredRotation = 0;
 
   /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
   // protected readonly physicsBody = new PhysicsBody(this);
@@ -207,21 +210,26 @@ export class VehiclePhysics extends Serializable
 
     const desiredVelocity = new Vector(targetVector).setLength(desiredSpeed);
 
-    console.log(desiredPosition, currentPosition);
-
-    const desiredRotation = this.computeDesiredRotation
+    const desiredSteeringForce = Vector.v1MinusV2
     (
-      maneuverPhase, currentRotation
+      desiredVelocity,
+      currentVelocity
+    );
+
+    this.desiredRotation = computeDesiredRotation
+    (
+      maneuverPhase, currentRotation, desiredVelocity, desiredSteeringForce
     );
 
     this.computeLinearForces
     (
+      desiredSteeringForce,
       desiredVelocity,
       currentVelocity,
       currentRotation
     );
 
-    this.computeAngularForces(currentRotation, desiredRotation);
+    this.computeAngularForces(currentRotation, this.desiredRotation);
 
     this.brakingDistance = brakingDistance;
     this.stoppingDistance = this.STOPPING_DISTANCE;
@@ -246,8 +254,15 @@ export class VehiclePhysics extends Serializable
     // 2. Scale 'desired velocity' to maximum speed.
     desiredVelocity.setLength(this.MAX_SPEED);
 
+    const desiredSteeringForce = Vector.v1MinusV2
+    (
+      desiredVelocity,
+      currentVelocity
+    );
+
     this.computeLinearForces
     (
+      desiredSteeringForce,
       desiredVelocity,
       currentVelocity,
       currentRotation
@@ -347,17 +362,12 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   private computeLinearForces
   (
+    desiredSteeringForce: Vector,
     desiredVelocity: Vector,
     currentVelocity: Vector,
     currentRotation: number,
   )
   {
-    // 3. 'steering force' = 'desired velocity' - 'current velocity'.
-    const desiredSteeringForce = Vector.v1MinusV2
-    (
-      desiredVelocity,
-      currentVelocity
-    );
 
     // 3.5 Split desiredSteeringForce to it's Forward/Backward and
     // Left/Right part.
@@ -509,7 +519,7 @@ export class VehiclePhysics extends Serializable
     if (distance > this.STOPPING_DISTANCE)
       return "Braking";
 
-    if (distance > 1)
+    if (distance > STOPPED_DISTANCE)
       return "Stopping";
 
     return "Stopped";
@@ -543,36 +553,6 @@ export class VehiclePhysics extends Serializable
     }
   }
 
-  private computeDesiredRotation
-  (
-    maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
-    currentRotation: number
-  )
-  {
-    let desiredRotation = this.desiredSteeringForce.getRotation();
-
-    switch (maneuverPhase)
-    {
-      case "Accelerating":
-        return Angle.normalize(desiredRotation);
-
-      case "Braking":
-        // When we are braking, desired rotation is opposite to
-        // desired steering force direction.
-        return Angle.normalize(desiredRotation += Math.PI);
-
-      case "Stopping":
-      case "Stopped":
-        // If we are stopped or nearly stopped, pass current rotation
-        // as desired rotation to prevent rotating in-place
-        // (it doesn't work perfectly but it helps a bit).
-        return Angle.normalize(desiredRotation = currentRotation);
-
-      default:
-        throw Syslog.reportMissingCase(maneuverPhase);
-    }
-  }
-
   // ! Throws exception on error.
   private validateSpeed(desiredSpeed: number)
   {
@@ -594,7 +574,7 @@ export class VehiclePhysics extends Serializable
 
 function pixels(value: number)
 {
-  return CoordsTransform.ClientToServer.distance(value);
+  return Coords.ClientToServer.distance(value);
 }
 
 function computeDesiredAngularVelocity
@@ -613,6 +593,35 @@ function computeDesiredAngularVelocity
     desiredAngularVelocity += Math.PI * 2;
 
   return desiredAngularVelocity;
+}
+
+function computeDesiredRotation
+(
+  maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
+  currentRotation: number,
+  desiredVelocity: Vector,
+  desiredSteeringForce: Vector
+)
+{
+  switch (maneuverPhase)
+  {
+    case "Accelerating":
+      return Angle.normalize(desiredSteeringForce.getRotation());
+
+    case "Braking":
+      // When we are braking, turn in the direction of desired velocity.
+      return Angle.normalize(desiredVelocity.getRotation());
+
+    case "Stopping":
+    case "Stopped":
+      // If we are stopped or nearly stopped, pass current rotation
+      // as desired rotation to prevent rotating in-place
+      // (it doesn't work perfectly but it helps a bit).
+      return Angle.normalize(currentRotation);
+
+    default:
+      throw Syslog.reportMissingCase(maneuverPhase);
+  }
 }
 
 /*

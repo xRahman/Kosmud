@@ -9,7 +9,7 @@
 */
 
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
-import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Coords } from "../../Shared/Engine/Coords";
 
 export abstract class PhaserObject
 {
@@ -21,19 +21,19 @@ export abstract class PhaserObject
   {
     this.phaserObject.setRotation
     (
-      CoordsTransform.ServerToClient.angle(rotation)
+      Coords.ServerToClient.angle(rotation)
     );
   }
 
   public getRotation()
   {
-    return CoordsTransform.ClientToServer.angle(this.phaserObject.rotation);
+    return Coords.ClientToServer.angle(this.phaserObject.rotation);
   }
 
   public setPosition(position: { x: number; y: number })
   {
     const transformedPosition =
-      CoordsTransform.ServerToClient.vector(position);
+      Coords.ServerToClient.vector(position);
 
     this.phaserObject.setX(transformedPosition.x);
     this.phaserObject.setY(transformedPosition.y);
@@ -41,7 +41,7 @@ export abstract class PhaserObject
 
   public getPosition()
   {
-    return CoordsTransform.ClientToServer.vector(this.phaserObject);
+    return Coords.ClientToServer.vector(this.phaserObject);
   }
 
   public setPixelPosition({ x, y }: { x: number; y: number })

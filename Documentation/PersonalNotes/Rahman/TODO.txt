@@ -10,10 +10,12 @@ TODO: Problém je, že braking distance se dynamicky updatuje, takže se může
 - asi bych měl braking distanci měnit jen dokud jsem v accelerating fázi,
   případně po updatu waypointu (čímž se ovšem vrátím k problému, protože
   dokud držím lmb, tak se pozice waypoint updatuje každej tik).
+{ Ono to možná vadit nebude, pokud bude správně fungovat natáčení }
 
-Shape se vytahuje z tilemapy:
-  Na clientu: Ship.createModel()
-  Na serveru: VehiclePhysics.addToPhysicsWorld()
+TODO: Vyzkoušet translaci kamery ve FlightScene, aby byl vizuálně počátek
+  uprostřed obrazovky (je to asi lepší, než tranformovat všechny souřadnice.
+  (a možná to pak udělat i v background scene)
+
 
 SUPER IMPORTANT:
 https://stackoverflow.com/questions/44866044/libgdx-box2d-velocity-not-increasing-enough
@@ -31,8 +33,6 @@ TODO: CoordsTransform možná dát do /Client/Engine, je to čistě zobrazovací
   - tak ne, CoordsTransform se používá i v Shared/Tilemap
     (data tilemapy jsou v client koordinátech)
 Ale mohla by bejt v Shared/Engine místo v Shared/Physics
-
-TODO: V CoordsTransform volat parametrizované funkce (deduplikace kódu).
 
 TODO: Zamyslet se nad parametrem pro akceleraci lodi (kterým by se asi
   násobila steering force). Momentálně je omezené pouze maximum, což

@@ -12,7 +12,7 @@
 import "../../Shared/Utils/Number";
 
 import { Vector } from "../../Shared/Physics/Vector";
-import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Coords } from "../../Shared/Engine/Coords";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Scene } from "../../Client/Engine/Scene";
 import { PhaserObject } from "../../Client/Engine/PhaserObject";
@@ -58,8 +58,8 @@ export class Graphics extends PhaserObject
   {
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
-    const transformedOrigin = CoordsTransform.ServerToClient.vector(origin);
-    const transformedRadius = CoordsTransform.ServerToClient.distance(radius);
+    const transformedOrigin = Coords.ServerToClient.vector(origin);
+    const transformedRadius = Coords.ServerToClient.distance(radius);
 
     this.phaserObject.strokeCircle
     (
@@ -93,7 +93,7 @@ export class Graphics extends PhaserObject
   {
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
-    const tranformedPolygon = CoordsTransform.ServerToClient.polygon(polygon);
+    const tranformedPolygon = Coords.ServerToClient.polygon(polygon);
 
     this.phaserObject.strokePoints(tranformedPolygon, true);
   }
@@ -108,7 +108,7 @@ export class Graphics extends PhaserObject
   )
   {
     // Limit arrow fletching length to 20 pixels.
-    const MAX_FLETCHING_LENGTH = CoordsTransform.ClientToServer.distance(20);
+    const MAX_FLETCHING_LENGTH = Coords.ClientToServer.distance(20);
 
     this.phaserObject.lineStyle(lineWidth, color, alpha0to1);
 
@@ -137,8 +137,8 @@ export class Graphics extends PhaserObject
   /// and followed by 'this.graphics.closePath(); this.graphics.strokePath();'.
   private drawLine(from: Vector, to: Vector)
   {
-    const transformedFrom = CoordsTransform.ServerToClient.vector(from);
-    const transformedTo = CoordsTransform.ServerToClient.vector(to);
+    const transformedFrom = Coords.ServerToClient.vector(from);
+    const transformedTo = Coords.ServerToClient.vector(to);
 
     this.phaserObject.moveTo(transformedFrom.x, transformedFrom.y);
     this.phaserObject.lineTo(transformedTo.x, transformedTo.y);

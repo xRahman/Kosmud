@@ -2,7 +2,7 @@
   Shared abstract ancestor of Tilemap classes.
 */
 
-import { CoordsTransform } from "../../Shared/Physics/CoordsTransform";
+import { Coords } from "../../Shared/Engine/Coords";
 import { Physics } from "../../Shared/Physics/Physics";
 
 export class Tilemap
@@ -305,7 +305,7 @@ function getPolygon
   // We also need to translate to the middle of the tile,
   // because Tiled tiles have their origin at top left but
   // sprites in Phaser have their origin in the midle.
-  offset = CoordsTransform.ClientToServer.tileObject
+  offset = Coords.ClientToServer.tileObject
   (
     offset, tileWidth, tileHeight
   );
@@ -316,7 +316,7 @@ function getPolygon
   {
     polygon.push
     (
-      CoordsTransform.ClientToServer.vector
+      Coords.ClientToServer.vector
       (
         {
           x: (point.x + offset.x),

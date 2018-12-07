@@ -1,3 +1,9 @@
+TODO: Zobrazovat desiredRotation.
+[done]
+
+TODO: V CoordsTransform volat parametrizované funkce (deduplikace kódu).
+[done]
+
 TODO: Při té příležitosti asi změnit FPS fyziky (klient se klidně může
   renderovat častějš).
   - otázka je, jestli 50 nebo ještě míň (asi to bude chtít vyzkoušet).
