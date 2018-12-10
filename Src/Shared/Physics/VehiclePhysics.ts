@@ -21,6 +21,9 @@ import { Coords } from "../../Shared/Engine/Coords";
 import { Serializable } from "../../Shared/Class/Serializable";
 
 const STOPPED_DISTANCE = pixels(1);
+const STOPPED_ANGLE = Math.PI / 100;
+
+type ManeuverPhase = "Accelerating" | "Braking" | "Stopping" | "Stopped";
 
 export class VehiclePhysics extends Serializable
 {
@@ -40,9 +43,12 @@ export class VehiclePhysics extends Serializable
   public readonly FORWARD_THRUST = 1;
   public readonly BACKWARD_THRUST = 0.2;
   public readonly STRAFE_THRUST = 0.5;
-  public readonly ANGULAR_VELOCITY = Math.PI * 2;
-  public readonly TORQUE = 5;
+  // public readonly ANGULAR_VELOCITY = Math.PI * 2;
+  public readonly ANGULAR_VELOCITY = Math.PI / 2;
+  // public readonly TORQUE = 5;
+  public readonly TORQUE = 0.1;
   public readonly STOPPING_DISTANCE = pixels(20);
+  public readonly STOPPING_ANGLE = Math.PI / 20;
   public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
@@ -127,6 +133,12 @@ export class VehiclePhysics extends Serializable
     this.getPhysicsBody().setVelocity(velocity);
   }
 
+  // ! Throws exception on error.
+  public getAngularVelocity()
+  {
+    return this.getPhysicsBody().getAngularVelocity();
+  }
+
   public getForwardThrustRatio(): MinusOneToOne
   {
     if (this.forwardThrust >= 0)
@@ -202,8 +214,10 @@ export class VehiclePhysics extends Serializable
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
     const distance = targetVector.length();
     const brakingDistance = this.computeBrakingDistance(currentVelocity);
-    const maneuverPhase = this.getManeuverPhase(distance, brakingDistance);
-    const desiredSpeed = this.computeDesiredSpeed(maneuverPhase, distance);
+  /// Test rotace:
+  // const linearPhase = this.determineLinearPhase(distance, brakingDistance);
+    const linearPhase = "Braking";
+    const desiredSpeed = this.computeDesiredSpeed(linearPhase, distance);
 
     // ! Throws exception on error.
     this.validateSpeed(desiredSpeed);
@@ -218,18 +232,40 @@ export class VehiclePhysics extends Serializable
 
     this.desiredRotation = computeDesiredRotation
     (
-      maneuverPhase, currentRotation, desiredVelocity, desiredSteeringForce
+      linearPhase, currentRotation, desiredVelocity, desiredSteeringForce
     );
 
-    this.computeLinearForces
+  /// Disablováno na testování rotace.
+    // this.computeLinearForces
+    // (
+    //   desiredSteeringForce,
+    //   desiredVelocity,
+    //   currentVelocity,
+    //   currentRotation
+    // );
+
+    // ! Throws exception on error.
+    const currentAngularVelocity = this.getAngularVelocity();
+    const angularDistance = this.desiredRotation - currentRotation;
+    const brakingAngle = this.computeBrakingAngle(currentAngularVelocity);
+    const angularPhase = this.determineAngularPhase
     (
-      desiredSteeringForce,
-      desiredVelocity,
-      currentVelocity,
-      currentRotation
+      angularDistance,
+      brakingAngle
     );
 
-    this.computeAngularForces(currentRotation, this.desiredRotation);
+    console.log
+    (
+      this.desiredRotation, angularDistance, angularPhase, brakingAngle
+    );
+
+    this.computeAngularForces
+    (
+      currentRotation,
+      this.desiredRotation,
+      angularDistance,
+      angularPhase
+    );
 
     this.brakingDistance = brakingDistance;
     this.stoppingDistance = this.STOPPING_DISTANCE;
@@ -239,7 +275,7 @@ export class VehiclePhysics extends Serializable
   protected seek()
   {
     // ! Throws exception on error.
-    const currentVelocity = this.getPhysicsBody().getVelocity();
+    const currentVelocity = this.getVelocity();
     // ! Throws exception on error.
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
@@ -269,7 +305,17 @@ export class VehiclePhysics extends Serializable
     );
     const desiredRotation = desiredVelocity.getRotation();
 
-    this.computeAngularForces(currentRotation, desiredRotation);
+    const angularDistance = this.desiredRotation - currentRotation;
+    /// TODO (zatím natvrdo):
+    const angularPhase = "Accelerating";
+
+    this.computeAngularForces
+    (
+      currentRotation,
+      desiredRotation,
+      angularDistance,
+      angularPhase
+    );
   }
 
   // ---------------- Private methods -------------------
@@ -458,39 +504,64 @@ export class VehiclePhysics extends Serializable
   private computeAngularForces
   (
     currentRotation: number,
-    desiredRotation: number
+    desiredRotation: number,
+    angularDistance: number,
+    angularPhase: ManeuverPhase
   )
   {
-    // ! Throws exception on error.
-    const oldAngularVelocity = this.getPhysicsBody().getAngularVelocity();
+    switch (angularPhase)
+    {
+      case "Accelerating":
+        this.torque = angularDistance > 0 ? this.TORQUE : -this.TORQUE;
+        break;
 
-    if (currentRotation < 0 || currentRotation > Math.PI * 2)
-      throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
+      case "Braking":
+        this.torque = angularDistance > 0 ? -this.TORQUE : this.TORQUE;
+        break;
 
-    if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
-      throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
+      case "Stopping":
+        /// TODO:
+        // Gradual approach at the last few meters.
+        // return this.BRAKING_SPEED * distance / this.STOPPING_DISTANCE;
+        this.torque = 0;
+        break;
 
-    // ! Throws exception on error.
-    const inertia = this.getPhysicsBody().getInertia();
+      case "Stopped":
+        this.torque = 0;
+        break;
 
-    const desiredAngularVelocity = computeDesiredAngularVelocity
-    (
-      desiredRotation, currentRotation
-    );
+      default:
+        throw Syslog.reportMissingCase(angularPhase);
+    }
 
-    const newAngularVelocity = Number(desiredAngularVelocity).clampTo
-    (
-      -this.ANGULAR_VELOCITY, this.ANGULAR_VELOCITY
-    );
+  // // ! Throws exception on error.
+  // const oldAngularVelocity = this.getPhysicsBody().getAngularVelocity();
 
-    // Multiplication by 'FPS' prevents overturning the desired angle
-    // (as suggested by Box2D example).
-    let torque =
-      inertia * (newAngularVelocity - oldAngularVelocity) * Engine.FPS;
+  // if (currentRotation < 0 || currentRotation > Math.PI * 2)
+  //   throw new Error(`'currentRotation' out of bounds: ${currentRotation}`);
 
-    torque = Number(torque).clampTo(-this.TORQUE, this.TORQUE);
+  // if (desiredRotation < 0 || desiredRotation > Math.PI * 2)
+  //   throw new Error(`'desiredRotation' out of bounds: ${desiredRotation}`);
 
-    this.torque = torque;
+  // // ! Throws exception on error.
+  // const inertia = this.getPhysicsBody().getInertia();
+
+  // const desiredAngularVelocity = computeDesiredAngularVelocity
+  // (
+  //   desiredRotation, currentRotation
+  // );
+
+  // const newAngularVelocity = Number(desiredAngularVelocity).clampTo
+  // (
+  //   -this.ANGULAR_VELOCITY, this.ANGULAR_VELOCITY
+  // );
+
+  // // Multiplication by 'FPS' prevents overturning the desired angle
+  // // (as suggested by Box2D example).
+  // const torque =
+  //   inertia * (newAngularVelocity - oldAngularVelocity) * Engine.FPS;
+
+  // this.torque = Number(torque).clampTo(-this.TORQUE, this.TORQUE);
   }
 
   // ! Throws exception on error.
@@ -507,7 +578,20 @@ export class VehiclePhysics extends Serializable
     return brakingDistance;
   }
 
-  private getManeuverPhase
+  private computeBrakingAngle(angularVelocity: number)
+  {
+    // ! Throws exception on error.
+    const i = this.getPhysicsBody().getInertia();
+    const v = angularVelocity;
+    const F = this.TORQUE;
+
+    // d = (1/2 * mass * v^2) / Force;
+    const brakingDistance = this.STOPPING_ANGLE + (i * v * v) / (F * 2);
+
+    return brakingDistance;
+  }
+
+  private determineLinearPhase
   (
     distance: number,
     brakingDistance: number
@@ -525,13 +609,27 @@ export class VehiclePhysics extends Serializable
     return "Stopped";
   }
 
-  private computeDesiredSpeed
+  private determineAngularPhase
   (
-    maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
-    distance: number
+    angularDistance: number,
+    angularBrakingDistance: number
   )
   {
-    switch (maneuverPhase)
+    if (angularDistance > angularBrakingDistance)
+      return "Accelerating";
+
+    if (angularDistance > this.STOPPING_ANGLE)
+      return "Braking";
+
+    if (angularDistance > STOPPED_ANGLE)
+      return "Stopping";
+
+    return "Stopped";
+  }
+
+  private computeDesiredSpeed(linearPhase: ManeuverPhase, distance: number)
+  {
+    switch (linearPhase)
     {
       case "Accelerating":
         return this.MAX_SPEED;
@@ -549,7 +647,7 @@ export class VehiclePhysics extends Serializable
         return 0;
 
       default:
-        throw Syslog.reportMissingCase(maneuverPhase);
+        throw Syslog.reportMissingCase(linearPhase);
     }
   }
 

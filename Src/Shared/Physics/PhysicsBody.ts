@@ -10,7 +10,7 @@ import { Entity } from "../../Shared/Class/Entity";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
-  b2FixtureDef, b2Shape, b2ShapeType } from "../../Shared/Box2D/Box2D";
+  b2FixtureDef, b2ShapeType, b2MassData } from "../../Shared/Box2D/Box2D";
 import { VehiclePhysics } from "./VehiclePhysics";
 
 export class PhysicsBody
@@ -28,6 +28,11 @@ export class PhysicsBody
   )
   {
     this.box2dBody = createBody(box2dWorld, physicsShape, entityPhysics);
+
+    // Set center of mass regardless to where box2d computed it.
+    // This causes sprites to always rotate around their origin
+    // regardless of actual mass distribution.
+    this.setCenterOfMass({ x: 0, y: 0 });
   }
 
   // ! Throws exception on error.
@@ -79,6 +84,22 @@ export class PhysicsBody
   {
     // ! Throws exception on error.
     return Number(this.box2dBody.GetMass()).validate();
+  }
+
+  public getCenterOfMass()
+  {
+    return new Vector(this.box2dBody.GetLocalCenter()).validate();
+  }
+
+  public setCenterOfMass({ x, y }: { x: number; y: number })
+  {
+    const massData = new b2MassData();
+
+    this.box2dBody.GetMassData(massData);
+
+    massData.center.Set(x, y);
+
+    this.box2dBody.SetMassData(massData);
   }
 
   // ! Throws exception on error.

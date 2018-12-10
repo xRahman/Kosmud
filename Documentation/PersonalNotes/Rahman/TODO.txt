@@ -1,6 +1,25 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Rotace bych měl udělat stejně jako lineární pohyb, tzn:
+- podle fáze počítat desiredAngularVelocity
+- na základě desiredAngularVelocity pak spočítat torque.
+  - otázka je, jak.
+    - pokud je aktuální angular velocity menší než desired, tak
+      setnout maximální TORQUE.
+    - když je větší, tak naopak setnout -TORQUE.
+Ono je vůbec otázka, v čem se to liší od toho, když podle fáze rovnou
+  určím torque...
+  - nemám tam teď angular speed limit, což ale možná nevadí. I když...
+  - ale jo, to je asi odpověď - liší se to limitem na rychlost rotace.
+
+TODO: Loď se zjevně netočí kolem originu, ale kolem center of mass.
+  To znamená, že vzálenosti, jako třeba stopping distance, se měří
+  od špatného bodu.
+- chtělo by to translatovat tak, aby byl origin v center of mass.
+{Prozatím jsem to hacknul tak, že nastavuju center of mass na [0, 0]}
+[done]
+
 TODO: Předělat otáčení lodi (dotáčení je strašně pomalé).
 - spočítat, od jakého úhlu musím začít "brzdit".
 - nastavit -MAX_TORQUE.
