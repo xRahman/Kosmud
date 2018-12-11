@@ -13,6 +13,48 @@ Ono je vůbec otázka, v čem se to liší od toho, když podle fáze rovnou
   - nemám tam teď angular speed limit, což ale možná nevadí. I když...
   - ale jo, to je asi odpověď - liší se to limitem na rychlost rotace.
 
+Kdy začít s gradual approachem?
+- v zásadě v okamžiku, kdy by mi další tik přehodil rychlost do opačného směru.
+  - to se dá spočítat.
+    - znám force (TORQUE nebo THRUST), znám hmotnost. Z toho spočítám
+      zrychlení: F = m * a, tzn a = F / m.
+    - zrychlení je změna rychlosti za sekundu. (a / FPS) je změna rychlosti
+      za 1 frame. Když tahle hodnota přesáhne current velocity, je třeba
+      nasadit gradual approach.
+      - to znamená:
+        - zrušit stopping distance
+        - stopped distance vlastně taky nepotřebuju.
+          Ta tam byla kvůli tomu, aby se na závěr dala desired speed 0.
+            (což je stejně jedno, protože force pak bude approachovat
+             tak jako tak. Zastavit na fleku nejspíš vůbec nejde, leda bych
+             natvrdo vehiclu setnul speed 0. Každopádně to teď nepotřebuju).
+          - I když... V linear forces jsem nedával nulovou desired speed,
+            protože jsem potřeboval držet údaj o směru. Ten ale v zásadě
+            můžu držet v jiné proměnné.
+          - každopádně na rotaci to nepotřebuju.
+- problém ale je, že když budu počítat brzdnou dráhu přesně, tak už na to
+  dobrždění nemusí bejt čas.
+  - vlastně ne. Začnu graduálně approarchovat až v okamžiku, kdy bych desired
+    velicity přesáhnul, takže to je v pohodě.
+
+Možná bych měl zavést různé typy pro fáze různých behaviourů:
+  SeekPhase, ArrivePhase.
+- to pak ale nebudou fungovat společné funkce computeLinearForces
+  a computeAngularForces.
+  (ty by neměly fázi potřebovat, takže fungovat budou)
+(Každopádně to zatím nepotřebuju řešit).
+
+Principiální problém:
+  Pokud je brakingAngle úhel, kdy musím začít brzdit, abych to přesně stihnul,
+  tak kdykoliv v průběhu brždění bych měl bejt přesně ba braking anglu.
+- Tzn. braking angle má smysl čistě v průběhu akcelerace jako vodítko,
+  kdy mám začít brzdit.
+
+TODO: Pokud opravdu zruším stopping distance, tak ji ani neposílat
+  na klient a nezobrazovat.
+
+TODO: desiredAngularVelocity by měla mít směr (znaménko).
+
 TODO: Loď se zjevně netočí kolem originu, ale kolem center of mass.
   To znamená, že vzálenosti, jako třeba stopping distance, se měří
   od špatného bodu.

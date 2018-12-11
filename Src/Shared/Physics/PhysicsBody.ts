@@ -75,7 +75,15 @@ export class PhysicsBody
   public getInertia()
   {
     // ! Throws exception on error.
-    return Number(this.box2dBody.GetInertia()).validate();
+    const inertia = Number(this.box2dBody.GetInertia()).validate();
+
+    if (inertia === 0)
+    {
+      throw new Error(`Physics body of ${this.entity.debugId}`
+        + ` has zero inertia`);
+    }
+
+    return inertia;
   }
 
   // ! Throws exception on error.

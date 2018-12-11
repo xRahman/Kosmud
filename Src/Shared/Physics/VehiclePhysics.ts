@@ -20,10 +20,13 @@ import { Physics } from "../../Shared/Physics/Physics";
 import { Coords } from "../../Shared/Engine/Coords";
 import { Serializable } from "../../Shared/Class/Serializable";
 
-const STOPPED_DISTANCE = pixels(1);
-const STOPPED_ANGLE = Math.PI / 100;
+// Tohle je kvůli tomu, aby se na konci manévru setnula nulová desired
+// velocity. Nejspíš to ale pořeším jinak - směr budu držet zvlášť
+// a desired velocity bude rovnou nulová.
+// const STOPPED_DISTANCE = pixels(1);
+// const STOPPED_ANGLE = Math.PI / 100;
 
-type ManeuverPhase = "Accelerating" | "Braking" | "Stopping" | "Stopped";
+type ArrivePhase = "Accelerating" | "Braking";
 
 export class VehiclePhysics extends Serializable
 {
@@ -44,12 +47,12 @@ export class VehiclePhysics extends Serializable
   public readonly BACKWARD_THRUST = 0.2;
   public readonly STRAFE_THRUST = 0.5;
   // public readonly ANGULAR_VELOCITY = Math.PI * 2;
-  public readonly ANGULAR_VELOCITY = Math.PI / 2;
+  public readonly MAX_ANGULAR_VELOCITY = Math.PI / 2;
   // public readonly TORQUE = 5;
   public readonly TORQUE = 0.1;
-  public readonly STOPPING_DISTANCE = pixels(20);
-  public readonly STOPPING_ANGLE = Math.PI / 20;
-  public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
+  // public readonly STOPPING_DISTANCE = pixels(20);
+  // public readonly STOPPING_ANGLE = Math.PI / 20;
+  // public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
 
   // public shapeId: string | "Not set" = "Not set";
   /// V zásadě asi není důvod, proč by 'shapeId' nemohlo být setnuté vždycky.
@@ -94,6 +97,9 @@ export class VehiclePhysics extends Serializable
   // protected readonly physicsBody = new PhysicsBody(this);
   private physicsBody: PhysicsBody | "Not in physics world" =
     "Not in physics world";
+
+  private brakingAngle = 0;
+  private arriveAngularPhase: ArrivePhase = "Braking";
 
   constructor(private readonly entity: Entity)
   {
@@ -210,14 +216,14 @@ export class VehiclePhysics extends Serializable
     // ! Throws exception on error.
     // Rotation in Box2D can be negative or even greater than 2π.
     // We need to fix that so we can correcly subtract angles.
-    const currentRotation = Angle.normalize(this.getRotation());
+    const currentRotation = Angle.zeroTo2Pi(this.getRotation());
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
     const distance = targetVector.length();
     const brakingDistance = this.computeBrakingDistance(currentVelocity);
   /// Test rotace:
-  // const linearPhase = this.determineLinearPhase(distance, brakingDistance);
+  // const linearPhase = determineLinearPhase(distance, brakingDistance);
     const linearPhase = "Braking";
-    const desiredSpeed = this.computeDesiredSpeed(linearPhase, distance);
+    const desiredSpeed = this.getDesiredSpeed(linearPhase);
 
     // ! Throws exception on error.
     this.validateSpeed(desiredSpeed);
@@ -230,9 +236,12 @@ export class VehiclePhysics extends Serializable
       currentVelocity
     );
 
+    // Rotaci počítám z targetVectoru místo z desiredVelocity,
+    // protože při brždění je desiredVelocity nulová a nedá se
+    // z ní tudíž rotace spočítat.
     this.desiredRotation = computeDesiredRotation
     (
-      linearPhase, currentRotation, desiredVelocity, desiredSteeringForce
+      linearPhase, currentRotation, targetVector, desiredSteeringForce
     );
 
   /// Disablováno na testování rotace.
@@ -246,77 +255,114 @@ export class VehiclePhysics extends Serializable
 
     // ! Throws exception on error.
     const currentAngularVelocity = this.getAngularVelocity();
-    const angularDistance = this.desiredRotation - currentRotation;
-    const brakingAngle = this.computeBrakingAngle(currentAngularVelocity);
-    const angularPhase = this.determineAngularPhase
+    // Make sure we turn the right way.
+    const angularDistance = Angle.minusPiToPi
     (
-      angularDistance,
-      brakingAngle
+      this.desiredRotation - currentRotation
+    );
+
+    // Updatovat braking angle pouze při akceleraci
+    // (možná bude problém při znovuzrychlování, uvidíme).
+    if (this.arriveAngularPhase === "Accelerating")
+    {
+      this.brakingAngle = this.computeBrakingAngle(currentAngularVelocity);
+    }
+    else
+    {
+      /// IDEA: Číslo o kousek větší než úhel, který mi ještě zbejvá.
+      /// (too sleepy to thing...)
+      this.brakingAngle = TODO;
+    }
+
+    this.arriveAngularPhase = determineAngularPhase
+    (
+      angularDistance, this.brakingAngle
+    );
+
+    // console.log(angularPhase);
+
+    const desiredAngularVelocity = this.getDesiredAngularVelocity
+    (
+      this.arriveAngularPhase, angularDistance
     );
 
     console.log
     (
-      this.desiredRotation, angularDistance, angularPhase, brakingAngle
+      // this.desiredRotation,
+      // currentRotation,
+      angularDistance,
+      this.brakingAngle,
+      this.arriveAngularPhase,
+      desiredAngularVelocity
     );
 
-    this.computeAngularForces
-    (
-      currentRotation,
-      this.desiredRotation,
-      angularDistance,
-      angularPhase
-    );
+    // console.log
+    // (
+    //   this.desiredRotation, angularDistance, angularPhase, brakingAngle
+    // );
+
+    // this.computeAngularForces
+    // (
+    //   currentRotation,
+    //   this.desiredRotation,
+    //   angularDistance,
+    //   angularPhase
+    // );
+    this.computeAngularForces(desiredAngularVelocity);
 
     this.brakingDistance = brakingDistance;
-    this.stoppingDistance = this.STOPPING_DISTANCE;
+    // this.stoppingDistance = this.STOPPING_DISTANCE;
   }
 
-  // ! Throws exception on error.
-  protected seek()
-  {
-    // ! Throws exception on error.
-    const currentVelocity = this.getVelocity();
-    // ! Throws exception on error.
-    // Rotation in Box2D can be negative or even greater than 2π.
-    // We need to fix that so we can correcly subtract angles.
-    const currentRotation = Angle.normalize(this.getRotation());
-    // ! Throws exception on error.
-    const currentPosition = this.getPosition();
-    const desiredPosition = this.waypoint;
+// // ! Throws exception on error.
+// protected seek()
+// {
+//   // ! Throws exception on error.
+//   const currentVelocity = this.getVelocity();
+//   // ! Throws exception on error.
+//   // Rotation in Box2D can be negative or even greater than 2π.
+//   // We need to fix that so we can correcly subtract angles.
+//   const currentRotation = Angle.normalize(this.getRotation());
+//   // ! Throws exception on error.
+//   const currentPosition = this.getPosition();
+//   const desiredPosition = this.waypoint;
 
-    // 1. 'desired velocity' = 'desired position' - 'current position'.
-    const desiredVelocity = Vector.v1MinusV2(desiredPosition, currentPosition);
+//   // 1. 'desired velocity' = 'desired position' - 'current position'.
+//   const desiredVelocity = Vector.v1MinusV2
+//   (
+//     desiredPosition, currentPosition
+//   );
 
-    // 2. Scale 'desired velocity' to maximum speed.
-    desiredVelocity.setLength(this.MAX_SPEED);
+//   // 2. Scale 'desired velocity' to maximum speed.
+//   desiredVelocity.setLength(this.MAX_SPEED);
 
-    const desiredSteeringForce = Vector.v1MinusV2
-    (
-      desiredVelocity,
-      currentVelocity
-    );
+//   const desiredSteeringForce = Vector.v1MinusV2
+//   (
+//     desiredVelocity,
+//     currentVelocity
+//   );
 
-    this.computeLinearForces
-    (
-      desiredSteeringForce,
-      desiredVelocity,
-      currentVelocity,
-      currentRotation
-    );
-    const desiredRotation = desiredVelocity.getRotation();
+//   this.computeLinearForces
+//   (
+//     desiredSteeringForce,
+//     desiredVelocity,
+//     currentVelocity,
+//     currentRotation
+//   );
+//   const desiredRotation = desiredVelocity.getRotation();
 
-    const angularDistance = this.desiredRotation - currentRotation;
-    /// TODO (zatím natvrdo):
-    const angularPhase = "Accelerating";
+//   const angularDistance = this.desiredRotation - currentRotation;
+//   /// TODO (zatím natvrdo):
+//   const angularPhase = "Accelerating";
 
-    this.computeAngularForces
-    (
-      currentRotation,
-      desiredRotation,
-      angularDistance,
-      angularPhase
-    );
-  }
+//   this.computeAngularForces
+//   (
+//     currentRotation,
+//     desiredRotation,
+//     angularDistance,
+//     angularPhase
+//   );
+// }
 
   // ---------------- Private methods -------------------
 
@@ -422,7 +468,7 @@ export class VehiclePhysics extends Serializable
     // https://math.oregonstate.edu/home/programs/undergrad/
     //   CalculusQuestStudyGuides/vcalc/dotprod/dotprod.html
 
-    const leftwardRotation = Angle.normalize(currentRotation + Math.PI / 2);
+    const leftwardRotation = Angle.zeroTo2Pi(currentRotation + Math.PI / 2);
     const forwardUnitVector = Vector.rotate({ x: 1, y: 0 }, currentRotation);
     const leftwardUnitVector = Vector.rotate({ x: 1, y: 0 }, leftwardRotation);
 
@@ -503,35 +549,43 @@ export class VehiclePhysics extends Serializable
     // ! Throws exception on error.
   private computeAngularForces
   (
-    currentRotation: number,
-    desiredRotation: number,
-    angularDistance: number,
-    angularPhase: ManeuverPhase
+    // currentRotation: number,
+    // desiredRotation: number,
+    // angularDistance: number,
+    // angularPhase: ArrivePhase
+    desiredAngularVelocity: number
   )
   {
-    switch (angularPhase)
+    // ! Throws exception on error.
+    const inertia = this.getPhysicsBody().getInertia();
+
+    const acceleration = this.TORQUE / inertia;
+    const velocityDeltaPerTick = acceleration / Engine.FPS;
+
+    const currentAngularVelocity = this.getPhysicsBody().getAngularVelocity();
+
+    const desiredVelocityChange =
+      desiredAngularVelocity - currentAngularVelocity;
+
+/*
+Tohle bude jinak.
+  Musím nějak zjistit, jestli mám zrychlovat nebo zpomalovat.
+  - i když vlastně to možná dělám...
+    (desiredVelocityDelta v sobě zahrnuje směr (znaménkem)
+*/
+    console.log("   ", currentAngularVelocity, desiredVelocityChange);
+
+    if (Math.abs(velocityDeltaPerTick) > Math.abs(desiredVelocityChange))
     {
-      case "Accelerating":
-        this.torque = angularDistance > 0 ? this.TORQUE : -this.TORQUE;
-        break;
-
-      case "Braking":
-        this.torque = angularDistance > 0 ? -this.TORQUE : this.TORQUE;
-        break;
-
-      case "Stopping":
-        /// TODO:
-        // Gradual approach at the last few meters.
-        // return this.BRAKING_SPEED * distance / this.STOPPING_DISTANCE;
-        this.torque = 0;
-        break;
-
-      case "Stopped":
-        this.torque = 0;
-        break;
-
-      default:
-        throw Syslog.reportMissingCase(angularPhase);
+      // Gradual approach.
+      // this.torque = inertia * desiredVelocityChange * Engine.FPS;
+      this.torque = inertia * desiredVelocityChange;
+      console.log(`Gradual approarch`, this.torque);
+    }
+    else
+    {
+      // Full torque.
+      this.torque = (desiredVelocityChange > 0) ? this.TORQUE : -this.TORQUE;
     }
 
   // // ! Throws exception on error.
@@ -573,61 +627,27 @@ export class VehiclePhysics extends Serializable
     const F = this.BACKWARD_THRUST;
 
     // d = (1/2 * mass * v^2) / Force;
-    const brakingDistance = this.STOPPING_DISTANCE + (m * v * v) / (F * 2);
+    // const brakingDistance = this.STOPPING_DISTANCE + (m * v * v) / (F * 2);
+    return (m * v * v) / (F * 2);
 
-    return brakingDistance;
+    // return brakingDistance;
   }
 
   private computeBrakingAngle(angularVelocity: number)
   {
     // ! Throws exception on error.
-    const i = this.getPhysicsBody().getInertia();
+    const m = this.getPhysicsBody().getInertia();
     const v = angularVelocity;
     const F = this.TORQUE;
 
     // d = (1/2 * mass * v^2) / Force;
-    const brakingDistance = this.STOPPING_ANGLE + (i * v * v) / (F * 2);
+    // const brakingDistance = this.STOPPING_ANGLE + (i * v * v) / (F * 2);
+    return (m * v * v) / (F * 2);
 
-    return brakingDistance;
+    // return brakingDistance;
   }
 
-  private determineLinearPhase
-  (
-    distance: number,
-    brakingDistance: number
-  )
-  {
-    if (distance > brakingDistance)
-      return "Accelerating";
-
-    if (distance > this.STOPPING_DISTANCE)
-      return "Braking";
-
-    if (distance > STOPPED_DISTANCE)
-      return "Stopping";
-
-    return "Stopped";
-  }
-
-  private determineAngularPhase
-  (
-    angularDistance: number,
-    angularBrakingDistance: number
-  )
-  {
-    if (angularDistance > angularBrakingDistance)
-      return "Accelerating";
-
-    if (angularDistance > this.STOPPING_ANGLE)
-      return "Braking";
-
-    if (angularDistance > STOPPED_ANGLE)
-      return "Stopping";
-
-    return "Stopped";
-  }
-
-  private computeDesiredSpeed(linearPhase: ManeuverPhase, distance: number)
+  private getDesiredSpeed(linearPhase: ArrivePhase)
   {
     switch (linearPhase)
     {
@@ -635,19 +655,36 @@ export class VehiclePhysics extends Serializable
         return this.MAX_SPEED;
 
       case "Braking":
-        // Break almost to zero velocity (exactly zero velocity is not
-        // a good idea because zero vector has undefined direction).
-        return this.BRAKING_SPEED;
-
-      case "Stopping":
-        // Gradual approach at the last few meters.
-        return this.BRAKING_SPEED * distance / this.STOPPING_DISTANCE;
-
-      case "Stopped":
         return 0;
 
       default:
         throw Syslog.reportMissingCase(linearPhase);
+    }
+  }
+
+  private getDesiredAngularVelocity
+  (
+    angularPhase: ArrivePhase,
+    angularDistance: number
+  )
+  {
+    switch (angularPhase)
+    {
+      case "Accelerating":
+        if (angularDistance > 0 && angularDistance < Math.PI)
+        {
+          return this.MAX_ANGULAR_VELOCITY;
+        }
+        else
+        {
+          return -this.MAX_ANGULAR_VELOCITY;
+        }
+
+      case "Braking":
+        return 0;
+
+      default:
+        throw Syslog.reportMissingCase(angularPhase);
     }
   }
 
@@ -693,29 +730,52 @@ function computeDesiredAngularVelocity
   return desiredAngularVelocity;
 }
 
+function determineLinearPhase(distance: number, brakingDistance: number)
+: ArrivePhase
+{
+  if (distance > brakingDistance)
+    return "Accelerating";
+
+  return "Braking";
+}
+
+function determineAngularPhase
+(
+  angularDistance: number,
+  brakingAngle: number
+)
+: ArrivePhase
+{
+  if (Math.abs(angularDistance) > brakingAngle)
+    return "Accelerating";
+
+  return "Braking";
+}
+
 function computeDesiredRotation
 (
-  maneuverPhase: "Accelerating" | "Braking" | "Stopping" | "Stopped",
+  maneuverPhase: ArrivePhase,
   currentRotation: number,
-  desiredVelocity: Vector,
+  targetVector: Vector,
   desiredSteeringForce: Vector
 )
 {
   switch (maneuverPhase)
   {
     case "Accelerating":
-      return Angle.normalize(desiredSteeringForce.getRotation());
+      /// Zaremováno schválně.
+      // return Angle.normalize(desiredSteeringForce.getRotation());
 
     case "Braking":
       // When we are braking, turn in the direction of desired velocity.
-      return Angle.normalize(desiredVelocity.getRotation());
+      return Angle.zeroTo2Pi(targetVector.getRotation());
 
-    case "Stopping":
-    case "Stopped":
-      // If we are stopped or nearly stopped, pass current rotation
-      // as desired rotation to prevent rotating in-place
-      // (it doesn't work perfectly but it helps a bit).
-      return Angle.normalize(currentRotation);
+    // case "Stopping":
+    // case "Stopped":
+    //   // If we are stopped or nearly stopped, pass current rotation
+    //   // as desired rotation to prevent rotating in-place
+    //   // (it doesn't work perfectly but it helps a bit).
+    //   return Angle.normalize(currentRotation);
 
     default:
       throw Syslog.reportMissingCase(maneuverPhase);

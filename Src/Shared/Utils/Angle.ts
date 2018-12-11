@@ -13,8 +13,18 @@ export namespace Angle
   export const TWO_PI = Math.PI * 2;
 
   // Makes sure that 'angle' is between 0 and 2π.
-  export function normalize(angle: number): number
+  export function zeroTo2Pi(angle: number): number
   {
     return (angle % TWO_PI + TWO_PI) % TWO_PI;
+  }
+
+  export function minusPiToPi(angle: number): number
+  {
+    const tmpAngle = zeroTo2Pi(angle);
+
+    if (tmpAngle <= PI)
+      return tmpAngle;
+
+    return tmpAngle - TWO_PI;
   }
 }
