@@ -50,6 +50,45 @@ Principiální problém:
 - Tzn. braking angle má smysl čistě v průběhu akcelerace jako vodítko,
   kdy mám začít brzdit.
 
+Akcelerace/deccelerace
+- co takhle to prostě rozdělit na půlku?
+  - blbost, páč mám ořezanou max speed
+V zásadě by mělo stačit spočítat trajektorii v okamžiku změny waypointu.
+- nebude to ale tak jednoduchý, protože brzdná dráha závisí na dosažené
+  rychlosti.
+  - leda že by...
+  IDEA:
+  - při změně waypointu spočítám brzdnou dráhu pro maximální rychlost
+    (tu navíc můžu mít předpočítanou v konstruktoru, protože se mění
+     jen při změně akcelerace nebo max speedu)
+  - porovnám ji s polovinou vzdálenosti.
+    if (angularDistance / 2 < maxBreakingAngle)
+      brakingAngle = angularDistance / 2;
+    else
+      breakingAngle = maxBreakingAngle;
+    (tohle navíc stačí počítat při změně kurzu)
+TODO: V initu vehiclu spočítat maxBrakingAngle.
+  [snad done]
+TODO: Při změně waypointu spočítat brakingAngle.
+  [snad done]
+TODO: Updatnout arrive();
+
+Možná není až tak super nápad pracovat pouze s desiredAngularVelocity,
+pak totiž nemám moc kontrolu, jestli už tam jsem.
+- zastavení bych měl spíš řešit přes rozdíl aktuální rotace a desired
+  rotace (prostě zpomaluju (nebo zrychluju) co to dá a jak se přiblížím
+  na míň než jeden tik, tak setnu zastavovací torque.
+(rozdíl úhlů v posledním tiku je totiž fakticky rychlost (za tik)).
+- tohle by ale nejspíš zasekávalo rotaci, i když by mělo dojít k přetočení.
+  (i když asi můžu testovat, jestli jsem vůbec schopen zbývající vzdálenost
+   dobrzdit).
+(Na druhou stranu dobržďování do nulové rychlosti je asi fajn na zastavování.
+ Jen bych musel přesně spočítat brzdnou dráhu).
+
+Problém s předpočítáváním brzdné vzdálenosti mimo jiné je, že mám vzorkovanou
+  simulaci. Asi bych měl začít brzdit, už když by příští tik přejel brzdnou
+  vzdálenost.
+
 TODO: Pokud opravdu zruším stopping distance, tak ji ani neposílat
   na klient a nezobrazovat.
 

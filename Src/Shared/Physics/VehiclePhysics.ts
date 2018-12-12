@@ -99,6 +99,8 @@ export class VehiclePhysics extends Serializable
     "Not in physics world";
 
   private brakingAngle = 0;
+  private maxBrakingAngle = 0;
+  private angleDeltaPerTick = 0;
   private arriveAngularPhase: ArrivePhase = "Braking";
 
   constructor(private readonly entity: Entity)
@@ -166,6 +168,8 @@ export class VehiclePhysics extends Serializable
   public setWaypoint(waypoint: { x: number; y: number })
   {
     this.waypoint.set(waypoint);
+
+    this.updateBrakingAngle(waypoint);
   }
 
   // ! Throws exception on error.
@@ -186,9 +190,12 @@ export class VehiclePhysics extends Serializable
     );
 
     // ! Throws exception on error.
+    this.init();
+
+    // ! Throws exception on error.
     // Set waypoint to the new position so the vehicle doesn't
     // go back to where it was.
-    this.waypoint.set(this.getPhysicsBody().getPosition());
+    this.setWaypoint(this.getPhysicsBody().getPosition());
   }
 
   // ! Throws exception on error.
@@ -261,40 +268,40 @@ export class VehiclePhysics extends Serializable
       this.desiredRotation - currentRotation
     );
 
-    // Updatovat braking angle pouze při akceleraci
-    // (možná bude problém při znovuzrychlování, uvidíme).
-    if (this.arriveAngularPhase === "Accelerating")
-    {
-      this.brakingAngle = this.computeBrakingAngle(currentAngularVelocity);
-    }
-    else
-    {
-      /// IDEA: Číslo o kousek větší než úhel, který mi ještě zbejvá.
-      /// (too sleepy to thing...)
-      this.brakingAngle = TODO;
-    }
+    // // Updatovat braking angle pouze při akceleraci
+    // // (možná bude problém při znovuzrychlování, uvidíme).
+    // if (this.arriveAngularPhase === "Accelerating")
+    // {
+    //   this.brakingAngle = this.computeBrakingAngle(currentAngularVelocity);
+    // }
+    // else
+    // {
+    //   /// IDEA: Číslo o kousek větší než úhel, který mi ještě zbejvá.
+    //   /// (too sleepy to thing...)
+    //   this.brakingAngle = Math.abs(angularDistance) + Number.EPSILON;
+    // }
 
     this.arriveAngularPhase = determineAngularPhase
     (
       angularDistance, this.brakingAngle
     );
 
-    // console.log(angularPhase);
+// console.log(angularDistance, this.brakingAngle, this.arriveAngularPhase);
 
     const desiredAngularVelocity = this.getDesiredAngularVelocity
     (
       this.arriveAngularPhase, angularDistance
     );
 
-    console.log
-    (
-      // this.desiredRotation,
-      // currentRotation,
-      angularDistance,
-      this.brakingAngle,
-      this.arriveAngularPhase,
-      desiredAngularVelocity
-    );
+    // console.log
+    // (
+    //   // this.desiredRotation,
+    //   // currentRotation,
+    //   angularDistance,
+    //   this.brakingAngle,
+    //   this.arriveAngularPhase,
+    //   desiredAngularVelocity
+    // );
 
     // console.log
     // (
@@ -365,6 +372,89 @@ export class VehiclePhysics extends Serializable
 // }
 
   // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private init()
+  {
+    // ! Throws exception on error.
+    this.updateAngleDeltaPerTick();
+    this.updateMaxBrakingAngle();
+  }
+
+  // ! Throws exception on error.
+  private updateAngleDeltaPerTick()
+  {
+    // ! Throws exception on error.
+    const inertia = this.getPhysicsBody().getInertia();
+    const acceleration = this.TORQUE / inertia;
+
+    this.angleDeltaPerTick = acceleration / Engine.FPS;
+
+    console.log(`Updating angleDeltaPerTick to ${this.angleDeltaPerTick}`);
+  }
+
+  private updateBrakingAngle(waypoint: { x: number; y: number })
+  {
+    const currentPosition = this.getPosition();
+    const desiredPosition = this.waypoint;
+
+    const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
+
+    const desiredRotation = Angle.zeroTo2Pi(targetVector.getRotation());
+
+    const angularDistance = Angle.minusPiToPi
+    (
+      desiredRotation - this.getRotation()
+    );
+
+    const halfAngularDistance = Math.abs(angularDistance / 2);
+    const maxBrakingAngle = Math.abs(this.maxBrakingAngle);
+
+    // The idea here is that if we don't have time
+    // to reach maximum possible velocity, it will
+    // take exactly half the distance to accelerate
+    // and another half to deccelerate.
+    //   If we do reach maximum velocity, than braking
+    // distance is a constant (because maximum velocity
+    // is a constant, too) so we just assign it.
+    if (halfAngularDistance < maxBrakingAngle)
+    {
+      this.brakingAngle = halfAngularDistance;
+
+      console.log
+      (
+        `Setting braking angle to half the angular distance`
+        + ` ${halfAngularDistance}`
+      );
+    }
+    else
+    {
+      this.brakingAngle = this.maxBrakingAngle;
+
+      console.log
+      (
+        `Setting braking angle to maximum braking angle`
+        + ` ${this.maxBrakingAngle}`
+      );
+    }
+
+/// Tohle možná ani nebude potřeba, pokud bude gradual approach fungovat dobře.
+    // // Add 'this.angleDeltaPerTick' because we are not braking perfectly
+    // // (we use gradual approach for the last tick).
+    // this.brakingAngle = halfAngularDistance + this.angleDeltaPerTick;
+  }
+
+  private updateMaxBrakingAngle()
+  {
+    this.maxBrakingAngle = computeBrakingDistance
+    (
+      this.MAX_ANGULAR_VELOCITY,
+      this.getPhysicsBody().getInertia(),
+      this.TORQUE
+    );
+
+    console.log(`Updating maxBrakingAngle to ${this.maxBrakingAngle}`);
+  }
 
   // ! Throws exception on error.
   private getPhysicsBody()
@@ -559,8 +649,8 @@ export class VehiclePhysics extends Serializable
     // ! Throws exception on error.
     const inertia = this.getPhysicsBody().getInertia();
 
-    const acceleration = this.TORQUE / inertia;
-    const velocityDeltaPerTick = acceleration / Engine.FPS;
+    // const acceleration = this.TORQUE / inertia;
+    // const angleDeltaPerTick = acceleration / Engine.FPS;
 
     const currentAngularVelocity = this.getPhysicsBody().getAngularVelocity();
 
@@ -573,14 +663,23 @@ Tohle bude jinak.
   - i když vlastně to možná dělám...
     (desiredVelocityDelta v sobě zahrnuje směr (znaménkem)
 */
-    console.log("   ", currentAngularVelocity, desiredVelocityChange);
+    // console.log("   ", currentAngularVelocity, desiredVelocityChange);
 
-    if (Math.abs(velocityDeltaPerTick) > Math.abs(desiredVelocityChange))
+    // console.log(currentAngularVelocity);
+
+    if (Math.abs(desiredVelocityChange) < Math.abs(this.angleDeltaPerTick))
     {
+      /// Tohle by mě ve skutečnosti mělo hodit přesně na nulovou velocity.
+
+      // a = desiredVelocityChange;
+      // const m = inertia;
+      // F = m * a
+
       // Gradual approach.
       // this.torque = inertia * desiredVelocityChange * Engine.FPS;
       this.torque = inertia * desiredVelocityChange;
-      console.log(`Gradual approarch`, this.torque);
+
+      // console.log(`Gradual approarch`, this.torque);
     }
     else
     {
@@ -633,19 +732,19 @@ Tohle bude jinak.
     // return brakingDistance;
   }
 
-  private computeBrakingAngle(angularVelocity: number)
-  {
-    // ! Throws exception on error.
-    const m = this.getPhysicsBody().getInertia();
-    const v = angularVelocity;
-    const F = this.TORQUE;
+  // private computeBrakingAngle(angularVelocity: number)
+  // {
+  //   // ! Throws exception on error.
+  //   const m = this.getPhysicsBody().getInertia();
+  //   const v = angularVelocity;
+  //   const F = this.TORQUE;
 
-    // d = (1/2 * mass * v^2) / Force;
-    // const brakingDistance = this.STOPPING_ANGLE + (i * v * v) / (F * 2);
-    return (m * v * v) / (F * 2);
+  //   // d = (1/2 * mass * v^2) / Force;
+  //   // const brakingDistance = this.STOPPING_ANGLE + (i * v * v) / (F * 2);
+  //   return (m * v * v) / (F * 2);
 
-    // return brakingDistance;
-  }
+  //   // return brakingDistance;
+  // }
 
   private getDesiredSpeed(linearPhase: ArrivePhase)
   {
@@ -706,6 +805,12 @@ Tohle bude jinak.
 }
 
 // ----------------- Auxiliary Functions ---------------------
+
+function computeBrakingDistance(v: number, m: number, F: number)
+{
+  // d = (1/2 * mass * v^2) / Force;
+  return (m * v * v) / (F * 2);
+}
 
 function pixels(value: number)
 {
