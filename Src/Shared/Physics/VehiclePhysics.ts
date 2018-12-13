@@ -286,12 +286,38 @@ export class VehiclePhysics extends Serializable
       angularDistance, this.brakingAngle
     );
 
+    if (this.arriveAngularPhase === "Braking")
+    {
+      console.log
+      (
+        "Distance:", angularDistance,
+        "Braking distance:", computeBrakingDistance
+        (
+          this.getAngularVelocity(),
+          this.getPhysicsBody().getInertia(),
+          this.TORQUE
+        ),
+        "Braking angle:", this.brakingAngle
+      );
+    }
+
 // console.log(angularDistance, this.brakingAngle, this.arriveAngularPhase);
 
     const desiredAngularVelocity = this.getDesiredAngularVelocity
     (
       this.arriveAngularPhase, angularDistance
     );
+
+  // console.log
+  // (
+  //   "Distance:", angularDistance, "Braking distance:",
+  //   computeBrakingDistance
+  //   (
+  //     this.getAngularVelocity(),
+  //     this.getPhysicsBody().getInertia(),
+  //     this.TORQUE
+  //   )
+  // );
 
     // console.log
     // (
