@@ -101,7 +101,7 @@ export class VehiclePhysics extends Serializable
   private brakingAngle = 0;
   private maxBrakingAngle = 0;
   private angleDeltaPerTick = 0;
-  private arriveAngularPhase: ArrivePhase = "Braking";
+  // private arriveAngularPhase: ArrivePhase = "Braking";
 
   constructor(private readonly entity: Entity)
   {
@@ -216,6 +216,8 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   protected arrive()
   {
+    this.arriveTorque();
+  /*
     const currentPosition = this.getPosition();
     const desiredPosition = this.waypoint;
     // ! Throws exception on error.
@@ -345,6 +347,7 @@ export class VehiclePhysics extends Serializable
 
     this.brakingDistance = brakingDistance;
     // this.stoppingDistance = this.STOPPING_DISTANCE;
+  */
   }
 
 // // ! Throws exception on error.
@@ -398,6 +401,75 @@ export class VehiclePhysics extends Serializable
 // }
 
   // ---------------- Private methods -------------------
+
+  private arriveTorque()
+  {
+    const distance = this.computeAngularDistance();
+    const projectedDelta = this.computeProjectedAngularDelta();
+
+    console.log(distance, projectedDelta, this.brakingAngle);
+
+    if (Math.abs(distance - projectedDelta) <= Math.abs(this.brakingAngle))
+    {
+      this.angularDecceleration(distance);
+    }
+    else
+    {
+      this.angularAcceleration(distance);
+    }
+
+    // const desiredAngularVelocity = this.computeDesiredAngularVelocity();
+
+    // this.computeAngularForces(desiredAngularVelocity);
+  }
+
+  private angularDecceleration(distance: number)
+  {
+    // - mám nějakou rychlost
+    // - a vzdálenost
+    // Záměr je spočítat torque tak, abych zabrzdil přesně v cíli.
+    const v = this.getAngularVelocity();
+    const inertia = this.getPhysicsBody().getInertia();
+
+    // Braking distance:
+    // d = (1/2 * mass * v * v) / Force;
+    // Force = (mass * v * v) / (2 * d)
+
+    /// Tohle asi není úplně dobře - pokud mám nějakou nenulovou
+    /// rychlost, tak cíl přejedu.
+    if (distance === 0)
+    {
+      this.torque = 0;
+    }
+    else
+    {
+      const desiredTorque = -(inertia * v * v) / (2 * distance);
+
+      // Ensure we don't exceed our maximum torque. This can happen
+      // when something pushes us. In that case we will overshoot
+      // our desired rotation because we simply can't deccelerate
+      // fast enough.
+      this.torque = Number(desiredTorque).clampTo(-this.TORQUE, this.TORQUE);
+    }
+
+    console.log("Applying angular decceleration", this.torque);
+  }
+
+  private angularAcceleration(distance: number)
+  {
+    let desiredVelocity: number;
+
+    if (distance > 0 && distance < Math.PI)
+    {
+      desiredVelocity = this.MAX_ANGULAR_VELOCITY;
+    }
+    else
+    {
+      desiredVelocity = -this.MAX_ANGULAR_VELOCITY;
+    }
+
+    this.computeAngularForces(desiredVelocity);
+  }
 
   // ! Throws exception on error.
   private init()
@@ -713,6 +785,8 @@ Tohle bude jinak.
       this.torque = (desiredVelocityChange > 0) ? this.TORQUE : -this.TORQUE;
     }
 
+    console.log("Applying angular acceleration", this.torque);
+
   // // ! Throws exception on error.
   // const oldAngularVelocity = this.getPhysicsBody().getAngularVelocity();
 
@@ -787,31 +861,84 @@ Tohle bude jinak.
     }
   }
 
-  private getDesiredAngularVelocity
-  (
-    angularPhase: ArrivePhase,
-    angularDistance: number
-  )
+  private computeAngularDistance()
   {
-    switch (angularPhase)
-    {
-      case "Accelerating":
-        if (angularDistance > 0 && angularDistance < Math.PI)
-        {
-          return this.MAX_ANGULAR_VELOCITY;
-        }
-        else
-        {
-          return -this.MAX_ANGULAR_VELOCITY;
-        }
+    const desiredPosition = this.waypoint;
+    const currentPosition = this.getPosition();
 
-      case "Braking":
-        return 0;
+    const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
 
-      default:
-        throw Syslog.reportMissingCase(angularPhase);
-    }
+    // Rotaci počítám z targetVectoru místo z desiredVelocity,
+    // protože při brždění je desiredVelocity nulová a nedá se
+    // z ní tudíž rotace spočítat.
+    this.desiredRotation = computeDesiredRotation(targetVector);
+    const currentRotation = Angle.zeroTo2Pi(this.getRotation());
+
+    // // ! Throws exception on error.
+    // Enforcing interval <-PI, PI> ensures that we turn the shorter way.
+    return Angle.minusPiToPi(this.desiredRotation - currentRotation);
   }
+
+  private computeProjectedAngularDelta()
+  {
+    // a = F / m
+    const acceleration = this.torque / this.getPhysicsBody().getInertia();
+    const velocityDelta = acceleration / Engine.FPS;
+    const projectedVelocity = this.getAngularVelocity() + velocityDelta;
+
+    return projectedVelocity / Engine.FPS;
+  }
+
+  // private computeDesiredAngularVelocity()
+  // {
+  //   const distance = this.computeAngularDistance();
+  //   const projectedDelta = this.computeProjectedAngularDelta();
+
+  //   if (Math.abs(distance + projectedDelta) > Math.abs(this.brakingAngle))
+  //   {
+  //     /// Spočítat potřebnou torque z aktuální rychlosti a vzdálenosti,
+  //     /// která mi zbejvá dorazit
+  //     ///  Problém: To ovšem pak nepůjde přes desiredVelocity...
+  //   }
+
+  //   if (isAccelerating && willBreak)
+  //   {
+  //     return complicatedStuff();
+  //   }
+
+  //   if ()
+
+  //   if (Math.abs(distance + projectedDelta) > this.brakingAngle)
+  //   {
+  //     if (distance > 0 && distance < Math.PI)
+  //     {
+  //       return this.MAX_ANGULAR_VELOCITY;
+  //     }
+  //     else
+  //     {
+  //       return -this.MAX_ANGULAR_VELOCITY;
+  //     }
+  //   }
+  //   else
+  //   {
+  //     return 0;
+  //   }
+
+  //   // if (this.arriveAngularPhase === "Braking")
+  //   // {
+  //   //   console.log
+  //   //   (
+  //   //     "Distance:", angularDistance,
+  //   //     "Braking distance:", computeBrakingDistance
+  //   //     (
+  //   //       this.getAngularVelocity(),
+  //   //       this.getPhysicsBody().getInertia(),
+  //   //       this.TORQUE
+  //   //     ),
+  //   //     "Braking angle:", this.brakingAngle
+  //   //   );
+  //   // }
+  // }
 
   // ! Throws exception on error.
   private validateSpeed(desiredSpeed: number)
@@ -843,23 +970,23 @@ function pixels(value: number)
   return Coords.ClientToServer.distance(value);
 }
 
-function computeDesiredAngularVelocity
-(
-  desiredRotation: number,
-  currentRotation: number
-)
-: number
-{
-  let desiredAngularVelocity = desiredRotation - currentRotation;
+// function computeDesiredAngularVelocity
+// (
+//   desiredRotation: number,
+//   currentRotation: number
+// )
+// : number
+// {
+//   let desiredAngularVelocity = desiredRotation - currentRotation;
 
-  // Make sure that we turn the shorter way.
-  if (desiredAngularVelocity > Math.PI)
-    desiredAngularVelocity -= Math.PI * 2;
-  if (desiredAngularVelocity < -Math.PI)
-    desiredAngularVelocity += Math.PI * 2;
+//   // Make sure that we turn the shorter way.
+//   if (desiredAngularVelocity > Math.PI)
+//     desiredAngularVelocity -= Math.PI * 2;
+//   if (desiredAngularVelocity < -Math.PI)
+//     desiredAngularVelocity += Math.PI * 2;
 
-  return desiredAngularVelocity;
-}
+//   return desiredAngularVelocity;
+// }
 
 function determineLinearPhase(distance: number, brakingDistance: number)
 : ArrivePhase
@@ -870,47 +997,47 @@ function determineLinearPhase(distance: number, brakingDistance: number)
   return "Braking";
 }
 
-function determineAngularPhase
-(
-  angularDistance: number,
-  brakingAngle: number
-)
-: ArrivePhase
-{
-  if (Math.abs(angularDistance) > brakingAngle)
-    return "Accelerating";
+// function determineAngularPhase
+// (
+//   angularDistance: number,
+//   brakingAngle: number
+// )
+// : ArrivePhase
+// {
+//   if (Math.abs(angularDistance) > brakingAngle)
+//     return "Accelerating";
 
-  return "Braking";
-}
+//   return "Braking";
+// }
 
 function computeDesiredRotation
 (
-  maneuverPhase: ArrivePhase,
-  currentRotation: number,
-  targetVector: Vector,
-  desiredSteeringForce: Vector
+  // maneuverPhase: ArrivePhase,
+  // currentRotation: number,
+  targetVector: Vector
+  // desiredSteeringForce: Vector
 )
 {
-  switch (maneuverPhase)
-  {
-    case "Accelerating":
-      /// Zaremováno schválně.
-      // return Angle.normalize(desiredSteeringForce.getRotation());
+  return Angle.zeroTo2Pi(targetVector.getRotation());
+  // switch (maneuverPhase)
+  // {
+  //   case "Accelerating":
+  //     return Angle.normalize(desiredSteeringForce.getRotation());
 
-    case "Braking":
-      // When we are braking, turn in the direction of desired velocity.
-      return Angle.zeroTo2Pi(targetVector.getRotation());
+  //   case "Braking":
+  //     // When we are braking, turn in the direction of desired velocity.
+  //     return Angle.zeroTo2Pi(targetVector.getRotation());
 
-    // case "Stopping":
-    // case "Stopped":
-    //   // If we are stopped or nearly stopped, pass current rotation
-    //   // as desired rotation to prevent rotating in-place
-    //   // (it doesn't work perfectly but it helps a bit).
-    //   return Angle.normalize(currentRotation);
+  //   case "Stopping":
+  //   case "Stopped":
+  //     // If we are stopped or nearly stopped, pass current rotation
+  //     // as desired rotation to prevent rotating in-place
+  //     // (it doesn't work perfectly but it helps a bit).
+  //     return Angle.normalize(currentRotation);
 
-    default:
-      throw Syslog.reportMissingCase(maneuverPhase);
-  }
+  //   default:
+  //     throw Syslog.reportMissingCase(maneuverPhase);
+  // }
 }
 
 /*

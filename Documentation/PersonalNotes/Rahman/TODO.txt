@@ -1,6 +1,33 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+Sakra sakra, začíná se mi to zas nějak komplikovat...
+- vím, kdy mám začít zpomalovat. Ale nemůžu to udělat přesně.
+  Tzn. asi potřebuju konvergovat k nějaké hodnotě.
+  - jediná hodnota, ke které můžu konvergovat, je vzdálenost.
+    => při zrychlování konvergovat k desired rychlosti, ale
+       při zpomalování ke vzdálenosti.
+  - Tzn. rovnou počítat torque z accelerating/braking větve,
+    nedělat obojí přes desiredVelocity.
+
+ÚVAHA - jak na rotaci
+- přepnutí fáze detekovat v předstihu
+  - tzn. neporovnávat jen angularDistance,
+    ale angularDistance + vzdálenost, kterou urazím v příštím tiku
+    - tu asi spočítám jako aktuální_rychlost_za_tik + zrychlení_za_tik
+- spočítat předem, jakou výslednou rychlost bych měl mít, když bych
+  se pohyboval po správné dráze (tzn. dostal se na plánovanou rychlost
+  a pak se část tiku buď pohyboval konstatní rychlostí, nebo začal zase
+  zpomalovat).
+  - pro případ, kdy hned zase brzdím:
+    - desiredVelocity = currentVelocity + (zryhlení * část tiku odpovídají
+      části dráhy, po kterou budu zpomalovat) - zpomalení * část tiku
+      odpovídající části dráhy, kterou budu zpomalovat
+     tedy:
+       dVel = cVel + (TORQUE * d1 - TORQUE * d2) = cVel + TORQUE * (d1 - d2)
+- nastavit torque, která mě do téhle výsledné rychlosti dostane.
+  (to už vlastně dělám)
+
 TODO: Rotace bych měl udělat stejně jako lineární pohyb, tzn:
 - podle fáze počítat desiredAngularVelocity
 - na základě desiredAngularVelocity pak spočítat torque.
