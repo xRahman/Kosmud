@@ -77,10 +77,10 @@ export class PhysicsBody
     // ! Throws exception on error.
     const inertia = Number(this.box2dBody.GetInertia()).validate();
 
-    if (inertia === 0)
+    if (inertia <= 0)
     {
       throw new Error(`Physics body of ${this.entity.debugId}`
-        + ` has zero inertia`);
+        + ` has zero or negative inertia`);
     }
 
     return inertia;

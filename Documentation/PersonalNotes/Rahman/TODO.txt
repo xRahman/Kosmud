@@ -1,6 +1,23 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+2 bugy:
+- v "refactornutém" kódu mi to na jednu stranu přestřeluje
+- když v průběhu rotace dám waypoint "zpět", tak přestřeluju tam a zpět
+  - při tom se mi může dokonce stát, že overshotnu do další acceleration
+    fáze a udělám otočku o 360 stupňů.
+Když overshotnu, tak:
+  1) Měl bych setnout brakingAngle na PI
+      (to zabrání overshotu do další accelerating fáze).
+  2) Měl bych jinak počítat decceleraci, jinak overshotnu znova.
+
+TODO: Detekovat overshot
+TODO: Nastavit this.brakingAnble na PI
+TODO: Správně počítat decceleraci při overshotu.
+
+- možná by mohlo stačit jen správě počítat decceleraci...
+
+
 Sakra sakra, začíná se mi to zas nějak komplikovat...
 - vím, kdy mám začít zpomalovat. Ale nemůžu to udělat přesně.
   Tzn. asi potřebuju konvergovat k nějaké hodnotě.
