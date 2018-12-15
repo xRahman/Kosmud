@@ -1,6 +1,12 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+Zbývá přeci jen jeden rotační problém:
+- když jsem roztočenej, tak kliknutí o velkej úhel zpět se nevrací, ale
+  protočí skrz.
+  (možná je to dokonce i rychlejší než se vracet, ale působí to neintuitivně).
+Asi bych se to měl pokusit fixnout.
+
 2 bugy:
 - v "refactornutém" kódu mi to na jednu stranu přestřeluje
 - když v průběhu rotace dám waypoint "zpět", tak přestřeluju tam a zpět

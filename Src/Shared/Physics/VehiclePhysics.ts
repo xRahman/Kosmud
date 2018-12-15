@@ -216,7 +216,7 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   protected arrive()
   {
-    this.arriveTorque();
+    this.computeArriveTorque();
   /*
     const currentPosition = this.getPosition();
     const desiredPosition = this.waypoint;
@@ -402,39 +402,37 @@ export class VehiclePhysics extends Serializable
 
   // ---------------- Private methods -------------------
 
-  private arriveTorque()
+  private computeArriveTorque()
   {
     const distance = this.computeAngularDistance();
     const projectedDelta = this.computeProjectedAngularDelta();
-
-    // console.log(distance, projectedDelta, this.brakingAngle);
-
-  /// TODO: Udělat z tohohle funkci.
-    /// Detekce, že se vzdaluju:
-    ///   velocity má stejné znaménko jako distance?
-    ///   - aha, tak zřejmě opačné
     const velocity = this.getAngularVelocity();
-    // console.log("Velocity", velocity, "Distance", distance);
-    if ((velocity > 0 && distance < 0) || (velocity < 0 && distance > 0))
+
+    // If the player changed desired angle while we were still turning
+    // to it overtake it because we have limited decceleration.
+    if (isOvertaking(velocity, distance))
     {
-      console.log("Vzdaluju se");
-
-      this.torque = (velocity > 0) ? this.TORQUE : -this.TORQUE;
-
+      // If we are getting away from our desired angle because we overtook
+      // it, we need to slow down to stop so we can get back to it.
+      //   After that we will be accelerating back to our desired angle
+      // so we need to recalculate braking angle in order to know for
+      // how long we need to accelerate before slowing down again to stop
+      // at our desired angle.
       this.updateBrakingAngle(this.getPosition());
     }
 
+    // Do we need to accelerate or slow down again?
     if (Math.abs(distance - projectedDelta) > Math.abs(this.brakingAngle))
     {
-      this.angularAcceleration(distance);
+      this.computeAngularAcceleration(distance);
     }
     else
     {
-      this.angularDecceleration(distance);
+      this.computeAngularDecceleration(distance);
     }
   }
 
-  private angularAcceleration(distance: number)
+  private computeAngularAcceleration(distance: number)
   {
     const torque = this.accelerationTorqueAbsoluteValue();
 
@@ -501,7 +499,7 @@ export class VehiclePhysics extends Serializable
 //   console.log("Applying angular acceleration", this.torque);
 // }
 
-  private angularDecceleration(distance: number)
+  private computeAngularDecceleration(distance: number)
   {
     // - mám nějakou rychlost
     // - a vzdálenost
@@ -1040,6 +1038,11 @@ function computeDesiredRotation
   //   default:
   //     throw Syslog.reportMissingCase(maneuverPhase);
   // }
+}
+
+function isOvertaking(velocity: number, distance: number)
+{
+  return (velocity > 0 && distance < 0) || (velocity < 0 && distance > 0);
 }
 
 /*
