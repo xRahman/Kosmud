@@ -216,138 +216,7 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   protected arrive()
   {
-    this.computeArriveTorque();
-  /*
-    const currentPosition = this.getPosition();
-    const desiredPosition = this.waypoint;
-    // ! Throws exception on error.
-    const currentVelocity = this.getVelocity();
-    // ! Throws exception on error.
-    // Rotation in Box2D can be negative or even greater than 2π.
-    // We need to fix that so we can correcly subtract angles.
-    const currentRotation = Angle.zeroTo2Pi(this.getRotation());
-    const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
-    const distance = targetVector.length();
-    const brakingDistance = this.computeBrakingDistance(currentVelocity);
-  /// Test rotace:
-  // const linearPhase = determineLinearPhase(distance, brakingDistance);
-    const linearPhase = "Braking";
-    const desiredSpeed = this.getDesiredSpeed(linearPhase);
-
-    // ! Throws exception on error.
-    this.validateSpeed(desiredSpeed);
-
-    const desiredVelocity = new Vector(targetVector).setLength(desiredSpeed);
-
-    const desiredSteeringForce = Vector.v1MinusV2
-    (
-      desiredVelocity,
-      currentVelocity
-    );
-
-    // Rotaci počítám z targetVectoru místo z desiredVelocity,
-    // protože při brždění je desiredVelocity nulová a nedá se
-    // z ní tudíž rotace spočítat.
-    this.desiredRotation = computeDesiredRotation
-    (
-      linearPhase, currentRotation, targetVector, desiredSteeringForce
-    );
-
-  /// Disablováno na testování rotace.
-    // this.computeLinearForces
-    // (
-    //   desiredSteeringForce,
-    //   desiredVelocity,
-    //   currentVelocity,
-    //   currentRotation
-    // );
-
-    // ! Throws exception on error.
-    const currentAngularVelocity = this.getAngularVelocity();
-    // Make sure we turn the right way.
-    const angularDistance = Angle.minusPiToPi
-    (
-      this.desiredRotation - currentRotation
-    );
-
-    // // Updatovat braking angle pouze při akceleraci
-    // // (možná bude problém při znovuzrychlování, uvidíme).
-    // if (this.arriveAngularPhase === "Accelerating")
-    // {
-    //   this.brakingAngle = this.computeBrakingAngle(currentAngularVelocity);
-    // }
-    // else
-    // {
-    //   /// IDEA: Číslo o kousek větší než úhel, který mi ještě zbejvá.
-    //   /// (too sleepy to thing...)
-    //   this.brakingAngle = Math.abs(angularDistance) + Number.EPSILON;
-    // }
-
-    this.arriveAngularPhase = determineAngularPhase
-    (
-      angularDistance, this.brakingAngle
-    );
-
-    if (this.arriveAngularPhase === "Braking")
-    {
-      console.log
-      (
-        "Distance:", angularDistance,
-        "Braking distance:", computeBrakingDistance
-        (
-          this.getAngularVelocity(),
-          this.getPhysicsBody().getInertia(),
-          this.TORQUE
-        ),
-        "Braking angle:", this.brakingAngle
-      );
-    }
-
-// console.log(angularDistance, this.brakingAngle, this.arriveAngularPhase);
-
-    const desiredAngularVelocity = this.getDesiredAngularVelocity
-    (
-      this.arriveAngularPhase, angularDistance
-    );
-
-  // console.log
-  // (
-  //   "Distance:", angularDistance, "Braking distance:",
-  //   computeBrakingDistance
-  //   (
-  //     this.getAngularVelocity(),
-  //     this.getPhysicsBody().getInertia(),
-  //     this.TORQUE
-  //   )
-  // );
-
-    // console.log
-    // (
-    //   // this.desiredRotation,
-    //   // currentRotation,
-    //   angularDistance,
-    //   this.brakingAngle,
-    //   this.arriveAngularPhase,
-    //   desiredAngularVelocity
-    // );
-
-    // console.log
-    // (
-    //   this.desiredRotation, angularDistance, angularPhase, brakingAngle
-    // );
-
-    // this.computeAngularForces
-    // (
-    //   currentRotation,
-    //   this.desiredRotation,
-    //   angularDistance,
-    //   angularPhase
-    // );
-    this.computeAngularForces(desiredAngularVelocity);
-
-    this.brakingDistance = brakingDistance;
-    // this.stoppingDistance = this.STOPPING_DISTANCE;
-  */
+    this.torque = this.computeArriveTorque();
   }
 
 // // ! Throws exception on error.
@@ -407,33 +276,24 @@ export class VehiclePhysics extends Serializable
     const distance = this.computeAngularDistance();
 
     // If the player changed desired angle while we were still turning
-    // to it overtake it because we have limited decceleration.
+    // to it, we might overtake it because we have limited decceleration.
     if (this.isOvertaking(distance))
     {
-      // console.log("overtaking, distance:", distance);
-      // If we are getting away from our desired angle because we overtook
-      // it, we need to slow down to stop so we can get back to it.
-      //   After that we will be accelerating back to our desired angle
-      // so we need to recalculate braking angle in order to know for
-      // how long we need to accelerate before slowing down again to stop
-      // at our desired angle.
+      // If we are overtaking desired angle, we need to recalculate braking
+      // angle to know for how long we need to accelerate on our way back
+      // before slowing down again.
       this.updateBrakingAngle(this.waypoint);
     }
 
     const action = this.angularAction(distance);
 
-    // console.log(action);
-
-    // Do we need to accelerate or slow down again?
     switch (action)
     {
       case "Accelerate":
-        this.computeAngularAcceleration(distance);
-        break;
+        return this.computeAccelerationTorque(distance);
 
       case "Deccelerate":
-        this.computeAngularDecceleration(distance);
-        break;
+        return this.computeDeccelerationTorque(distance);
 
       default:
         throw Syslog.reportMissingCase(action);
@@ -442,34 +302,7 @@ export class VehiclePhysics extends Serializable
 
   private angularAction(distance: number): "Accelerate" | "Deccelerate"
   {
-    // const velocity = this.getAngularVelocity();
     const projectedDelta = this.computeProjectedAngularDelta();
-
-    // if (velocity > 0 && distance < 0)
-    // {
-    //   if (distance + Math.PI > Math.PI)
-    //     return "Deccelerate";
-    // }
-
-    // if (velocity < 0 && distance > 0)
-    // {
-    //   if (distance - Math.PI < -Math.PI)
-    //     return "Deccelerate";
-    // }
-
-    // if (velocity > 0 && distance < 0)
-    // {
-    //   console.log(velocity, distance, "Deccelerate");
-
-    //   return "Deccelerate";
-    // }
-
-    // if (velocity < 0 && distance > 0)
-    // {
-    //   console.log(velocity, distance, "Deccelerate");
-
-    //   return "Deccelerate";
-    // }
 
     if (Math.abs(distance - projectedDelta) > Math.abs(this.brakingAngle))
     {
@@ -481,30 +314,16 @@ export class VehiclePhysics extends Serializable
     }
   }
 
-  private computeAngularAcceleration(distance: number)
+  private computeAccelerationTorque(distance: number)
   {
-    // const torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
-
     if (distance > 0)
     {
-      this.torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
-
-    // if (distance <= Math.PI)
-    //   this.torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
-    // else
-    //   this.torque = this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
+      return this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
     }
     else
     {
-      this.torque = this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
-
-    // if (distance >= -Math.PI)
-    //   this.torque = this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
-    // else
-    //   this.torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
+      return this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
     }
-
-    // console.log("Accelerating by torque", this.torque);
   }
 
   private torqueToReachVelocity(desiredVelocity: number)
@@ -513,125 +332,43 @@ export class VehiclePhysics extends Serializable
     const inertia = this.getPhysicsBody().getInertia();
     // ! Throws exception on error.
     const velocity = this.getPhysicsBody().getAngularVelocity();
-
-    // const velocityDelta = desiredVelocity - Math.abs(velocity);
     const velocityDelta = desiredVelocity - velocity;
 
-    console.log
-    (
-      "Desired:", desiredVelocity,
-      "Delta:", velocityDelta,
-      "Precomputed delta:", this.angularVelocityDelta
-    );
+    // Note: 'this.angularVelocityDelta' is a precomputed value
+    // (it only changes when inertia or maximum torque changes).
+    if (Math.abs(velocityDelta) < this.angularVelocityDelta)
+      // We are almost at desired angular velocity - compute torque
+      // needed to exactly reach it.
+      return inertia * velocityDelta;
 
-    if (desiredVelocity > 0)
-    {
-      if (Math.abs(velocityDelta) < this.angularVelocityDelta)
-      {
-        return inertia * velocityDelta;
-      }
-      else
-      {
-        return this.TORQUE;
-      }
-    }
-    else
-    {
-      if (Math.abs(velocityDelta) < this.angularVelocityDelta)
-      {
-        return inertia * velocityDelta;
-      }
-      else
-      {
-        return -this.TORQUE;
-      }
-    }
+    // We won't reach desired angular velocity in this tick - apply
+    // maximum possible torque in respective direction.
+    return (desiredVelocity > 0) ? this.TORQUE : -this.TORQUE;
   }
 
-// // ! Throws exception on error.
-// private computeAngularForces(desiredAngularVelocity: number)
-// {
-//   // ! Throws exception on error.
-//   const inertia = this.getPhysicsBody().getInertia();
-//   const currentAngularVelocity = this.getPhysicsBody().getAngularVelocity();
-//   const desiredVelocityChange =
-//     desiredAngularVelocity - currentAngularVelocity;
-
-//   if (Math.abs(desiredVelocityChange) < Math.abs(this.angularVelocityDelta))
-//   {
-//     /// Tohle by mě ve skutečnosti mělo hodit přesně na nulovou velocity.
-
-//     // a = desiredVelocityChange;
-//     // const m = inertia;
-//     // F = m * a
-
-//     // Gradual approach.
-//     // this.torque = inertia * desiredVelocityChange * Engine.FPS;
-//     this.torque = inertia * desiredVelocityChange;
-//   }
-//   else
-//   {
-//     // Full torque.
-//     this.torque = (desiredVelocityChange > 0) ? this.TORQUE : -this.TORQUE;
-//   }
-
-//   console.log("Applying angular acceleration", this.torque);
-// }
-
-  private computeAngularDecceleration(distance: number)
+  private computeDeccelerationTorque(distance: number)
   {
-    // - mám nějakou rychlost
-    // - a vzdálenost
-    // Záměr je spočítat torque tak, abych zabrzdil přesně v cíli.
     const v = this.getAngularVelocity();
     const inertia = this.getPhysicsBody().getInertia();
 
-    /// Tohle asi není úplně dobře - pokud mám nějakou nenulovou
-    /// rychlost, tak cíl přejedu.
+    // Prevent division by zero.
     if (distance === 0)
-    {
-      this.torque = 0;
-    }
-    else
-    {
-      // Braking distance is calculated this way:
-      //   d = (1/2 * mass * v * v) / Force;
-      // Therefore:
-      //   Force = (mass * v * v) / (2 * d)
-      const desiredTorque = -(inertia * v * v) / (2 * distance);
+      return 0;
 
-      // Ensure that we don't exceed our maximum torque. This can
-      // happen when something pushes us or when player sets direction.
-      // in reverse to our rotation. In that case we will overshoot
-      // our desired rotation because we simply can't deccelerate
-      // fast enough.
-      this.torque = Number(desiredTorque).clampTo(-this.TORQUE, this.TORQUE);
-    }
+    // The idea here is to compute torque needed to stop exactly
+    // at desired angle.
+    //   Braking distance is calculated this way:
+    //     d = (1/2 * mass * v * v) / Force;
+    //   Therefore:
+    //     Force = (mass * v * v) / (2 * d)
+    const desiredTorque = -(inertia * v * v) / (2 * distance);
 
-    /*
-    /// Detekce overshotu:
-    ///   O overshot se jedná, když mám takovou rychlost, že i při maximální
-    /// decceleraci (což je this.angularVelocityDelta) se nedostanu na nulu
-    /// dřív, než distance klesne na 0.
-    const velocity = Math.abs(this.getAngularVelocity());
-    // Od velocity ještě odečtu zpomalení za příští tik.
-    const projectedVelocity = velocity - this.TORQUE / Engine.FPS;
-    const delta = projectedVelocity / Engine.FPS;
-
-    // const currentRotation = Angle.minusPiToPi(this.getRotation());
-
-    // if (currentRotation + delta > Math.abs(distance))
-    if (delta > Math.abs(distance))
-    {
-      // Tohle tikne overshot 2x - podruhé po přestřelení.
-      console.log("Overshot", delta, distance);
-    }
-
-    /// Lépe:
-    ///   Neporovnávat jen deltu, ale currentAngle + delta¨
-    */
-
-    // console.log("Deccelerating by torque", this.torque);
+    // Ensure that we don't exceed our maximum torque. This can
+    // happen when something pushes us or when player sets direction.
+    // in reverse to our rotation. In that case we will overshoot
+    // our desired rotation because we simply can't deccelerate
+    // fast enough.
+    return Number(desiredTorque).clampTo(-this.TORQUE, this.TORQUE);
   }
 
   // ! Throws exception on error.
@@ -650,8 +387,6 @@ export class VehiclePhysics extends Serializable
     const acceleration = this.TORQUE / inertia;
 
     this.angularVelocityDelta = acceleration / Engine.FPS;
-
-// console.log(`Updating angularVelocityDelta to`, this.angularVelocityDelta);
   }
 
   private updateBrakingAngle(desiredPosition: { x: number; y: number })
