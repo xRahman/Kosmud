@@ -1,3 +1,21 @@
+Ke zvážení - zavést a použít typy pro:
+- nezápornou hodnotu (NonnegativeNumber)
+- PositiveNumber (třeba inertia)
+- úhel -PI to PI
+- úhel 0 to 2PI
+- unit vector
+TODO:
+ getInertia() bude vracet PositiveNumber,
+ getInertiaValue() bude vracet number.
+- konstanty ve VehiclePhysics by asi taky měly mít tyhle typy
+[done]
+
+TODO: Z něčeho ty nový typy zdědit (NumberWrapper)
+[done]
+
+TODO: TORQUE asi přejmenovat na ANGULAR_THRUST
+[done]
+
 Zbývá přeci jen jeden rotační problém:
 - když jsem roztočenej, tak kliknutí o velkej úhel zpět se nevrací, ale
   protočí skrz.

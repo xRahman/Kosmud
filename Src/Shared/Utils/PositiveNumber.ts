@@ -5,29 +5,29 @@
 */
 
 import { Classes } from "../../Shared/Class/Classes";
-import { Serializable } from "../../Shared/Class/Serializable";
+import { NumberWrapper } from "../../Shared/Class/NumberWrapper";
 
-export class PositiveNumber extends Serializable
+export class PositiveNumber extends NumberWrapper
 {
-  private readonly value: number;
-
   // ! Throws exception on error.
   constructor(value: number)
   {
     super();
 
+    // ! Throws exception on error.
+    this.set(value);
+  }
+
+  // ! Throws exception on error.
+  public set(value: number)
+  {
     if (value <= 0)
     {
-      throw new Error(`Attempt to assign invalid value`
+      throw new Error(`Attempt to set invalid value`
         + ` to a PositiveNumber (${value})`);
     }
 
     this.value = value;
-  }
-
-  public valueOf(): number
-  {
-    return this.value;
   }
 }
 

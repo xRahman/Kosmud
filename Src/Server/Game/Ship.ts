@@ -31,7 +31,7 @@ export class Ship extends Shared.Ship
       torqueRatio: this.physics.getTorqueRatio(),
       brakingDistance: this.physics.brakingDistance,
       stoppingDistance: this.physics.stoppingDistance,
-      desiredRotation: this.physics.desiredRotation
+      desiredRotation: this.physics.desiredRotation.valueOf()
     };
 
     return shipState;

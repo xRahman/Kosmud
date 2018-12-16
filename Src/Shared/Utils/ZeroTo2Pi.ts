@@ -6,23 +6,20 @@
 
 import { Classes } from "../../Shared/Class/Classes";
 import { Angle } from "../../Shared/Utils/Angle";
-import { Serializable } from "../../Shared/Class/Serializable";
+import { NumberWrapper } from "../../Shared/Class/NumberWrapper";
 
-export class ZeroTo2Pi extends Serializable
+export class ZeroTo2Pi extends NumberWrapper
 {
-  private readonly value: number;
-
-  // ! Throws exception on error.
   constructor(value: number)
   {
     super();
 
-    this.value = Angle.zeroTo2Pi(value);
+    this.set(value);
   }
 
-  public valueOf(): number
+  public set(value: number)
   {
-    return this.value;
+    this.value = Angle.zeroTo2Pi(value);
   }
 }
 

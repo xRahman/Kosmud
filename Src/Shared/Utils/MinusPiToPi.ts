@@ -6,23 +6,20 @@
 
 import { Classes } from "../../Shared/Class/Classes";
 import { Angle } from "../../Shared/Utils/Angle";
-import { Serializable } from "../../Shared/Class/Serializable";
+import { NumberWrapper } from "../../Shared/Class/NumberWrapper";
 
-export class MinusPiToPi extends Serializable
+export class MinusPiToPi extends NumberWrapper
 {
-  private readonly value: number;
-
-  // ! Throws exception on error.
   constructor(value: number)
   {
     super();
 
-    this.value = Angle.minusPiToPi(value);
+    this.set(value);
   }
 
-  public valueOf(): number
+  public set(value: number)
   {
-    return this.value;
+    this.value = Angle.minusPiToPi(value);
   }
 }
 

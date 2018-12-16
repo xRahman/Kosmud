@@ -1,23 +1,12 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-Ke zvážení - zavést a použít typy pro:
-- nezápornou hodnotu (NonnegativeNumber)
-- PositiveNumber (třeba inertia)
-- úhel -PI to PI
-- úhel 0 to 2PI
-- unit vector
-TODO:
- getInertia() bude vracet PositiveNumber,
- getInertiaValue() bude vracet number.
-- konstanty ve VehiclePhysics by asi taky měly mít tyhle typy
+Něco je špatně...
 
-TODO: Z něčeho ty nový typy zdědit (NumberWrapper)
+TODO: Ještě bych asi uživil typ ZeroToPi (na this.brakingAngle).
 
-TODO: TORQUE asi přejmenovat na ANGULAR_THRUST
-
-TODO: Asi přece jen implementovat změny max torque (a možná max speed)
-  dokud to ještě mám v hlavě.
+TODO: Asi přece jen implementovat změny max torque (a možná max angular
+  velocity) dokud to ještě mám v hlavě.
 
 
 TODO: Pokud opravdu zruším stopping distance, tak ji ani neposílat

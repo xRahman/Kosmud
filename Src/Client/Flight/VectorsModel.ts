@@ -33,9 +33,11 @@ export class VectorsModel
 
     // console.log(vehicle.physics.getDesiredVelocity());
 
+    const desiredRotation = vehicle.physics.desiredRotation.valueOf();
+
     this.vectorsGraphics.drawVector
     (
-      new Vector({ x: 1, y: 0}).rotate(vehicle.physics.desiredRotation),
+      new Vector({ x: 1, y: 0}).rotate(desiredRotation),
       origin, 1, Graphics.rgb(50, 50, 155), 1
     );
 

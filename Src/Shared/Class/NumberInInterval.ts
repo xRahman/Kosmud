@@ -16,27 +16,16 @@ export abstract class NumberInInterval extends Serializable
 
   private value: number;
 
-  constructor(value = 0)
+  constructor(value: number)
   {
     super();
 
-    const min = (this.constructor as any)[MINIMUM];
-    const max = (this.constructor as any)[MAXIMUM];
-
-    if (value < min)
-    {
-      this.value = min;
-    }
-    else if (value > max)
-    {
-      this.value = max;
-    }
-    else
-    {
-      this.value = value;
-    }
+    this.value = this.clampValue(value);
   }
 
+  // ---------------- Public methods --------------------
+
+  // ! Throws exception on error.
   public atLeast(minimum: number): this
   {
     const min = (this.constructor as any)[MINIMUM];
@@ -54,6 +43,7 @@ export abstract class NumberInInterval extends Serializable
     return this;
   }
 
+  // ! Throws exception on error.
   public atMost(maximum: number): this
   {
     const min = (this.constructor as any)[MINIMUM];
@@ -71,8 +61,41 @@ export abstract class NumberInInterval extends Serializable
     return this;
   }
 
+  public set(value: number)
+  {
+    const min = (this.constructor as any)[MINIMUM];
+    const max = (this.constructor as any)[MAXIMUM];
+
+    if (value < min || value > max)
+    {
+      throw new Error(`Attempt to set invalid value (${value})`
+        + ` to interval <${min}, ${max}>`);
+    }
+  }
+
+  public clamp(value: number)
+  {
+    this.value = this.clampValue(value);
+  }
+
   public valueOf(): number
   {
     return this.value;
+  }
+
+  // ---------------- Private methods -------------------
+
+  private clampValue(value: number)
+  {
+    const min = (this.constructor as any)[MINIMUM];
+    const max = (this.constructor as any)[MAXIMUM];
+
+    if (value < min)
+      return min;
+
+    if (value > max)
+      return max;
+
+    return value;
   }
 }

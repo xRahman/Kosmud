@@ -102,7 +102,7 @@ export class Ship extends Shared.Ship
 
     this.physics.brakingDistance = shipState.brakingDistance;
     this.physics.stoppingDistance = shipState.stoppingDistance;
-    this.physics.desiredRotation = shipState.desiredRotation;
+    this.physics.desiredRotation.set(shipState.desiredRotation);
 
     // ! Throws exception on error.
     this.getModel().drawVectors(this);
