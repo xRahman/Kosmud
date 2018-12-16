@@ -1,3 +1,9 @@
+Něco je špatně...
+[něco je fixed]
+
+TODO: Ještě bych asi uživil typ ZeroToPi (na this.brakingAngle).
+[done]
+
 Ke zvážení - zavést a použít typy pro:
 - nezápornou hodnotu (NonnegativeNumber)
 - PositiveNumber (třeba inertia)

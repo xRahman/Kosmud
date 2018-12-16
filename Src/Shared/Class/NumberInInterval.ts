@@ -71,6 +71,8 @@ export abstract class NumberInInterval extends Serializable
       throw new Error(`Attempt to set invalid value (${value})`
         + ` to interval <${min}, ${max}>`);
     }
+
+    this.value = value;
   }
 
   public clamp(value: number)

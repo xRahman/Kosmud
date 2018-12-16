@@ -1,9 +1,6 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-Něco je špatně...
-
-TODO: Ještě bych asi uživil typ ZeroToPi (na this.brakingAngle).
 
 TODO: Asi přece jen implementovat změny max torque (a možná max angular
   velocity) dokud to ještě mám v hlavě.
