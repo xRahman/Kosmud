@@ -408,9 +408,9 @@ export class VehiclePhysics extends Serializable
 
     // If the player changed desired angle while we were still turning
     // to it overtake it because we have limited decceleration.
-    if (isOvertaking(distance))
+    if (this.isOvertaking(distance))
     {
-      console.log("overtaking, distance:", distance);
+      // console.log("overtaking, distance:", distance);
       // If we are getting away from our desired angle because we overtook
       // it, we need to slow down to stop so we can get back to it.
       //   After that we will be accelerating back to our desired angle
@@ -421,6 +421,8 @@ export class VehiclePhysics extends Serializable
     }
 
     const action = this.angularAction(distance);
+
+    // console.log(action);
 
     // Do we need to accelerate or slow down again?
     switch (action)
@@ -440,7 +442,34 @@ export class VehiclePhysics extends Serializable
 
   private angularAction(distance: number): "Accelerate" | "Deccelerate"
   {
+    // const velocity = this.getAngularVelocity();
     const projectedDelta = this.computeProjectedAngularDelta();
+
+    // if (velocity > 0 && distance < 0)
+    // {
+    //   if (distance + Math.PI > Math.PI)
+    //     return "Deccelerate";
+    // }
+
+    // if (velocity < 0 && distance > 0)
+    // {
+    //   if (distance - Math.PI < -Math.PI)
+    //     return "Deccelerate";
+    // }
+
+    // if (velocity > 0 && distance < 0)
+    // {
+    //   console.log(velocity, distance, "Deccelerate");
+
+    //   return "Deccelerate";
+    // }
+
+    // if (velocity < 0 && distance > 0)
+    // {
+    //   console.log(velocity, distance, "Deccelerate");
+
+    //   return "Deccelerate";
+    // }
 
     if (Math.abs(distance - projectedDelta) > Math.abs(this.brakingAngle))
     {
@@ -454,36 +483,68 @@ export class VehiclePhysics extends Serializable
 
   private computeAngularAcceleration(distance: number)
   {
-    const torque = this.accelerationTorqueAbsoluteValue();
+    // const torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
 
-    if (distance > 0 && distance <= Math.PI)
+    if (distance > 0)
     {
-      this.torque = torque;
+      this.torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
+
+    // if (distance <= Math.PI)
+    //   this.torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
+    // else
+    //   this.torque = this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
     }
     else
     {
-      this.torque = -torque;
+      this.torque = this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
+
+    // if (distance >= -Math.PI)
+    //   this.torque = this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
+    // else
+    //   this.torque = this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
     }
 
     // console.log("Accelerating by torque", this.torque);
   }
 
-  private accelerationTorqueAbsoluteValue()
+  private torqueToReachVelocity(desiredVelocity: number)
   {
     // ! Throws exception on error.
     const inertia = this.getPhysicsBody().getInertia();
     // ! Throws exception on error.
     const velocity = this.getPhysicsBody().getAngularVelocity();
 
-    const velocityDelta = this.MAX_ANGULAR_VELOCITY - Math.abs(velocity);
+    // const velocityDelta = desiredVelocity - Math.abs(velocity);
+    const velocityDelta = desiredVelocity - velocity;
 
-    if (velocityDelta < this.angularVelocityDelta)
+    console.log
+    (
+      "Desired:", desiredVelocity,
+      "Delta:", velocityDelta,
+      "Precomputed delta:", this.angularVelocityDelta
+    );
+
+    if (desiredVelocity > 0)
     {
-      return inertia * velocityDelta;
+      if (Math.abs(velocityDelta) < this.angularVelocityDelta)
+      {
+        return inertia * velocityDelta;
+      }
+      else
+      {
+        return this.TORQUE;
+      }
     }
     else
     {
-      return this.TORQUE;
+      if (Math.abs(velocityDelta) < this.angularVelocityDelta)
+      {
+        return inertia * velocityDelta;
+      }
+      else
+      {
+        return -this.TORQUE;
+      }
     }
   }
 
@@ -540,9 +601,10 @@ export class VehiclePhysics extends Serializable
       const desiredTorque = -(inertia * v * v) / (2 * distance);
 
       // Ensure that we don't exceed our maximum torque. This can
-      // happen when something pushes us. In that case we will
-      // overshoot our desired rotation because we simply can't
-      // deccelerate fast enough.
+      // happen when something pushes us or when player sets direction.
+      // in reverse to our rotation. In that case we will overshoot
+      // our desired rotation because we simply can't deccelerate
+      // fast enough.
       this.torque = Number(desiredTorque).clampTo(-this.TORQUE, this.TORQUE);
     }
 
@@ -901,6 +963,13 @@ export class VehiclePhysics extends Serializable
     return projectedVelocity / Engine.FPS;
   }
 
+  private isOvertaking(distance: number)
+  {
+    const velocity = this.getAngularVelocity();
+
+    return (velocity > 0 && distance < 0) || (velocity < 0 && distance > 0);
+  }
+
   // private computeDesiredAngularVelocity()
   // {
   //   const distance = this.computeAngularDistance();
@@ -1050,13 +1119,6 @@ function computeDesiredRotation
   //   default:
   //     throw Syslog.reportMissingCase(maneuverPhase);
   // }
-}
-
-function isOvertaking(distance: number)
-{
-  const velocity = this.getAngularVelocity();
-
-  return (velocity > 0 && distance < 0) || (velocity < 0 && distance > 0);
 }
 
 /*
