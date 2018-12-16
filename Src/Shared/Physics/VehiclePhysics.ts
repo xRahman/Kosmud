@@ -9,7 +9,10 @@ import "../../Shared/Utils/Number";
 
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Angle } from "../../Shared/Utils/Angle";
+import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
+import { PositiveNumber } from "../../Shared/Utils/PositiveNumber";
+import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -20,51 +23,20 @@ import { Physics } from "../../Shared/Physics/Physics";
 import { Coords } from "../../Shared/Engine/Coords";
 import { Serializable } from "../../Shared/Class/Serializable";
 
-// Tohle je kvůli tomu, aby se na konci manévru setnula nulová desired
-// velocity. Nejspíš to ale pořeším jinak - směr budu držet zvlášť
-// a desired velocity bude rovnou nulová.
-// const STOPPED_DISTANCE = pixels(1);
-// const STOPPED_ANGLE = Math.PI / 100;
-
 type ArrivePhase = "Accelerating" | "Braking";
 
 export class VehiclePhysics extends Serializable
 {
-  /// Nechám to zatím CAPSEM. Časem to možná nebudou konstanty
-  /// (protože se budou měnit debufama a tak, tak to pak případně
-  ///  přejmenuju. Ale popravdě by asi bylo lepší nechat základ konstantní
-  ///  a případný modifikátor přičítat/přinásobovat)
-  // public readonly MAX_SPEED = 200;
-  // public readonly FORWARD_THRUST = 100;
-  // public readonly BACKWARD_THRUST = 20;
-  // public readonly STRAFE_THRUST = 5;
-  // public readonly ANGULAR_VELOCITY = Math.PI * 2;
-  // public readonly TORQUE = 500;
-  // public readonly BRAKING_DISTANCE = 20;
-  // public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
   public readonly MAX_SPEED = 2;
   public readonly FORWARD_THRUST = 1;
   public readonly BACKWARD_THRUST = 0.2;
   public readonly STRAFE_THRUST = 0.5;
-  // public readonly ANGULAR_VELOCITY = Math.PI * 2;
   public readonly MAX_ANGULAR_VELOCITY = Math.PI / 2;
-  // public readonly TORQUE = 5;
-  public readonly TORQUE = 0.1;
-  // public readonly STOPPING_DISTANCE = pixels(20);
-  // public readonly STOPPING_ANGLE = Math.PI / 20;
-  // public readonly BRAKING_SPEED = this.MAX_SPEED / 100;
+  public readonly ANGULAR_THRUST = 0.1;
 
-  // public shapeId: string | "Not set" = "Not set";
-  /// V zásadě asi není důvod, proč by 'shapeId' nemohlo být setnuté vždycky.
-  /// Entita ho zdědí z prototypy a přepíše.
-  /// (A výhledově tady beztak bude reference na entitu Shape).
   public shapeId = "<missing physics shape id>";
-  /// Tohle je sice divně malý číslo, ale když ho zvětším, tak pak musej
-  /// bejt mnohem větší všechny thrusty, torques a tak a vektory
-  /// jsou pak přes celou obrazovku (mohl bych je teda scalovat, když na to
-  /// příjde).
   public density = 1000;
-  public friction = 0.5;       // Value: 0 to 1.
+  public friction = new ZeroToOne(0.5);
   // 0 - almost no bouncing, 1 - maximum bouncing.
   public restitution = 1;      // Value: 0 to 1.
 
@@ -100,7 +72,7 @@ export class VehiclePhysics extends Serializable
 
   private brakingAngle = 0;
   private maxBrakingAngle = 0;
-  private angularVelocityDelta = 0;
+  private angularVelocityIncrement = 0;
   // private arriveAngularPhase: ArrivePhase = "Braking";
 
   constructor(private readonly entity: Entity)
@@ -162,7 +134,7 @@ export class VehiclePhysics extends Serializable
 
   public getTorqueRatio()
   {
-    return new MinusOneToOne(this.torque / this.TORQUE);
+    return new MinusOneToOne(this.torque / this.ANGULAR_THRUST);
   }
 
   public setWaypoint(waypoint: { x: number; y: number })
@@ -213,6 +185,7 @@ export class VehiclePhysics extends Serializable
 
   // --------------- Protected methods ------------------
 
+// +
   // ! Throws exception on error.
   protected arrive()
   {
@@ -271,21 +244,26 @@ export class VehiclePhysics extends Serializable
 
   // ---------------- Private methods -------------------
 
+// +
   private computeArriveTorque()
   {
     const distance = this.computeAngularDistance();
 
-    // If the player changed desired angle while we were still turning
-    // to it, we might overtake it because we have limited decceleration.
-    if (this.isOvertaking(distance))
+    // If the player changes desired angle while we were still turning
+    // to it, we might overtake it because we can't deccelerate fast enough.
+    if (this.isOvertakingAngle(distance))
     {
       // If we are overtaking desired angle, we need to recalculate braking
-      // angle to know for how long we need to accelerate on our way back
-      // before slowing down again.
+      // angle to know when to start deccelerating on our way back.
       this.updateBrakingAngle(this.waypoint);
     }
 
-    const action = this.angularAction(distance);
+// +
+    // Note that reversing after overtaking the desired angle is also
+    // computed as acceleration (just in the opposite direction).
+    //   It's a "Deccelerate" action only when we want to slow down to
+    // stop.
+    const action = this.determineAngularAction(distance);
 
     switch (action)
     {
@@ -300,11 +278,19 @@ export class VehiclePhysics extends Serializable
     }
   }
 
-  private angularAction(distance: number): "Accelerate" | "Deccelerate"
+// +
+  private determineAngularAction(distance: number)
+  : "Accelerate" | "Deccelerate"
   {
-    const projectedDelta = this.computeProjectedAngularDelta();
+    const angleIncrement = this.computeAnguleIncrement();
 
-    if (Math.abs(distance - projectedDelta) > Math.abs(this.brakingAngle))
+    // We compare the angle where we would be the next tick with
+    // braking angle (which is the smallest angle when we need to start
+    // deccelerating in order to stop at desired angle) instad our
+    // current angle, because physics is simulated in discrete steps
+    // and if we started after we exceeded the braking angle, we wouldn't
+    // be able to stop in time.
+    if (Math.abs(distance - angleIncrement) > Math.abs(this.brakingAngle))
     {
       return "Accelerate";
     }
@@ -314,38 +300,31 @@ export class VehiclePhysics extends Serializable
     }
   }
 
+// +
   private computeAccelerationTorque(distance: number)
   {
-    if (distance > 0)
-    {
-      return this.torqueToReachVelocity(this.MAX_ANGULAR_VELOCITY);
-    }
-    else
-    {
-      return this.torqueToReachVelocity(-this.MAX_ANGULAR_VELOCITY);
-    }
-  }
+    const desiredVelocity =
+      (distance > 0) ? this.MAX_ANGULAR_VELOCITY : -this.MAX_ANGULAR_VELOCITY;
 
-  private torqueToReachVelocity(desiredVelocity: number)
-  {
     // ! Throws exception on error.
     const inertia = this.getPhysicsBody().getInertia();
     // ! Throws exception on error.
     const velocity = this.getPhysicsBody().getAngularVelocity();
-    const velocityDelta = desiredVelocity - velocity;
+    const velocityIncrement = desiredVelocity - velocity;
 
-    // Note: 'this.angularVelocityDelta' is a precomputed value
+    // Note: 'this.angularVelocityIncrement' is a precomputed value
     // (it only changes when inertia or maximum torque changes).
-    if (Math.abs(velocityDelta) < this.angularVelocityDelta)
-      // We are almost at desired angular velocity - compute torque
-      // needed to exactly reach it.
-      return inertia * velocityDelta;
+    if (Math.abs(velocityIncrement) < this.angularVelocityIncrement)
+      // When we are almost at desired angular velocity we compute
+      // exact torque needed to reach it.
+      return inertia * velocityIncrement;
 
-    // We won't reach desired angular velocity in this tick - apply
+    // If we won't reach desired angular velocity in this tick we apply
     // maximum possible torque in respective direction.
-    return (desiredVelocity > 0) ? this.TORQUE : -this.TORQUE;
+    return (desiredVelocity > 0) ? this.ANGULAR_THRUST : -this.ANGULAR_THRUST;
   }
 
+// +
   private computeDeccelerationTorque(distance: number)
   {
     const v = this.getAngularVelocity();
@@ -363,40 +342,42 @@ export class VehiclePhysics extends Serializable
     //     Force = (mass * v * v) / (2 * d)
     const desiredTorque = -(inertia * v * v) / (2 * distance);
 
-    // Ensure that we don't exceed our maximum torque. This can
-    // happen when something pushes us or when player sets direction.
-    // in reverse to our rotation. In that case we will overshoot
-    // our desired rotation because we simply can't deccelerate
-    // fast enough.
-    return Number(desiredTorque).clampTo(-this.TORQUE, this.TORQUE);
+    // Ensure that we don't exceed our maximum torque. This can happen
+    // when something pushes us or when player sets reversed direction.
+    // In that case we will overshoot our desired rotation because we
+    // simply can't deccelerate fast enough.
+    return Number(desiredTorque).clampTo
+    (
+      -this.ANGULAR_THRUST, this.ANGULAR_THRUST
+    );
   }
 
+// +
   // ! Throws exception on error.
   private init()
   {
     // ! Throws exception on error.
-    this.updateAngularVelocityDelta();
+    this.updateAngularVelocityInrement();
     this.updateMaxBrakingAngle();
   }
 
+// +
   // ! Throws exception on error.
-  private updateAngularVelocityDelta()
+  private updateAngularVelocityInrement()
   {
     // ! Throws exception on error.
     const inertia = this.getPhysicsBody().getInertia();
-    const acceleration = this.TORQUE / inertia;
+    const acceleration = this.ANGULAR_THRUST / inertia;
 
-    this.angularVelocityDelta = acceleration / Engine.FPS;
+    this.angularVelocityIncrement = acceleration / Engine.FPS;
   }
 
+// +
   private updateBrakingAngle(desiredPosition: { x: number; y: number })
   {
     const currentPosition = this.getPosition();
-
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
-
     const desiredRotation = Angle.zeroTo2Pi(targetVector.getRotation());
-
     const angularDistance = Angle.minusPiToPi
     (
       desiredRotation - this.getRotation()
@@ -405,45 +386,32 @@ export class VehiclePhysics extends Serializable
     const halfAngularDistance = Math.abs(angularDistance / 2);
     const maxBrakingAngle = Math.abs(this.maxBrakingAngle);
 
-    // The idea here is that if we don't have time
-    // to reach maximum possible velocity, it will
-    // take exactly half the distance to accelerate
-    // and another half to deccelerate.
-    //   If we do reach maximum velocity, than braking
-    // distance is a constant (because maximum velocity
+    // The idea here is that if we don't have time to reach
+    // maximum possible angular velocity, it will take exactly
+    // half the distance to accelerate and another half to
+    // deccelerate.
+    //   If we do have time to reach maximum velocity, than
+    // braking distance is a constant (because maximum velocity
     // is a constant, too) so we just assign it.
     if (halfAngularDistance < maxBrakingAngle)
     {
       this.brakingAngle = halfAngularDistance;
-
-      // console.log
-      // (
-      //   `Setting braking angle to half the angular distance`
-      //   + ` ${halfAngularDistance}`
-      // );
     }
     else
     {
       this.brakingAngle = this.maxBrakingAngle;
-
-      // console.log
-      // (
-      //   `Setting braking angle to maximum braking angle`
-      //   + ` ${this.maxBrakingAngle}`
-      // );
     }
   }
 
+// +
   private updateMaxBrakingAngle()
   {
     this.maxBrakingAngle = computeBrakingDistance
     (
       this.MAX_ANGULAR_VELOCITY,
       this.getPhysicsBody().getInertia(),
-      this.TORQUE
+      this.ANGULAR_THRUST
     );
-
-    console.log(`Updating maxBrakingAngle to ${this.maxBrakingAngle}`);
   }
 
   // ! Throws exception on error.
@@ -451,7 +419,7 @@ export class VehiclePhysics extends Serializable
   {
     if (this.physicsBody === "Not in physics world")
     {
-      throw new Error(`${this.entity.debugId} is not in physics wolrd`
+      throw new Error(`${this.entity.debugId} is not in physics world`
         + ` yet and doesn't have a physics body`);
     }
 
@@ -670,6 +638,7 @@ export class VehiclePhysics extends Serializable
     }
   }
 
+// +
   private computeAngularDistance()
   {
     const desiredPosition = this.waypoint;
@@ -677,84 +646,33 @@ export class VehiclePhysics extends Serializable
 
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
 
-    // Rotaci počítám z targetVectoru místo z desiredVelocity,
-    // protože při brždění je desiredVelocity nulová a nedá se
-    // z ní tudíž rotace spočítat.
+    // Remember desired rotation so we can send it later to the client
+    // to be drawn in debug mode.
     this.desiredRotation = computeDesiredRotation(targetVector);
     const currentRotation = Angle.zeroTo2Pi(this.getRotation());
 
     // // ! Throws exception on error.
-    // Enforcing interval <-PI, PI> ensures that we turn the shorter way.
     return Angle.minusPiToPi(this.desiredRotation - currentRotation);
   }
 
-  private computeProjectedAngularDelta()
+// +
+  private computeAnguleIncrement()
   {
     // a = F / m
     const acceleration = this.torque / this.getPhysicsBody().getInertia();
-    const velocityDelta = acceleration / Engine.FPS;
-    const projectedVelocity = this.getAngularVelocity() + velocityDelta;
+    const velocityIncrement = acceleration / Engine.FPS;
+    const nextTickVelocity = this.getAngularVelocity() + velocityIncrement;
 
-    return projectedVelocity / Engine.FPS;
+    return nextTickVelocity / Engine.FPS;
   }
 
-  private isOvertaking(distance: number)
+// +
+  private isOvertakingAngle(distance: number)
   {
     const velocity = this.getAngularVelocity();
 
     return (velocity > 0 && distance < 0) || (velocity < 0 && distance > 0);
   }
-
-  // private computeDesiredAngularVelocity()
-  // {
-  //   const distance = this.computeAngularDistance();
-  //   const projectedDelta = this.computeProjectedAngularDelta();
-
-  //   if (Math.abs(distance + projectedDelta) > Math.abs(this.brakingAngle))
-  //   {
-  //     /// Spočítat potřebnou torque z aktuální rychlosti a vzdálenosti,
-  //     /// která mi zbejvá dorazit
-  //     ///  Problém: To ovšem pak nepůjde přes desiredVelocity...
-  //   }
-
-  //   if (isAccelerating && willBreak)
-  //   {
-  //     return complicatedStuff();
-  //   }
-
-  //   if ()
-
-  //   if (Math.abs(distance + projectedDelta) > this.brakingAngle)
-  //   {
-  //     if (distance > 0 && distance < Math.PI)
-  //     {
-  //       return this.MAX_ANGULAR_VELOCITY;
-  //     }
-  //     else
-  //     {
-  //       return -this.MAX_ANGULAR_VELOCITY;
-  //     }
-  //   }
-  //   else
-  //   {
-  //     return 0;
-  //   }
-
-  //   // if (this.arriveAngularPhase === "Braking")
-  //   // {
-  //   //   console.log
-  //   //   (
-  //   //     "Distance:", angularDistance,
-  //   //     "Braking distance:", computeBrakingDistance
-  //   //     (
-  //   //       this.getAngularVelocity(),
-  //   //       this.getPhysicsBody().getInertia(),
-  //   //       this.TORQUE
-  //   //     ),
-  //   //     "Braking angle:", this.brakingAngle
-  //   //   );
-  //   // }
-  // }
 
   // ! Throws exception on error.
   private validateSpeed(desiredSpeed: number)
@@ -826,34 +744,9 @@ function determineLinearPhase(distance: number, brakingDistance: number)
 //   return "Braking";
 // }
 
-function computeDesiredRotation
-(
-  // maneuverPhase: ArrivePhase,
-  // currentRotation: number,
-  targetVector: Vector
-  // desiredSteeringForce: Vector
-)
+function computeDesiredRotation(targetVector: Vector)
 {
   return Angle.zeroTo2Pi(targetVector.getRotation());
-  // switch (maneuverPhase)
-  // {
-  //   case "Accelerating":
-  //     return Angle.normalize(desiredSteeringForce.getRotation());
-
-  //   case "Braking":
-  //     // When we are braking, turn in the direction of desired velocity.
-  //     return Angle.zeroTo2Pi(targetVector.getRotation());
-
-  //   case "Stopping":
-  //   case "Stopped":
-  //     // If we are stopped or nearly stopped, pass current rotation
-  //     // as desired rotation to prevent rotating in-place
-  //     // (it doesn't work perfectly but it helps a bit).
-  //     return Angle.normalize(currentRotation);
-
-  //   default:
-  //     throw Syslog.reportMissingCase(maneuverPhase);
-  // }
 }
 
 /*
