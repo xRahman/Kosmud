@@ -1,3 +1,9 @@
+Další bug: Když stojím, tak kliknutím proti směru, ve kterém jsem zastavil,
+  se bere jako overtaking a tudíž se loď nezačne pohybovat.
+- tohle bylo tím, že jsem do výpočtu braking anglu předával this.getPosition()
+  místo this.waypoint.
+[fixed]
+
 TODO: Vyzkoušet translaci kamery ve FlightScene, aby byl vizuálně počátek
   uprostřed obrazovky (je to asi lepší, než tranformovat všechny souřadnice.
   (a možná to pak udělat i v background scene)

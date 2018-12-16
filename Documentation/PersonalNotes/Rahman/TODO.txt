@@ -6,6 +6,12 @@ Zbývá přeci jen jeden rotační problém:
   protočí skrz.
   (možná je to dokonce i rychlejší než se vracet, ale působí to neintuitivně).
 Asi bych se to měl pokusit fixnout.
+- bere se to jako overtaking. Distance začíná někde kolem +2 nebo -2 a roste
+  postupně k PI nebo -PI
+IDEA: Asi bych měl distance hodit do rozsahu 0..2PI, možná -2PI .. 2PI
+- v computeArriveTorque() bych měl zohledňovat, když je distance
+  větší než PI, možná než PI + brzdná dráha.
+
 
 2 bugy:
 - v "refactornutém" kódu mi to na jednu stranu přestřeluje

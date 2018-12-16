@@ -405,30 +405,50 @@ export class VehiclePhysics extends Serializable
   private computeArriveTorque()
   {
     const distance = this.computeAngularDistance();
-    const projectedDelta = this.computeProjectedAngularDelta();
-    const velocity = this.getAngularVelocity();
 
     // If the player changed desired angle while we were still turning
     // to it overtake it because we have limited decceleration.
-    if (isOvertaking(velocity, distance))
+    if (isOvertaking(distance))
     {
+      console.log("overtaking, distance:", distance);
       // If we are getting away from our desired angle because we overtook
       // it, we need to slow down to stop so we can get back to it.
       //   After that we will be accelerating back to our desired angle
       // so we need to recalculate braking angle in order to know for
       // how long we need to accelerate before slowing down again to stop
       // at our desired angle.
-      this.updateBrakingAngle(this.getPosition());
+      this.updateBrakingAngle(this.waypoint);
     }
 
+    const action = this.angularAction(distance);
+
     // Do we need to accelerate or slow down again?
+    switch (action)
+    {
+      case "Accelerate":
+        this.computeAngularAcceleration(distance);
+        break;
+
+      case "Deccelerate":
+        this.computeAngularDecceleration(distance);
+        break;
+
+      default:
+        throw Syslog.reportMissingCase(action);
+    }
+  }
+
+  private angularAction(distance: number): "Accelerate" | "Deccelerate"
+  {
+    const projectedDelta = this.computeProjectedAngularDelta();
+
     if (Math.abs(distance - projectedDelta) > Math.abs(this.brakingAngle))
     {
-      this.computeAngularAcceleration(distance);
+      return "Accelerate";
     }
     else
     {
-      this.computeAngularDecceleration(distance);
+      return "Deccelerate";
     }
   }
 
@@ -436,7 +456,7 @@ export class VehiclePhysics extends Serializable
   {
     const torque = this.accelerationTorqueAbsoluteValue();
 
-    if (distance > 0 && distance < Math.PI)
+    if (distance > 0 && distance <= Math.PI)
     {
       this.torque = torque;
     }
@@ -446,8 +466,6 @@ export class VehiclePhysics extends Serializable
     }
 
     // console.log("Accelerating by torque", this.torque);
-
-    // this.computeAngularForces(desiredVelocity);
   }
 
   private accelerationTorqueAbsoluteValue()
@@ -574,10 +592,9 @@ export class VehiclePhysics extends Serializable
 // console.log(`Updating angularVelocityDelta to`, this.angularVelocityDelta);
   }
 
-  private updateBrakingAngle(waypoint: { x: number; y: number })
+  private updateBrakingAngle(desiredPosition: { x: number; y: number })
   {
     const currentPosition = this.getPosition();
-    const desiredPosition = this.waypoint;
 
     const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
 
@@ -602,27 +619,22 @@ export class VehiclePhysics extends Serializable
     {
       this.brakingAngle = halfAngularDistance;
 
-      console.log
-      (
-        `Setting braking angle to half the angular distance`
-        + ` ${halfAngularDistance}`
-      );
+      // console.log
+      // (
+      //   `Setting braking angle to half the angular distance`
+      //   + ` ${halfAngularDistance}`
+      // );
     }
     else
     {
       this.brakingAngle = this.maxBrakingAngle;
 
-      console.log
-      (
-        `Setting braking angle to maximum braking angle`
-        + ` ${this.maxBrakingAngle}`
-      );
+      // console.log
+      // (
+      //   `Setting braking angle to maximum braking angle`
+      //   + ` ${this.maxBrakingAngle}`
+      // );
     }
-
-/// Tohle možná ani nebude potřeba, pokud bude gradual approach fungovat dobře.
-    // // Add 'this.angleDeltaPerTick' because we are not braking perfectly
-    // // (we use gradual approach for the last tick).
-    // this.brakingAngle = halfAngularDistance + this.angleDeltaPerTick;
   }
 
   private updateMaxBrakingAngle()
@@ -1040,8 +1052,10 @@ function computeDesiredRotation
   // }
 }
 
-function isOvertaking(velocity: number, distance: number)
+function isOvertaking(distance: number)
 {
+  const velocity = this.getAngularVelocity();
+
   return (velocity > 0 && distance < 0) || (velocity < 0 && distance > 0);
 }
 
