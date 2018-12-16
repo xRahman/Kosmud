@@ -17,7 +17,7 @@ export class Ship extends Shared.Ship
     {
       shipId: this.getId(),
       shipPosition: this.physics.getPosition(),
-      shipRotation: this.physics.getRotation(),
+      shipRotation: this.physics.getRotation().valueOf(),
       shipVelocity: this.physics.getVelocity(),
       desiredVelocity: this.physics.getDesiredVelocity(),
       steeringForce: this.physics.getSteeringForce(),

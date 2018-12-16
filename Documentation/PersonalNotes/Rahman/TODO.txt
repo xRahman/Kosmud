@@ -12,6 +12,8 @@ TODO:
  getInertiaValue() bude vracet number.
 - konstanty ve VehiclePhysics by asi taky měly mít tyhle typy
 
+TODO: Z něčeho ty nový typy zdědit (NumberWrapper)
+
 TODO: TORQUE asi přejmenovat na ANGULAR_THRUST
 
 TODO: Asi přece jen implementovat změny max torque (a možná max speed)

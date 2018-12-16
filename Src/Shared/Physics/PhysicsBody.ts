@@ -12,6 +12,8 @@ import { Entity } from "../../Shared/Class/Entity";
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
   b2FixtureDef, b2ShapeType, b2MassData } from "../../Shared/Box2D/Box2D";
 import { VehiclePhysics } from "./VehiclePhysics";
+import { PositiveNumber } from "../Utils/PositiveNumber";
+import { ZeroTo2Pi } from "../Utils/ZeroTo2Pi";
 
 export class PhysicsBody
 {
@@ -60,7 +62,9 @@ export class PhysicsBody
   public getRotation()
   {
     // ! Throws exception on error.
-    return Number(this.box2dBody.GetAngle()).validate();
+    const rotation = Number(this.box2dBody.GetAngle()).validate();
+
+    return new ZeroTo2Pi(rotation);
   }
 
   // ! Throws exception on error.
@@ -71,19 +75,13 @@ export class PhysicsBody
   }
 
   // ! Throws exception on error.
-  // Inertia is resistance to torque.
   public getInertia()
   {
     // ! Throws exception on error.
     const inertia = Number(this.box2dBody.GetInertia()).validate();
 
-    if (inertia <= 0)
-    {
-      throw new Error(`Physics body of ${this.entity.debugId}`
-        + ` has zero or negative inertia`);
-    }
-
-    return inertia;
+    // ! Throws exception on error.
+    return new PositiveNumber(inertia);
   }
 
   // ! Throws exception on error.
@@ -91,7 +89,10 @@ export class PhysicsBody
   public getMass()
   {
     // ! Throws exception on error.
-    return Number(this.box2dBody.GetMass()).validate();
+    const mass = Number(this.box2dBody.GetMass()).validate();
+
+    // ! Throws exception on error.
+    return new PositiveNumber(mass);
   }
 
   public getCenterOfMass()
@@ -203,7 +204,7 @@ function createBody
     entityPhysics.initialPosition.x,
     entityPhysics.initialPosition.y
   );
-  bodyDefinition.angle = entityPhysics.initialRotation;
+  bodyDefinition.angle = entityPhysics.initialRotation.valueOf();
   bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
   const box2dBody = box2dWorld.CreateBody(bodyDefinition);
@@ -247,11 +248,11 @@ function createFixtureDefinition
   fixtureDefinition.shape = shape;
 
   // density * area = mass
-  fixtureDefinition.density = entityPhysics.density;
+  fixtureDefinition.density = entityPhysics.density.valueOf();
   // 0 - no friction, 1 - maximum friction
   fixtureDefinition.friction = entityPhysics.friction.valueOf();
   // 0 - almost no bouncing, 1 - maximum bouncing.
-  fixtureDefinition.restitution = entityPhysics.restitution;
+  fixtureDefinition.restitution = entityPhysics.restitution.valueOf();
 
   return fixtureDefinition;
 }

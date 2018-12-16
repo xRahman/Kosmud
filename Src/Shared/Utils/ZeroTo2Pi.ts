@@ -1,13 +1,14 @@
 /*
   Part of Kosmud
 
-  Positive floating point number.
+  Number in <0, 2π> interval.
 */
 
 import { Classes } from "../../Shared/Class/Classes";
+import { Angle } from "../../Shared/Utils/Angle";
 import { Serializable } from "../../Shared/Class/Serializable";
 
-export class PositiveNumber extends Serializable
+export class ZeroTo2Pi extends Serializable
 {
   private readonly value: number;
 
@@ -16,13 +17,7 @@ export class PositiveNumber extends Serializable
   {
     super();
 
-    if (value <= 0)
-    {
-      throw new Error(`Attempt to assign invalid value`
-        + ` to a PositiveNumber (${value})`);
-    }
-
-    this.value = value;
+    this.value = Angle.zeroTo2Pi(value);
   }
 
   public valueOf(): number
@@ -31,4 +26,4 @@ export class PositiveNumber extends Serializable
   }
 }
 
-Classes.registerSerializableClass(PositiveNumber);
+Classes.registerSerializableClass(ZeroTo2Pi);

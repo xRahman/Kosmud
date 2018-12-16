@@ -1,12 +1,13 @@
 /*
   Part of Kosmud
 
-  Nonnegative float.
+  Nonnegative floating point number.
 */
 
+import { Classes } from "../../Shared/Class/Classes";
 import { Serializable } from "../../Shared/Class/Serializable";
 
-export abstract class NonnegativeNumber extends Serializable
+export class NonnegativeNumber extends Serializable
 {
   private readonly value: number;
 
@@ -28,3 +29,5 @@ export abstract class NonnegativeNumber extends Serializable
     return this.value;
   }
 }
+
+Classes.registerSerializableClass(NonnegativeNumber);

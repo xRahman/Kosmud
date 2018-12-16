@@ -13,6 +13,8 @@ import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { PositiveNumber } from "../../Shared/Utils/PositiveNumber";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
+import { MinusPiToPi } from "../../Shared/Utils/MinusPiToPi";
+import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -27,18 +29,18 @@ type ArrivePhase = "Accelerating" | "Braking";
 
 export class VehiclePhysics extends Serializable
 {
-  public readonly MAX_SPEED = 2;
-  public readonly FORWARD_THRUST = 1;
-  public readonly BACKWARD_THRUST = 0.2;
-  public readonly STRAFE_THRUST = 0.5;
-  public readonly MAX_ANGULAR_VELOCITY = Math.PI / 2;
-  public readonly ANGULAR_THRUST = 0.1;
+  public readonly MAX_SPEED = new PositiveNumber(2);
+  public readonly FORWARD_THRUST = new PositiveNumber(1);
+  public readonly BACKWARD_THRUST = new PositiveNumber(0.2);
+  public readonly STRAFE_THRUST = new PositiveNumber(0.5);
+  public readonly MAX_ANGULAR_VELOCITY = new PositiveNumber(Math.PI / 2);
+  public readonly ANGULAR_THRUST = new PositiveNumber(0.1);
 
   public shapeId = "<missing physics shape id>";
-  public density = 1000;
+  public density = new PositiveNumber(1000);
   public friction = new ZeroToOne(0.5);
   // 0 - almost no bouncing, 1 - maximum bouncing.
-  public restitution = 1;      // Value: 0 to 1.
+  public restitution = new ZeroToOne(1);
 
   /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
   ///   Property 'initialPosition' se totiž používá jen při vkládání
@@ -47,7 +49,7 @@ export class VehiclePhysics extends Serializable
   /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
   /// savnout. A při loadu se pak zas musí body vytvořit.
   public readonly initialPosition = { x: 0, y: 0 };
-  public initialRotation = 0;
+  public initialRotation = new ZeroTo2Pi(0);
 
   public readonly waypoint = new Vector();
   public readonly desiredVelocity = new Vector();
@@ -122,19 +124,32 @@ export class VehiclePhysics extends Serializable
   public getForwardThrustRatio(): MinusOneToOne
   {
     if (this.forwardThrust >= 0)
-      return new MinusOneToOne(this.forwardThrust / this.FORWARD_THRUST);
+    {
+      return new MinusOneToOne
+      (
+        this.forwardThrust / this.FORWARD_THRUST.valueOf()
+      );
+    }
     else
-      return new MinusOneToOne(this.forwardThrust / this.BACKWARD_THRUST);
+    {
+      return new MinusOneToOne
+      (
+        this.forwardThrust / this.BACKWARD_THRUST.valueOf()
+      );
+    }
   }
 
   public getLeftwardThrustRatio()
   {
-    return new MinusOneToOne(this.leftwardThrust / this.STRAFE_THRUST);
+    return new MinusOneToOne
+    (
+      this.leftwardThrust / this.STRAFE_THRUST.valueOf()
+    );
   }
 
   public getTorqueRatio()
   {
-    return new MinusOneToOne(this.torque / this.ANGULAR_THRUST);
+    return new MinusOneToOne(this.torque / this.ANGULAR_THRUST.valueOf());
   }
 
   public setWaypoint(waypoint: { x: number; y: number })
@@ -301,13 +316,13 @@ export class VehiclePhysics extends Serializable
   }
 
 // +
-  private computeAccelerationTorque(distance: number)
+  private computeAccelerationTorque(distance: number): number
   {
-    const desiredVelocity =
-      (distance > 0) ? this.MAX_ANGULAR_VELOCITY : -this.MAX_ANGULAR_VELOCITY;
+    const maxVelocity = this.MAX_ANGULAR_VELOCITY.valueOf();
+    const desiredVelocity = (distance > 0) ? maxVelocity : -maxVelocity;
 
     // ! Throws exception on error.
-    const inertia = this.getPhysicsBody().getInertia();
+    const inertia = this.getPhysicsBody().getInertia().valueOf();
     // ! Throws exception on error.
     const velocity = this.getPhysicsBody().getAngularVelocity();
     const velocityIncrement = desiredVelocity - velocity;
@@ -319,16 +334,18 @@ export class VehiclePhysics extends Serializable
       // exact torque needed to reach it.
       return inertia * velocityIncrement;
 
+    const fullThrust = this.ANGULAR_THRUST.valueOf();
+
     // If we won't reach desired angular velocity in this tick we apply
     // maximum possible torque in respective direction.
-    return (desiredVelocity > 0) ? this.ANGULAR_THRUST : -this.ANGULAR_THRUST;
+    return (desiredVelocity > 0) ? fullThrust : -fullThrust;
   }
 
 // +
-  private computeDeccelerationTorque(distance: number)
+  private computeDeccelerationTorque(distance: number): number
   {
     const v = this.getAngularVelocity();
-    const inertia = this.getPhysicsBody().getInertia();
+    const inertia = this.getPhysicsBody().getInertia().valueOf();
 
     // Prevent division by zero.
     if (distance === 0)
@@ -341,15 +358,13 @@ export class VehiclePhysics extends Serializable
     //   Therefore:
     //     Force = (mass * v * v) / (2 * d)
     const desiredTorque = -(inertia * v * v) / (2 * distance);
+    const fullThrust = this.ANGULAR_THRUST.valueOf();
 
     // Ensure that we don't exceed our maximum torque. This can happen
     // when something pushes us or when player sets reversed direction.
     // In that case we will overshoot our desired rotation because we
     // simply can't deccelerate fast enough.
-    return Number(desiredTorque).clampTo
-    (
-      -this.ANGULAR_THRUST, this.ANGULAR_THRUST
-    );
+    return Number(desiredTorque).clampTo(-fullThrust, fullThrust);
   }
 
 // +
@@ -366,8 +381,8 @@ export class VehiclePhysics extends Serializable
   private updateAngularVelocityInrement()
   {
     // ! Throws exception on error.
-    const inertia = this.getPhysicsBody().getInertia();
-    const acceleration = this.ANGULAR_THRUST / inertia;
+    const inertia = this.getPhysicsBody().getInertia().valueOf();
+    const acceleration = this.ANGULAR_THRUST.valueOf() / inertia;
 
     this.angularVelocityIncrement = acceleration / Engine.FPS;
   }
@@ -380,7 +395,7 @@ export class VehiclePhysics extends Serializable
     const desiredRotation = Angle.zeroTo2Pi(targetVector.getRotation());
     const angularDistance = Angle.minusPiToPi
     (
-      desiredRotation - this.getRotation()
+      desiredRotation - this.getRotation().valueOf()
     );
 
     const halfAngularDistance = Math.abs(angularDistance / 2);
@@ -408,9 +423,9 @@ export class VehiclePhysics extends Serializable
   {
     this.maxBrakingAngle = computeBrakingDistance
     (
-      this.MAX_ANGULAR_VELOCITY,
-      this.getPhysicsBody().getInertia(),
-      this.ANGULAR_THRUST
+      this.MAX_ANGULAR_VELOCITY.valueOf(),
+      this.getPhysicsBody().getInertia().valueOf(),
+      this.ANGULAR_THRUST.valueOf()
     );
   }
 
@@ -552,26 +567,26 @@ export class VehiclePhysics extends Serializable
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.
     // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
     let forwardLimitRatio = 1;
-    if (desiredForwardComponentLength > this.FORWARD_THRUST)
+    const fullForwardThrust = this.FORWARD_THRUST.valueOf();
+    const fullBackwardThrust = this.BACKWARD_THRUST.valueOf();
+    const fullStrafeThrust = this.STRAFE_THRUST.valueOf();
+
+    if (desiredForwardComponentLength > fullForwardThrust)
     {
-      forwardLimitRatio =
-        this.FORWARD_THRUST / desiredForwardComponentLength;
+      forwardLimitRatio = fullForwardThrust / desiredForwardComponentLength;
     }
-    else if (desiredForwardComponentLength < -this.BACKWARD_THRUST)
+    else if (desiredForwardComponentLength < -fullBackwardThrust)
     {
-      forwardLimitRatio =
-        -this.BACKWARD_THRUST / desiredForwardComponentLength;
+      forwardLimitRatio = -fullBackwardThrust / desiredForwardComponentLength;
     }
     let strafeLimitRatio = 1;
-    if (desiredLeftwardComponentLength > this.STRAFE_THRUST)
+    if (desiredLeftwardComponentLength > fullStrafeThrust)
     {
-      strafeLimitRatio =
-        this.STRAFE_THRUST / desiredLeftwardComponentLength;
+      strafeLimitRatio = fullStrafeThrust / desiredLeftwardComponentLength;
     }
     else if (desiredLeftwardComponentLength < -this.STRAFE_THRUST)
     {
-      strafeLimitRatio =
-        -this.STRAFE_THRUST / desiredLeftwardComponentLength;
+      strafeLimitRatio = -fullStrafeThrust / desiredLeftwardComponentLength;
     }
     const steeringLimitRatio = Math.min(forwardLimitRatio, strafeLimitRatio);
 
@@ -594,20 +609,20 @@ export class VehiclePhysics extends Serializable
     this.desiredLeftwardSteeringForce.set(desiredLeftwardSteeringForce);
   }
 
-  // ! Throws exception on error.
-  private computeBrakingDistance(velocity: Vector)
-  {
-    // ! Throws exception on error.
-    const m = this.getPhysicsBody().getMass();
-    const v = velocity.length();
-    const F = this.BACKWARD_THRUST;
+// // ! Throws exception on error.
+// private computeBrakingDistance(velocity: Vector)
+// {
+//   // ! Throws exception on error.
+//   const m = this.getPhysicsBody().getMass().valueOf();
+//   const v = velocity.length();
+//   const F = this.BACKWARD_THRUST.valueOf();
 
-    // d = (1/2 * mass * v^2) / Force;
-    // const brakingDistance = this.STOPPING_DISTANCE + (m * v * v) / (F * 2);
-    return (m * v * v) / (F * 2);
+//   // d = (1/2 * mass * v^2) / Force;
+//   // const brakingDistance = this.STOPPING_DISTANCE + (m * v * v) / (F * 2);
+//   return (m * v * v) / (F * 2);
 
-    // return brakingDistance;
-  }
+//   // return brakingDistance;
+// }
 
   // private computeBrakingAngle(angularVelocity: number)
   // {
@@ -649,7 +664,7 @@ export class VehiclePhysics extends Serializable
     // Remember desired rotation so we can send it later to the client
     // to be drawn in debug mode.
     this.desiredRotation = computeDesiredRotation(targetVector);
-    const currentRotation = Angle.zeroTo2Pi(this.getRotation());
+    const currentRotation = this.getRotation().valueOf();
 
     // // ! Throws exception on error.
     return Angle.minusPiToPi(this.desiredRotation - currentRotation);
@@ -658,8 +673,9 @@ export class VehiclePhysics extends Serializable
 // +
   private computeAnguleIncrement()
   {
+    const inertia = this.getPhysicsBody().getInertia().valueOf();
     // a = F / m
-    const acceleration = this.torque / this.getPhysicsBody().getInertia();
+    const acceleration = this.torque / inertia;
     const velocityIncrement = acceleration / Engine.FPS;
     const nextTickVelocity = this.getAngularVelocity() + velocityIncrement;
 
