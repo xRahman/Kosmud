@@ -1,3 +1,12 @@
+TODO:
+  místo this.getPhysicsBody().getInertia().valueOf()
+  používat this.getInertiaValue()
+[done]
+
+TODO: Asi přece jen implementovat změny max torque (a možná max angular
+  velocity) dokud to ještě mám v hlavě.
+[done]
+
 Něco je špatně...
 [něco je fixed]
 

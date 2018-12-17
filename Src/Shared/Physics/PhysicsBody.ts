@@ -248,11 +248,11 @@ function createFixtureDefinition
   fixtureDefinition.shape = shape;
 
   // density * area = mass
-  fixtureDefinition.density = entityPhysics.density.valueOf();
+  fixtureDefinition.density = entityPhysics.DENSITY.valueOf();
   // 0 - no friction, 1 - maximum friction
-  fixtureDefinition.friction = entityPhysics.friction.valueOf();
+  fixtureDefinition.friction = entityPhysics.FRICTION.valueOf();
   // 0 - almost no bouncing, 1 - maximum bouncing.
-  fixtureDefinition.restitution = entityPhysics.restitution.valueOf();
+  fixtureDefinition.restitution = entityPhysics.RESTITUTION.valueOf();
 
   return fixtureDefinition;
 }

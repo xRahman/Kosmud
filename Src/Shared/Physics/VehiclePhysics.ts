@@ -30,6 +30,8 @@ type ArrivePhase = "Accelerating" | "Braking";
 
 export class VehiclePhysics extends Serializable
 {
+  // These are constants. They only change if you install a new engine
+  // into the vehicle or something like that.
   public readonly MAX_SPEED = new PositiveNumber(2);
   public readonly FORWARD_THRUST = new PositiveNumber(1);
   public readonly BACKWARD_THRUST = new PositiveNumber(0.2);
@@ -37,11 +39,25 @@ export class VehiclePhysics extends Serializable
   public readonly MAX_ANGULAR_VELOCITY = new PositiveNumber(Math.PI / 2);
   public readonly ANGULAR_THRUST = new PositiveNumber(0.1);
 
-  public shapeId = "<missing physics shape id>";
-  public density = new PositiveNumber(1000);
-  public friction = new ZeroToOne(0.5);
+  public readonly DENSITY = new PositiveNumber(1000);
+  public readonly FRICTION = new ZeroToOne(0.5);
   // 0 - almost no bouncing, 1 - maximum bouncing.
-  public restitution = new ZeroToOne(1);
+  public readonly RESTITUTION = new ZeroToOne(1);
+
+  // These are variables. They change whenever something temporarily
+  // modifies physics characteristics of the vehicle.
+  public readonly currentMaxSpeed =
+    new PositiveNumber(this.MAX_SPEED.valueOf());
+  public readonly currentForwardThrust =
+    new PositiveNumber(this.FORWARD_THRUST.valueOf());
+  public readonly currentBackwardThrust =
+    new PositiveNumber(this.BACKWARD_THRUST.valueOf());
+  public readonly currentStrafeThrust =
+    new PositiveNumber(this.STRAFE_THRUST.valueOf());
+  public readonly currentMaxAngularVelocity =
+    new PositiveNumber(this.MAX_ANGULAR_VELOCITY.valueOf());
+  public readonly currentAngularThrust =
+    new PositiveNumber(this.ANGULAR_THRUST.valueOf());
 
   /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
   ///   Property 'initialPosition' se totiž používá jen při vkládání
@@ -50,7 +66,7 @@ export class VehiclePhysics extends Serializable
   /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
   /// savnout. A při loadu se pak zas musí body vytvořit.
   public readonly initialPosition = { x: 0, y: 0 };
-  public initialRotation = new ZeroTo2Pi(0);
+  public readonly initialRotation = new ZeroTo2Pi(0);
 
   public readonly waypoint = new Vector();
   public readonly desiredVelocity = new Vector();
@@ -63,10 +79,11 @@ export class VehiclePhysics extends Serializable
   public forwardThrust = 0;
   public leftwardThrust = 0;
   public torque = 0;
-
   public brakingDistance = 0;
   public stoppingDistance = 0;
   public desiredRotation = new ZeroTo2Pi(0);
+
+  public shapeId = "<missing physics shape id>";
 
   /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
   // protected readonly physicsBody = new PhysicsBody(this);
@@ -80,6 +97,45 @@ export class VehiclePhysics extends Serializable
   constructor(private readonly entity: Entity)
   {
     super();
+  }
+
+  // --------------- Public accessors -------------------
+
+  public get currentMaxSpeedValue()
+  {
+    return this.currentMaxSpeed.valueOf();
+  }
+
+  public get currentForwardThrustValue()
+  {
+    return this.currentForwardThrust.valueOf();
+  }
+
+  public get currentBackwardThrustValue()
+  {
+    return this.currentBackwardThrust.valueOf();
+  }
+
+  public get currentStrafeThrustValue()
+  {
+    return this.currentStrafeThrust.valueOf();
+  }
+
+  public get currentMaxAngularVelocityValue()
+  {
+    return this.currentMaxAngularVelocity.valueOf();
+  }
+
+  public get currentAngularThrustValue()
+  {
+    return this.currentAngularThrust.valueOf();
+  }
+
+  // ! Throws exception on error.
+  public get inertiaValue()
+  {
+    // ! Throws exception on error.
+    return this.getPhysicsBody().getInertia().valueOf();
   }
 
   // ---------------- Public methods --------------------
@@ -319,11 +375,10 @@ export class VehiclePhysics extends Serializable
 // +
   private computeAccelerationTorque(distance: number): number
   {
-    const maxVelocity = this.MAX_ANGULAR_VELOCITY.valueOf();
+    const maxVelocity = this.currentMaxAngularVelocityValue;
     const desiredVelocity = (distance > 0) ? maxVelocity : -maxVelocity;
 
     // ! Throws exception on error.
-    const inertia = this.getPhysicsBody().getInertia().valueOf();
     // ! Throws exception on error.
     const velocity = this.getPhysicsBody().getAngularVelocity();
     const desiredVelocityChange = desiredVelocity - velocity;
@@ -335,9 +390,10 @@ export class VehiclePhysics extends Serializable
     if (Math.abs(desiredVelocityChange) < velocityIncrement)
       // When we are almost at desired angular velocity we compute
       // exact torque needed to reach it.
-      return inertia * desiredVelocityChange;
+      // ! Throws exception on error.
+      return this.inertiaValue * desiredVelocityChange;
 
-    const fullThrust = this.ANGULAR_THRUST.valueOf();
+    const fullThrust = this.currentAngularThrustValue;
 
     // If we won't reach desired angular velocity in this tick we apply
     // maximum possible torque in respective direction.
@@ -345,10 +401,10 @@ export class VehiclePhysics extends Serializable
   }
 
 // +
+  // ! Throws exception on error.
   private computeDeccelerationTorque(distance: number): number
   {
     const v = this.getAngularVelocity();
-    const inertia = this.getPhysicsBody().getInertia().valueOf();
 
     // Prevent division by zero.
     if (distance === 0)
@@ -360,8 +416,9 @@ export class VehiclePhysics extends Serializable
     //     d = (1/2 * mass * v * v) / Force;
     //   Therefore:
     //     Force = (mass * v * v) / (2 * d)
-    const desiredTorque = -(inertia * v * v) / (2 * distance);
-    const fullThrust = this.ANGULAR_THRUST.valueOf();
+    // ! Throws exception on error.
+    const desiredTorque = -(this.inertiaValue * v * v) / (2 * distance);
+    const fullThrust = this.currentAngularThrustValue;
 
     // Ensure that we don't exceed our maximum torque. This can happen
     // when something pushes us or when player sets reversed direction.
@@ -384,8 +441,7 @@ export class VehiclePhysics extends Serializable
   private updateAngularVelocityInrement()
   {
     // ! Throws exception on error.
-    const inertia = this.getPhysicsBody().getInertia().valueOf();
-    const acceleration = this.ANGULAR_THRUST.valueOf() / inertia;
+    const acceleration = this.currentAngularThrustValue / this.inertiaValue;
 
     this.angularVelocityIncrement.set(acceleration / Engine.FPS);
   }
@@ -422,13 +478,15 @@ export class VehiclePhysics extends Serializable
   }
 
 // +
+  // ! Throws exception on error.
   private updateMaxBrakingAngle()
   {
     const maxBrakingAngle = computeBrakingDistance
     (
-      this.MAX_ANGULAR_VELOCITY.valueOf(),
-      this.getPhysicsBody().getInertia().valueOf(),
-      this.ANGULAR_THRUST.valueOf()
+      this.currentMaxAngularVelocityValue,
+      // ! Throws exception on error.
+      this.inertiaValue,
+      this.currentAngularThrustValue
     );
 
     this.maxBrakingAngle.set(maxBrakingAngle);
@@ -572,9 +630,9 @@ export class VehiclePhysics extends Serializable
     /// a tímhle poměrem pak pronásobím desiredSteeringForce.
     // const desiredSteeringForceMagnitude = desiredSteeringForce.length();
     let forwardLimitRatio = 1;
-    const fullForwardThrust = this.FORWARD_THRUST.valueOf();
-    const fullBackwardThrust = this.BACKWARD_THRUST.valueOf();
-    const fullStrafeThrust = this.STRAFE_THRUST.valueOf();
+    const fullForwardThrust = this.currentForwardThrustValue;
+    const fullBackwardThrust = this.currentBackwardThrustValue;
+    const fullStrafeThrust = this.currentStrafeThrustValue;
 
     if (desiredForwardComponentLength > fullForwardThrust)
     {
@@ -589,7 +647,7 @@ export class VehiclePhysics extends Serializable
     {
       strafeLimitRatio = fullStrafeThrust / desiredLeftwardComponentLength;
     }
-    else if (desiredLeftwardComponentLength < -this.STRAFE_THRUST)
+    else if (desiredLeftwardComponentLength < -fullStrafeThrust)
     {
       strafeLimitRatio = -fullStrafeThrust / desiredLeftwardComponentLength;
     }
@@ -678,11 +736,12 @@ export class VehiclePhysics extends Serializable
   }
 
 // +
+  // ! Throws exception on error.
   private computeAnguleIncrement()
   {
-    const inertia = this.getPhysicsBody().getInertia().valueOf();
     // a = F / m
-    const acceleration = this.torque / inertia;
+    // ! Throws exception on error.
+    const acceleration = this.torque / this.inertiaValue;
     const velocityIncrement = acceleration / Engine.FPS;
     const nextTickVelocity = this.getAngularVelocity() + velocityIncrement;
 
@@ -727,24 +786,6 @@ function computeBrakingDistance(v: number, m: number, F: number)
 //   return Coords.ClientToServer.distance(value);
 // }
 
-// function computeDesiredAngularVelocity
-// (
-//   desiredRotation: number,
-//   currentRotation: number
-// )
-// : number
-// {
-//   let desiredAngularVelocity = desiredRotation - currentRotation;
-
-//   // Make sure that we turn the shorter way.
-//   if (desiredAngularVelocity > Math.PI)
-//     desiredAngularVelocity -= Math.PI * 2;
-//   if (desiredAngularVelocity < -Math.PI)
-//     desiredAngularVelocity += Math.PI * 2;
-
-//   return desiredAngularVelocity;
-// }
-
 function determineLinearPhase(distance: number, brakingDistance: number)
 : ArrivePhase
 {
@@ -753,19 +794,6 @@ function determineLinearPhase(distance: number, brakingDistance: number)
 
   return "Braking";
 }
-
-// function determineAngularPhase
-// (
-//   angularDistance: number,
-//   brakingAngle: number
-// )
-// : ArrivePhase
-// {
-//   if (Math.abs(angularDistance) > brakingAngle)
-//     return "Accelerating";
-
-//   return "Braking";
-// }
 
 function computeDesiredRotation(targetVector: Vector)
 {
