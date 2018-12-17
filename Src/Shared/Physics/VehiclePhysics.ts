@@ -322,7 +322,7 @@ export class VehiclePhysics extends Serializable
 
     // If the player changes desired angle while we were still turning
     // to it, we might overtake it because we can't deccelerate fast enough.
-    if (this.isOvertakingAngle(distance))
+    if (this.isOvertakingDesiredAngle(distance))
     {
       // If we are overtaking desired angle, we need to recalculate braking
       // angle to know when to start deccelerating on our way back.
@@ -353,7 +353,7 @@ export class VehiclePhysics extends Serializable
   private determineAngularAction(distance: number)
   : "Accelerate" | "Deccelerate"
   {
-    const angleIncrement = this.computeAnguleIncrement();
+    const angleIncrement = this.computeAngleIncrement();
     const brakingAngle = this.brakingAngle.valueOf();
 
     // We compare the angle where we would be the next tick with
@@ -375,13 +375,17 @@ export class VehiclePhysics extends Serializable
 // +
   private computeAccelerationTorque(distance: number): number
   {
-    const maxVelocity = this.currentMaxAngularVelocityValue;
-    const desiredVelocity = (distance > 0) ? maxVelocity : -maxVelocity;
+    // ! Throws exception on error.
+    const currentVelocity = this.getPhysicsBody().getAngularVelocity();
 
-    // ! Throws exception on error.
-    // ! Throws exception on error.
-    const velocity = this.getPhysicsBody().getAngularVelocity();
-    const desiredVelocityChange = desiredVelocity - velocity;
+    // const maxVelocity = this.currentMaxAngularVelocityValue;
+    // const desiredVelocity = (distance > 0) ? maxVelocity : -maxVelocity;
+    const desiredVelocity = this.computeDesiredAngularVelocity
+    (
+      distance, currentVelocity
+    );
+
+    const desiredVelocityChange = desiredVelocity - currentVelocity;
 
     // Note: 'this.angularVelocityIncrement' is a precomputed value
     // (it only changes when inertia or maximum torque changes).
@@ -398,6 +402,32 @@ export class VehiclePhysics extends Serializable
     // If we won't reach desired angular velocity in this tick we apply
     // maximum possible torque in respective direction.
     return (desiredVelocity > 0) ? fullThrust : -fullThrust;
+  }
+
+  private computeDesiredAngularVelocity
+  (
+    distance: number,
+    currentVelocity: number
+  )
+  {
+    const maxVelocity = this.currentMaxAngularVelocityValue;
+    const brakingAngle = this.maxBrakingAngle.valueOf();
+
+    // When the ship is rotating to the right and the player
+    // click behind the ship slightly to the left, without this
+    // condition the ship would stop to turn the other (shorter)
+    // direction - but that would actually take longer because
+    // the need to stop and accelerate again.
+    //   Following conditions prevent that and allow to continue
+    // turning in the same direction to reach desired angle faster.
+    // (It also feels like more natural ship handling).
+    if (currentVelocity > 0 && (distance < -Angle.PI + brakingAngle))
+      return maxVelocity;
+
+    if (currentVelocity < 0 && (distance > Angle.PI - brakingAngle))
+      return -maxVelocity;
+
+    return (distance > 0) ? maxVelocity : -maxVelocity;
   }
 
 // +
@@ -737,7 +767,7 @@ export class VehiclePhysics extends Serializable
 
 // +
   // ! Throws exception on error.
-  private computeAnguleIncrement()
+  private computeAngleIncrement()
   {
     // a = F / m
     // ! Throws exception on error.
@@ -749,7 +779,7 @@ export class VehiclePhysics extends Serializable
   }
 
 // +
-  private isOvertakingAngle(distance: number)
+  private isOvertakingDesiredAngle(distance: number)
   {
     const velocity = this.getAngularVelocity();
 

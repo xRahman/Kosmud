@@ -2,7 +2,6 @@ TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
 
-
 TODO: Pokud opravdu zruším stopping distance, tak ji ani neposílat
   na klient a nezobrazovat.
 

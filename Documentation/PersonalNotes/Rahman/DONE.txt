@@ -1,3 +1,7 @@
+TODO: Ještě přece jen zaexperimentovat s nezastavováním moc brozo
+  při protáčení kolem zádi.
+[done]
+
 TODO:
   místo this.getPhysicsBody().getInertia().valueOf()
   používat this.getInertiaValue()
