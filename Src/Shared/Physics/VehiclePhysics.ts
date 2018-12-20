@@ -8,6 +8,12 @@
 import "../../Shared/Utils/Number";
 
 // type ThrustDirection = "Forward" | "Backward" | "Left" | "Right";
+type ThrustData =
+{
+  forwardThrustRatio: number;
+  leftwardThrustRatio: number;
+  fullThrust: number;
+};
 
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Angle } from "../../Shared/Utils/Angle";
@@ -911,26 +917,33 @@ export class VehiclePhysics extends Serializable
     );
 
     // ! Throws exception on error.
-    const thrust = this.computeThrust(velocityChange);
+    const thrust = this.computeSteeringThrust(velocityChange);
 
     return new Vector(velocityChange).setLength(thrust);
   }
 
 // .
   // ! Throws exception on error.
-  private computeThrust(velocityChange: Vector)
+  private computeSteeringThrust(velocityChange: Vector)
+  {
+    const thrustData = this.computeThrustData(velocityChange);
+    const thrust = this.computeThrustValue(velocityChange, thrustData);
+
+    this.updateThrustRatios(thrustData, thrust);
+
+    return thrust;
+  }
+
+// .
+  // ! Throws exception on error.
+  private computeThrustValue(velocityChange: Vector, thrustData: ThrustData)
   {
     // ! Throws exception on error.
     const mass = this.massValue;
-
-    // const thrustDirection = this.thrustDirection(velocityChange);
-    // const fullThrust = this.getThrustInDirection(thrustDirection);
-    const fullThrust = this.computeSteeringThrust(velocityChange);
-
     const desiredSpeedChange = velocityChange.length();
 
     // a = F / m.
-    const fullThrustAcceleration = fullThrust / mass;
+    const fullThrustAcceleration = thrustData.fullThrust / mass;
     const fullThrustSpeedChange = fullThrustAcceleration / Engine.FPS;
 
     // If we would exceed desired velocity in the next tick, calculate
@@ -954,13 +967,14 @@ export class VehiclePhysics extends Serializable
     else
     {
       // Otherwise just give it all that we have.
-      return fullThrust;
+      return thrustData.fullThrust;
     }
   }
 
-  private computeSteeringThrust(velocityChange: Vector)
+// .
+  private computeThrustData(direction: Vector): ThrustData
   {
-    const thrustAngle = this.angleToShip(velocityChange);
+    const thrustAngle = this.angleToShip(direction);
 
     // Surprisingly, ratios of coordinates of a point on
     // an ellipse to respective radii of that ellipse
@@ -968,16 +982,16 @@ export class VehiclePhysics extends Serializable
     // (it's because radia cancel themselves from the equations).
     const forwardThrustRatio = Math.cos(thrustAngle);
     const leftwardThrustRatio = Math.sin(thrustAngle);
-
-    this.updateThrustRatios(forwardThrustRatio, leftwardThrustRatio);
-
-    return this.computeThrustFromRatios
+    const fullThrust = this.computeThrustFromRatios
     (
       forwardThrustRatio,
       leftwardThrustRatio
     );
+
+    return { forwardThrustRatio, leftwardThrustRatio, fullThrust };
   }
 
+// .
   private computeThrustFromRatios
   (
     forwardThrustRatio: number,
@@ -1013,13 +1027,19 @@ export class VehiclePhysics extends Serializable
     }
   }
 
-  private updateThrustRatios(forwardRatio: number, leftwardRatio: number)
+// .
+  private updateThrustRatios(thrustData: ThrustData, thrust: number)
   {
-    // TODO: Číst to z property.
-    const currentThrustMultiplier = 1;
-    /// Není to úplně dobře, protože thrusty můžu mít přepálený.
-    this.forwardThrustRatio = forwardRatio * currentThrustMultiplier;
-    this.leftwardThrustRatio = leftwardRatio * currentThrustMultiplier;
+    let ratio = (thrustData.fullThrust !== 0) ?
+      thrust / thrustData.fullThrust : 0;
+
+    // Note that this will make thrusters even longer than 100% if
+    // 'this.thrustMultiplier' is > 1. Exhaust sound volume will stay
+    // at 100%, however, because sound volume can't go higher.
+    ratio *= this.thrustMultiplier.valueOf();
+
+    this.forwardThrustRatio = thrustData.forwardThrustRatio * ratio;
+    this.leftwardThrustRatio = thrustData.leftwardThrustRatio * ratio;
   }
 
 // .
@@ -1064,21 +1084,15 @@ export class VehiclePhysics extends Serializable
     );
   }
 
+// .
   private computeBrakingThrust(targetVector: Vector)
   {
-    const thrustAngle = this.angleToShip(Vector.negate(targetVector));
-
-    // Surprisingly, ratios of coordinates of a point on
-    // an ellipse to respective radii of that ellipse
-    // are calculated exactly the same way as on the circle
-    // (it's because radia cancel themselves from the equations).
-    const forwardThrustRatio = Math.cos(thrustAngle);
-    const leftwardThrustRatio = Math.sin(thrustAngle);
+    const thrustData = this.computeThrustData(Vector.negate(targetVector));
 
     return this.computeThrustFromRatios
     (
-      forwardThrustRatio,
-      leftwardThrustRatio
+      thrustData.forwardThrustRatio,
+      thrustData.leftwardThrustRatio
     );
   }
 
@@ -1097,6 +1111,7 @@ export class VehiclePhysics extends Serializable
     );
   }
 
+// .
   private angleToShip(direction: Vector)
   {
     const shipRotation = this.getRotation().valueOf();
