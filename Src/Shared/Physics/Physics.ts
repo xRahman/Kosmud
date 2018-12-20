@@ -4,7 +4,7 @@
   Physics engine wrapper.
 */
 
-import { b2_maxTranslation } from
+import { b2_maxTranslation, b2_maxRotation } from
   "../../Shared/Box2D/Box2D";
 import { Engine } from "../../Shared/Engine/Engine";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -17,6 +17,10 @@ export namespace Physics
   export const MAXIMUM_POSSIBLE_SPEED = b2_maxTranslation * Engine.FPS;
   export const MAXIMUM_POSSIBLE_SPEED_SQUARED =
     MAXIMUM_POSSIBLE_SPEED * MAXIMUM_POSSIBLE_SPEED;
+
+  export const MAXIMUM_POSSIBLE_ANGULAR_VELOCITY = b2_maxRotation * Engine.FPS;
+  export const MAXIMUM_POSSIBLE_ANGULAR_VELOCITY_SQUARED =
+    MAXIMUM_POSSIBLE_ANGULAR_VELOCITY * MAXIMUM_POSSIBLE_ANGULAR_VELOCITY;
 
   export type Polygon = Array<{ x: number; y: number }>;
 

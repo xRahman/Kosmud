@@ -90,18 +90,18 @@ export class Ship extends Shared.Ship
     this.physics.setVelocity(shipState.shipVelocity);
     this.physics.desiredVelocity.set(shipState.desiredVelocity);
     this.physics.steeringForce.set(shipState.steeringForce);
-    this.physics.desiredSteeringForce.set(shipState.desiredSteeringForce);
-    this.physics.desiredForwardSteeringForce.set
-    (
-      shipState.desiredForwardSteeringForce
-    );
-    this.physics.desiredLeftwardSteeringForce.set
-    (
-      shipState.desiredLeftwardSteeringForce
-    );
+    // this.physics.desiredSteeringForce.set(shipState.desiredSteeringForce);
+    // this.physics.desiredForwardSteeringForce.set
+    // (
+    //   shipState.desiredForwardSteeringForce
+    // );
+    // this.physics.desiredLeftwardSteeringForce.set
+    // (
+    //   shipState.desiredLeftwardSteeringForce
+    // );
 
     this.physics.brakingDistance = shipState.brakingDistance;
-    this.physics.stoppingDistance = shipState.stoppingDistance;
+    // this.physics.stoppingDistance = shipState.stoppingDistance;
     this.physics.desiredRotation.set(shipState.desiredRotation);
 
     // ! Throws exception on error.

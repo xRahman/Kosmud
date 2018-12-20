@@ -45,7 +45,7 @@ export class Vector
     return new Vector({ x: v1.x - v2.x, y: v1.y - v2.y });
   }
 
-  public static scale({ x, y }: { x: number; y: number }, value: number)
+  public static scaleBy({ x, y }: { x: number; y: number }, value: number)
   {
     return new Vector({ x: x * value, y: y * value });
   }
@@ -121,10 +121,12 @@ export class Vector
 
   // ---------------- Public methods --------------------
 
-  public set({ x, y }: { x: number; y: number })
+  public set({ x, y }: { x: number; y: number }): this
   {
     this.x = x;
     this.y = y;
+
+    return this;
   }
 
   public setZero(): this
@@ -161,7 +163,7 @@ export class Vector
     return this;
   }
 
-  public scale(value: number): this
+  public scaleBy(value: number): this
   {
     this.x *= value;
     this.y *= value;
@@ -221,7 +223,7 @@ export class Vector
   public setLength(length: number): this
   {
     this.normalize();
-    this.scale(length);
+    this.scaleBy(length);
 
     return this;
   }
@@ -284,6 +286,17 @@ export class Vector
       rotation += Math.PI * 2;
 
     return rotation;
+  }
+
+  // -> Returns length of a projection of this vector to 'direction' vector.
+  public lengthInDirection(direction: Vector): number
+  {
+    const directionLength = direction.length();
+
+    if (directionLength === 0)
+      return 0;
+
+    return this.dot(direction) / directionLength;
   }
 
   public toJSON()

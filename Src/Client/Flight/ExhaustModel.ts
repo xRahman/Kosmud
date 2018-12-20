@@ -4,6 +4,7 @@ import { Sprite } from "../../Client/Engine/Sprite";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 
 export class ExhaustModel
 {
@@ -24,7 +25,7 @@ export class ExhaustModel
 
   // ---------------- Public methods --------------------
 
-  public update(scale: ZeroToOne)
+  public update(scale: NonnegativeNumber)
   {
     if (scale.valueOf() <= 0.01)
     {
@@ -34,7 +35,10 @@ export class ExhaustModel
     }
     else
     {
-      this.sound.setVolume(scale);
+      // Note that sound volume cannot be greater than 1 so even if
+      // we boost at greater than maximum thrust, that thruster's
+      // volume stays at 100% (only it's visual lenght increases).
+      this.sound.setVolume(new ZeroToOne(scale.valueOf()));
       this.sound.resume();
 
       this.showAndScaleSprites(scale.valueOf());

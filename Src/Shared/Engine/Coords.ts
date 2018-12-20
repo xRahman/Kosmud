@@ -9,7 +9,7 @@
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
 
-const SERVER_TO_CLIENT_RATIO = 1000;
+const SERVER_TO_CLIENT_RATIO = 100;
 const CLIENT_TO_SERVER_RATIO = 1 / SERVER_TO_CLIENT_RATIO;
 
 export namespace Coords

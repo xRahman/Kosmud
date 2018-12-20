@@ -39,5 +39,7 @@ export class PhysicsWorld
     const seconds = miliseconds / 1000;
 
     this.box2dWorld.Step(seconds, VELOCITY_ITERATIONS, PARTICLE_ITERATIONS);
+    // This probably isn't needed in typescript version of Box2d...
+    // this.box2dWorld.ClearForces();
   }
 }

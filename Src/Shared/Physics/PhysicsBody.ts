@@ -123,6 +123,14 @@ export class PhysicsBody
   {
     // ! Throws exception on error.
     this.box2dBody.ApplyForceToCenter(Vector.validate(force));
+    // this.box2dBody.ApplyLinearImpulseToCenter(Vector.validate(force));
+  }
+
+  // ! Throws exception on error.
+  public applyImpulse(impulse: Vector)
+  {
+    // ! Throws exception on error.
+    this.box2dBody.ApplyLinearImpulseToCenter(Vector.validate(impulse));
   }
 
   // ! Throws exception on error.
@@ -185,6 +193,11 @@ export class PhysicsBody
     }
 
     return shape;
+  }
+
+  public getLinearDumping()
+  {
+    return this.box2dBody.GetLinearDamping();
   }
 }
 

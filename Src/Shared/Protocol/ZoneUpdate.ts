@@ -39,14 +39,14 @@ export namespace ZoneUpdate
     shipVelocity: Vector;
     desiredVelocity: Vector;
     steeringForce: Vector;
-    desiredSteeringForce: Vector;
-    desiredForwardSteeringForce: Vector;
-    desiredLeftwardSteeringForce: Vector;
-    forwardThrustRatio: MinusOneToOne;
-    leftwardThrustRatio: MinusOneToOne;
-    torqueRatio: MinusOneToOne;
+    // desiredSteeringForce: Vector;
+    // desiredForwardSteeringForce: Vector;
+    // desiredLeftwardSteeringForce: Vector;
+    forwardThrustRatio: number;
+    leftwardThrustRatio: number;
+    torqueRatio: number;
     brakingDistance: number;
-    stoppingDistance: number;
+    // stoppingDistance: number;
     desiredRotation: number;
   }
 }

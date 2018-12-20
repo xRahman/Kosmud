@@ -80,9 +80,9 @@ export class ShipModel
   /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)
   public updateExhausts
   (
-    forwardThrustRatio: MinusOneToOne,
-    leftwardThrustRatio: MinusOneToOne,
-    torqueRatio: MinusOneToOne
+    forwardThrustRatio: number,
+    leftwardThrustRatio: number,
+    torqueRatio: number
   )
   {
     this.exhausts.update

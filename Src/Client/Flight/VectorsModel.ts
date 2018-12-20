@@ -47,11 +47,11 @@ export class VectorsModel
       1, Graphics.rgb(150, 150, 150), 1
     );
 
-    this.vectorsGraphics.drawCircle
-    (
-      origin, vehicle.physics.stoppingDistance,
-      1, Graphics.rgb(80, 80, 80), 1
-    );
+    // this.vectorsGraphics.drawCircle
+    // (
+    //   origin, vehicle.physics.stoppingDistance,
+    //   1, Graphics.rgb(80, 80, 80), 1
+    // );
 
     this.vectorsGraphics.drawVector
     (
@@ -65,11 +65,11 @@ export class VectorsModel
       origin, 1, Graphics.rgb(106, 90, 255), 1
     );
 
-    this.vectorsGraphics.drawVector
-    (
-      vehicle.physics.getDesiredSteeringForce(),
-      origin, 1, Graphics.rgb(160, 160, 0), 1
-    );
+    // this.vectorsGraphics.drawVector
+    // (
+    //   vehicle.physics.getDesiredSteeringForce(),
+    //   origin, 1, Graphics.rgb(160, 160, 0), 1
+    // );
 
     // this.vectorsGraphics.drawVector
     // (

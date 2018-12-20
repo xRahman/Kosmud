@@ -5,6 +5,7 @@ import { ExhaustModel } from "../../Client/Flight/ExhaustModel";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 import { SpriteAnimation } from "../Engine/SpriteAnimation";
+import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 
 const EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID =
   "Exhaust yellow rectangular Texture atlas";
@@ -97,41 +98,42 @@ export class Exhausts
 
   public update
   (
-    forwardThrustRatio: MinusOneToOne,
-    leftwardThrustRatio: MinusOneToOne,
-    torqueRatio: MinusOneToOne
+    forwardThrustRatio: number,
+    leftwardThrustRatio: number,
+    torqueRatio: number
   )
   {
-    const frontExhaustScale = new ZeroToOne(-forwardThrustRatio.valueOf());
-    const rearExhaustScale = new ZeroToOne(forwardThrustRatio.valueOf());
+    // const frontExhaustScale = new ZeroToOne(-forwardThrustRatio.valueOf());
+    const frontExhaustScale = Number(-forwardThrustRatio).atLeast(0);
+    // const rearExhaustScale = new ZeroToOne(forwardThrustRatio.valueOf());
+    // Note that rear thrusters always display at at least 10% length.
+    const rearExhaustScale = Number(forwardThrustRatio).atLeast(0.1);
 
-    // ! Throws exception on error.
-    setMinimumExhaustScale(rearExhaustScale, new ZeroToOne(0.1));
+    // // ! Throws exception on error.
+    // setMinimumExhaustScale(rearExhaustScale, new ZeroToOne(0.1));
 
-    this.front.update(frontExhaustScale);
-    this.rear.update(rearExhaustScale);
+    this.front.update(new NonnegativeNumber(frontExhaustScale));
+    this.rear.update(new NonnegativeNumber(rearExhaustScale));
 
     // Side thrusters get 50% of their length from left-right
-    // thrust and another 50% from torque thrust.
+    // thrust and another 50% from torque thrust (or possibly
+    // a bit more in both cases if current thrust exceeds
+    // standard maximum thrust).
 
-    const leftThrustPortion =
-      new ZeroToOne(leftwardThrustRatio.valueOf() / 2).valueOf();
-    const rightThrustPortion =
-      new ZeroToOne(-leftwardThrustRatio.valueOf() / 2).valueOf();
-    const leftTorquePortion =
-      new ZeroToOne(torqueRatio.valueOf() / 2).valueOf();
-    const rightTorquePortion =
-      new ZeroToOne(-torqueRatio.valueOf() / 2).valueOf();
+    const leftThrustPortion = Number(leftwardThrustRatio / 2).atLeast(0);
+    const rightThrustPortion = Number(-leftwardThrustRatio / 2).atLeast(0);
+    const leftTorquePortion = Number(torqueRatio / 2).atLeast(0);
+    const rightTorquePortion = Number(-torqueRatio / 2).atLeast(0);
 
     const frontLeftExhaustScale = rightThrustPortion + rightTorquePortion;
     const frontRightExhaustScale = leftThrustPortion + leftTorquePortion;
     const rearLeftExhaustScale = rightThrustPortion + leftTorquePortion;
     const rearRightExhaustScale = leftThrustPortion + rightTorquePortion;
 
-    this.frontLeft.update(new ZeroToOne(frontLeftExhaustScale));
-    this.frontRight.update(new ZeroToOne(frontRightExhaustScale));
-    this.rearLeft.update(new ZeroToOne(rearLeftExhaustScale));
-    this.rearRight.update(new ZeroToOne(rearRightExhaustScale));
+    this.frontLeft.update(new NonnegativeNumber(frontLeftExhaustScale));
+    this.frontRight.update(new NonnegativeNumber(frontRightExhaustScale));
+    this.rearLeft.update(new NonnegativeNumber(rearLeftExhaustScale));
+    this.rearRight.update(new NonnegativeNumber(rearRightExhaustScale));
   }
 
   // ---------------- Private methods -------------------
@@ -154,9 +156,9 @@ export class Exhausts
 
 // ----------------- Auxiliary Functions ---------------------
 
-// ! Throws exception on error.
-function setMinimumExhaustScale(thrust: ZeroToOne, minimum: ZeroToOne)
-{
-  // ! Throws exception on error.
-  thrust.atLeast(minimum.valueOf());
-}
+// // ! Throws exception on error.
+// function setMinimumExhaustScale(thrust: ZeroToOne, minimum: ZeroToOne)
+// {
+//   // ! Throws exception on error.
+//   thrust.atLeast(minimum.valueOf());
+// }
