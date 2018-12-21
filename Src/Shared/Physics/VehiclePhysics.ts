@@ -600,7 +600,7 @@ export class VehiclePhysics extends Serializable
     const velocityChange = this.computeVelocityChange();
 
     // ! Throws exception on error.
-    const thrust = this.computeSteeringThrust(velocityChange, desiredSpeed);
+    const thrust = this.computeSteeringThrust(velocityChange);
 
     return new Vector(velocityChange).setLength(thrust);
   }
@@ -615,7 +615,7 @@ export class VehiclePhysics extends Serializable
 
 // .
   // ! Throws exception on error.
-  private computeSteeringThrust(velocityChange: Vector, desiredSpeed: number)
+  private computeSteeringThrust(velocityChange: Vector)
   {
     const thrustData = this.computeThrustData(velocityChange);
     const thrust = this.computeThrustValue
@@ -623,20 +623,7 @@ export class VehiclePhysics extends Serializable
       velocityChange, thrustData.fullThrust
     );
 
-    // 'desiredSpeed' is set to '0' only when we are really close
-    // to destination and thrust is calculated exactly to reach it.
-    // That sometimes causes short burst of thrusters which doesn't
-    // look well - so we don't show thrusters in that case at all.
-    if (desiredSpeed === 0)
-    {
-      // console.log("RESET", thrust);
-      this.resetThrustRatios();
-    }
-    else
-    {
-      // console.log(thrust);
-      this.updateThrustRatios(thrustData, thrust);
-    }
+    this.updateThrustRatios(thrustData, thrust);
 
     return thrust;
   }
@@ -805,7 +792,7 @@ export class VehiclePhysics extends Serializable
       fullBrakingThrust / (this.massValue * Engine.FPS * Engine.FPS * 2);
 
     // What's going on here:
-    // Speed calculated based on 'distance' is actually desired speed for
+    //   Speed calculated based on 'distance' is actually desired speed for
     // our current position. Because that position is iterated towards
     // target position, desired speed would never reach zero (or at least
     // it would take a whole lot of iterations). To handle it we skip the
@@ -824,18 +811,19 @@ export class VehiclePhysics extends Serializable
       distance * fullBrakingThrust * 2 / this.massValue
     );
 
-    // In the last step we have calculated velocity that we would
-    // have to have at current position in order to brake exactly
-    // at target. But we are there already so by the time we deccelerate
-    // to such speed, we will already be closer so our speed in the
-    // next tick actually needs to be lower. By how much, you ask? By
-    // decceleration which will occur in the next tick, of course.
+    // In the previous step we have calculated velocity that we would
+    // have to have at current position in order to brake exactly at
+    // the target. But we are there already there so by the time we
+    // deccelerate to such speed, we will already be closer so our
+    // speed in the next tick actually needs to be lower. By how much,
+    // you ask? By decceleration which will occur in the next tick, of
+    // course.
     //  (If we didn't subtract change in velocity that will occur in
     // the next tick, our current velocity would lag behind desired
-    // velocity more and more (because speed is not linear to distance).
-    // We actually wouldn't be able to deccelerate fast enough to catch
-    // up, which would lead to overshooting the target - the more the
-    // greater distance we would have to travel).
+    // velocity more and more, because speed is not linear to distance
+    // when deccelerating. We actually wouldn't be able to deccelerate
+    // fast enough to slow down enough, which would lead to overshooting
+    // the target - the more the greater distance we would have to travel).
     desiredSpeed -= fullBrakingThrust / (this.massValue * Engine.FPS);
 
     desiredSpeed = Number(desiredSpeed).atMost(this.currentMaxSpeed);
