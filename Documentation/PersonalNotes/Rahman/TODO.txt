@@ -1,9 +1,15 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Dvojitý zášleh, když couvám dál než braking distance.
+- ok tak občas i nejen přes braking...
+[fixed]
+
 TODO: Asi bych při finálním dobržďování mohl prostě nenastavovat
   thrust ratia (respektive je nulovat). Tím zmizí závěrečné "bliknutí"
   thrusterů.
+  (ratia setuju na 0, když je desiredSpeed 0)
+- skoro, občas ale pořád ještě bliknout při zastavování dozadu.
 
 Vypadá to, že:
 - Přes impulsy to nebuguje (tak asi přece jen taky)
