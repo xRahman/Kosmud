@@ -1,7 +1,19 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Asi bych při finálním dobržďování mohl prostě nenastavovat
+  thrust ratia (respektive je nulovat). Tím zmizí závěrečné "bliknutí"
+  thrusterů.
 
+Vypadá to, že:
+- Přes impulsy to nebuguje (tak asi přece jen taky)
+- Trhání nastává dřív, než se vůbec dostanu na zrychlení, kdy buguje fyzika
+  (tzn. mám tam ještě problém někde jinde).
+
+
+TODO: Problém v:
+  private computeThrustValue(velocityChange: Vector, fullThrust: number)
+- strašně dlouhou vzdálenost se mi počítá menší než FULL THRUST.
 
 ---------------
 

@@ -38,7 +38,7 @@ export class VehiclePhysics extends Serializable
 {
   // These are constants. They only change if you install a new engine
   // into the vehicle or something like that.
-  public readonly MAX_SPEED = new PositiveNumber(1);
+  public readonly MAX_SPEED = new PositiveNumber(3);
   public readonly FORWARD_THRUST = new PositiveNumber(1);
   public readonly BACKWARD_THRUST = new PositiveNumber(0.5);
   public readonly STRAFE_THRUST = new PositiveNumber(0.2);
@@ -120,6 +120,9 @@ export class VehiclePhysics extends Serializable
   private readonly brakingAngle = new ZeroToPi(0);
   private readonly maxBrakingAngle = new ZeroToPi(0);
   private readonly angularVelocityIncrement = new NonnegativeNumber(0);
+
+  /// TEST
+  private lastTickSpeed = 0;
 
   constructor(private readonly entity: Entity)
   {
@@ -289,6 +292,18 @@ export class VehiclePhysics extends Serializable
 
     // ! Throws exception on error.
     this.getPhysicsBody().applyForce(this.steeringForce);
+    // this.getPhysicsBody().applyForce(new Vector({ x: 0.019, y: 0 }));
+    // this.getPhysicsBody().applyImpulse
+    // (
+    //   // Vector.scaleBy(this.steeringForce, 1 / Engine.FPS)
+    //   new Vector({ x: 0.0001, y: 0 })
+    // );
+    // console.log(this.getVelocity());
+
+    // const speed = this.getVelocity().length();
+    // console.log(speed - this.lastTickSpeed);
+    // this.lastTickSpeed = speed;
+
     // ! Throws exception on error.
     this.getPhysicsBody().applyTorque(this.torque);
   }
@@ -895,11 +910,15 @@ export class VehiclePhysics extends Serializable
     // ! Throws exception on error.
     const targetVector = this.computeTargetVector();
 
-    // ! Throws exception on error.
-    this.updateBrakingDistance(targetVector);
+    const fullBrakingThrust = this.computeBrakingThrust(targetVector);
+
+    // console.log("fullBrakingThrust:", fullBrakingThrust);
 
     // ! Throws exception on error.
-    this.updateDesiredVelocity(targetVector);
+    this.updateBrakingDistance(targetVector, fullBrakingThrust);
+
+    // ! Throws exception on error.
+    this.updateDesiredVelocity(targetVector, fullBrakingThrust);
 
     return this.computeForceToReachVelocity();
   }
@@ -919,6 +938,8 @@ export class VehiclePhysics extends Serializable
     // ! Throws exception on error.
     const thrust = this.computeSteeringThrust(velocityChange);
 
+    // console.log("Thrust:", thrust);
+
     return new Vector(velocityChange).setLength(thrust);
   }
 
@@ -927,7 +948,10 @@ export class VehiclePhysics extends Serializable
   private computeSteeringThrust(velocityChange: Vector)
   {
     const thrustData = this.computeThrustData(velocityChange);
-    const thrust = this.computeThrustValue(velocityChange, thrustData);
+    const thrust = this.computeThrustValue
+    (
+      velocityChange, thrustData.fullThrust
+    );
 
     this.updateThrustRatios(thrustData, thrust);
 
@@ -936,22 +960,39 @@ export class VehiclePhysics extends Serializable
 
 // .
   // ! Throws exception on error.
-  private computeThrustValue(velocityChange: Vector, thrustData: ThrustData)
+  private computeThrustValue(velocityChange: Vector, fullThrust: number)
   {
     // ! Throws exception on error.
     const mass = this.massValue;
     const desiredSpeedChange = velocityChange.length();
 
     // a = F / m.
-    const fullThrustAcceleration = thrustData.fullThrust / mass;
+    const fullThrustAcceleration = fullThrust / mass;
     const fullThrustSpeedChange = fullThrustAcceleration / Engine.FPS;
 
     // If we would exceed desired velocity in the next tick, calculate
     // the exact thrust to reach it.
     if (desiredSpeedChange < fullThrustSpeedChange)
     {
-      // F = a * m.
-      return desiredSpeedChange * mass;
+      // /// TEST
+      // const speed = this.getVelocity().length();
+      // console.log("speed change:", Math.abs(speed - this.lastTickSpeed));
+      // this.lastTickSpeed = speed;
+      // console.log(this.getVelocity());
+
+  // // // console.log("Stopping", desiredSpeedChange, fullThrustSpeedChange);
+  // console.log("desiredSpeedChange", desiredSpeedChange);
+  // console.log(this.getVelocity());
+
+      console.log
+      (
+        "desiredSpeedChange:", desiredSpeedChange,
+        "fullThrustSpeedChange:", fullThrustSpeedChange
+      );
+
+      // F = m * a
+      return mass * desiredSpeedChange * Engine.FPS;
+      // return mass * desiredSpeedChange;
 
       /// Varianta přes vzdálenost - taky nedojde k přesnýmu zastavení :\
       /// (Určitě s tím souvisí bug s resetováním rychlosti při malé
@@ -959,15 +1000,19 @@ export class VehiclePhysics extends Serializable
       /*
       const v = this.getVelocity().length();
       const distance = this.computeTargetVector().length();
-
-      // const desiredTorque = -(this.inertiaValue * v * v) / (2 * distance);
+      if (distance === 0)
+        return 0;
       return (mass * v * v) / (2 * distance);
       */
     }
     else
     {
+      // console.log("Full thrust", desiredSpeedChange, fullThrustSpeedChange);
+
+      // console.log("FULL THRUST", fullThrust);
+
       // Otherwise just give it all that we have.
-      return thrustData.fullThrust;
+      return fullThrust;
     }
   }
 
@@ -1082,6 +1127,24 @@ export class VehiclePhysics extends Serializable
       // ! Throws exception on error.
       this.getPosition()
     );
+
+    /*
+    // Target vector is used to compute desired velocity. The idea
+    // here is that we are not going to use our current position for
+    // that but rather our projected position in the next tick using
+    // our current velocity - we are going to compute velocity desired
+    // in the next tick after all.
+    //   This is not precies but it's better than to calculate using
+    // current position.
+    const nextTickTranslation = Vector.scaleBy(this.getVelocity(), Engine.SPF);
+
+    return Vector.v1MinusV2
+    (
+      this.waypoint,
+      // ! Throws exception on error.
+      Vector.v1PlusV2(this.getPosition(), nextTickTranslation)
+    );
+    */
   }
 
 // .
@@ -1098,9 +1161,13 @@ export class VehiclePhysics extends Serializable
 
 // .
   // ! Throws exception on error.
-  private updateBrakingDistance(targetVector: Vector)
+  private updateBrakingDistance
+  (
+    targetVector: Vector,
+    fullBrakingThrust: number
+  )
   {
-    const fullBrakingThrust = this.computeBrakingThrust(targetVector);
+    // const fullBrakingThrust = this.computeBrakingThrust(targetVector);
 
     this.brakingDistance = computeBrakingDistance
     (
@@ -1109,6 +1176,8 @@ export class VehiclePhysics extends Serializable
       // ! Throws exception on error.
       fullBrakingThrust
     );
+
+    // console.log("this.brakingDistance:", this.brakingDistance);
   }
 
 // .
@@ -1161,32 +1230,152 @@ export class VehiclePhysics extends Serializable
 
 // .
   // ! Throws exception on error.
-  private updateDesiredVelocity(targetVector: Vector)
+  private updateDesiredVelocity
+  (
+    targetVector: Vector,
+    fullBrakingThrust: number
+  )
   {
-    // ! Throws exception on error.
-    const desiredSpeed = this.computeDesiredSpeed(targetVector);
+    /*
+    const brakingPerTick = computeBrakingDistance
+    (
+      this.massValue,
+      this.getVelocity().length(),
+      fullBrakingThrust
+    );
+    /// Tohle je skoro dobrý (funguje to - končí se fakt full stopem),
+    /// jen musím vymyslet, jak přesně spočítat tu stopping vzdálenost.
 
-    // There is a hard speed limit in Box2d. Make sure we don't exceed it.
-    this.validateSpeed(desiredSpeed);
+// const nextTickTranslation = Vector.scaleBy(this.getVelocity(), Engine.SPF);
+    console.log(targetVector.length(), brakingPerTick);
+    // if (nextTickTranslation.length() > targetVector.length())
+    // if (targetVector.length() < 0.01)
+    if (targetVector.length() < brakingPerTick)
+    {
+      console.log("SETTING ZERO DESIRED VELOCITY");
+      this.desiredVelocity.set({ x: 0, y: 0 });
+      return;
+    }
+    */
+
+    // a = F / m
+    // const decceleration = fullBrakingThrust / this.massValue;
+    // Distance travelled by velocity achieved by one tick of
+    // acceleration at fullBrakingThrust (which is the same as
+    // distance travelled in the last tick of decceleration).
+    // const oneTickDistance = decceleration / Engine.FPS;
+
+    // // console.log(targetVector.length(), oneTickVelocity);
+
+    // if (targetVector.length() < oneTickDistance)
+    // {
+    //   console.log("SETTING ZERO DESIRED VELOCITY");
+    //   this.desiredVelocity.set({ x: 0, y: 0 });
+    //   return;
+    // }
+
+    // ! Throws exception on error.
+    const desiredSpeed = this.computeDesiredSpeed
+    (
+      targetVector, fullBrakingThrust
+    );
+
+// // There is a hard speed limit in Box2d. Make sure we don't exceed it.
+// this.validateSpeed(desiredSpeed);
+
+// // const speed = this.getVelocity().length();
+// console.log
+// (
+//   // "acceleration:", speed - this.lastTickSpeed,
+//   "calculated acceleration:", desiredSpeed - this.lastTickSpeed,
+//   "correct decceleration:", decceleration / Engine.FPS
+
+// );
+// // this.lastTickSpeed = speed;
+// this.lastTickSpeed = desiredSpeed;
+
+    // console.log
+    // (
+    //   "Current speed", this.getVelocity().length(),
+    //   "DesiredSpeed", desiredSpeed,
+    //   this.getVelocity().length() - desiredSpeed
+    // );
 
     this.desiredVelocity.set(targetVector).setLength(desiredSpeed);
   }
 
 // .
-  private computeDesiredSpeed(targetVector: Vector): number
+  private computeDesiredSpeed
+  (
+    targetVector: Vector,
+    fullBrakingThrust: number
+  )
+  : number
   {
     // This can happen if currentMaxSpeed is zero or if braking thrust is zero.
     if (this.brakingDistance === 0)
       return 0;
 
     const distance = targetVector.length();
+    // const distance = this.getVelocity().length();
 
+// // Distance travelled by velocity achieved by one tick of
+// // acceleration at fullBrakingThrust (which is the same as
+// // distance travelled in the last tick of decceleration).
+    const oneTickDistance = Engine.SPF * fullBrakingThrust / this.massValue;
+
+// // What's going on here:
+// // Speed calculated based on 'distance' is actually desired speed for
+// // our current position. Because that position is iterated towards
+// // target position, desired speed would never reach zero (or at least
+// // it would take a whole lot of iterations). To handle it we skip the
+// // last step and set desired velocity directly to zero.
+// //   Note that at the time of writing this (end of 2018) there is a bug
+// // in Box2d physics engine causing speed to reset periodically to zero
+// // when a small constant force is applied instead of it linearly
+// // increasing. This causes ship to stutter at the final approach phase
+// // if it's thrust is low (for example if you move sideways so you only
+// // use weak strafe thrusters). Hopefully that will get addressed sometime.
+    if (distance < oneTickDistance)
+      return 0;
+
+    // const projectedDistance = Number(distance - oneTickDistance).atLeast(0);
+
+    const desiredSpeed = Math.sqrt
+    (
+      distance * fullBrakingThrust * 2 / this.massValue
+    );
+
+    return Number(desiredSpeed).atMost(this.currentMaxSpeed);
+
+    console.log
+    (
+      "Current speed:", this.getVelocity().length(),
+      "Computed speed:",
+      this.currentMaxSpeed * distance / this.brakingDistance,
+      "Correct speed:", desiredSpeed
+    );
+
+    // if (distance < this.brakingDistance)
     if (distance < this.brakingDistance)
     {
+      // console.log
+      // (
+      //   "Computed braking distance:",
+      //   computeBrakingDistance
+      //   (
+      //     this.massValue,
+      //     this.currentMaxSpeed * distance / this.brakingDistance,
+      //     0.5
+      //   ),
+      //   "Current distance:", distance
+      // );
+
       // Since we have constant thrust, speed grows linearly. It
       // means that we can use linear interpolation to find out
       // what speed should we have at any point.
       return this.currentMaxSpeed * distance / this.brakingDistance;
+      // return 1.2 * this.currentMaxSpeed * distance / this.brakingDistance;
     }
 
     return this.currentMaxSpeed;
