@@ -14,14 +14,14 @@ type ThrustData =
   fullThrust: number;
 };
 
-import { Syslog } from "../../Shared/Log/Syslog";
+// import { Syslog } from "../../Shared/Log/Syslog";
 import { Angle } from "../../Shared/Utils/Angle";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 // import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { PositiveNumber } from "../../Shared/Utils/PositiveNumber";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 // import { MinusPiToPi } from "../../Shared/Utils/MinusPiToPi";
-import { ZeroToPi } from "../../Shared/Utils/ZeroToPi";
+// import { ZeroToPi } from "../../Shared/Utils/ZeroToPi";
 import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
@@ -86,7 +86,7 @@ export class VehiclePhysics extends Serializable
   // Tohle se posílá na klient a zobrazují se podle toho thrustery.
   private forwardThrustRatio = 0;
   private leftwardThrustRatio = 0;
-  private torqueRatio = 0;
+  private readonly torqueRatio = 0;
 
   private readonly waypoint =
   {
@@ -97,9 +97,12 @@ export class VehiclePhysics extends Serializable
   };
 
   // Tohle se používá při výpočtu agular steeringu.
+/*
   private readonly brakingAngle = new ZeroToPi(0);
   private readonly maxBrakingAngle = new ZeroToPi(0);
   private readonly angularVelocityIncrement = new NonnegativeNumber(0);
+*/
+  private brakingAngle = 0;
 
   constructor(private readonly entity: Entity)
   {
@@ -220,7 +223,7 @@ export class VehiclePhysics extends Serializable
   {
     this.waypoint.position.set(position);
     this.updateWaypointDirection();
-    this.updateBrakingAngle();
+    // this.updateBrakingAngle();
   }
 
   // ! Throws exception on error.
@@ -265,16 +268,7 @@ export class VehiclePhysics extends Serializable
 
   // --------------- Protected methods ------------------
 
-// +
-  // ! Throws exception on error.
-  protected arrive()
-  {
-    this.torque = this.computeArriveTorque();
-
-    this.steeringForce.set(this.computeArriveSteeringForce());
-  }
-
-// // ! Throws exception on error.
+  // // ! Throws exception on error.
 // protected seek()
 // {
 //   // ! Throws exception on error.
@@ -324,6 +318,15 @@ export class VehiclePhysics extends Serializable
 //   );
 // }
 
+// +
+  // ! Throws exception on error.
+  protected arrive()
+  {
+    this.torque = this.computeArriveTorque();
+
+    // this.steeringForce.set(this.computeArriveSteeringForce());
+  }
+
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
@@ -340,6 +343,27 @@ export class VehiclePhysics extends Serializable
 
   // --- Init ---
 
+  // ! Throws exception on error.
+  private init()
+  {
+    // ! Throws exception on error.
+    this.initAngularBrakingDistance();
+  }
+
+  private initAngularBrakingDistance()
+  {
+    const brakingAngle = computeBrakingDistance
+    (
+      // ! Throws exception on error.
+      this.inertiaValue,
+      this.currentMaxAngularVelocity,
+      this.currentAngularThrust
+    );
+
+    this.brakingAngle = Angle.minusPiToPi(brakingAngle);
+  }
+
+  /*
   // +
   // ! Throws exception on error.
   private init()
@@ -374,9 +398,139 @@ export class VehiclePhysics extends Serializable
 
     this.maxBrakingAngle.set(maxBrakingAngle);
   }
+*/
 
   // --- Arrive Torque ---
 
+  private computeArriveTorque()
+  {
+    // 1) spočítat distance
+    const angularDistance = this.computeAngularDistance();
+
+    // 2) const desiredAngularSpeed =
+    //      this.computeDesiredAngularSpeed(angularDistance);
+    // - asi se znaménkem?
+    const desiredAngularVelocity =
+      this.computeDesiredAngularVelocity(angularDistance);
+
+    // 3) const angularVelocityChange = this.computeAngularVelocityChange();
+    const angularVelocityChange =
+      this.computeAngularVelocityChange(desiredAngularVelocity);
+
+    // 4)const angularThrust =
+    //     this.computeAngularThrust(angularVelocityChange);
+    const angularThrust =
+         this.computeAngularThrust(angularVelocityChange);
+
+    return angularThrust;
+  }
+
+  private computeAngularDistance()
+  {
+    const desiredRotation = this.getWaypointDirection();
+    const currentRotation = this.getRotation().valueOf();
+
+    // Remember desired rotation so we can send it later to the client
+    // to be drawn in debug mode.
+    this.desiredRotation.set(desiredRotation);
+
+    // ! Throws exception on error.
+    return Angle.minusPiToPi(desiredRotation - currentRotation);
+  }
+
+  private computeDesiredAngularVelocity(angularDistance: number)
+  {
+    // Distance travelled by angular velocity achieved by one tick
+    // of acceleration at full angular thrust (which is the same as
+    // distance travelled in the last tick of decceleration).
+    //   d = F / (m * FPS * FPS * 2);
+    const oneTickDistance =
+      this.currentAngularThrust /
+      (this.inertiaValue * Engine.FPS * Engine.FPS * 2);
+
+/// TODO: Update comment
+    // What's going on here:
+    //   Speed calculated based on 'distance' is actually desired speed for
+    // our current position. Because that position is iterated towards
+    // target position, desired speed would never reach zero (or at least
+    // it would take a whole lot of iterations). To handle it we skip the
+    // last step and set desired velocity directly to zero.
+    //   Note that at the time of writing this (end of 2018) there is a bug
+    // in Box2d physics engine causing speed to reset periodically to zero
+    // when a small constant force is applied instead of it linearly
+    // increasing. This causes ship to stutter at the final approach phase
+    // if it's thrust is low (for example if you move sideways so you only
+    // use weak strafe thrusters). Hopefully that will get addressed sometime.
+    if (Math.abs(angularDistance) < oneTickDistance)
+      return 0;
+
+    let desiredAngularSpeed = Math.sqrt
+    (
+      Math.abs
+      (
+        angularDistance * this.currentAngularThrust * 2 / this.inertiaValue
+      )
+    );
+
+/// TODO: Update comment
+    // In the previous step we have calculated velocity that we would
+    // have to have at current position in order to brake exactly at
+    // the target. But we are there already there so by the time we
+    // deccelerate to such speed, we will already be closer so our
+    // speed in the next tick actually needs to be lower. By how much,
+    // you ask? By decceleration which will occur in the next tick, of
+    // course.
+    //  (If we didn't subtract change in velocity that will occur in
+    // the next tick, our current velocity would lag behind desired
+    // velocity more and more, because speed is not linear to distance
+    // when deccelerating. We actually wouldn't be able to deccelerate
+    // fast enough to slow down enough, which would lead to overshooting
+    // the target - the more the greater distance we would have to travel).
+    desiredAngularSpeed -=
+      this.currentAngularThrust / (this.inertiaValue * Engine.FPS);
+
+    desiredAngularSpeed =
+      Number(desiredAngularSpeed).atMost(this.currentMaxAngularVelocity);
+
+    const desiredAngularVelocity = (angularDistance < 0) ?
+      -desiredAngularSpeed : desiredAngularSpeed;
+
+    // There is a hard angular velocity limit in Box2d.
+    // Check that we are not exceeding it.
+    return this.validateAngularVelocity(desiredAngularVelocity);
+  }
+
+  private computeAngularVelocityChange(desiredAngularVelocity: number)
+  {
+    console.log
+    (
+      "desired:", desiredAngularVelocity,
+      "current:", this.getAngularVelocity(),
+      "change:", desiredAngularVelocity - this.getAngularVelocity()
+    );
+
+    return desiredAngularVelocity - this.getAngularVelocity();
+  }
+
+  private computeAngularThrust(angularVelocityChange: number)
+  {
+    // ! Throws exception on error.
+    const inertia = this.inertiaValue;
+
+    // Compute thrust needed to reach desired speed in one tick
+    // (this handles the last tick when we don't need full thrust
+    //  to come to stop).
+    const desiredAngularThrust = inertia * angularVelocityChange * Engine.FPS;
+
+    // Cap it to full thrust.
+    return Number(desiredAngularThrust).clampTo
+    (
+      -this.currentAngularThrust,
+      this.currentAngularThrust
+    );
+  }
+
+/*
 // +
   private computeArriveTorque()
   {
@@ -608,6 +762,7 @@ export class VehiclePhysics extends Serializable
       this.brakingAngle.set(maxBrakingAngle);
     }
   }
+*/
 
   // --- Arrive Steering Force ---
 
@@ -805,16 +960,10 @@ export class VehiclePhysics extends Serializable
   )
   : number
   {
-    // This can happen if currentMaxSpeed is zero or if braking thrust is zero.
-    if (this.brakingDistance === 0)
-      return 0;
-
     // Distance travelled by velocity achieved by one tick of
     // acceleration at fullBrakingThrust (which is the same as
     // distance travelled in the last tick of decceleration).
-    // const oneTickDistance = Engine.SPF * fullBrakingThrust / this.massValue;
-
-    // d = F / (m * FPS * FPS * 2);
+    //   d = F / (m * FPS * FPS * 2);
     const oneTickDistance =
       fullBrakingThrust / (this.massValue * Engine.FPS * Engine.FPS * 2);
 
@@ -893,6 +1042,8 @@ export class VehiclePhysics extends Serializable
         + ` engine FPS (that effectively increases maximum possible angular`
         + ` velocity)`);
     }
+
+    return angularVelocity;
   }
 }
 

@@ -1,8 +1,13 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Opravit bug s přetáčením do jednoho směru.
+
+TODO: Updatovat torqueRatio.
+
 TODO: volat updateWaypointDirection() v každém tiku, kdy je nenulová
   distance (abych zastavil ve směru příletu).
+[done]
 
 
 TODO: Dvojitý zášleh, když couvám dál než braking distance.
