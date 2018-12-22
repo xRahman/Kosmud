@@ -86,7 +86,7 @@ export class VehiclePhysics extends Serializable
   // Tohle se posílá na klient a zobrazují se podle toho thrustery.
   private forwardThrustRatio = 0;
   private leftwardThrustRatio = 0;
-  private readonly torqueRatio = 0;
+  private torqueRatio = 0;
 
   private readonly waypoint =
   {
@@ -419,10 +419,11 @@ export class VehiclePhysics extends Serializable
 
     // 4)const angularThrust =
     //     this.computeAngularThrust(angularVelocityChange);
-    const angularThrust =
-         this.computeAngularThrust(angularVelocityChange);
+    const torque = this.computeSteeringTorque(angularVelocityChange);
 
-    return angularThrust;
+    this.updateTorqueRatio(torque);
+
+    return torque;
   }
 
   private computeAngularDistance()
@@ -502,17 +503,10 @@ export class VehiclePhysics extends Serializable
 
   private computeAngularVelocityChange(desiredAngularVelocity: number)
   {
-    console.log
-    (
-      "desired:", desiredAngularVelocity,
-      "current:", this.getAngularVelocity(),
-      "change:", desiredAngularVelocity - this.getAngularVelocity()
-    );
-
     return desiredAngularVelocity - this.getAngularVelocity();
   }
 
-  private computeAngularThrust(angularVelocityChange: number)
+  private computeSteeringTorque(angularVelocityChange: number)
   {
     // ! Throws exception on error.
     const inertia = this.inertiaValue;
@@ -528,6 +522,14 @@ export class VehiclePhysics extends Serializable
       -this.currentAngularThrust,
       this.currentAngularThrust
     );
+  }
+
+  private updateTorqueRatio(torque: number)
+  {
+    const ratio = (this.currentAngularThrust !== 0) ?
+      torque / this.currentAngularThrust : 0;
+
+    this.torqueRatio = ratio * this.thrustMultiplier.valueOf();
   }
 
 /*
