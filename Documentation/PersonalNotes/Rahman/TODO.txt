@@ -1,6 +1,9 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: Musím nutně posílat this.desiredRotation?
+- totéž je schováno ve waypointu (který má teď dvě složky).
+
 TODO: Opravit bug s přetáčením do jednoho směru.
 [done]
 

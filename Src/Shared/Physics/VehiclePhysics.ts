@@ -324,7 +324,7 @@ export class VehiclePhysics extends Serializable
   {
     this.torque = this.computeArriveTorque();
 
-    // this.steeringForce.set(this.computeArriveSteeringForce());
+    this.steeringForce.set(this.computeArriveSteeringForce());
   }
 
   // ---------------- Private methods -------------------
@@ -404,26 +404,28 @@ export class VehiclePhysics extends Serializable
 
   private computeArriveTorque()
   {
-    // 1) spočítat distance
-    const angularDistance = this.computeAngularDistance();
+    // ! Throws exception on error.
+    const inertia = this.inertiaValue;
+    const angularVelocityChange = this.computeAngularVelocityChange(inertia);
 
-    // 2) const desiredAngularSpeed =
-    //      this.computeDesiredAngularSpeed(angularDistance);
-    // - asi se znaménkem?
-    const desiredAngularVelocity =
-      this.computeDesiredAngularVelocity(angularDistance);
-
-    // 3) const angularVelocityChange = this.computeAngularVelocityChange();
-    const angularVelocityChange =
-      this.computeAngularVelocityChange(desiredAngularVelocity);
-
-    // 4)const angularThrust =
-    //     this.computeAngularThrust(angularVelocityChange);
-    const torque = this.computeSteeringTorque(angularVelocityChange);
+    const torque = this.computeTorqueToChangeAngularVelocity
+    (
+      angularVelocityChange, inertia
+    );
 
     this.updateTorqueRatio(torque);
 
     return torque;
+  }
+
+  private computeAngularVelocityChange(inertia: number)
+  {
+    const angularDistance = this.computeAngularDistance();
+
+    const desiredAngularVelocity =
+      this.computeDesiredAngularVelocity(angularDistance, inertia);
+
+    return desiredAngularVelocity - this.getAngularVelocity();
   }
 
   private computeAngularDistance()
@@ -439,15 +441,18 @@ export class VehiclePhysics extends Serializable
     return Angle.minusPiToPi(desiredRotation - currentRotation);
   }
 
-  private computeDesiredAngularVelocity(angularDistance: number)
+  private computeDesiredAngularVelocity
+  (
+    angularDistance: number,
+    inertia: number
+  )
   {
     // Distance travelled by angular velocity achieved by one tick
     // of acceleration at full angular thrust (which is the same as
     // distance travelled in the last tick of decceleration).
     //   d = F / (m * FPS * FPS * 2);
     const oneTickDistance =
-      this.currentAngularThrust /
-      (this.inertiaValue * Engine.FPS * Engine.FPS * 2);
+      this.currentAngularThrust / (inertia * Engine.FPS * Engine.FPS * 2);
 
 /// TODO: Update comment
     // What's going on here:
@@ -469,7 +474,7 @@ export class VehiclePhysics extends Serializable
     (
       Math.abs
       (
-        angularDistance * this.currentAngularThrust * 2 / this.inertiaValue
+        angularDistance * this.currentAngularThrust * 2 / inertia
       )
     );
 
@@ -487,8 +492,7 @@ export class VehiclePhysics extends Serializable
     // when deccelerating. We actually wouldn't be able to deccelerate
     // fast enough to slow down enough, which would lead to overshooting
     // the target - the more the greater distance we would have to travel).
-    desiredAngularSpeed -=
-      this.currentAngularThrust / (this.inertiaValue * Engine.FPS);
+    desiredAngularSpeed -= this.currentAngularThrust / (inertia * Engine.FPS);
 
     desiredAngularSpeed =
       Number(desiredAngularSpeed).atMost(this.currentMaxAngularVelocity);
@@ -501,22 +505,18 @@ export class VehiclePhysics extends Serializable
     return this.validateAngularVelocity(desiredAngularVelocity);
   }
 
-  private computeAngularVelocityChange(desiredAngularVelocity: number)
+  private computeTorqueToChangeAngularVelocity
+  (
+    angularVelocityChange: number,
+    inertia: number
+  )
   {
-    return desiredAngularVelocity - this.getAngularVelocity();
-  }
-
-  private computeSteeringTorque(angularVelocityChange: number)
-  {
-    // ! Throws exception on error.
-    const inertia = this.inertiaValue;
-
-    // Compute thrust needed to reach desired speed in one tick
-    // (this handles the last tick when we don't need full thrust
+    // Compute torque needed to reach desired angular velocity in one tick
+    // (this handles the last tick when we need less than full torque
     //  to come to stop).
     const desiredAngularThrust = inertia * angularVelocityChange * Engine.FPS;
 
-    // Cap it to full thrust.
+    // Cap it to full thrust (from both sides).
     return Number(desiredAngularThrust).clampTo
     (
       -this.currentAngularThrust,
@@ -531,6 +531,24 @@ export class VehiclePhysics extends Serializable
 
     this.torqueRatio = ratio * this.thrustMultiplier.valueOf();
   }
+
+// private computeSteeringTorque(angularVelocityChange: number)
+// {
+//   // ! Throws exception on error.
+//   const inertia = this.inertiaValue;
+
+//   // Compute thrust needed to reach desired speed in one tick
+//   // (this handles the last tick when we don't need full thrust
+//   //  to come to stop).
+//   const desiredAngularThrust = inertia * angularVelocityChange * Engine.FPS;
+
+//   // Cap it to full thrust.
+//   return Number(desiredAngularThrust).clampTo
+//   (
+//     -this.currentAngularThrust,
+//     this.currentAngularThrust
+//   );
+// }
 
 /*
 // +
@@ -829,8 +847,8 @@ export class VehiclePhysics extends Serializable
     const desiredSpeedChange = velocityChange.length();
 
     // Compute thrust needed to reach desired speed in one tick
-    // (this handles the last tick when we don't need full thrust
-    //  to come to stop).
+    // (this handles the last tick when we need less than full
+    //  thrust to come to stop).
     const desiredThrust = mass * desiredSpeedChange * Engine.FPS;
 
     // Cap it to full thrust.
