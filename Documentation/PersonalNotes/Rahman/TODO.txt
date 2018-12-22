@@ -1,6 +1,10 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
+TODO: volat updateWaypointDirection() v každém tiku, kdy je nenulová
+  distance (abych zastavil ve směru příletu).
+
+
 TODO: Dvojitý zášleh, když couvám dál než braking distance.
 - ok tak občas i nejen přes braking...
 [fixed]

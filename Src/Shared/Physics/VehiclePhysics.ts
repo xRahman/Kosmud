@@ -64,9 +64,6 @@ export class VehiclePhysics extends Serializable
   public readonly initialPosition = { x: 0, y: 0 };
   public readonly initialRotation = new ZeroTo2Pi(0);
 
-  // Waypoint je trochu stranou - zapisuje se do něj cílová pozice.
-  public readonly waypoint = new Vector();
-
 // Tohle se updatuje při výpočtu arriveTorque
 // (ale nikam se to neposílá - posílá se imho jen torque ratio).
   public torque = 0;
@@ -90,6 +87,14 @@ export class VehiclePhysics extends Serializable
   private forwardThrustRatio = 0;
   private leftwardThrustRatio = 0;
   private torqueRatio = 0;
+
+  private readonly waypoint =
+  {
+    position: new Vector(),
+    // Keep direction separately because when we reach the waypoint, target
+    // vector will have zero length and thus an undefined direction.
+    direction: new ZeroTo2Pi(0)
+  };
 
   // Tohle se používá při výpočtu agular steeringu.
   private readonly brakingAngle = new ZeroToPi(0);
@@ -185,11 +190,37 @@ export class VehiclePhysics extends Serializable
 
   public getTorqueRatio() { return this.torqueRatio; }
 
-  public setWaypoint(waypoint: { x: number; y: number })
+  public getWaypointPosition()
   {
-    this.waypoint.set(waypoint);
+    return this.waypoint.position;
+  }
 
-    this.updateBrakingAngle(waypoint);
+  public getWaypointDirection()
+  {
+    return this.waypoint.direction.valueOf();
+  }
+
+  public updateWaypointDirection()
+  {
+    const shipPosition = this.getPosition();
+    const waypointPosition = this.getWaypointPosition();
+
+    if (!shipPosition.equals(waypointPosition))
+    {
+      const targetVector = Vector.v1MinusV2
+      (
+        waypointPosition, shipPosition
+      );
+
+      this.waypoint.direction.set(targetVector.getRotation());
+    }
+  }
+
+  public setWaypoint(position: { x: number; y: number })
+  {
+    this.waypoint.position.set(position);
+    this.updateWaypointDirection();
+    this.updateBrakingAngle();
   }
 
   // ! Throws exception on error.
@@ -238,7 +269,7 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   protected arrive()
   {
-    // this.torque = this.computeArriveTorque();
+    this.torque = this.computeArriveTorque();
 
     this.steeringForce.set(this.computeArriveSteeringForce());
   }
@@ -357,7 +388,7 @@ export class VehiclePhysics extends Serializable
     {
       // If we are overtaking desired angle, we need to recalculate braking
       // angle to know when to start deccelerating on our way back.
-      this.updateBrakingAngle(this.waypoint);
+      this.updateBrakingAngle();
     }
 
     // Note that reversing after overtaking the desired angle is also
@@ -505,12 +536,13 @@ export class VehiclePhysics extends Serializable
   // +
   private computeAngularDistance()
   {
-    const desiredPosition = this.waypoint;
-    const currentPosition = this.getPosition();
+    // const desiredPosition = this.getWaypointPosition();
+    // const currentPosition = this.getPosition();
 
-    const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
+    // const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
 
-    const desiredRotation = computeDesiredRotation(targetVector);
+    // const desiredRotation = computeDesiredRotation(targetVector);
+    const desiredRotation = this.getWaypointDirection();
     const currentRotation = this.getRotation().valueOf();
 
     // Remember desired rotation so we can send it later to the client
@@ -545,11 +577,13 @@ export class VehiclePhysics extends Serializable
   // --- Update On Waypoint Change ---
 
 // +
-  private updateBrakingAngle(desiredPosition: { x: number; y: number })
+  private updateBrakingAngle()
   {
-    const currentPosition = this.getPosition();
-    const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
-    const desiredRotation = Angle.zeroTo2Pi(targetVector.getRotation());
+    // const desiredPosition = this.getWaypointPosition();
+    // const currentPosition = this.getPosition();
+    // const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
+    // const desiredRotation = Angle.zeroTo2Pi(targetVector.getRotation());
+    const desiredRotation = this.getWaypointDirection();
     const angularDistance = Angle.minusPiToPi
     (
       desiredRotation - this.getRotation().valueOf()
@@ -583,6 +617,10 @@ export class VehiclePhysics extends Serializable
   {
     // ! Throws exception on error.
     const targetVector = this.computeTargetVector();
+    const distance = targetVector.length();
+
+    if (distance > 0)
+      this.updateWaypointDirection();
 
     const fullBrakingThrust = this.computeBrakingThrust(targetVector);
 
@@ -590,10 +628,7 @@ export class VehiclePhysics extends Serializable
     this.updateBrakingDistance(fullBrakingThrust);
 
     // ! Throws exception on error.
-    const desiredSpeed = this.computeDesiredSpeed
-    (
-      targetVector, fullBrakingThrust
-    );
+    const desiredSpeed = this.computeDesiredSpeed(distance, fullBrakingThrust);
 
     this.desiredVelocity.set(targetVector).setLength(desiredSpeed);
 
@@ -701,12 +736,6 @@ export class VehiclePhysics extends Serializable
     }
   }
 
-  private resetThrustRatios()
-  {
-    this.forwardThrustRatio = 0;
-    this.leftwardThrustRatio = 0;
-  }
-
 // .
   private updateThrustRatios(thrustData: ThrustData, thrust: number)
   {
@@ -728,7 +757,7 @@ export class VehiclePhysics extends Serializable
   {
     return Vector.v1MinusV2
     (
-      this.waypoint,
+      this.getWaypointPosition(),
       // ! Throws exception on error.
       this.getPosition()
     );
@@ -771,16 +800,14 @@ export class VehiclePhysics extends Serializable
 // .
   private computeDesiredSpeed
   (
-    targetVector: Vector,
-    fullBrakingThrust: number
+    distance: number,
+    fullBrakingThrust: number,
   )
   : number
   {
     // This can happen if currentMaxSpeed is zero or if braking thrust is zero.
     if (this.brakingDistance === 0)
       return 0;
-
-    const distance = targetVector.length();
 
     // Distance travelled by velocity achieved by one tick of
     // acceleration at fullBrakingThrust (which is the same as
