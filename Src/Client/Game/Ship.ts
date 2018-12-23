@@ -50,12 +50,11 @@ export class Ship extends Shared.Ship
   }
 
   // ! Throws exception on error.
+  // ~ Overrides Shared.Ship.setPosition().
   public setPosition(position: Vector)
   {
-    /// V this.physicsBody je 'initialPosition' (aby bylo jasný,
-    /// že to je aktuální jen ze začátku), to bych asi úplně setovat neměl...
-    /// (měl bych setovat x a y v physicsbody...)
-    // this.position.set(position);
+    // ! Throws exception on error.
+    super.setPosition(position);
 
     // ! Throws exception on error.
     this.getModel().setPosition(position);
@@ -100,7 +99,7 @@ export class Ship extends Shared.Ship
     //   shipState.desiredLeftwardSteeringForce
     // );
 
-    this.physics.brakingDistance = shipState.brakingDistance;
+    // this.physics.brakingDistance = shipState.brakingDistance;
     // this.physics.stoppingDistance = shipState.stoppingDistance;
     // this.physics.desiredRotation.set(shipState.desiredRotation);
 

@@ -12,4 +12,11 @@ export class Ship extends Vehicle
   protected readonly tilemapId = Zone.BASIC_SHIPS_TILEMAP_ID;
   protected readonly exhaustSoundId = "Ship Engine Sound";
   protected readonly physicsShapeId = Zone.FIGHTER_SHAPE_ID;
+
+  // ! Throws exception on error.
+  public setPosition(position: { x: number; y: number })
+  {
+    // ! Throws exception on error.
+    this.physics.setPosition(position);
+  }
 }

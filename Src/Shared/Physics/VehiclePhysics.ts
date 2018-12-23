@@ -137,6 +137,13 @@ export class VehiclePhysics extends Serializable
   public getPosition() { return this.getPhysicsBody().getPosition(); }
 
   // ! Throws exception on error.
+  public setPosition(position: { x: number; y: number })
+  {
+    // ! Throws exception on error.
+    this.getPhysicsBody().setPosition(position);
+  }
+
+  // ! Throws exception on error.
   public getX() { return this.getPhysicsBody().getX(); }
   // ! Throws exception on error.
   public getY() { return this.getPhysicsBody().getY(); }

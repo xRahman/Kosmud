@@ -43,6 +43,11 @@ export class PhysicsBody
     return new Vector(this.box2dBody.GetPosition()).validate();
   }
 
+  public setPosition(position: { x: number; y: number })
+  {
+    this.box2dBody.SetPosition(position);
+  }
+
   // ! Throws exception on error.
   public getX()
   {

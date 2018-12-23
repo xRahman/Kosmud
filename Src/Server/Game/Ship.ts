@@ -29,7 +29,7 @@ export class Ship extends Shared.Ship
       forwardThrustRatio: this.physics.getForwardThrustRatio(),
       leftwardThrustRatio: this.physics.getLeftwardThrustRatio(),
       torqueRatio: this.physics.getTorqueRatio(),
-      brakingDistance: this.physics.brakingDistance,
+      // brakingDistance: this.physics.brakingDistance,
       // stoppingDistance: this.physics.stoppingDistance,
       // desiredRotation: this.physics.desiredRotation.valueOf()
     };
