@@ -64,18 +64,19 @@ export class VehiclePhysics extends Serializable
   public readonly initialPosition = { x: 0, y: 0 };
   public readonly initialRotation = new ZeroTo2Pi(0);
 
-// Tohle se updatuje při výpočtu arriveTorque
-// (ale nikam se to neposílá - posílá se imho jen torque ratio).
-  public torque = 0;
-// Desired rotation se posílá a zobrazuje (to je ten tmavě modrej vektor
-// k waypointu - momentálně dost krátkej, po změně měřítka).
-  public desiredRotation = new ZeroTo2Pi(0);
+  /// Desired rotation se posílá a zobrazuje (to je ten tmavě modrej vektor
+  /// k waypointu - momentálně dost krátkej, po změně měřítka).
+  ///   Vzato kolem a kolem, tohle se vůbec nemusí posílat, protože
+  /// pozici waypointu znám i na klientu.
+  // public desiredRotation = new ZeroTo2Pi(0);
 
-// Tohle se updatuje při výpočtu arriveLinearForce a posílá se to
-// na klient kvůli debug grafice.
+  // These variables are updated in steering forces computation
+  // and are sent to the client to be drawn in debug mode.
   public brakingDistance = 0;
   public readonly desiredVelocity = new Vector();
   public readonly steeringForce = new Vector();
+  // (This variable is not sent to the client, only torqueRatio is sent).
+  public torque = 0;
 
   public shapeId = "<missing physics shape id>";
 
@@ -83,7 +84,8 @@ export class VehiclePhysics extends Serializable
   private physicsBody: PhysicsBody | "Not in physics world" =
     "Not in physics world";
 
-  // Tohle se posílá na klient a zobrazují se podle toho thrustery.
+  // These variables are updated in steering forces computation and are
+  // sent to the client where they are used for displaying ship thrusters.
   private forwardThrustRatio = 0;
   private leftwardThrustRatio = 0;
   private torqueRatio = 0;
@@ -102,7 +104,7 @@ export class VehiclePhysics extends Serializable
   private readonly maxBrakingAngle = new ZeroToPi(0);
   private readonly angularVelocityIncrement = new NonnegativeNumber(0);
 */
-  private brakingAngle = 0;
+  // private brakingAngle = 0;
 
   constructor(private readonly entity: Entity)
   {
@@ -243,8 +245,10 @@ export class VehiclePhysics extends Serializable
       this.entity, this, physicsShape
     );
 
-    // ! Throws exception on error.
-    this.init();
+    /// Nothing needs to be initialized for now. I'll leave it here
+    /// for possible future use.
+    // // ! Throws exception on error.
+    // this.init();
 
     // ! Throws exception on error.
     // Set waypoint to the new position so the vehicle doesn't
@@ -343,25 +347,25 @@ export class VehiclePhysics extends Serializable
 
   // --- Init ---
 
+  /// Nothing needs to be initialized for now. I'll leave it here
+  /// for possible future use.
   // ! Throws exception on error.
-  private init()
-  {
-    // ! Throws exception on error.
-    this.initAngularBrakingDistance();
-  }
+  // private init()
+  // {
+  // }
 
-  private initAngularBrakingDistance()
-  {
-    const brakingAngle = computeBrakingDistance
-    (
-      // ! Throws exception on error.
-      this.inertiaValue,
-      this.currentMaxAngularVelocity,
-      this.currentAngularThrust
-    );
+  // private initAngularBrakingDistance()
+  // {
+  //   const brakingAngle = computeBrakingDistance
+  //   (
+  //     // ! Throws exception on error.
+  //     this.inertiaValue,
+  //     this.currentMaxAngularVelocity,
+  //     this.currentAngularThrust
+  //   );
 
-    this.brakingAngle = Angle.minusPiToPi(brakingAngle);
-  }
+  //   this.brakingAngle = Angle.minusPiToPi(brakingAngle);
+  // }
 
   /*
   // +
@@ -433,9 +437,9 @@ export class VehiclePhysics extends Serializable
     const desiredRotation = this.getWaypointDirection();
     const currentRotation = this.getRotation().valueOf();
 
-    // Remember desired rotation so we can send it later to the client
-    // to be drawn in debug mode.
-    this.desiredRotation.set(desiredRotation);
+    // // Remember desired rotation so we can send it later to the client
+    // // to be drawn in debug mode.
+    // this.desiredRotation.set(desiredRotation);
 
     // ! Throws exception on error.
     return Angle.minusPiToPi(desiredRotation - currentRotation);

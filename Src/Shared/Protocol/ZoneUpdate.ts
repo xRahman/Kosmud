@@ -47,6 +47,6 @@ export namespace ZoneUpdate
     torqueRatio: number;
     brakingDistance: number;
     // stoppingDistance: number;
-    desiredRotation: number;
+    // desiredRotation: number;
   }
 }
