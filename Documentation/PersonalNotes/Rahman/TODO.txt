@@ -7,6 +7,7 @@ TODO: Sledovat moji issue v typescript Box2d:
 ---------------
 
 TODO: Zakázat ve VS code autocomplete
+[done]
 
 -----------------------
 

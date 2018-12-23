@@ -1,3 +1,6 @@
+TODO: Zakázat ve VS code autocomplete
+[done]
+
 TODO: brakingDistance počítat až na klientu při zobrazení.
 [done]
 TODO: Na klientu je špatně pozice a waypoint pozice.
