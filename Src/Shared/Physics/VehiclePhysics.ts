@@ -64,12 +64,6 @@ export class VehiclePhysics extends Serializable
   public readonly initialPosition = { x: 0, y: 0 };
   public readonly initialRotation = new ZeroTo2Pi(0);
 
-  /// Desired rotation se posílá a zobrazuje (to je ten tmavě modrej vektor
-  /// k waypointu - momentálně dost krátkej, po změně měřítka).
-  ///   Vzato kolem a kolem, tohle se vůbec nemusí posílat, protože
-  /// pozici waypointu znám i na klientu.
-  // public desiredRotation = new ZeroTo2Pi(0);
-
   // These variables are updated in steering forces computation
   // and are sent to the client to be drawn in debug mode.
   public brakingDistance = 0;
@@ -97,14 +91,6 @@ export class VehiclePhysics extends Serializable
     // vector will have zero length and thus an undefined direction.
     direction: new ZeroTo2Pi(0)
   };
-
-  // Tohle se používá při výpočtu agular steeringu.
-/*
-  private readonly brakingAngle = new ZeroToPi(0);
-  private readonly maxBrakingAngle = new ZeroToPi(0);
-  private readonly angularVelocityIncrement = new NonnegativeNumber(0);
-*/
-  // private brakingAngle = 0;
 
   constructor(private readonly entity: Entity)
   {
@@ -354,56 +340,6 @@ export class VehiclePhysics extends Serializable
   // {
   // }
 
-  // private initAngularBrakingDistance()
-  // {
-  //   const brakingAngle = computeBrakingDistance
-  //   (
-  //     // ! Throws exception on error.
-  //     this.inertiaValue,
-  //     this.currentMaxAngularVelocity,
-  //     this.currentAngularThrust
-  //   );
-
-  //   this.brakingAngle = Angle.minusPiToPi(brakingAngle);
-  // }
-
-  /*
-  // +
-  // ! Throws exception on error.
-  private init()
-  {
-    // ! Throws exception on error.
-    this.updateAngularVelocityInrement();
-    // ! Throws exception on error.
-    this.updateMaxBrakingAngle();
-  }
-
-  // +
-  // ! Throws exception on error.
-  private updateAngularVelocityInrement()
-  {
-    // ! Throws exception on error.
-    const acceleration = this.currentAngularThrust / this.inertiaValue;
-
-    this.angularVelocityIncrement.set(acceleration / Engine.FPS);
-  }
-
-  // +
-  // ! Throws exception on error.
-  private updateMaxBrakingAngle()
-  {
-    const maxBrakingAngle = computeBrakingDistance
-    (
-      // ! Throws exception on error.
-      this.inertiaValue,
-      this.currentMaxAngularVelocity,
-      this.currentAngularThrust
-    );
-
-    this.maxBrakingAngle.set(maxBrakingAngle);
-  }
-*/
-
   // --- Arrive Torque ---
 
   private computeArriveTorque()
@@ -436,10 +372,6 @@ export class VehiclePhysics extends Serializable
   {
     const desiredRotation = this.getWaypointDirection();
     const currentRotation = this.getRotation().valueOf();
-
-    // // Remember desired rotation so we can send it later to the client
-    // // to be drawn in debug mode.
-    // this.desiredRotation.set(desiredRotation);
 
     // ! Throws exception on error.
     return Angle.minusPiToPi(desiredRotation - currentRotation);
@@ -535,258 +467,6 @@ export class VehiclePhysics extends Serializable
 
     this.torqueRatio = ratio * this.thrustMultiplier.valueOf();
   }
-
-// private computeSteeringTorque(angularVelocityChange: number)
-// {
-//   // ! Throws exception on error.
-//   const inertia = this.inertiaValue;
-
-//   // Compute thrust needed to reach desired speed in one tick
-//   // (this handles the last tick when we don't need full thrust
-//   //  to come to stop).
-//   const desiredAngularThrust = inertia * angularVelocityChange * Engine.FPS;
-
-//   // Cap it to full thrust.
-//   return Number(desiredAngularThrust).clampTo
-//   (
-//     -this.currentAngularThrust,
-//     this.currentAngularThrust
-//   );
-// }
-
-/*
-// +
-  private computeArriveTorque()
-  {
-    const distance = this.computeAngularDistance();
-
-    // If the player changes desired angle while we were still turning
-    // to it, we might overtake it because we can't deccelerate fast enough.
-    if (this.isOvertakingDesiredAngle(distance))
-    {
-      // If we are overtaking desired angle, we need to recalculate braking
-      // angle to know when to start deccelerating on our way back.
-      this.updateBrakingAngle();
-    }
-
-    // Note that reversing after overtaking the desired angle is also
-    // computed as acceleration (just in the opposite direction).
-    //   It's a "Deccelerate" action only when we want to slow down to
-    // stop.
-    const action = this.determineAngularAction(distance);
-
-    let torque: number;
-
-    switch (action)
-    {
-      case "Accelerate":
-        torque = this.computeAccelerationTorque(distance);
-        break;
-
-      case "Deccelerate":
-        torque = this.computeDeccelerationTorque(distance);
-        break;
-
-      default:
-        throw Syslog.reportMissingCase(action);
-    }
-
-    this.updateTorqueRatio(torque);
-
-    return torque;
-  }
-
-// +
-  private updateTorqueRatio(torque: number)
-  {
-    this.torqueRatio = torque / this.ANGULAR_THRUST.valueOf();
-  }
-
-// +
-  private determineAngularAction(distance: number)
-  : "Accelerate" | "Deccelerate"
-  {
-    const angleIncrement = this.computeAngleIncrement();
-    const brakingAngle = this.brakingAngle.valueOf();
-
-    // We compare the angle where we would be the next tick with
-    // braking angle (which is the smallest angle when we need to start
-    // deccelerating in order to stop at desired angle) instead of our
-    // current angle because physics is simulated in discrete steps
-    // and if we started deccelerating after we exceeded the braking angle,
-    // we wouldn't be able to stop in time.
-    if (Math.abs(distance - angleIncrement) > brakingAngle)
-    {
-      return "Accelerate";
-    }
-    else
-    {
-      return "Deccelerate";
-    }
-  }
-
-// +
-  private computeAccelerationTorque(distance: number): number
-  {
-    // ! Throws exception on error.
-    const currentVelocity = this.getPhysicsBody().getAngularVelocity();
-
-    // const maxVelocity = this.currentMaxAngularVelocityValue;
-    // const desiredVelocity = (distance > 0) ? maxVelocity : -maxVelocity;
-    const desiredVelocity = this.computeDesiredAngularVelocity
-    (
-      distance, currentVelocity
-    );
-
-    const desiredVelocityChange = desiredVelocity - currentVelocity;
-
-    // Note: 'this.angularVelocityIncrement' is a precomputed value
-    // (it only changes when inertia or maximum torque changes).
-    const velocityIncrement = this.angularVelocityIncrement.valueOf();
-
-    if (Math.abs(desiredVelocityChange) < velocityIncrement)
-      // When we are almost at desired angular velocity we compute
-      // exact torque needed to reach it.
-      // ! Throws exception on error.
-      return this.inertiaValue * desiredVelocityChange;
-
-    const fullThrust = this.currentAngularThrust;
-
-    // If we won't reach desired angular velocity in this tick we apply
-    // maximum possible torque in respective direction.
-    return (desiredVelocity > 0) ? fullThrust : -fullThrust;
-  }
-
-// +
-  private computeDesiredAngularVelocity
-  (
-    distance: number,
-    currentVelocity: number
-  )
-  {
-    const maxVelocity = this.currentMaxAngularVelocity;
-    const brakingAngle = this.maxBrakingAngle.valueOf();
-
-    // When the ship is rotating to the right and the player
-    // click behind the ship slightly to the left, without this
-    // condition the ship would stop to turn the other (shorter)
-    // direction - but that would actually take longer because
-    // the need to stop and accelerate again.
-    //   Following conditions prevent that and allow to continue
-    // turning in the same direction to reach desired angle faster.
-    // (It also feels like more natural ship handling).
-    if (currentVelocity > 0 && (distance < -Angle.PI + brakingAngle))
-      return maxVelocity;
-
-    if (currentVelocity < 0 && (distance > Angle.PI - brakingAngle))
-      return -maxVelocity;
-
-    return (distance > 0) ? maxVelocity : -maxVelocity;
-  }
-
-// +
-  // ! Throws exception on error.
-  private computeDeccelerationTorque(distance: number): number
-  {
-    const v = this.getAngularVelocity();
-
-    // Prevent division by zero.
-    if (distance === 0)
-      return 0;
-
-    // The idea here is to compute torque needed to stop exactly
-    // at desired angle.
-    //   Braking distance is calculated this way:
-    //     d = (1/2 * mass * v * v) / Force;
-    //   Therefore:
-    //     Force = (mass * v * v) / (2 * d)
-    // ! Throws exception on error.
-    const desiredTorque = -(this.inertiaValue * v * v) / (2 * distance);
-    const fullThrust = this.currentAngularThrust;
-
-    // Ensure that we don't exceed our maximum torque. This can happen
-    // when something pushes us or when player sets reversed direction.
-    // In that case we will overshoot our desired rotation because we
-    // simply can't deccelerate fast enough.
-    return Number(desiredTorque).clampTo(-fullThrust, fullThrust);
-  }
-
-  // +
-  private computeAngularDistance()
-  {
-    // const desiredPosition = this.getWaypointPosition();
-    // const currentPosition = this.getPosition();
-
-    // const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
-
-    // const desiredRotation = computeDesiredRotation(targetVector);
-    const desiredRotation = this.getWaypointDirection();
-    const currentRotation = this.getRotation().valueOf();
-
-    // Remember desired rotation so we can send it later to the client
-    // to be drawn in debug mode.
-    this.desiredRotation.set(desiredRotation);
-
-    // ! Throws exception on error.
-    return Angle.minusPiToPi(desiredRotation - currentRotation);
-  }
-
-// +
-  // ! Throws exception on error.
-  private computeAngleIncrement()
-  {
-    // a = F / m
-    // ! Throws exception on error.
-    const acceleration = this.torque / this.inertiaValue;
-    const velocityIncrement = acceleration / Engine.FPS;
-    const nextTickVelocity = this.getAngularVelocity() + velocityIncrement;
-
-    return nextTickVelocity / Engine.FPS;
-  }
-
-// +
-  private isOvertakingDesiredAngle(distance: number)
-  {
-    const velocity = this.getAngularVelocity();
-
-    return (velocity > 0 && distance < 0) || (velocity < 0 && distance > 0);
-  }
-
-  // --- Update On Waypoint Change ---
-
-// +
-  private updateBrakingAngle()
-  {
-    // const desiredPosition = this.getWaypointPosition();
-    // const currentPosition = this.getPosition();
-    // const targetVector = Vector.v1MinusV2(desiredPosition, currentPosition);
-    // const desiredRotation = Angle.zeroTo2Pi(targetVector.getRotation());
-    const desiredRotation = this.getWaypointDirection();
-    const angularDistance = Angle.minusPiToPi
-    (
-      desiredRotation - this.getRotation().valueOf()
-    );
-
-    const halfAngularDistance = Math.abs(angularDistance / 2);
-    const maxBrakingAngle = this.maxBrakingAngle.valueOf();
-
-    // The idea here is that if we don't have time to reach
-    // maximum possible angular velocity, it will take exactly
-    // half the distance to accelerate and another half to
-    // deccelerate.
-    //   If we do have time to reach maximum velocity, than
-    // braking distance is a constant (because maximum velocity
-    // is a constant, too) so we just assign it.
-    if (halfAngularDistance < maxBrakingAngle)
-    {
-      this.brakingAngle.set(halfAngularDistance);
-    }
-    else
-    {
-      this.brakingAngle.set(maxBrakingAngle);
-    }
-  }
-*/
 
   // --- Arrive Steering Force ---
 
@@ -1080,11 +760,6 @@ function computeBrakingDistance(m: number, v: number, F: number)
     return 0;
 
   return (m * v * v) / (F * 2);
-}
-
-function computeDesiredRotation(targetVector: Vector)
-{
-  return Angle.zeroTo2Pi(targetVector.getRotation());
 }
 
 function distanceFromOrigin(x: number, y: number)
