@@ -19,7 +19,6 @@ export class PhysicsBody
 {
   private readonly box2dBody: b2Body;
 
-  // ! Throws exception on error.
   constructor
   (
     /// TODO: Tohle nesavovat.

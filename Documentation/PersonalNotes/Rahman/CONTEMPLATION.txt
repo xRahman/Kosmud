@@ -183,7 +183,14 @@ Obstacle avoidance
     vůči nejbližšímu vertexu nejbližší překážky, tak bych měl bejt
     safe a do ničeho nevrazit.
 
+Steering tutorial:
+  https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-flee-and-arrival--gamedev-1303
+
+
 -----------------------------------------------------------------------
+
+Box2d
+========
 
 Coordinates and measures
 -------------------------
@@ -213,10 +220,41 @@ Hmm. Ono nakonec 1:1 bude asi docela fajn.
 - přinejhorším to můžu kdykoliv změnit.
 
 
+Tahák s fyzikálníma properties materiálů:
+  http://box2d.org/forum/viewtopic.php?t=3333
+
+
 Koordináty
 - chci mít [0, 0] vlevo nahoře? Asi jo, bude lepší přemýšlet v normální
   souřadné soustavě a na klientu to flipnout až před vykreslením...
 Transformaci zobrazení bude dělat až Phaser.
+
+Jak řešit, když fyzika nestíhá:
+  https://gafferongames.com/post/fix_your_timestep/
+
+
+Bug v Box2d 
+------------
+
+(špatně se počítá rychlost při malé akceleraci)
+
+TODO: Ve stávajícím nastavení (s density 1) v Box2d nefunguje akcelerace
+  menší než 0.02
+    (a = F / m), takže je třeba určitá minimální velikost síly
+  při dané hmotnosti.
+- Udělat na to check.
+  (respektive spíš budu muset pužít fyziku, která ten bug nemá...)
+.
+Bug s malou akcelerací je popsanej tady:
+  http://discuss.cocos2d-x.org/t/cocos2d-x-3-17-physicsbody-applyforce-still-works-wrong/42631
+  https://discuss.cocos2d-x.org/t/cocos2d-x-3-16-physicsworld-weird/39518
+- možná zkusit Planck.js?
+.
+Note: Nakonec jsem to udělal tak, že se malá akcelerace nikdy nepoužije,
+  takže mě ten bug v zásadě netrápí.
+
+Moje issue v typescript Box2d: https://github.com/flyover/box2d.ts/issues/50
+
 
 -----------------------------------------------------------------------
 

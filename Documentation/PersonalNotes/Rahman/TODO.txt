@@ -1,146 +1,25 @@
 TODO: Sledovat moji issue v animated tiles pluginu:
   https://github.com/nkholski/phaser-animated-tiles/issues/3
 
-TODO: Musím nutně posílat this.desiredRotation?
-- totéž je schováno ve waypointu (který má teď dvě složky).
-Zrušeno
-[done]
-
-TODO: Opravit bug s přetáčením do jednoho směru.
-[done]
-
-TODO: Updatovat torqueRatio.
-[done]
-
-TODO: Braking angle se musí přepočítat při změně currentTorque
-  (a asi i currentMaxAngularSpeed).
-
-TODO: Oprava commentů.
-
-TODO: Refactoring.
-
-TODO: volat updateWaypointDirection() v každém tiku, kdy je nenulová
-  distance (abych zastavil ve směru příletu).
-[done]
-
-
-TODO: Dvojitý zášleh, když couvám dál než braking distance.
-- ok tak občas i nejen přes braking...
-[fixed]
-
-TODO: Asi bych při finálním dobržďování mohl prostě nenastavovat
-  thrust ratia (respektive je nulovat). Tím zmizí závěrečné "bliknutí"
-  thrusterů.
-  (ratia setuju na 0, když je desiredSpeed 0)
-- skoro, občas ale pořád ještě bliknout při zastavování dozadu.
-
-Vypadá to, že:
-- Přes impulsy to nebuguje (tak asi přece jen taky)
-- Trhání nastává dřív, než se vůbec dostanu na zrychlení, kdy buguje fyzika
-  (tzn. mám tam ještě problém někde jinde).
-
-
-TODO: Problém v:
-  private computeThrustValue(velocityChange: Vector, fullThrust: number)
-- strašně dlouhou vzdálenost se mi počítá menší než FULL THRUST.
-
----------------
-
-TODO: Ve stávajícím nastavení (s density 1) v Box2d nefunguje akcelerace
-  menší než 0.02
-    (a = F / m), takže je třeba určitá minimální velikost síly
-  při dané hmotnosti.
-- Udělat na to check.
-  (respektive spíš budu muset pužít fyziku, která ten bug nemá...)
-
-Bug s malou akcelerací je popsanej tady:
-  http://discuss.cocos2d-x.org/t/cocos2d-x-3-17-physicsbody-applyforce-still-works-wrong/42631
-  https://discuss.cocos2d-x.org/t/cocos2d-x-3-16-physicsworld-weird/39518
-- možná zkusit Planck.js?
-
 TODO: Sledovat moji issue v typescript Box2d:
   https://github.com/flyover/box2d.ts/issues/50
 
+---------------
 
-----------------
-
-TODO: Zjevně jsem zapomněl pronásobit thrust ratia aktuálním
-  thrustem (vždycky zobrazuju full thrust).
-
-TOFIX: Zase mám obráceně levej a pravej thrust (spíš ratio).
-- špatně se počítal angleToShip().
-[fixed]
-
-TOFIX: Dopředu a dozadu mám stejnej thrust.
-  (respektive stejnou braking distance)
-[fixed]
-
-
-TODO: Thrust ratia počítám blbě - když letím šikmo, tak musí jít thrust
-  do dvou směrů, ne jen do boku.
-- asi bych si měl udělat dvě funkce. Jedna bude pouze vracet brakingThrust,
-  druhá bude vracet výsledný thrust a při tom updatovat thrustRatios,
-  ať nemusím tahat ven úhly a podobně.
-I když ne, ratio na základě thrust anglu asi můžu spočítat v pohodě.
-  forwardRatio = cos(angle)
-  leftwardRatio = sin(angle)
-
-ÚVAHA: Tím, že thrusty mohou jít nad 100% a navíc každej zvlášť, jsem si
-  to brutálně zkomplikoval.
-
-TODO: Udělat jen jeden modifikátor thrustu, kterej teda může jít nad 1, ale
-  vztahuje se na všechny thrusty současně, včetně torque.
-
-ÚVAHA: Možná bych thrustInDirection mohl počítat podobně jako ratia.
-  Nebo možná jako elipsu.
-  - pak bych mohl thrust ratia spočítat jako souřadnice bodu na elipse
-    (a thrust by byl "poloměr" elipsy v daném místě)
-Heh, ratia vychází stejně jak na kruhu
-  (forward je cons(angle), leftward je sin(angle)), protože ratio je poměr
-  ku poloose elipsy a "a * cos(angle) / a" je "cos(angle) a to samé pro
-  kolmý směr.
-ThrustSquared je potom:
- (forwardThrust * forwardThrustRatio)^2 + (leftwardThrust * leftwardThrustRatio)^2
-
-TODO: Box2d má limit i na angular velocity (PI/2).
-- Udělat na to check.
-
-TODO: Tahák s fyzikálníma properties:
-http://box2d.org/forum/viewtopic.php?t=3333
-
-TODO: Zrušit .torque, zavést .torqueRatio a vracet ho v getTorqueRatio().
-  (a typ number místo MinusOneToOne).
-[done]
-
-TODO: Reneablovat thrustInDirection().
-- ještě to vyzkoušet
+TODO: brakingDistance počítat až na klientu při zobrazení.
+TODO: Na klientu je špatně pozice a waypoint pozice.
+  (asi se waypoint ukládá někam jinam, s pozicí těžko říct...)
 
 TODO: Zakázat ve VS code autocomplete
 
-TODO: Nezapomenout nakonec validovat rychlost.
-[done]
-TODO: Validovat taky angular velocity.
-  validateAngularVelocity()
+TODO: Speed lodi na clientu je nulová, takže se nezobrazuje
+  (nejspíš ji nesetuju do physicsBody)
+- ale jo, potřebuju ji - musím vidět, jak se aktuální velocity lodi
+  blíží desiredVelocity.
+  - asi to ale můžu posílat jako skalár a jen tím pronásobit vektor
+    desiredVelocity.
 
-TODO: Ošetřit zastavení do nuly
-  (když jsem fakt blízko, tak přesně spočítat force za tik)
-- i když, to by možná mělo dělat samo...
-- ok, to teď fakt potřebovat budu :-)
-
-TODO: Pročistit data properties ve VehiclePhysics.
-
-Steering tutorial:
-https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-flee-and-arrival--gamedev-1303
-
-- brakingDistance se bude počítat prostě z aktuálního fullBrakingThrustu
-  a MAX_SPEED
-  (tedy bude to vzdálenost, za kterou stávajícím maximálním braking thrustem
-   zabrzdím z MAX_SPEED na nulu).
-
-TODO: (pokud to bude fungovat, tak mám asi zbytečně složitou i rotaci...)
-- zjednodušit rotaci.
-
-TODO: Opravit posílání thrustů na klient.
+----------------
 
 TODO: Zkontrolovat zvuk exhaustů
 - nevím, jestli mi funguje hlasitost
@@ -162,187 +41,14 @@ Výhodu by to mělo, že by bylo průlhlednější (ne)volání konstruktoru.
 
 ------------------------------------------------------------
 
-TODO: Linear arrive forces
-
-Dokud jsem dál než maxBrakingDistance, tak zaručeně acceleruju.
-- když bych v příštím tiku překročil maxBrakingDistance, tak bych měl
-  updatnout brakingDistance podle aktuální speed?
-
-- když se vzdaluju (je jedno kterým směrem, prostě vzdálenost v tomhle tiku
-  je větší než v minulém), tak musím přepočítat brakingDistance.
-  - problém bude v tom, že nevím, jak dlouho mi bude trvat zrychlování
-    (protože klidně můžu zrychlovat po nějaké křivce, takže to rozhodně
-     nebude lineární).
-  - stejně tak si nemůžu bejt jistej deccleraing thrustem, protože ten
-    taky závisí na směru.
-
-V každým okamžiku asi dokážu říct, jakej mám thrust k cíli a od cíle.
-- že bych prostě v každém okamžiku počítal dráhu na základě těchle dvou
-  thrustů?
-
-distance
-accForce
-deccForce
-v
-
-maxBrakingDistance bude taky závislá na aktuální rotaci, tedy na
-  aktuální deccForce.
-
-1) pokud jsem dál než je aktuální maxBrakingDistance, tak akceleruju
-   až do MAX_SPEED.
-2) Když jsem blíž, tak je jasný, že nedosáhnu MAX_SPEED, tzn. řeším
-   jen problém typu střecha
-
-
-d = dAcc + dDecc
-dAcc = (m * v * v) / (fAcc * 2)
-dDecc = (m * V_MAX * V_MAX) / (fDecc * 2)
-d = (m * v * v) / (fAcc * 2) + (m * V_MAX * V_MAX) / (fDecc * 2)
-(m * V_MAX * V_MAX) / (fDecc * 2) = d - (m * v * v) / (fAcc * 2)
-(m * V_MAX * V_MAX) = d * (fDecc * 2) - (m * v * v) * (fDecc * 2) / (fAcc * 2)
-(m * V_MAX * V_MAX) = d * fDecc * 2 - m * v * v * fDecc / fAcc
-vMaxSquared = d * fDecc * 2 / m - v * v * fDecc / fAcc
-
-(m * vMaxSquared) = d * fDecc * 2 - m * v * v * fDecc / fAcc
-
-dDecc = (m * vMaxSqared) / (fDecc * 2)
-dDecc = (d * fDecc * 2 - m * v * v * fDecc / fAcc) / (fDecc * 2)
-dDecc = (d - m * v * v) / (fAcc * 2)
-
-
-Hmm, mám to špatně. Akcelerační vzdálenost není z rychlosti v do nuly,
-ale z rychlosti v do rychlosti VMax
-
-// Akcelerační vzdálenost je rovna:
-//   Vzálenost, za kterou se dostanu z nuly na V_MAX
-//   mínus vzdálenost, za kterou se dostanu z nuly na v.
-dAcc = (m * V_MAX * V_MAX) / (fAcc * 2) - (m * v * v) / (fAcc * 2)
-dDecc = (m * V_MAX * V_MAX) / (fDecc * 2)
-
-d = dAcc + dDecc
-
-d + (m * v * v) / (fAcc * 2) = (m * V_MAX * V_MAX) / (fAcc * 2) + (m * V_MAX * V_MAX) / (fDecc * 2)
-d + (m * v * v) / (fAcc * 2) = (0.5 * m * V_MAX * V_MAX) * (1 / fAcc + 1 / fDecc)
-d + (m * v * v) / (fAcc * 2) = (0.5 * m * V_MAX * V_MAX) * (fDecc / fDecc * fAcc + fAcc / fAcc * fDecc)
-d + (m * v * v) / (fAcc * 2) = (0.5 * m * V_MAX * V_MAX) * (fDecc + fAcc) / (fDecc * fAcc)
-d * (fDecc * fAcc) + (m * v * v) * (fDecc * fAcc) / (fAcc * 2) = (0.5 * m * V_MAX * V_MAX) * (fDecc + fAcc)
-d * fDecc * fAcc + 0.5 * m * v * v * fDecc = (0.5 * m * V_MAX * V_MAX) * (fDecc + fAcc)
-
-m * V_MAX * V_MAX = (2 * d * fDecc * fAcc + m * v * v * fDecc) / (fDecc + fAcc)
-
-dDecc = (m * vMaxSqared) / (fDecc * 2)
-dDecc = (2 * d * fDecc * fAcc + m * v * v * fDecc) / (fDecc + fAcc) * (fDecc * 2)
-dDecc = (2 * d * fAcc + m * v * v) / (fAcc + fDecc) * 2
-// Součet je asi ok, jen nesmím zapomenout, že fAcc má opačný směr
-// (a tedy i znaménko) než fDecc.
-
-
-Ok, one step at a time:
-
-1) Disablovat rotaci
-2) počítat se stejným thrustem do všech směrů.
-3) vykašlat se na max_speed, zkusit rovnou šílenej výpočet
-   akcelerace/deccelerace.
-
-
----
-
-Možná to zbytečně komplikuju a stačilo by to, co jsem tam měl....
-  (i když tam byl vlastně problém s tím přepočítáváním braking distance)
-
-------------
-
-
-TODO: Pokud opravdu zruším stopping distance, tak ji ani neposílat
-  na klient a nezobrazovat.
-
 
 TODO: ShipVectors kreslí i kruhy a tak, asi by se to mělo jmenovat jinak
   (ShipDebugGraphics?)
 
-TODO: Problém je, že braking distance se dynamicky updatuje, takže se může
-  stát, že zahájím braking manévr a následně se opět dostanu ven z braking
-  distance.
-- asi bych měl braking distanci měnit jen dokud jsem v accelerating fázi,
-  případně po updatu waypointu (čímž se ovšem vrátím k problému, protože
-  dokud držím lmb, tak se pozice waypoint updatuje každej tik).
-{ Ono to možná vadit nebude, pokud bude správně fungovat natáčení }
-
-
-SUPER IMPORTANT:
-https://stackoverflow.com/questions/44866044/libgdx-box2d-velocity-not-increasing-enough
-
-Jak řešit, když fyzika nestíhá:
-https://gafferongames.com/post/fix_your_timestep/
 
 TODO: CoordsTransform.tileObject() by možná mohlo rovnou i ztransformovat
   souřadnice, ne jen posouvat o půlku tily.
 
-TODO: Zavést měřítko do CoordsTransform (nejspíš 1:1000)
-
-TODO: CoordsTransform možná dát do /Client/Engine, je to čistě zobrazovací
-  záležitost a týká se to konkrétně Phaseru.
-  - tak ne, CoordsTransform se používá i v Shared/Tilemap
-    (data tilemapy jsou v client koordinátech)
-Ale mohla by bejt v Shared/Engine místo v Shared/Physics
-
-TODO: Zamyslet se nad parametrem pro akceleraci lodi (kterým by se asi
-  násobila steering force). Momentálně je omezené pouze maximum, což
-  může vést k tomu, že se silnější motory až tak moc neprojevěj.
-
-
-TODO: Speed lodi na clientu je nulová, takže se nezobrazuje
-  (nejspíš ji nesetuju do physicsBody)
-- ale jo, potřebuju ji - musím vidět, jak se aktuální velocity lodi
-  blíží desiredVelocity.
-  - asi to ale můžu posílat jako skalár a jen tím pronásobit vektor
-    desiredVelocity.
-
-desiredForwardComponentMagnitude může bejt záporná,
-  s tím asi nepočítám.
-- i když, asi jo. A zjednodušit to nejde, protože dozadu je jinej
-  thrust než dopředu.
-
-Refactoring steeringu
-----------------------
-
-Mohl bych asi na začátku arrive() vyrobit
-  const phase = "Accelerating" | "Braking" | "Stopping"
-a předávat ji pak dalším fcím, aby podle ní mohly switchovat.
-[done]
-Možná pak nebude potřeba předávat všude distance a tak.
-- v computeLinearForces to totiž asi budu potřebovat switchovat taky
-  (a je vůbec otázka, jestli to nerozdělit do víc funkcí, protože
-   třeba seek() dobržďovací část vůbec nebude potřebovat).
-Takže:
-- computeSeekLinearForces()
-- computeArriveLinearForces()
-
-Opravy steeringu
------------------
-
-TODO: Přijde mi, že MAXIMUM_SPEED lodi nic nedělá
-- vektory jsou delší, to jo, ale vizuálně loď neletí rychlejš.
-- a taky je divný, že se pořád letí na maximum thrust
-  (to je teda fajn - sice to není fyzikálně správně, ale vypadá to dobře).
-
- Refactorovat steering
-- různá chování počítají jen desired velocity
-  I když, to je otázka.
-  - Za prvé nevím, jestli bude fungovat skládání behaviourů přes rychlosti
-    (nejspíš je nějakej důvod, proč se skládaj až výsledné steering forces)
-  - Za druhé nevím, co složitější behaviours s těma silama dělaj...
-Ok, asi se raději budu držet skládání sil.
-
-TODO: Forward thrust se z nějakých důvodů limituje na 80% výkonu.
-
-TODO: Steering by se možná choval líp, kdyby se prostě loď nejdřív otočila
-  do požadovaného směru a pak se aplikoval jen forward/backward thrust.
-- tohle asi dělat, jen když je loď blízko k cíli.
-- rozhodně to budu muset ještě poladit.
-TODO: Asi budu muset přece jen trošku poladit arrive() - na thrusterech
-  je vidět, jak se to občas chová divně.
-TODO: Opravit "backlash" při zastavování.
 
 -----
 

@@ -43,7 +43,7 @@ export class VectorsModel
 
     this.vectorsGraphics.drawCircle
     (
-      origin, vehicle.physics.brakingDistance,
+      origin, vehicle.physics.computeBrakingDistance(),
       1, Graphics.rgb(150, 150, 150), 1
     );
 

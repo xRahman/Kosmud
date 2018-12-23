@@ -7,21 +7,10 @@
 // Augment global namespace with number-related functions and constants.
 import "../../Shared/Utils/Number";
 
-type ThrustData =
-{
-  forwardThrustRatio: number;
-  leftwardThrustRatio: number;
-  fullThrust: number;
-};
-
-// import { Syslog } from "../../Shared/Log/Syslog";
 import { Angle } from "../../Shared/Utils/Angle";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
-// import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { PositiveNumber } from "../../Shared/Utils/PositiveNumber";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
-// import { MinusPiToPi } from "../../Shared/Utils/MinusPiToPi";
-// import { ZeroToPi } from "../../Shared/Utils/ZeroToPi";
 import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 import { Vector } from "../../Shared/Physics/Vector";
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
@@ -30,7 +19,6 @@ import { Engine } from "../../Shared/Engine/Engine";
 import { Zone } from "../../Shared/Game/Zone";
 import { Entity } from "../../Shared/Class/Entity";
 import { Physics } from "../../Shared/Physics/Physics";
-// import { Coords } from "../../Shared/Engine/Coords";
 import { Serializable } from "../../Shared/Class/Serializable";
 
 export class VehiclePhysics extends Serializable
@@ -66,7 +54,6 @@ export class VehiclePhysics extends Serializable
 
   // These variables are updated in steering forces computation
   // and are sent to the client to be drawn in debug mode.
-  public brakingDistance = 0;
   public readonly desiredVelocity = new Vector();
   public readonly steeringForce = new Vector();
   // (This variable is not sent to the client, only torqueRatio is sent).
@@ -191,8 +178,10 @@ export class VehiclePhysics extends Serializable
     return this.waypoint.direction.valueOf();
   }
 
+  // ! Throws exception on error.
   public updateWaypointDirection()
   {
+    // ! Throws exception on error.
     const shipPosition = this.getPosition();
     const waypointPosition = this.getWaypointPosition();
 
@@ -207,11 +196,12 @@ export class VehiclePhysics extends Serializable
     }
   }
 
+  // ! Throws exception on error.
   public setWaypoint(position: { x: number; y: number })
   {
     this.waypoint.position.set(position);
+    // ! Throws exception on error.
     this.updateWaypointDirection();
-    // this.updateBrakingAngle();
   }
 
   // ! Throws exception on error.
@@ -224,6 +214,7 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
   {
+    // ! Throws exception on error.
     const physicsShape = zone.getPhysicsShape(this.shapeId);
 
     this.physicsBody = physicsWorld.createPhysicsBody
@@ -245,6 +236,7 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   public steer()
   {
+    // ! Throws exception on error.
     this.arrive();
 
     // this.seek();
@@ -254,6 +246,24 @@ export class VehiclePhysics extends Serializable
 
     // ! Throws exception on error.
     this.getPhysicsBody().applyTorque(this.torque);
+  }
+
+  // ! Throws exception on error.
+  // This is only used on the client in debug drawing mode.
+  public computeBrakingDistance()
+  {
+    // ! Throws exception on error.
+    const targetVector = this.computeTargetVector();
+
+    const fullBrakingThrust = this.computeBrakingThrust(targetVector);
+
+    return computeBrakingDistance
+    (
+      this.massValue,
+      this.currentMaxSpeed,
+      // ! Throws exception on error.
+      fullBrakingThrust
+    );
   }
 
   // --------------- Protected methods ------------------
@@ -308,7 +318,6 @@ export class VehiclePhysics extends Serializable
 //   );
 // }
 
-// +
   // ! Throws exception on error.
   protected arrive()
   {
@@ -345,8 +354,17 @@ export class VehiclePhysics extends Serializable
   private computeArriveTorque()
   {
     // ! Throws exception on error.
+    const currentAngularVelocity = this.getAngularVelocity();
+
+    // ! Throws exception on error.
+    // (There is a hard angular velocity limit in Box2d.)
+    this.validateAngularVelocity(currentAngularVelocity);
+
+    // ! Throws exception on error.
     const inertia = this.inertiaValue;
-    const angularVelocityChange = this.computeAngularVelocityChange(inertia);
+    // ! Throws exception on error.
+    const angularVelocityChange =
+      this.computeAngularVelocityChange(inertia, currentAngularVelocity);
 
     const torque = this.computeTorqueToChangeAngularVelocity
     (
@@ -358,25 +376,35 @@ export class VehiclePhysics extends Serializable
     return torque;
   }
 
-  private computeAngularVelocityChange(inertia: number)
+  // ! Throws exception on error.
+  private computeAngularVelocityChange
+  (
+    inertia: number,
+    currentAngularVelocity: number
+  )
   {
+    // ! Throws exception on error.
     const angularDistance = this.computeAngularDistance();
 
     const desiredAngularVelocity =
+      // ! Throws exception on error.
       this.computeDesiredAngularVelocity(angularDistance, inertia);
 
-    return desiredAngularVelocity - this.getAngularVelocity();
+    return desiredAngularVelocity - currentAngularVelocity;
   }
 
+  // ! Throws exception on error.
   private computeAngularDistance()
   {
+    // ! Throws exception on error.
     const desiredRotation = this.getWaypointDirection();
+    // ! Throws exception on error.
     const currentRotation = this.getRotation().valueOf();
 
-    // ! Throws exception on error.
     return Angle.minusPiToPi(desiredRotation - currentRotation);
   }
 
+  // ! Throws exception on error.
   private computeDesiredAngularVelocity
   (
     angularDistance: number,
@@ -387,47 +415,26 @@ export class VehiclePhysics extends Serializable
     // of acceleration at full angular thrust (which is the same as
     // distance travelled in the last tick of decceleration).
     //   d = F / (m * FPS * FPS * 2);
-    const oneTickDistance =
+    const lastTickDistance =
       this.currentAngularThrust / (inertia * Engine.FPS * Engine.FPS * 2);
 
-/// TODO: Update comment
-    // What's going on here:
-    //   Speed calculated based on 'distance' is actually desired speed for
-    // our current position. Because that position is iterated towards
-    // target position, desired speed would never reach zero (or at least
-    // it would take a whole lot of iterations). To handle it we skip the
-    // last step and set desired velocity directly to zero.
-    //   Note that at the time of writing this (end of 2018) there is a bug
-    // in Box2d physics engine causing speed to reset periodically to zero
-    // when a small constant force is applied instead of it linearly
-    // increasing. This causes ship to stutter at the final approach phase
-    // if it's thrust is low (for example if you move sideways so you only
-    // use weak strafe thrusters). Hopefully that will get addressed sometime.
-    if (Math.abs(angularDistance) < oneTickDistance)
+    // Prevent slow stopping by a lot of small iterations when we are
+    // almost at the target.
+    if (Math.abs(angularDistance) < lastTickDistance)
       return 0;
 
     let desiredAngularSpeed = Math.sqrt
     (
-      Math.abs
-      (
-        angularDistance * this.currentAngularThrust * 2 / inertia
-      )
+      // We can't square root a negative number so we need to do it
+      // on absolute value and reapply the direction later.
+      Math.abs(angularDistance * this.currentAngularThrust * 2 / inertia)
     );
 
-/// TODO: Update comment
-    // In the previous step we have calculated velocity that we would
-    // have to have at current position in order to brake exactly at
-    // the target. But we are there already there so by the time we
-    // deccelerate to such speed, we will already be closer so our
-    // speed in the next tick actually needs to be lower. By how much,
-    // you ask? By decceleration which will occur in the next tick, of
-    // course.
-    //  (If we didn't subtract change in velocity that will occur in
-    // the next tick, our current velocity would lag behind desired
-    // velocity more and more, because speed is not linear to distance
-    // when deccelerating. We actually wouldn't be able to deccelerate
-    // fast enough to slow down enough, which would lead to overshooting
-    // the target - the more the greater distance we would have to travel).
+    // In the previous step we have calculated angular velocity that we
+    // would have to have at current position in order to stop exactly
+    // at the target. But we are already at that point so we have to
+    // subtract the change in angular velocity that will be added in
+    // the next tick.
     desiredAngularSpeed -= this.currentAngularThrust / (inertia * Engine.FPS);
 
     desiredAngularSpeed =
@@ -436,8 +443,8 @@ export class VehiclePhysics extends Serializable
     const desiredAngularVelocity = (angularDistance < 0) ?
       -desiredAngularSpeed : desiredAngularSpeed;
 
-    // There is a hard angular velocity limit in Box2d.
-    // Check that we are not exceeding it.
+    // ! Throws exception on error.
+    // (There is a hard angular velocity limit in Box2d.)
     return this.validateAngularVelocity(desiredAngularVelocity);
   }
 
@@ -447,12 +454,11 @@ export class VehiclePhysics extends Serializable
     inertia: number
   )
   {
-    // Compute torque needed to reach desired angular velocity in one tick
-    // (this handles the last tick when we need less than full torque
-    //  to come to stop).
+    // Compute angular thrust needed to reach desired angular velocity in
+    // one tick (this handles the last tick when we need less than full
+    // thrust to come to stop. In other cases we cap it to maximum thrust).
     const desiredAngularThrust = inertia * angularVelocityChange * Engine.FPS;
 
-    // Cap it to full thrust (from both sides).
     return Number(desiredAngularThrust).clampTo
     (
       -this.currentAngularThrust,
@@ -470,28 +476,31 @@ export class VehiclePhysics extends Serializable
 
   // --- Arrive Steering Force ---
 
-// .
   // ! Throws exception on error.
   private computeArriveSteeringForce()
   {
+    // ! Throws exception on error.
+    const currentVelocity = this.getVelocity();
+    const currentSpeed = currentVelocity.length();
+
+    // ! Throws exception on error.
+    // (There is a hard speed limit in Box2d.)
+    this.validateSpeed(currentSpeed);
+
     // ! Throws exception on error.
     const targetVector = this.computeTargetVector();
     const distance = targetVector.length();
 
     if (distance > 0)
+      // ! Throws exception on error.
       this.updateWaypointDirection();
 
-    const fullBrakingThrust = this.computeBrakingThrust(targetVector);
-
     // ! Throws exception on error.
-    this.updateBrakingDistance(fullBrakingThrust);
-
-    // ! Throws exception on error.
-    const desiredSpeed = this.computeDesiredSpeed(distance, fullBrakingThrust);
+    const desiredSpeed = this.computeDesiredSpeed(distance, targetVector);
 
     this.desiredVelocity.set(targetVector).setLength(desiredSpeed);
 
-    const velocityChange = this.computeVelocityChange();
+    const velocityChange = this.computeVelocityChange(currentVelocity);
 
     // ! Throws exception on error.
     const thrust = this.computeSteeringThrust(velocityChange);
@@ -499,15 +508,11 @@ export class VehiclePhysics extends Serializable
     return new Vector(velocityChange).setLength(thrust);
   }
 
-  private computeVelocityChange()
+  private computeVelocityChange(currentVelocity: Vector)
   {
-    // ! Throws exception on error.
-    const currentVelocity = this.getVelocity();
-
     return Vector.v1MinusV2(this.desiredVelocity, currentVelocity);
   }
 
-// .
   // ! Throws exception on error.
   private computeSteeringThrust(velocityChange: Vector)
   {
@@ -522,7 +527,6 @@ export class VehiclePhysics extends Serializable
     return thrust;
   }
 
-// .
   // ! Throws exception on error.
   private computeThrustValue(velocityChange: Vector, fullThrust: number)
   {
@@ -532,14 +536,12 @@ export class VehiclePhysics extends Serializable
 
     // Compute thrust needed to reach desired speed in one tick
     // (this handles the last tick when we need less than full
-    //  thrust to come to stop).
+    //  thrust to come to stop. In other cases we cap it to full thrust).
     const desiredThrust = mass * desiredSpeedChange * Engine.FPS;
 
-    // Cap it to full thrust.
     return Number(desiredThrust).atMost(fullThrust);
   }
 
-// .
   private computeThrustData(direction: Vector): ThrustData
   {
     const thrustAngle = this.angleToShip(direction);
@@ -559,7 +561,6 @@ export class VehiclePhysics extends Serializable
     return { forwardThrustRatio, leftwardThrustRatio, fullThrust };
   }
 
-// .
   private computeThrustFromRatios
   (
     forwardThrustRatio: number,
@@ -595,7 +596,6 @@ export class VehiclePhysics extends Serializable
     }
   }
 
-// .
   private updateThrustRatios(thrustData: ThrustData, thrust: number)
   {
     let ratio = (thrustData.fullThrust !== 0) ?
@@ -610,10 +610,11 @@ export class VehiclePhysics extends Serializable
     this.leftwardThrustRatio = thrustData.leftwardThrustRatio * ratio;
   }
 
-// .
   // ! Throws exception on error.
   private computeTargetVector()
   {
+    console.log(this.getWaypointPosition(), this.getPosition());
+
     return Vector.v1MinusV2
     (
       this.getWaypointPosition(),
@@ -622,7 +623,6 @@ export class VehiclePhysics extends Serializable
     );
   }
 
-// .
   private computeBrakingThrust(targetVector: Vector)
   {
     const thrustData = this.computeThrustData(Vector.negate(targetVector));
@@ -634,20 +634,6 @@ export class VehiclePhysics extends Serializable
     );
   }
 
-// .
-  // ! Throws exception on error.
-  private updateBrakingDistance(fullBrakingThrust: number)
-  {
-    this.brakingDistance = computeBrakingDistance
-    (
-      this.massValue,
-      this.currentMaxSpeed,
-      // ! Throws exception on error.
-      fullBrakingThrust
-    );
-  }
-
-// .
   private angleToShip(direction: Vector)
   {
     const shipRotation = this.getRotation().valueOf();
@@ -656,34 +642,21 @@ export class VehiclePhysics extends Serializable
     return Angle.zeroTo2Pi(directionRotation - shipRotation);
   }
 
-// .
-  private computeDesiredSpeed
-  (
-    distance: number,
-    fullBrakingThrust: number,
-  )
-  : number
+  // ! Throws exception on error.
+  private computeDesiredSpeed(distance: number, targetVector: Vector): number
   {
+    const fullBrakingThrust = this.computeBrakingThrust(targetVector);
+
     // Distance travelled by velocity achieved by one tick of
     // acceleration at fullBrakingThrust (which is the same as
     // distance travelled in the last tick of decceleration).
     //   d = F / (m * FPS * FPS * 2);
-    const oneTickDistance =
+    const lastTickDistance =
       fullBrakingThrust / (this.massValue * Engine.FPS * Engine.FPS * 2);
 
-    // What's going on here:
-    //   Speed calculated based on 'distance' is actually desired speed for
-    // our current position. Because that position is iterated towards
-    // target position, desired speed would never reach zero (or at least
-    // it would take a whole lot of iterations). To handle it we skip the
-    // last step and set desired velocity directly to zero.
-    //   Note that at the time of writing this (end of 2018) there is a bug
-    // in Box2d physics engine causing speed to reset periodically to zero
-    // when a small constant force is applied instead of it linearly
-    // increasing. This causes ship to stutter at the final approach phase
-    // if it's thrust is low (for example if you move sideways so you only
-    // use weak strafe thrusters). Hopefully that will get addressed sometime.
-    if (distance < oneTickDistance)
+    // Prevent slow stopping by a lot of small iterations when we are
+    // almost at the target.
+    if (distance < lastTickDistance)
       return 0;
 
     let desiredSpeed = Math.sqrt
@@ -692,28 +665,18 @@ export class VehiclePhysics extends Serializable
     );
 
     // In the previous step we have calculated velocity that we would
-    // have to have at current position in order to brake exactly at
-    // the target. But we are there already there so by the time we
-    // deccelerate to such speed, we will already be closer so our
-    // speed in the next tick actually needs to be lower. By how much,
-    // you ask? By decceleration which will occur in the next tick, of
-    // course.
-    //  (If we didn't subtract change in velocity that will occur in
-    // the next tick, our current velocity would lag behind desired
-    // velocity more and more, because speed is not linear to distance
-    // when deccelerating. We actually wouldn't be able to deccelerate
-    // fast enough to slow down enough, which would lead to overshooting
-    // the target - the more the greater distance we would have to travel).
+    // have to have at current position in order to stop exactly at
+    // the target. But we are already at that point so we have to subtract
+    // the change in velocity that will be added in the next tick.
     desiredSpeed -= fullBrakingThrust / (this.massValue * Engine.FPS);
 
     desiredSpeed = Number(desiredSpeed).atMost(this.currentMaxSpeed);
 
-    // There is a hard speed limit in Box2d.
-    // Check that we are not exceeding it.
+    // ! Throws exception on error.
+    // (There is a hard speed limit in Box2d.)
     return this.validateSpeed(desiredSpeed);
   }
 
-// .
   // ! Throws exception on error.
   private validateSpeed(speed: number)
   {
@@ -753,7 +716,6 @@ export class VehiclePhysics extends Serializable
 
 // ----------------- Auxiliary Functions ---------------------
 
-// .
 function computeBrakingDistance(m: number, v: number, F: number)
 {
   if (F === 0)
@@ -766,3 +728,12 @@ function distanceFromOrigin(x: number, y: number)
 {
   return Math.sqrt(x * x + y * y);
 }
+
+// ------------------ Type declarations ----------------------
+
+type ThrustData =
+{
+  forwardThrustRatio: number;
+  leftwardThrustRatio: number;
+  fullThrust: number;
+};
