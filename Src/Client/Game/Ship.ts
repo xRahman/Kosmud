@@ -51,7 +51,7 @@ export class Ship extends Shared.Ship
 
   // ! Throws exception on error.
   // ~ Overrides Shared.Ship.setPosition().
-  public setPosition(position: Vector)
+  public setPosition(position: { x: number; y: number })
   {
     // ! Throws exception on error.
     super.setPosition(position);
@@ -67,6 +67,13 @@ export class Ship extends Shared.Ship
 
     // ! Throws exception on error.
     this.getModel().setRotation(rotation);
+  }
+
+  // ! Throws exception on error.
+  public setWaypoint(position: { x: number; y: number })
+  {
+    // ! Throws exception on error.
+    this.physics.setWaypoint(position);
   }
 
   // ---------------- Private methods -------------------

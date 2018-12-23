@@ -82,6 +82,22 @@ export class Zone extends Shared.Zone
     }
   }
 
+  // ! Throws exception on error.
+  public getPlayerShip()
+  {
+    /// TODO: Odhackovat.
+    const playerShipId = "TEST_FIGHTER_ID";
+    const playerShip = this.getShip(playerShipId);
+
+    if (playerShip === "Not found")
+    {
+      throw new Error(`Player ship (id '${playerShipId}')`
+        + ` doesn't exist in zone ${this.debugId}`);
+    }
+
+    return playerShip;
+  }
+
   // --------------- Protected methods ------------------
 
   // ~ Overrides Shared.Zone.getShip().

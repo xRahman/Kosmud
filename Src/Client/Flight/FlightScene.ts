@@ -53,6 +53,8 @@ export class FlightScene extends Scene
 
   public moveWaypoint(position: { x: number; y: number })
   {
+    this.getZone().getPlayerShip().setWaypoint(position);
+
     return this.getSceneGUI().moveWaypoint(position);
   }
 

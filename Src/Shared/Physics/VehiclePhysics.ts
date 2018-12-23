@@ -620,8 +620,6 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   private computeTargetVector()
   {
-    console.log(this.getWaypointPosition(), this.getPosition());
-
     return Vector.v1MinusV2
     (
       this.getWaypointPosition(),

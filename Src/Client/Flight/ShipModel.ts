@@ -61,7 +61,7 @@ export class ShipModel
 
   // ---------------- Public methods --------------------
 
-  public setPosition(position: Vector)
+  public setPosition(position: { x: number; y: number })
   {
     this.graphicContainer.setPosition(position);
     this.vectorsModel.update(position);

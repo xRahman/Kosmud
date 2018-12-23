@@ -6,25 +6,7 @@ TODO: Sledovat moji issue v typescript Box2d:
 
 ---------------
 
-TODO: brakingDistance počítat až na klientu při zobrazení.
-TODO: Na klientu je špatně pozice a waypoint pozice.
-  (asi se waypoint ukládá někam jinam, s pozicí těžko říct...)
-
 TODO: Zakázat ve VS code autocomplete
-
-TODO: Speed lodi na clientu je nulová, takže se nezobrazuje
-  (nejspíš ji nesetuju do physicsBody)
-- ale jo, potřebuju ji - musím vidět, jak se aktuální velocity lodi
-  blíží desiredVelocity.
-  - asi to ale můžu posílat jako skalár a jen tím pronásobit vektor
-    desiredVelocity.
-
-----------------
-
-TODO: Zkontrolovat zvuk exhaustů
-- nevím, jestli mi funguje hlasitost
-- a asi by se neměla přehrávat celá smyčka, ale jen část.
-
 
 -----------------------
 
@@ -41,13 +23,15 @@ Výhodu by to mělo, že by bylo průlhlednější (ne)volání konstruktoru.
 
 ------------------------------------------------------------
 
+TODO: Zkontrolovat zvuk exhaustů
+- nevím, jestli mi funguje hlasitost
+- a asi by se neměla přehrávat celá smyčka, ale jen část.
+
+TODO: Odhackovat Shared.Zone.getPlayerShip()
+  (to asi budu řešit až když se budou posílat entity).
 
 TODO: ShipVectors kreslí i kruhy a tak, asi by se to mělo jmenovat jinak
   (ShipDebugGraphics?)
-
-
-TODO: CoordsTransform.tileObject() by možná mohlo rovnou i ztransformovat
-  souřadnice, ne jen posouvat o půlku tily.
 
 
 -----

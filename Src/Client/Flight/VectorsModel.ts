@@ -20,7 +20,7 @@ export class VectorsModel
 
   // ---------------- Public methods --------------------
 
-  public update(shipPosition: Vector)
+  public update(shipPosition: { x: number; y: number })
   {
     this.vectorsGraphics.setPosition(shipPosition);
   }
