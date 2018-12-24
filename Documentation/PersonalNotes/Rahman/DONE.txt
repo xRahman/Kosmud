@@ -1,4 +1,4 @@
-TODO: Zakázat ve VS code autocomplete
+TODO: Zakázat ve VS code autocomplete on dot
 [done]
 
 TODO: brakingDistance počítat až na klientu při zobrazení.

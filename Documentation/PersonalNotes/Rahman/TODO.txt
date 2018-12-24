@@ -6,8 +6,24 @@ TODO: Sledovat moji issue v typescript Box2d:
 
 ---------------
 
-TODO: Zakázat ve VS code autocomplete
-[done]
+
+TODO:
+1) Zkusit předělat Classes na Object.create()
+2) Implementovat Entity.
+3) Implementovat Entities (nebo to sloučit s Classes)
+4) .entities do Packetu.
+5) Posílání entities na klienta
+6) Savování/loadování entitit
+7) Savování/loadování celé zóny do jednoho souboru.
+
+
+IDEA: Do packetů dát .contents, nebo možná .entities a přetížit
+  serializaci/deserializaci tak, že všechny .entities projde
+  a automaticky serializuje/deserializuje (podobně jako .contents
+  u ContainerEntity).
+- packet při tom může mít na tyhle entity ještě extra odkazy, ty
+  se pak serializujou jako reference (a tudíž se při deserializaci
+  automaticky obnověj).
 
 -----------------------
 
