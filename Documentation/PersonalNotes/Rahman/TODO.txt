@@ -4,18 +4,39 @@ TODO: Sledovat moji issue v animated tiles pluginu:
 TODO: Sledovat moji issue v typescript Box2d:
   https://github.com/flyover/box2d.ts/issues/50
 
----------------
+TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
+  (momentálně mám hacknutou client-side opravu v 'up: function (event, time)').
+  https://github.com/photonstorm/phaser/issues/3779
 
+-----------------------
+
+TODO: Cleanup po Classes
+
+Možná přejmenovat Classes na Prototypes, pokud teda bude všechno řešeno
+  přes Object.create().
+  - pokud budou prototypové entity jen v Entities, tak jméno Prototypes
+    bude možná matoucí.
+    - SerializablePrototypes?
+    - Serializables?
+  možná ClassFactory (je to common pattern)...
+
+Otázka je, jestli vůbec do Prototypes dávat prototypové entity. Tak
+ registrují se beztak pod idčkem a pod tím jsou už v Entities, takže
+ asi dává větší smysl, aby je instanciovaly Entities.
+- možná bych ale mohl do Prototypes hodit root entity, tzn. Ship a podobně.
+  - v tom případě tam ale asi budou spíš pod class name.
+
+-----------------------
 
 TODO:
 1) Zkusit předělat Classes na Object.create()
+   - funguje
 2) Implementovat Entity.
 3) Implementovat Entities (nebo to sloučit s Classes)
 4) .entities do Packetu.
 5) Posílání entities na klienta
 6) Savování/loadování entitit
 7) Savování/loadování celé zóny do jednoho souboru.
-
 
 IDEA: Do packetů dát .contents, nebo možná .entities a přetížit
   serializaci/deserializaci tak, že všechny .entities projde
@@ -24,8 +45,6 @@ IDEA: Do packetů dát .contents, nebo možná .entities a přetížit
 - packet při tom může mít na tyhle entity ještě extra odkazy, ty
   se pak serializujou jako reference (a tudíž se při deserializaci
   automaticky obnověj).
-
------------------------
 
 TODO: Že bych nakonec všechny dynamické classy vyráběl přes Object.create()
   místo přes new?
@@ -37,6 +56,10 @@ Výhodu by to mělo, že by bylo průlhlednější (ne)volání konstruktoru.
   ho zavolal ten, kdo by prototypovou instanci registroval.
     A při factory create už by se samozřejmě konstruktor nevolal.
 
+IMPORTANT: Určitě neřešit unikátnost jmen v entitách, tím jsem si v BNext
+  pekelně zkomplikoval už tak dost složitej kód.
+- entity prostě mají name a nějaký externí přidělovač zajistí, že budou
+  unikátní (tzn. nejdřív si řeknu o jméno a až pak pod ním vyrobím entitu).
 
 ------------------------------------------------------------
 
@@ -133,14 +156,6 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
     lepší).
 
 -----------------------------------------------------------------------
-
-Bugfixy phaseru:
--------------------
-
-TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
-  (momentálně mám hacknutou client-side opravu v 'up: function (event, time)').
-  https://github.com/photonstorm/phaser/issues/3779
-
 
 
 Odložené TODO:

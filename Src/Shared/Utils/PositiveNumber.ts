@@ -4,7 +4,7 @@
   Positive floating point number.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { NumberWrapper } from "../../Shared/Class/NumberWrapper";
 
 export class PositiveNumber extends NumberWrapper
@@ -31,4 +31,4 @@ export class PositiveNumber extends NumberWrapper
   }
 }
 
-Classes.registerSerializableClass(PositiveNumber);
+ClassFactory.registerClassPrototype(PositiveNumber);

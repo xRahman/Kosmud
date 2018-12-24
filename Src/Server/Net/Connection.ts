@@ -9,7 +9,7 @@ import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { Socket } from "../../Server/Net/Socket";
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Connections } from "../../Server/Net/Connections";
 import { SystemMessage } from "../../Server/Protocol/SystemMessage";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
@@ -27,13 +27,13 @@ import * as WebSocket from "isomorphic-ws";
 
 // We need to registr packet classes here because when a module is
 // imported and not used, typescript doesn't execute it's code.
-Classes.registerSerializableClass(SystemMessage);
-Classes.registerSerializableClass(ZoneUpdate);
-Classes.registerSerializableClass(EnterFlightResponse);
-Classes.registerSerializableClass(KeyboardInput);
-Classes.registerSerializableClass(MouseInput);
-Classes.registerSerializableClass(SetWaypoint);
-Classes.registerSerializableClass(EnterFlightRequest);
+ClassFactory.registerClassPrototype(SystemMessage);
+ClassFactory.registerClassPrototype(ZoneUpdate);
+ClassFactory.registerClassPrototype(EnterFlightResponse);
+ClassFactory.registerClassPrototype(KeyboardInput);
+ClassFactory.registerClassPrototype(MouseInput);
+ClassFactory.registerClassPrototype(SetWaypoint);
+ClassFactory.registerClassPrototype(EnterFlightRequest);
 
 export class Connection extends Socket
 {

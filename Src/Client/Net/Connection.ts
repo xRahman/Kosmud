@@ -4,7 +4,7 @@
   Connection to the server.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
 import { Zone } from "../../Client/Game/Zone";
@@ -26,11 +26,11 @@ import * as WebSocket from "isomorphic-ws";
 
 // We need to registr packet classes here because when a module is
 // imported and not used, typescript doesn't execute it's code.
-Classes.registerSerializableClass(SystemMessage);
-Classes.registerSerializableClass(ZoneUpdate);
-Classes.registerSerializableClass(EnterFlightResponse);
-Classes.registerSerializableClass(KeyboardInput);
-Classes.registerSerializableClass(MouseInput);
+ClassFactory.registerClassPrototype(SystemMessage);
+ClassFactory.registerClassPrototype(ZoneUpdate);
+ClassFactory.registerClassPrototype(EnterFlightResponse);
+ClassFactory.registerClassPrototype(KeyboardInput);
+ClassFactory.registerClassPrototype(MouseInput);
 
 export class Connection extends Socket
 {

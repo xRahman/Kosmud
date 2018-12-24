@@ -4,7 +4,7 @@
   Number in <0, 2π> interval.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Angle } from "../../Shared/Utils/Angle";
 import { NumberInInterval } from "../../Shared/Class/NumberInInterval";
 
@@ -14,4 +14,4 @@ export class ZeroToPi extends NumberInInterval
   public static maximum = Angle.PI;
 }
 
-Classes.registerSerializableClass(ZeroToPi);
+ClassFactory.registerClassPrototype(ZeroToPi);

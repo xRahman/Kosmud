@@ -4,7 +4,7 @@
   Number in <0, 2π> interval.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Angle } from "../../Shared/Utils/Angle";
 import { NumberWrapper } from "../../Shared/Class/NumberWrapper";
 
@@ -23,4 +23,4 @@ export class ZeroTo2Pi extends NumberWrapper
   }
 }
 
-Classes.registerSerializableClass(ZeroTo2Pi);
+ClassFactory.registerClassPrototype(ZeroTo2Pi);

@@ -4,7 +4,7 @@
   Number in <-1, 1> interval.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { NumberInInterval } from "../../Shared/Class/NumberInInterval";
 
 export class MinusOneToOne extends NumberInInterval
@@ -13,4 +13,4 @@ export class MinusOneToOne extends NumberInInterval
   public static maximum = 1;
 }
 
-Classes.registerSerializableClass(MinusOneToOne);
+ClassFactory.registerClassPrototype(MinusOneToOne);

@@ -4,7 +4,7 @@
   Stores constructors of dynamic classes so they can be instantiated
   in runtime.
 */
-
+/*
 import { Serializable } from "../../Shared/Class/Serializable";
 import { Types } from "../../Shared/Utils/Types";
 import { Entity } from "../../Shared/Class/Entity";
@@ -104,3 +104,4 @@ export namespace Classes
     entityClasses.set(Class.name, Class);
   }
 }
+*/

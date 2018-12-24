@@ -41,7 +41,7 @@
 import { Types } from "../../Shared/Utils/Types";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Vector } from "../../Shared/Physics/Vector";
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { Attributable } from "../../Shared/Class/Attributable";
 
@@ -109,7 +109,7 @@ export class Serializable extends Attributable
         + ` '${CLASS_NAME}' isn't a string`);
     }
 
-    const serializable = Classes.instantiateSerializableClass(className);
+    const serializable = ClassFactory.instantiate(className);
 
     return serializable.deserialize(jsonObject);
   }
@@ -1107,38 +1107,14 @@ function createNew(param: Serializable.DeserializeParam): object
   if (className === undefined)
     return {};
 
-  // We don't have to check if 'className' is an Entity class,
+  // Note:
+  //   We don't have to check if 'className' is an Entity class,
   // because entities are always serialized as a reference. So if
   // there is an instance of some Serializable class saved directly
   // in JSON, it can't be an entity class.
 
-  const Class = Classes.getSerializableClass(className);
-
-  if (!Class)
-  {
-    // We can't safely recover from this error, it could corrupt the
-    // data.
-    throw new Error(`Unable to create`
-      + ` instance of class '${className}' when deserializing property`
-      + ` '${param.propertyName}'${inFile(param.path)} because no such`
-      + ` class is registered in Classes. Maybe you forgot to add `
-      + ` 'Classes.registerSerializableClass(${className}");' to the`
-      + ` end of ${className}.ts file? Another possible reason is that`
-      + ` you haven't imported class {${className}} or you haven't used`
-      + ` it so typescript has only imported it as type and didn't execute`
-      + ` code in the module`);
-  }
-
-  try
-  {
-    return new Class();
-  }
-  catch (error)
-  {
-    throw new Error(`Unable to create instance of class`
-      + ` '${className}' when deserializing property`
-      + ` '${param.propertyName}'${inFile(param.path)}`);
-  }
+  // ! Throws exception on error.
+  return ClassFactory.instantiate(className);
 }
 
 // Converts 'param.sourceProperty' to a FastBitSet object.
@@ -1219,7 +1195,7 @@ function readEntityReference(param: Serializable.DeserializeParam)
   //   dependancy (Entities import Entity which imports Serializable).
   //   Doing this using Application.entities for some reason works.
   // return Application.entities.getReference(id);
-  return Classes.entities.getReference(id);
+  return ClassFactory.entities.getReference(id);
 }
 
 // Attempts to convert 'param.sourceProperty' to reference to an Entity.

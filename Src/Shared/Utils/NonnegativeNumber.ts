@@ -4,7 +4,7 @@
   Nonnegative floating point number.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { NumberWrapper } from "../../Shared/Class/NumberWrapper";
 
 export class NonnegativeNumber extends NumberWrapper
@@ -31,4 +31,4 @@ export class NonnegativeNumber extends NumberWrapper
   }
 }
 
-Classes.registerSerializableClass(NonnegativeNumber);
+ClassFactory.registerClassPrototype(NonnegativeNumber);

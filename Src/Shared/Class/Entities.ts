@@ -4,15 +4,15 @@
   Static class that stores all entities.
 */
 
-import { Classes } from "../../Shared/Class/Classes";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Entity } from "../../Shared/Class/Entity";
 
 export class Entities
 {
-  // Note that we also inicialize 'Classes.entities' here.
+  // Note that we also inicialize 'ClassFactory.entities' here.
   // (It's used to circumvent cyclic module dependancy
   // when importing Entities from Serializable.)
-  private static readonly entities = Classes.entities = new Entities();
+  private static readonly entities = ClassFactory.entities = new Entities();
 
   /// Zatím provizorně.
   private readonly entities: Array<Entity> = [];
