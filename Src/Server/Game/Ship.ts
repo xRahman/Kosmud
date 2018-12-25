@@ -5,6 +5,7 @@
 */
 
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
+import * as Entities from "../../Shared/Class/Entities";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
@@ -79,3 +80,5 @@ export class Ship extends Shared.Ship
   //   this.setVelocity(0);
   // }
 }
+
+Entities.createRootPrototypeEntity(Ship);

@@ -1,3 +1,43 @@
+TODO: Entity.isValid().
+[done]
+
+TODO: Entity.setId()
+  (zajistit, že idčko jde setnout jen jednou).
+[done]
+
+TODO: Invalidace properties entit při smazání.
+[done]
+
+TODO: Nezapomenout na Client/Entities a Server/Entities
+- pokud je nebudu potřebovat (jako že možná ne), tak je smazat.
+  (server Entities potřebovat budu, client verzi asi ne)
+[done]
+
+TODO: Instanciaci Serializable classů dokonce musím udělat korektně,
+  protože jinak si budu přepisovat prototyp (při zápisu do vnořených objektů).
+[done]
+
+Možná přejmenovat Classes na Prototypes, pokud teda bude všechno řešeno
+  přes Object.create().
+  - pokud budou prototypové entity jen v Entities, tak jméno Prototypes
+    bude možná matoucí.
+    - SerializablePrototypes?
+    - Serializables?
+  možná ClassFactory (je to common pattern)...
+ClassFactory it is
+[done]
+
+Otázka je, jestli vůbec do Prototypes dávat prototypové entity. Tak
+ registrují se beztak pod idčkem a pod tím jsou už v Entities, takže
+ asi dává větší smysl, aby je instanciovaly Entities.
+- možná bych ale mohl do Prototypes hodit root entity, tzn. Ship a podobně.
+  - v tom případě tam ale asi budou spíš pod class name.
+Budou v Entities
+[done]
+
+TODO: Cleanup po Classes
+[done]
+
 TODO: Zakázat ve VS code autocomplete on dot
 [done]
 

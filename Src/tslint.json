@@ -38,6 +38,7 @@
     "no-submodule-imports": true,
     "comment-format": [ true, "check-space" ],
     "member-access": true,
+    "arrow-return-shorthand": false,
     "only-arrow-functions":
     [
         true,

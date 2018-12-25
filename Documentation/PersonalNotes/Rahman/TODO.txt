@@ -10,21 +10,14 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Cleanup po Classes
 
-Možná přejmenovat Classes na Prototypes, pokud teda bude všechno řešeno
-  přes Object.create().
-  - pokud budou prototypové entity jen v Entities, tak jméno Prototypes
-    bude možná matoucí.
-    - SerializablePrototypes?
-    - Serializables?
-  možná ClassFactory (je to common pattern)...
 
-Otázka je, jestli vůbec do Prototypes dávat prototypové entity. Tak
- registrují se beztak pod idčkem a pod tím jsou už v Entities, takže
- asi dává větší smysl, aby je instanciovaly Entities.
-- možná bych ale mohl do Prototypes hodit root entity, tzn. Ship a podobně.
-  - v tom případě tam ale asi budou spíš pod class name.
+TODO: Registrovat Ship v Entites přes createRootPrototypeEntity().
+
+TODO: Vyrábět testovací ship jako novou entitu.
+- zatím asi v každém startu s novým idčkem
+- časem ji savovat a loadovat.
+
 
 -----------------------
 
@@ -60,6 +53,18 @@ IMPORTANT: Určitě neřešit unikátnost jmen v entitách, tím jsem si v BNext
   pekelně zkomplikoval už tak dost složitej kód.
 - entity prostě mají name a nějaký externí přidělovač zajistí, že budou
   unikátní (tzn. nejdřív si řeknu o jméno a až pak pod ním vyrobím entitu).
+
+-----------------------
+
+TODO: Tak přece jen budu muset ještě hrabat do arrive()
+- při kliku kousek od lodi se mi občas točí jak čamrda
+  (při krátké vzdálenosti od cíle bych neměl updatovat direction waypointu)
+- asi bych měl přece jen povolit přetáčení, tzn. směr ne přímo k waypointu,
+  ale ke steering force.
+  - a asi tak, že to lineárně interpoluju podle vzdálenosti, takže
+    když budu hodně blízko cíli, tak budu vždycky směřovat k němu a když dál,
+    tak někde mezi směr na cíl a na desired force.
+    (interpolaci nejspíš vůči braking distance).
 
 ------------------------------------------------------------
 

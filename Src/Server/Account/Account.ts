@@ -4,6 +4,7 @@
   Player account.
 */
 
+import * as Entities from "../../Shared/Class/Entities";
 import { Entity } from "../../Shared/Class/Entity";
 import { Ship } from "../../Server/Game/Ship";
 
@@ -42,3 +43,5 @@ export class Account extends Entity
     return this.ship;
   }
 }
+
+Entities.createRootPrototypeEntity(Account);

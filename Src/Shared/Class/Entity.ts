@@ -25,6 +25,7 @@
   of creating own propety on the instance).
 */
 
+import { Types } from "../../Shared/Utils/Types";
 import { ID, Serializable } from "../../Shared/Class/Serializable";
 
 export class Entity extends Serializable
@@ -37,27 +38,15 @@ export class Entity extends Serializable
   // ~ Overrides Serializable.get debugId().
   public get debugId()
   {
-    let id: string;
-    // Access 'this.id' directly (not using this.getId()) because
-    // it would trigger another ERROR() which would precede logging
-    // of the ERROR when getErrorIdString() is called. That would
-    // give confusing information about the actual error.
-
-    if (this.id === undefined)
+    if (this.isValid())
     {
-      id = "undefined";
-    }
-    else if (this.id === null)
-    {
-      id = "null";
+      return `{ className: ${this.getClassName()},`
+        + ` name: ${this.name}, id: ${this.id} }`;
     }
     else
     {
-      id = this.id;
+      return `{ Reference to invalid (deleted) entity, id: ${this.id}}`;
     }
-
-    return `{ className: ${this.getClassName()},`
-      + ` name: ${this.name}, id: ${id} }`;
   }
 
   // ! Throws exception on error.
@@ -109,7 +98,98 @@ export class Entity extends Serializable
   public getName() { return this.name; }
   public setName(name: string) { this.name = name; }
 
+  // All entities are valid until 'invalidate()' is called on them.
+  // tslint:disable-next-line:prefer-function-over-method
+  public isValid() { return true; }
+
+  // Invalidates all properties so any further access to this
+  // entity will throw an exception.
+  public invalidate()
+  {
+    invalidateProperties(this);
+
+    // Change a 'isValid()' method so it will report that this
+    // entity is not valid anymore.
+    this.isValid = () => { return false; };
+  }
+
   // -------------- Protected methods -------------------
 
   // --------------- Private methods --------------------
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function invalidateProperties(object: object)
+{
+  // Objects can have property "_handlers" (which is of
+  // type EventHandlers) that doesn't have 'hasOwnProperty()'
+  // method. Trying to invalidate such object would cause
+  // crash (and it's not needed anyways).
+  if (object.hasOwnProperty === undefined)
+    return;
+
+  for (const propertyName in object)
+  {
+    if (object.hasOwnProperty(propertyName))
+    {
+      invalidateProperty((object as any)[propertyName]);
+
+      // tslint:disable-next-line:no-dynamic-delete
+      delete (object as any)[propertyName];
+    }
+  }
+
+  // Set 'null' to the prototype of 'object'.
+  // (Object.setPrototypeOf() slows down any code that accesses
+  //  object with modified prototype but that's ok here because
+  //  we are just making sure that any access to 'object' ends
+  //  with an exception.)
+  // tslint:disable-next-line:no-null-keyword
+  Object.setPrototypeOf(object, null);
+
+  // And finaly freeze the entity so it's impossible to
+  // write to it's properties either (or change them in
+  // any way for that matter).
+  Object.freeze(object);
+}
+
+function invalidateProperty(property: any)
+{
+  if (property !== null && property !== undefined)
+    return;
+
+  // Skip properties of primitive type because they don't
+  // have any properties.
+  if (Types.isPrimitiveType(property))
+    return;
+
+  // Also skip references to other entities
+  // (we definitely don't want to invalidate their properities).
+  if (property[ID] !== undefined)
+    return;
+
+  // If property is a native javascript array, clear it.
+  if (Types.isArray(property))
+  {
+    property.length = 0;
+    return;
+  }
+
+  // If property is a Map() or Set(), clear it.
+  if (Types.isMap(property) || Types.isSet(property))
+  {
+    property.clear();
+    return;
+  }
+
+  // Only invalidate properties of plain objects and Serializables
+  // (this prevents attempts to invalidate properties of WebSocket
+  //  and similar object which leads to crashes - not to mention
+  //  that there is no real need to do it).
+  if (!(Types.isSerializable(property) || Types.isPlainObject(property)))
+    return;
+
+  // Recursively invalidate property's properties.
+  invalidateProperties(property);
 }

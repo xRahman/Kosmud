@@ -41,6 +41,7 @@
 import { Types } from "../../Shared/Utils/Types";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Vector } from "../../Shared/Physics/Vector";
+import * as Entities from "../../Shared/Class/Entities";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { Attributable } from "../../Shared/Class/Attributable";
@@ -109,7 +110,7 @@ export class Serializable extends Attributable
         + ` '${CLASS_NAME}' isn't a string`);
     }
 
-    const serializable = ClassFactory.instantiate(className);
+    const serializable = ClassFactory.instantiateClass(className);
 
     return serializable.deserialize(jsonObject);
   }
@@ -1114,7 +1115,7 @@ function createNew(param: Serializable.DeserializeParam): object
   // in JSON, it can't be an entity class.
 
   // ! Throws exception on error.
-  return ClassFactory.instantiate(className);
+  return ClassFactory.instantiateClass(className);
 }
 
 // Converts 'param.sourceProperty' to a FastBitSet object.
@@ -1195,7 +1196,8 @@ function readEntityReference(param: Serializable.DeserializeParam)
   //   dependancy (Entities import Entity which imports Serializable).
   //   Doing this using Application.entities for some reason works.
   // return Application.entities.getReference(id);
-  return ClassFactory.entities.getReference(id);
+  // return ClassFactory.entities.getReference(id);
+  return Entities.get(id);
 }
 
 // Attempts to convert 'param.sourceProperty' to reference to an Entity.
