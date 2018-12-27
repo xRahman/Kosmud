@@ -1,3 +1,10 @@
+TODO: v LoginRequest.process() loadnou vytvořenej account
+  (idčko zatím zadat ručně).
+[done]
+
+TODO: Entita si zjevně musí pamatovat prototypeId.
+[done]
+
 TODO: Registrovat Ship v Entites přes createRootPrototypeEntity().
 [done]
 

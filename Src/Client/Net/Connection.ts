@@ -253,7 +253,7 @@ export class Connection extends Socket
     this.sendData
     (
       // ! Throws exception on error.
-      packet.serialize("Send to Server")
+      packet.serialize("Send to server")
     );
   }
 }

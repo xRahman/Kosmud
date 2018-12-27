@@ -6,7 +6,9 @@
   (Part of client-server communication protocol.)
 */
 
+// import { Account } from "../../Server/Account/Account";
 import { Accounts } from "../../Server/Account/Accounts";
+// import * as Entities from "../../Server/Class/Entities";
 import { Connection } from "../../Server/Net/Connection";
 import * as Shared from "../../Shared/Protocol/LoginRequest";
 
@@ -19,14 +21,14 @@ export class LoginRequest extends Shared.LoginRequest
   // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
-    /// TEST: Vyrobit a savnout account.
-    const account = Accounts.newAccount();
-    account.save();
+    // /// TEST: Vyrobit a savnout account.
+    // const account = Accounts.newAccount();
+    // await account.save();
 
-    // TODO: Load account.
+    const account = await Accounts.loadAccount();
+
+    connection.setAccount(account);
   }
 }
-
-// ----------------- Auxiliary Functions ---------------------
 
 // This class is registered in Server/Net/Connection.

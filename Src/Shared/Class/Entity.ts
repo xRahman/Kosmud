@@ -28,10 +28,13 @@
 import { Types } from "../../Shared/Utils/Types";
 import { ID, Serializable } from "../../Shared/Class/Serializable";
 
+export const PROTOTYPE_ID = "prototypeId";
+
 export class Entity extends Serializable
 {
   private id = "<missing id>";
   private name = "<missing name>";
+  private prototypeId = "<missing prototype id>";
 
   // --------------- Public methods ---------------------
 
@@ -93,6 +96,11 @@ export class Entity extends Serializable
         + `'${ID}' has been set to prototype object rather than`
         + `to the instance`);
     }
+  }
+
+  public setPrototypeId(prototypeId: string)
+  {
+    this.prototypeId = prototypeId;
   }
 
   public getName() { return this.name; }

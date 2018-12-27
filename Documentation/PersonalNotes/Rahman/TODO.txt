@@ -10,12 +10,9 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Kód Account.save() by asi měl bejt někde jinde (obecněji).
+TODO: Entities asi zase předělat na classu, ať se dají dědit.
 
 -----------------------
-
-TODO: v LoginRequest.process() loadnou vytvořenej account
-  (idčko zatím zadat ručně).
 
 Logovací procedura
 1) akceptnutí connection (vytvoří se Connection).
@@ -180,6 +177,11 @@ TODO: Na klienta posílat nejen aktuální stav, ale i rychlost a rotaci.
 
 Odložené TODO:
 ---------------
+
+TODO: Kód Account.save() by asi měl bejt někde jinde (obecněji).
+- asi by mohl volat Entity.save() nebo tak něco.
+  (jde jen o save path).
+(Na druhou stranu entity v zóně chci savovat do zóny, hmm...)
 
 TODO: Po reloadu tabu se špatně zobrazuje pozice waypointu.
 - asi ho budu muset posílat ze serveru spolu se scénou

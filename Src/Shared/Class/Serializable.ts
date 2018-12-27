@@ -220,11 +220,11 @@ export class Serializable extends Attributable
   {
     switch (mode)
     {
-      case "Send to Client":
-      case "Send to Server":
+      case "Send to client":
+      case "Send to server":
         // Version is not written to serialized packets because they
         // are always sent and received by the same code so it's
-        // useless in them anyways.
+        // unnecessary information.
         return jsonObject;
     }
 
@@ -317,16 +317,16 @@ export class Serializable extends Attributable
 
     switch (mode)
     {
-      case "Save to File":
+      case "Save to file":
         return attributes.saved !== false;
 
-      case "Send to Client":
+      case "Send to client":
         return attributes.sentToClient !== false;
 
-      case "Send to Server":
+      case "Send to server":
         return attributes.sentToServer !== false;
 
-      case "Send to Editor":
+      case "Send to editor":
         return attributes.edited !== false;
 
       default:
@@ -1238,10 +1238,10 @@ function getEntityId(entity: ObjectType, param: Serializable.SerializeParam)
 export namespace Serializable
 {
   export type Mode =
-    "Save to File"
-  | "Send to Client"
-  | "Send to Server"
-  | "Send to Editor";
+    "Save to file"
+  | "Send to client"
+  | "Send to server"
+  | "Send to editor";
 
   export interface DeserializeParam
   {

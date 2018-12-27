@@ -4,8 +4,11 @@
   Static class that stores all entities.
 */
 
+import { JsonObject } from "../../Shared/Class/JsonObject";
 import { timeOfBoot } from "../../Server/KosmudServer";
-import * as Entities  from "../../Shared/Class/Entities";
+import { PROTOTYPE_ID } from "../../Shared/Class/Entity";
+import * as Entities from "../../Shared/Class/Entities";
+// import { Serializable } from "../../Shared/Class/Serializable";
 export *  from "../../Shared/Class/Entities";
 
 // Counter of issued ids in this boot.
@@ -25,6 +28,19 @@ export function newEntity
   return Entities.instantiateEntity(prototype, generateId());
 }
 
+// ! Throws exception on error.
+export function loadEntityFromJsonData(entityId: string, jsonData: string)
+{
+  // const jsonObject = Serializable.deserialize(jsonData);
+  const jsonObject = JsonObject.parse(jsonData);
+  const prototypeId = getPrototypeIdFromJsonObject(jsonObject);
+  // ! Throws exception on error.
+  const prototype = Entities.get(prototypeId);
+  const entity = Entities.instantiateEntity(prototype, entityId);
+
+  return entity.deserialize(jsonObject);
+}
+
 // ----------------- Auxiliary Functions ---------------------
 
 function generateId()
@@ -41,4 +57,17 @@ function generateId()
   const bootTime = timeOfBoot.getTime().toString(36);
 
   return `${idCounter}-${bootTime}`;
+}
+
+// ! Throws exception on error.
+function getPrototypeIdFromJsonObject(jsonData: object)
+{
+  const prototypeId = (jsonData as any)[PROTOTYPE_ID];
+
+  if (!prototypeId)
+  {
+    throw new Error(`Missing or invalid ${PROTOTYPE_ID} in entity json data`);
+  }
+
+  return prototypeId;
 }

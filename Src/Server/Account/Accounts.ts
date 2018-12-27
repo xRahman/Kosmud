@@ -9,9 +9,6 @@ import { Account } from "../../Server/Account/Account";
 
 export namespace Accounts
 {
-  /// TEST.
-  export const account = new Account();
-
   export function newAccount()
   {
     /// Je otázka, jestli to account vůbec potřebuju házet do nějakýho
@@ -19,8 +16,26 @@ export namespace Accounts
     return Entities.newEntity(Account.name).dynamicCast(Account);
   }
 
-  export function loadAccount()
+  export async function loadAccount()
   {
-    /// TODO.
+    // TODO: Determine account id.
+    /// (Zatím natvrdo.)
+    const accountId = "1-jq6wqw3s";
+
+    // ! Throws exception on error.
+    return loadAccountById(accountId);
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+// ! Throws exception on error.
+async function loadAccountById(accountId: string)
+{
+  // ! Throws exception on error.
+  const jsonData = await Account.loadAccountData(accountId);
+
+  const account = Entities.loadEntityFromJsonData(accountId, jsonData);
+
+  return account.dynamicCast(Account);
 }

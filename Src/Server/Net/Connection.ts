@@ -4,7 +4,8 @@
   A connection to the server.
 */
 
-import { Accounts } from "../../Server/Account/Accounts";
+// import { Accounts } from "../../Server/Account/Accounts";
+import { Account } from "../../Server/Account/Account";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
@@ -38,9 +39,7 @@ ClassFactory.registerClassPrototype(LoginRequest);
 
 export class Connection extends Socket
 {
-  /// TODO: Výhledově se samozřejmě bude Account vyrábět až při loginu.
-  // public account: Account | "Not logged in" = "Not logged in";
-  public account = Accounts.account;
+  public account: Account | "Not logged in" = "Not logged in";
 
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
@@ -50,15 +49,20 @@ export class Connection extends Socket
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public getAccount()
+  public getAccount(): Account
   {
-    // if (this.account === "Not logged in")
-    // {
-    //   throw new Error(`User ${this.getUserInfo()}`
-    //   + ` is not logged in yet`);
-    // }
+    if (this.account === "Not logged in")
+    {
+      throw new Error(`User ${this.getUserInfo()}`
+      + ` is not logged in yet`);
+    }
 
     return this.account;
+  }
+
+  public setAccount(account: Account)
+  {
+    this.account = account;
   }
 
   /// Tohle by mohl být getter...
@@ -83,7 +87,7 @@ export class Connection extends Socket
     this.sendData
     (
       // ! Throws exception on error.
-      packet.serialize("Send to Client")
+      packet.serialize("Send to client")
     );
   }
 

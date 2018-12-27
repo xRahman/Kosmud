@@ -17,6 +17,21 @@ export class Account extends Entity
 
   private ship: Ship | "Not assigned" = "Not assigned";
 
+  public static async loadAccountData(accountId: string)
+  {
+    const path = `${accountsDirectory}${accountId}`;
+
+    const readResult = await FileSystem.readFile(path);
+
+    if (readResult === "File doesn't exist")
+    {
+      throw new Error(`Failed to load account with id '${accountId}'`
+        + ` because file '${path}' doesn't exist`);
+    }
+
+    return readResult.data;
+  }
+
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
@@ -48,12 +63,12 @@ export class Account extends Entity
     return this.ship;
   }
 
-  public save()
+  public async save()
   {
     const fileName = this.getId();
-    const data = this.serialize("Save to File");
+    const data = this.serialize("Save to file");
 
-    FileSystem.writeFile(accountsDirectory, fileName, data);
+    await FileSystem.writeFile(accountsDirectory, fileName, data);
   }
 }
 

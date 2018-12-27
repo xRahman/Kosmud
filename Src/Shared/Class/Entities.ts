@@ -63,6 +63,8 @@ export function createRootPrototypeEntity<T extends Entity>
 {
   const prototype = new Class();
 
+  prototype.setId(Class.name);
+
   // ! Throws exception on error.
   return instantiateEntity(prototype, Class.name);
 }
@@ -79,6 +81,7 @@ export function instantiateEntity(prototype: Entity, id: string)
   const entity = ClassFactory.instantiate(prototype);
 
   entity.setId(id);
+  entity.setPrototypeId(prototype.getId());
 
   entities.set(id, entity);
 
