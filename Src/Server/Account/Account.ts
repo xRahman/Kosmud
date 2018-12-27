@@ -6,7 +6,7 @@
 
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Ship } from "../../Server/Game/Ship";
-import * as Entities from "../../Shared/Class/Entities";
+import { Entities } from "../../Server/Class/Entities";
 import { Entity } from "../../Shared/Class/Entity";
 
 const accountsDirectory = "./Data/Accounts/";

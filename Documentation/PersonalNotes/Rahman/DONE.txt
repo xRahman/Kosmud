@@ -1,3 +1,6 @@
+TODO: Entities asi zase předělat na classu, ať se dají dědit.
+[done]
+
 TODO: v LoginRequest.process() loadnou vytvořenej account
   (idčko zatím zadat ručně).
 [done]

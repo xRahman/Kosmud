@@ -41,7 +41,7 @@
 import { Types } from "../../Shared/Utils/Types";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Vector } from "../../Shared/Physics/Vector";
-import * as Entities from "../../Shared/Class/Entities";
+import { Entities } from "../../Shared/Class/Entities";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { Attributable } from "../../Shared/Class/Attributable";

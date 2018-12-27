@@ -3,7 +3,7 @@ import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/Flight/ShipModel";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Zone } from "../../Client/Game/Zone";
-import * as Entities from "../../Shared/Class/Entities";
+import { Entities } from "../../Shared/Class/Entities";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship

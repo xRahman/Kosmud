@@ -4,7 +4,7 @@
   Player accounts.
 */
 
-import * as Entities from "../../Server/Class/Entities";
+import { Entities } from "../../Server/Class/Entities";
 import { Account } from "../../Server/Account/Account";
 
 export namespace Accounts

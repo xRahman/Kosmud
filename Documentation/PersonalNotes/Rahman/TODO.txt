@@ -10,7 +10,6 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Entities asi zase předělat na classu, ať se dají dědit.
 
 -----------------------
 

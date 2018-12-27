@@ -5,7 +5,7 @@
 */
 
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
-import * as Entities from "../../Shared/Class/Entities";
+import { Entities } from "../../Server/Class/Entities";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
