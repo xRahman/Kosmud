@@ -117,8 +117,7 @@ export class Graphics extends PhaserObject
     const arrowTip = Vector.v1PlusV2(origin, vector);
     const fletchingLeft = Vector.rotate(vector, Math.PI * 5 / 6);
     const fletchingRight = Vector.rotate(vector, -Math.PI * 5 / 6);
-    const fletchingLength =
-      Number(vector.length() / 2).atMost(MAX_FLETCHING_LENGTH);
+    const fletchingLength = (vector.length() / 2).atMost(MAX_FLETCHING_LENGTH);
 
     fletchingLeft.setLength(fletchingLength);
     fletchingRight.setLength(fletchingLength);

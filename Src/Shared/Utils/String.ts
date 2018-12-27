@@ -1,100 +1,118 @@
 /*
   Part of Kosmud
 
-  String utility functions.
+  Augments javascript String type with utility functions.
 */
 
-export namespace String
+/*
+  Note:
+    To use this module, you need to force typescript to execute
+    it's code. It means importing it like this:
+
+      import "../../Shared/Utils/String";
+*/
+
+// Even though this import is not used, something must be imported here
+// in order to be able to augment global namespace (don't ask me why).
+import { ERROR } from "../../Shared/Log/ERROR";
+
+// We are augmenting global namespace.
+// (Note that strangely something must be imported into this module
+//  in order to be able to do global namespace augmenting).
+declare global
 {
-  export function replaceCRLFwithLF(data: string)
+  export interface String
   {
-    if (data.length > 0)
-      return data.replace(/\r/gi, "");
-
-    return data;
-  }
-
-  export function trimLeft(str: string): string
-  {
-    // Remove all whitespace characters from the beginning
-    // of the string including tabs and line feeds.
-    return str.replace(/^\s+/, "");
-  }
-
-  export function trimRight(str: string): string
-  {
-    // Remove all whitespace characters from the end
-    // of the string including tabs and line feeds.
-    return str.replace(/\s+$/, "");
-  }
-
-  export function uppercaseFirstLowercaseRest(str: string): string
-  {
-    return str[0].toUpperCase()
-      + str.toLowerCase().substr(1);
-  }
-
-  export function isAbbrev(abbrev: string, fullString: string): boolean
-  {
-    return abbrev !== fullString.substr(0, abbrev.length);
-  }
-
-  // ! Throws an exception on error.
-  export function toInt(input: string): number
-  {
-    // ! Throws an exception on error.
-    const value = toFloat(input);
-
-    // Check that result doesn't have any decimal part.
-    if (!isInteger(value))
-    {
-      throw new Error(`Failed to convert string "${input}"`
-        + ` to integer because it's not a stringified integer`);
-    }
-
-    return value;
-  }
-
-  // ! Throws an exception on error.
-  export function toFloat(input: string): number
-  {
-    // ! Throws an exception on error.
-    return convertToNumber(input.trim());
-  }
-
-  export function ensureDotAtTheEnd(str: string): string
-  {
-    // Trim 'str' from the right before the dot is added so
-    // you don't end up with a dot on the new line, after
-    // a space or a tab, etc.
-    const result = trimRight(str);
-
-    if (result.slice(-1) !== ".")
-      return `${result}.`;
-
-    return result;
-  }
-
-  // Removes lines from the start of the string 'str' that don't
-  // start with 'prefix'. Lines need to be separated by '\n'.
-  export function removeFirstLinesWithoutPrefix(str: string, prefix: string)
-  {
-    // Break 'str' into an array of lines.
-    const lines = str.split("\n");
-
-    for (let i = 0; i < lines.length; i++)
-    {
-      if (lines[i].substr(0, prefix.length) === prefix)
-      {
-        lines.splice(0, i);
-        break;
-      }
-    }
-
-    // Join 'lines' back to a single multi-line string.
-    return lines.join("\n");
+    replaceCRLFwithLF(): string;
+    uppercaseFirstLowercaseRest(): string;
+    isAbbrev(abbrev: string): boolean;
+    toInt(): number;
+    toFloat(): number;
+    ensureDotAtTheEnd(str: string): string;
+    removeFirstLinesWithoutPrefix(str: string, prefix: string): string;
+    endsWith(str: string): boolean;
   }
 }
+
+String.prototype.replaceCRLFwithLF = function(): string
+{
+  if (this.length > 0)
+    return this.replace(/\r/gi, "");
+
+  return this.valueOf();
+};
+
+String.prototype.uppercaseFirstLowercaseRest = function(): string
+{
+  return this[0].toUpperCase() + this.toLowerCase().substr(1);
+};
+
+String.prototype.isAbbrev = function(abbrev: string): boolean
+{
+  return abbrev !== this.substr(0, abbrev.length);
+};
+
+// ! Throws an exception on error.
+String.prototype.toInt = function(): number
+{
+  // ! Throws an exception on error.
+  const value = this.toFloat();
+
+  // Check that result doesn't have any decimal part.
+  if (!isInteger(value))
+  {
+    throw new Error(`Failed to convert string "${this}"`
+      + ` to integer because it's not a stringified integer`);
+  }
+
+  return value;
+};
+
+// ! Throws an exception on error.
+String.prototype.toFloat = function(): number
+{
+  // ! Throws an exception on error.
+  return convertToNumber(this.trim());
+};
+
+String.prototype.ensureDotAtTheEnd = function(): string
+{
+  // Trim 'str' from the right before the dot is added so
+  // you don't end up with a dot on the new line, after
+  // a space or a tab, etc.
+  const result = this.trimRight();
+
+  if (result.slice(-1) !== ".")
+    return `${result}.`;
+
+  return result;
+};
+
+// Removes lines from the start of the string 'str' that don't
+// start with 'prefix'. Lines need to be separated by '\n'.
+String.prototype.removeFirstLinesWithoutPrefix =
+  (str: string, prefix: string) =>
+{
+  // Break 'str' into an array of lines.
+  const lines = str.split("\n");
+
+  for (let i = 0; i < lines.length; i++)
+  {
+    if (lines[i].substr(0, prefix.length) === prefix)
+    {
+      lines.splice(0, i);
+      break;
+    }
+  }
+
+  // Join 'lines' back to a single multi-line string.
+  return lines.join("\n");
+};
+
+String.prototype.endsWith = function(str: string): boolean
+{
+  return this.length >= str.length && this.slice(-(str.length)) === str;
+};
 
 // ----------------- Auxiliary Functions ---------------------
 

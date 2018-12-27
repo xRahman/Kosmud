@@ -4,12 +4,17 @@
   Player account.
 */
 
+import { FileSystem } from "../../Server/FileSystem/FileSystem";
+import { Ship } from "../../Server/Game/Ship";
 import * as Entities from "../../Shared/Class/Entities";
 import { Entity } from "../../Shared/Class/Entity";
-import { Ship } from "../../Server/Game/Ship";
+
+const accountsDirectory = "./Data/Accounts/";
 
 export class Account extends Entity
 {
+  protected static version = 0;
+
   private ship: Ship | "Not assigned" = "Not assigned";
 
   // ---------------- Public methods --------------------
@@ -41,6 +46,14 @@ export class Account extends Entity
     }
 
     return this.ship;
+  }
+
+  public save()
+  {
+    const fileName = this.getId();
+    const data = this.serialize("Save to File");
+
+    FileSystem.writeFile(accountsDirectory, fileName, data);
   }
 }
 

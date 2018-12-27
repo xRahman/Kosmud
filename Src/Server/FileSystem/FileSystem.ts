@@ -4,6 +4,7 @@
   Filesystem I/O operations.
 */
 
+import "../../Shared/Utils/String";
 import { Types } from "../../Shared/Utils/Types";
 import { SavingQueue } from "../../Server/FileSystem/SavingQueue";
 
@@ -137,12 +138,12 @@ export namespace FileSystem
     data: string
   )
   {
-    const path = directory + fileName;
+    const path = composePath(directory, fileName);
 
     if (!isValidFileName(fileName))
     {
       throw new Error(`Failed to write file because path "${path}"`
-        + ` doesn't have a valid file name`);
+        + ` doesn't contain a valid file name`);
     }
 
     // Following code is addresing feature of node.js file saving
@@ -569,4 +570,12 @@ function getErrorCode(error: any)
     throw new Error("Missing 'code' property on error object");
 
   return code;
+}
+
+function composePath(directory: string, fileName: string)
+{
+  if (directory.endsWith("/"))
+    return `${directory}${fileName}`;
+  else
+    return `${directory}/${fileName}`;
 }

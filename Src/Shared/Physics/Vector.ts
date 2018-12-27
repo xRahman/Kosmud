@@ -103,17 +103,17 @@ export class Vector
 
   public static isValid({ x, y }: { x: number; y: number }): boolean
   {
-    return Number(x).isValid() && Number(y).isValid();
+    return x.isValid() && y.isValid();
   }
 
   // ! Throws exception on error.
   public static validate({ x, y }: { x: number; y: number })
   : { x: number; y: number }
   {
-    if (!Number(x).isValid())
+    if (!x.isValid())
       throw new Error(`Invalid 'x' in vector: ${x}`);
 
-    if (!Number(y).isValid())
+    if (!y.isValid())
       throw new Error(`Invalid 'y' in vector: ${y}`);
 
     return { x, y };
@@ -242,16 +242,16 @@ export class Vector
 
   public isValid(): boolean
   {
-    return Number(this.x).isValid() && Number(this.y).isValid();
+    return this.x.isValid() && this.y.isValid();
   }
 
   // ! Throws exception on error.
   public validate(): this
   {
-    if (!Number(this.x).isValid())
+    if (!this.x.isValid())
       throw new Error(`Invalid 'x' in vector: ${this.x}`);
 
-    if (!Number(this.y).isValid())
+    if (!this.y.isValid())
       throw new Error(`Invalid 'y' in vector: ${this.y}`);
 
     return this;

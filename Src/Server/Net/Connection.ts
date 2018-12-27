@@ -4,6 +4,7 @@
   A connection to the server.
 */
 
+import { Accounts } from "../../Server/Account/Accounts";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
@@ -19,14 +20,13 @@ import { KeyboardInput } from "../../Server/Protocol/KeyboardInput";
 import { MouseInput } from "../../Server/Protocol/MouseInput";
 import { SetWaypoint } from "../../Server/Protocol/SetWaypoint";
 import { EnterFlightRequest } from "../../Server/Protocol/EnterFlightRequest";
-import { Accounts } from "../../Server/Account/Accounts";
+import { LoginRequest } from "../../Server/Protocol/LoginRequest";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from "isomorphic-ws";
 
-// We need to registr packet classes here because when a module is
-// imported and not used, typescript doesn't execute it's code.
+// Register prototypes of packet classes.
 ClassFactory.registerClassPrototype(SystemMessage);
 ClassFactory.registerClassPrototype(ZoneUpdate);
 ClassFactory.registerClassPrototype(EnterFlightResponse);
@@ -34,6 +34,7 @@ ClassFactory.registerClassPrototype(KeyboardInput);
 ClassFactory.registerClassPrototype(MouseInput);
 ClassFactory.registerClassPrototype(SetWaypoint);
 ClassFactory.registerClassPrototype(EnterFlightRequest);
+ClassFactory.registerClassPrototype(LoginRequest);
 
 export class Connection extends Socket
 {

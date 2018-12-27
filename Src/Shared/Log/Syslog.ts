@@ -4,7 +4,7 @@
   Logger abstract ancestor.
 */
 
-import { String } from "../../Shared/Utils/String";
+import "../../Shared/Utils/String";
 
 export abstract class Syslog
 {
@@ -98,7 +98,7 @@ export abstract class Syslog
     //   To remove it, we trim lines not starting with '    at '.
     // That's because error message can be multi-line so removing
     // just 1 line would not always be enough.
-    return String.removeFirstLinesWithoutPrefix(stackTrace, "    at ");
+    return stackTrace.removeFirstLinesWithoutPrefix(stackTrace, "    at ");
   }
 
   protected static createLogEntry

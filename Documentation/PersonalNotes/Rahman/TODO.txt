@@ -10,9 +10,24 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Kód Account.save() by asi měl bejt někde jinde (obecněji).
 
+-----------------------
 
-TODO: Registrovat Ship v Entites přes createRootPrototypeEntity().
+TODO: v LoginRequest.process() loadnou vytvořenej account
+  (idčko zatím zadat ručně).
+
+Logovací procedura
+1) akceptnutí connection (vytvoří se Connection).
+2) klient pošle LoginRequest (login, heslo)
+   - jakmile player zadá login a heslo, ale můžu to poslat i hned
+     po připojení (jako simulaci toho, že má player savnutý private key,
+     nebo tak něco).
+3) Loadne nebo vyrobí se account (pokud je login ok), pošle se na
+   klienta (LoginResponse).
+   - stav se switchne asi do lobby nebo tak (charselect už nebude).
+     Teď to asi můžu házet rovnou do flightu.
+
 
 TODO: Vyrábět testovací ship jako novou entitu.
 - zatím asi v každém startu s novým idčkem

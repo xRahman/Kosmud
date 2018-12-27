@@ -270,9 +270,9 @@ export class Serializable extends Attributable
 
     // A little hack - save 'name', 'version' and 'className' properties
     // first (out of order) to make saved JSON files more readable.
+    jsonObject = this.writeClassName(jsonObject);
     jsonObject = this.writeName(jsonObject);
     jsonObject = this.writeVersion(jsonObject, mode);
-    jsonObject = this.writeClassName(jsonObject);
 
     // Cycle through all properties in source object.
     for (const propertyName in this)

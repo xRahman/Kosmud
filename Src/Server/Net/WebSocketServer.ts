@@ -120,7 +120,7 @@ function acceptConnection(webSocket: WebSocket, ip: string, url: string)
 
   try
   {
-    connection = Connections.addConnection(webSocket, ip, url);
+    connection = Connections.newConnection(webSocket, ip, url);
   }
   catch (error)
   {

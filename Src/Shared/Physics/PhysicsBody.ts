@@ -52,21 +52,21 @@ export class PhysicsBody
   public getX()
   {
     // ! Throws exception on error.
-    return Number(this.box2dBody.GetPosition().x).validate();
+    return this.box2dBody.GetPosition().x.validate();
   }
 
   // ! Throws exception on error.
   public getY()
   {
     // ! Throws exception on error.
-    return Number(this.box2dBody.GetPosition().y).validate();
+    return this.box2dBody.GetPosition().y.validate();
   }
 
   // ! Throws exception on error.
   public getRotation()
   {
     // ! Throws exception on error.
-    const rotation = Number(this.box2dBody.GetAngle()).validate();
+    const rotation = this.box2dBody.GetAngle().validate();
 
     return new ZeroTo2Pi(rotation);
   }
@@ -75,14 +75,14 @@ export class PhysicsBody
   public getAngularVelocity()
   {
     // ! Throws exception on error.
-    return Number(this.box2dBody.GetAngularVelocity()).validate();
+    return this.box2dBody.GetAngularVelocity().validate();
   }
 
   // ! Throws exception on error.
   public getInertia()
   {
     // ! Throws exception on error.
-    const inertia = Number(this.box2dBody.GetInertia()).validate();
+    const inertia = this.box2dBody.GetInertia().validate();
 
     // ! Throws exception on error.
     return new PositiveNumber(inertia);
@@ -93,7 +93,7 @@ export class PhysicsBody
   public getMass()
   {
     // ! Throws exception on error.
-    const mass = Number(this.box2dBody.GetMass()).validate();
+    const mass = this.box2dBody.GetMass().validate();
 
     // ! Throws exception on error.
     return new PositiveNumber(mass);
@@ -119,29 +119,28 @@ export class PhysicsBody
   public setAngularVelocity(angularVelocity: number)
   {
     // ! Throws exception on error.
-    this.box2dBody.SetAngularVelocity(Number(angularVelocity).validate());
+    this.box2dBody.SetAngularVelocity(angularVelocity.validate());
   }
 
   // ! Throws exception on error.
   public applyForce(force: Vector)
   {
     // ! Throws exception on error.
-    this.box2dBody.ApplyForceToCenter(Vector.validate(force));
-    // this.box2dBody.ApplyLinearImpulseToCenter(Vector.validate(force));
+    this.box2dBody.ApplyForceToCenter(force.validate());
   }
 
   // ! Throws exception on error.
   public applyImpulse(impulse: Vector)
   {
     // ! Throws exception on error.
-    this.box2dBody.ApplyLinearImpulseToCenter(Vector.validate(impulse));
+    this.box2dBody.ApplyLinearImpulseToCenter(impulse.validate());
   }
 
   // ! Throws exception on error.
   public applyTorque(torque: number)
   {
     // ! Throws exception on error.
-    this.box2dBody.ApplyTorque(Number(torque).validate());
+    this.box2dBody.ApplyTorque(torque.validate());
   }
 
   // This should only be used on the client. Only forces should be
@@ -185,9 +184,9 @@ export class PhysicsBody
           (
             {
               // ! Throws exception on error.
-              x: Number(vertex.x).validate(),
+              x: vertex.x.validate(),
               // ! Throws exception on error.
-              y: Number(vertex.y).validate()
+              y: vertex.y.validate()
             }
           );
         }

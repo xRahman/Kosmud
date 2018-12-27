@@ -445,7 +445,7 @@ export class VehiclePhysics extends Serializable
     desiredAngularSpeed -= this.currentAngularThrust / (inertia * Engine.FPS);
 
     desiredAngularSpeed =
-      Number(desiredAngularSpeed).atMost(this.currentMaxAngularVelocity);
+      desiredAngularSpeed.atMost(this.currentMaxAngularVelocity);
 
     const desiredAngularVelocity = (angularDistance < 0) ?
       -desiredAngularSpeed : desiredAngularSpeed;
@@ -546,7 +546,7 @@ export class VehiclePhysics extends Serializable
     //  thrust to come to stop. In other cases we cap it to full thrust).
     const desiredThrust = mass * desiredSpeedChange * Engine.FPS;
 
-    return Number(desiredThrust).atMost(fullThrust);
+    return desiredThrust.atMost(fullThrust);
   }
 
   private computeThrustData(direction: Vector): ThrustData
@@ -675,7 +675,7 @@ export class VehiclePhysics extends Serializable
     // the change in velocity that will be added in the next tick.
     desiredSpeed -= fullBrakingThrust / (this.massValue * Engine.FPS);
 
-    desiredSpeed = Number(desiredSpeed).atMost(this.currentMaxSpeed);
+    desiredSpeed = desiredSpeed.atMost(this.currentMaxSpeed);
 
     // ! Throws exception on error.
     // (There is a hard speed limit in Box2d.)

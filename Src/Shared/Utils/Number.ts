@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Augments global namespace with number-related functions and constants.
+  Augments javascript Number type with utility functions and constants.
 */
 
 /*
@@ -14,6 +14,9 @@
 
 import { ERROR } from "../../Shared/Log/ERROR";
 
+// We are augmenting global namespace.
+// (Note that strangely something must be imported into this module
+//  in order to be able to do global namespace augmenting).
 declare global
 {
   export interface Number

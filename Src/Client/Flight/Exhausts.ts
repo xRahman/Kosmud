@@ -104,10 +104,10 @@ export class Exhausts
   )
   {
     // const frontExhaustScale = new ZeroToOne(-forwardThrustRatio.valueOf());
-    const frontExhaustScale = Number(-forwardThrustRatio).atLeast(0);
+    const frontExhaustScale = (-forwardThrustRatio).atLeast(0);
     // const rearExhaustScale = new ZeroToOne(forwardThrustRatio.valueOf());
     // Note that rear thrusters always display at at least 10% length.
-    const rearExhaustScale = Number(forwardThrustRatio).atLeast(0.1);
+    const rearExhaustScale = forwardThrustRatio.atLeast(0.1);
 
     // // ! Throws exception on error.
     // setMinimumExhaustScale(rearExhaustScale, new ZeroToOne(0.1));
@@ -120,10 +120,10 @@ export class Exhausts
     // a bit more in both cases if current thrust exceeds
     // standard maximum thrust).
 
-    const leftThrustPortion = Number(leftwardThrustRatio / 2).atLeast(0);
-    const rightThrustPortion = Number(-leftwardThrustRatio / 2).atLeast(0);
-    const leftTorquePortion = Number(torqueRatio / 2).atLeast(0);
-    const rightTorquePortion = Number(-torqueRatio / 2).atLeast(0);
+    const leftThrustPortion = (leftwardThrustRatio / 2).atLeast(0);
+    const rightThrustPortion = (-leftwardThrustRatio / 2).atLeast(0);
+    const leftTorquePortion = (torqueRatio / 2).atLeast(0);
+    const rightTorquePortion = (-torqueRatio / 2).atLeast(0);
 
     const frontLeftExhaustScale = rightThrustPortion + rightTorquePortion;
     const frontRightExhaustScale = leftThrustPortion + leftTorquePortion;

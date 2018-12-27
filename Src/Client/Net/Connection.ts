@@ -16,6 +16,7 @@ import { EnterFlightResponse } from
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Socket } from "../../Client/Net/Socket";
+import { LoginRequest } from "../../Shared/Protocol/LoginRequest";
 
 /// TEST
 import { EnterFlightRequest } from "../../Shared/Protocol/EnterFlightRequest";
@@ -24,8 +25,7 @@ import { EnterFlightRequest } from "../../Shared/Protocol/EnterFlightRequest";
 // Use 'isomorphic-ws' to use the same code on both client and server.
 import * as WebSocket from "isomorphic-ws";
 
-// We need to registr packet classes here because when a module is
-// imported and not used, typescript doesn't execute it's code.
+// Register prototypes of packet classes.
 ClassFactory.registerClassPrototype(SystemMessage);
 ClassFactory.registerClassPrototype(ZoneUpdate);
 ClassFactory.registerClassPrototype(EnterFlightResponse);
@@ -220,7 +220,10 @@ export class Connection extends Socket
     ///   ale začátek login procesu (ať už přes username nebo přes nějakej
     ///   klíč uloženej v browseru).
     /// Test
-    sendEnterFlightRequest();
+    // sendEnterFlightRequest();
+    /// Login request se nejspíš bude posílat pozdějš
+    /// (až player zadá login a heslo do formu), ale zatím to nechám tady.
+    sendLoginRequest();
   }
 
   // ~ Overrides Socket.onClose().
@@ -312,4 +315,9 @@ function reportConnectionFailure()
 function sendEnterFlightRequest()
 {
   Connection.send(new EnterFlightRequest());
+}
+
+function sendLoginRequest()
+{
+  Connection.send(new LoginRequest());
 }

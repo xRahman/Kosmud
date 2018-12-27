@@ -29,7 +29,7 @@ export namespace Connections
   }
 
   // ! Throws exception on error.
-  export function addConnection(webSocket: WebSocket, ip: string, url: string)
+  export function newConnection(webSocket: WebSocket, ip: string, url: string)
   {
     const connection = new Connection(webSocket, ip, url);
 

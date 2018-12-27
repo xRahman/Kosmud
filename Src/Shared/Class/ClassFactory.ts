@@ -7,8 +7,7 @@
   TODO: Poznámka o true prototypal inheritance.
 */
 
-import { Entity } from "../../Shared/Class/Entity";
-import { Serializable } from "../../Shared/Class/Serializable";
+import { ID, Serializable } from "../../Shared/Class/Serializable";
 import { Types } from "../../Shared/Utils/Types";
 
 // Key:   Class name.
@@ -28,7 +27,9 @@ export namespace ClassFactory
     if (prototype === "Doesn't exist")
     {
       throw new Error(`Failed to instantiate class '${className}'`
-        + ` is not registered in the class factory`);
+        + ` is not registered in the class factory. Make sure`
+        + ` ClassFactory.registerClassPrototype(${className}) is`
+        + ` called somewhere`);
     }
 
     /// TODO: True prototypová dědičnost
@@ -170,7 +171,11 @@ function instantiateProperty(prototypeProperty: any)
 
   // Do not recursively instantiate propeties of other entities
   // (that could lead to infinite recursion among other things).
-  if (prototypeProperty instanceof Entity)
+  //   Note that we can't use "instanceof Entity" here because
+  // importing Entity to ClassFactory would lead to circular
+  // module dependance error. So we have to check if 'id' property
+  // is present instead.
+  if (prototypeProperty[ID] !== undefined)
     return "Not instantiated";
 
   // Properties of type Map or Set can't be instantiated using

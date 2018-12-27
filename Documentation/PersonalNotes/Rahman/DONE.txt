@@ -1,3 +1,22 @@
+TODO: Registrovat Ship v Entites přes createRootPrototypeEntity().
+[done]
+
+Ještě se taky někdy musí založit account, ehm.
+- to prozatím můžu udělat ručně.
+[done]
+
+TODO: Asi by se hodilo savovat nejdřív className a pak až version.
+[done]
+
+TODO: Místo Vector.validate(x) použít x.validate()
+ (PhysicsBody)
+[done]
+
+TODO: String je javascriptový typ, takže ho nemůžu jen tak přepsat
+  vlastním namespacem. Utils/String musí extendovat javascript String
+  podobně jako se extenduje Number.
+[done]
+
 TODO: Entity.isValid().
 [done]
 

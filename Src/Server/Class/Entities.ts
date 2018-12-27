@@ -12,7 +12,7 @@ export *  from "../../Shared/Class/Entities";
 let lastIssuedId = 0;
 
 // ! Throws exception on error.
-export function createNewEntity
+export function newEntity
 (
   // Either an entity id or a class name if you are instantiating
   // direcly from a hardcoded entity class.
