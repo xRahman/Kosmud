@@ -1,3 +1,52 @@
+TODO: Otázka je, jestli zóny dávat do Game, nebo spíš do World či tak něco
+  (World asi ne, to znamená 1 planetu).
+- možná prostě Zones.
+Aha, doteď byly zóny v Game...
+  A, hmm, někde beztak musí bejt seznam toho, co se má loadnout
+  (zatím asi klidně natvrdo v kódu. I když...).
+  - na to by se asi hodilo Zones coby savovatelné Serializable.
+[done]
+
+TODO: vyrobit zónu jako entitu
+  - asi zase stejně jako u accountů nebudu v Zones dělat seznam zón,
+    respektive možná časem nějakej vyhledávací (aby šla najít zóna podle
+    jména nebo tak).
+  - aha, potom ale asi Shared/Zones k ničemu nepotřebuju. Nový zóny se
+    budou vyrábět jen na serveru (a budou se dávat jen do Entities).
+    - časem ale Zones určitě potřeba budou, takže je teď prostě nechám prázdný.
+- asi ji zas jednorázově savnout.
+[done]
+
+TODO: Dávat save filům příponu .json.
+[done]
+
+TODO: Problém - Zone.load() je něco o dost jinýho než Zone.save().
+  (load() loaduje assety (tilemapy a shapy), save() savuje data zóny).
+- možná load() přejmenovat na loadAssets()?
+[done]
+
+TODO: posílání updatů
+- zóna neví, co v ní je za playery (teda možná časem bude, ale nutně nemusí)
+  Tzn. dává větší smysl procyklovat aktivní connectiony a poslat do příslušné
+  connectiony vždycky jen tu zónu, která k ní přísluší.
+To znamená:
+- connection musí vědět, ve které zóně je player
+  - connection má account, account má v sobě activeShip, activeShip je v nějaký
+    zóně (nebo taky ne, ale v tom případě není třeba posílat update zóny).
+- V tiku projít všechny connectiony (tzn. nejspíš Connections.tick())
+  a rozposílat updaty.
+[done]
+
+Jak má loď vědět, ve které je zóně...
+- zóna je container entita a loď se dává dovnitř.
+- všechny entity někam vložené by asi měly znát idčko toho, do čeho jsou
+  vložené (tzn. container entity má nejen contents, ale i container.
+Aha, ona se všem GameEntitám setuje zóna.
+  Tak tím líp - dává to smysl, entita může být vložena do něčeho jinýho,
+  (třeba motor do lodi), ale i tak je dobrý vědět, do který patří zóny.
+- až na to, že getZone() vrací Shared/Zone a já potřebuju server verzi...
+[done]
+
 TODO: Entities asi zase předělat na classu, ať se dají dědit.
 [done]
 

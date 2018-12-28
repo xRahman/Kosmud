@@ -62,4 +62,17 @@ export namespace Connections
       }
     }
   }
+
+  // ! Throws exception on error.
+  export function updateClients()
+  {
+    for (const connection of connections)
+    {
+      if (!connection.isOpen())
+        continue;
+
+      // ! Throws exception on error.
+      connection.updateClient();
+    }
+  }
 }

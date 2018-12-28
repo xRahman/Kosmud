@@ -7,6 +7,7 @@
 
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
+import { Entities } from "../../Server/Class/Entities";
 import { Ship } from "../../Server/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
@@ -14,6 +15,10 @@ import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
 {
+  public static dataDirectory = "./Data/Zones/";
+
+  protected static version = 0;
+
   // ~ Overrides Shared.Zone.ships.
   //  (We need to override to use Server/Ship instead of Shared/Ship).
   protected readonly ships = new Map<string, Ship>();
@@ -21,13 +26,25 @@ export class Zone extends Shared.Zone
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public async load()
+  public async loadAssets()
   {
     // ! Throws exception on error.
     await this.loadTilemaps();
 
     // ! Throws exception on error.
     this.initShapes();
+  }
+
+  // ! Throws exception on error.
+  public async save()
+  {
+    // ! Throws exception on error.
+    const fileName = `${this.getId()}.json`;
+    // ! Throws exception on error.
+    const data = this.serialize("Save to file");
+
+    // ! Throws exception on error.
+    await FileSystem.writeFile(Zone.dataDirectory, fileName, data);
   }
 
   public getUpdate()
@@ -81,3 +98,5 @@ async function loadTilemapJsonData(jsonFilePath: string)
   // ! Throws exception on error.
   return JsonObject.parse(jsonData);
 }
+
+Entities.createRootPrototypeEntity(Zone);

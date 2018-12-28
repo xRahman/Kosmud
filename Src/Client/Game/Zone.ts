@@ -113,7 +113,6 @@ export class Zone extends Shared.Zone
   }
 
   // ~ Overrides Shared.Zone.createTilemap().
-  // tslint:disable-next-line:prefer-function-over-method
 //   protected async createTilemap(config: Shared.Zone.TilemapConfig)
 //   {
 // /// TODO: Klient bude tilemapu loadovat a vytvářet jinak.

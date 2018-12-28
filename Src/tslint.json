@@ -49,7 +49,7 @@
     "no-non-null-assertion": true,
     // This is worth trying
     "no-null-keyword": true,
-    "prefer-function-over-method": true,
+    "prefer-function-over-method": false,
     "triple-equals": true,
     "typedef":
     [

@@ -295,6 +295,30 @@ export namespace FileSystem
 
     return getByteLength(encodedStr) <= FILENAME_MAXIMUM_LENGTH_BYTES;
   }
+
+  // ! Throws exception on error.
+  export async function loadJsonFromFile(directory: string, fileName: string)
+  {
+    const path = composePath(directory, fileName);
+
+    const readResult = await readFile(path);
+
+    if (readResult === "File doesn't exist")
+    {
+      throw new Error(`Failed to load file '${path}'`
+        + ` because it doesn't exist`);
+    }
+
+    return readResult.data;
+  }
+
+  export function composePath(directory: string, fileName: string)
+  {
+    if (directory.endsWith("/"))
+      return `${directory}${fileName}`;
+    else
+      return `${directory}/${fileName}`;
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
@@ -570,12 +594,4 @@ function getErrorCode(error: any)
     throw new Error("Missing 'code' property on error object");
 
   return code;
-}
-
-function composePath(directory: string, fileName: string)
-{
-  if (directory.endsWith("/"))
-    return `${directory}${fileName}`;
-  else
-    return `${directory}/${fileName}`;
 }

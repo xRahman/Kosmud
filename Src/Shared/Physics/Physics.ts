@@ -37,11 +37,11 @@ export namespace Physics
     return physicsWorld;
   }
 
-  export function tick(miliseconds: number)
+  export function update(miliseconds: number)
   {
     for (const physicsWorld of physicsWorlds)
     {
-      physicsWorld.tick(miliseconds);
+      physicsWorld.update(miliseconds);
     }
   }
 }

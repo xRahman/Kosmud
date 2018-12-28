@@ -34,7 +34,7 @@ export class PhysicsWorld
     );
   }
 
-  public tick(miliseconds: number)
+  public update(miliseconds: number)
   {
     const seconds = miliseconds / 1000;
 

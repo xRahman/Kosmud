@@ -1,3 +1,16 @@
+Budu player ship savovat do zóny?
+- pokud je v zóně, tak asi jo
+  (představuju si save zóny třeba před rebootem - savne se do ní úplně
+   všechno. Pak sice bude po bootu loď bez hráče, tj. neovládaná, ale
+   bude tam).
+- pokud se hráčova loď nemá savnout do zóny, tak se musí přemístit někam
+  jinam (třeba do hráčovy soukromé home dimenze, což je fakticky taky zóna).
+
+Proteď to znamená: Savovat do zóny všechno, co v ní je.
+- player shipy asi nechám v zóně.
+
+-----------------------------------------------------------------------
+
 Wrapper classy
 ----------------
 

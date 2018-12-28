@@ -9,6 +9,7 @@ import { Syslog } from "../../Shared/Log/Syslog";
 import { Types } from "../../Shared/Utils/Types";
 import { Physics } from "../../Shared/Physics/Physics";
 import { Game } from "../../Server/Game/Game";
+import { Connections } from "../../Server/Net/Connections";
 import * as Shared from "../../Shared/Engine/Engine";
 
 let loopInterval: NodeJS.Timeout | "Not looping" = "Not looping";
@@ -46,9 +47,9 @@ function tick(miliseconds: number)
 {
   try
   {
-    Game.tick();
-    Physics.tick(miliseconds);
-    Game.updateClients();
+    Game.update();
+    Physics.update(miliseconds);
+    Connections.updateClients();
   }
   catch (error)
   {

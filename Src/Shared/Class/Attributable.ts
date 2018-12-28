@@ -97,7 +97,6 @@ export class Attributable
     return applyDefaults(attributes, classDefaultAttributes);
   }
 
-  // tslint:disable-next-line:prefer-function-over-method
   private applyGlobalDefaults(attributes: object): object
   {
     const globalDefaults = Attributable.defaultAttributes;

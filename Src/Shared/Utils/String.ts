@@ -30,6 +30,7 @@ declare global
     toFloat(): number;
     ensureDotAtTheEnd(str: string): string;
     removeFirstLinesWithoutPrefix(str: string, prefix: string): string;
+    startsWith(str: string): boolean;
     endsWith(str: string): boolean;
   }
 }
@@ -107,6 +108,11 @@ String.prototype.removeFirstLinesWithoutPrefix =
 
   // Join 'lines' back to a single multi-line string.
   return lines.join("\n");
+};
+
+String.prototype.startsWith = function(str: string): boolean
+{
+  return this.length >= str.length && this.slice(str.length) === str;
 };
 
 String.prototype.endsWith = function(str: string): boolean

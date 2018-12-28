@@ -104,7 +104,7 @@ export abstract class Zone extends ContainerEntity
         + ` ship ${ship.debugId}`);
     }
 
-    this.addToContents(ship);
+    this.insert(ship);
     this.ships.set(ship.getId(), ship);
     ship.setZone(this);
 
@@ -175,12 +175,10 @@ export abstract class Zone extends ContainerEntity
 
   // ---------------- Private methods -------------------
 
-  public steerVehicles()
+  private steerVehicles()
   {
     for (const ship of this.ships.values())
-    {
       steerShip(ship);
-    }
   }
 
   // ! Throws exception on error.

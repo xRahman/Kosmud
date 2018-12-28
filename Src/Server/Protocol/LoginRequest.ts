@@ -18,7 +18,6 @@ export class LoginRequest extends Shared.LoginRequest
 
   // ! Throws exception on error.
   // ~ Overrides Packet.process().
-  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
     // /// TEST: Vyrobit a savnout account.

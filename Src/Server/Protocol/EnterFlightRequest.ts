@@ -22,7 +22,6 @@ export class EnterFlightRequest extends Shared.EnterFlightRequest
 
   // ! Throws exception on error.
   // ~ Overrides Packet.process().
-  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
     const account = connection.getAccount();
@@ -59,7 +58,7 @@ function fakeLoadFighter()
   fighter.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
 
   /// Tímhle se ship dostane do zóny.
-  Game.addShip(fighter);
+  // Game.addShip(fighter);
 
   return fighter;
 }

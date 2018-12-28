@@ -4,99 +4,43 @@
   Server-side game simulation.
 */
 
-import { Zone } from "../../Server/Game/Zone";
-import { Connections } from "../../Server/Net/Connections";
+// import { Zone } from "../../Server/Game/Zone";
+import { Zones } from "../../Server/Game/Zones";
+// import { Connections } from "../../Server/Net/Connections";
 
 /// TEST
-import { Ship } from "../../Server/Game/Ship";
+// import { Ship } from "../../Server/Game/Ship";
+
+let zones: Zones | "Not loaded" = "Not loaded";
 
 export namespace Game
 {
-  const zones: Array<Zone> = [];
-
-  /// TEST
-  export function addShip(ship: Ship)
+  export function update()
   {
-    zones[0].addShip(ship);
-  }
-
-  /// TEST
-  function fakeLoad()
-  {
-    const zone = new Zone();
-
-    zone.createPhysicsWorld();
-
-    zones.push(zone);
-  }
-
-  export function tick()
-  {
-    update(zones);
-  }
-
-  export function updateClients()
-  {
-    for (const zone of zones)
-    {
-      const zoneUpdate = zone.getUpdate();
-
-      /// TODO: Neposílat všem playerům updaty všech zón, stačí
-      /// každému poslat update zóny, ve které se nachází.
-      Connections.broadcast(zoneUpdate);
-    }
+    getZones().update();
   }
 
   // ! Throws exception on error.
   export async function load()
   {
-    /// TEST
-    fakeLoad();
-
     // ! Throws exception on error.
-    await loadZones(zones);
-  }
+    zones = await Zones.load();
 
-  // export function sendShipsToClient(connection: Connection)
-  // {
-  //   /// TODO: Tohle taky není dobře - měly by se posílat
-  //   /// jen lodě ze zóny, kde zrovna player je (a možná to
-  //   /// bude celé jinak).
-  //   for (const zone of zones)
-  //   {
-  //     zone.sendShipsToClient(connection);
-  //   }
-  // }
+    /// TEST
+    // const zone = zones.newZone();
+    // await zone.save();
+    // await zones.save();
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-// ! Throws exception on error.
-async function loadZones(zones: Array<Zone>)
+function getZones()
 {
-  for (const zone of zones)
+  if (zones === "Not loaded")
   {
-    // ! Throws exception on error.
-    await zone.load();
+    throw new Error(`Zones aren't loaded yet`);
   }
-}
 
-// function getShipsState(): Array<ZoneUpdate.ShipState>
-// {
-//   const result: Array<ZoneUpdate.ShipState> = [];
-
-//   for (const ship of Game.ships)
-//   {
-//     result.push(getShipState(ship));
-//   }
-
-//   return result;
-// }
-
-function update(zones: Array<Zone>)
-{
-  for (const zone of zones)
-  {
-    zone.steerVehicles();
-  }
+  return zones;
 }

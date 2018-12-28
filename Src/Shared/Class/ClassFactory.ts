@@ -17,9 +17,14 @@ const prototypes = new Map<string, Serializable>();
 
 export namespace ClassFactory
 {
+  // ! Throws exception on error.
+  export function instantiateClass<T>(Class: Types.NonabstractClass<T>): T
+  {
+    return instantiateClassByName(Class.name).dynamicCast(Class);
+  }
 
   // ! Throws exception on error.
-  export function instantiateClass(className: string)
+  export function instantiateClassByName(className: string)
   {
     // ! Throws exception on error.
     const prototype = getPrototype(className);

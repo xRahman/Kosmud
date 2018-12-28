@@ -91,7 +91,6 @@ export class Serializable extends Attributable
 
   // ! Throws exception on error.
   // Use this only for Serializable objects not inherited from Entity.
-  // TODO: Přidat comment, jak se loadují entity (nějak přes Entities)
   public static deserialize(data: string): Serializable
   {
     // ! Throws exception on error.
@@ -110,7 +109,7 @@ export class Serializable extends Attributable
         + ` '${CLASS_NAME}' isn't a string`);
     }
 
-    const serializable = ClassFactory.instantiateClass(className);
+    const serializable = ClassFactory.instantiateClassByName(className);
 
     return serializable.deserialize(jsonObject);
   }
@@ -190,17 +189,13 @@ export class Serializable extends Attributable
 
   // -------------- Protected methods -------------------
 
-  // This method can be overriden to change how is a certain
-  // property serialized.
-  // tslint:disable-next-line:prefer-function-over-method
+  // This method can be overriden to change how a property is serialized.
   protected customSerializeProperty(param: Serializable.SerializeParam): any
   {
     return "Property isn't serialized customly";
   }
 
-  // This method can be overriden to change how is a certain
-  // property deserialized.
-  // tslint:disable-next-line:prefer-function-over-method
+  // This method can be overriden to change how a property is deserialized.
   protected customDeserializeProperty(param: Serializable.DeserializeParam)
   {
     return "Property isn't deserialized customly";
@@ -1115,7 +1110,7 @@ function createNew(param: Serializable.DeserializeParam): object
   // in JSON, it can't be an entity class.
 
   // ! Throws exception on error.
-  return ClassFactory.instantiateClass(className);
+  return ClassFactory.instantiateClassByName(className);
 }
 
 // Converts 'param.sourceProperty' to a FastBitSet object.
@@ -1183,21 +1178,14 @@ function deserializeAsVector(param: Serializable.DeserializeParam)
 // ! Throws exception on error.
 // Converts 'param.sourceProperty' to a reference to an Entity.
 // If 'id' loaded from JSON already exists in Entities, existing
-// entity will be returned. Otherwise an 'invalid'
-// entity reference will be created and returned.
+// entity will be returned. Otherwise an 'invalid' entity reference
+// will be created and returned.
 // -> Retuns an existing entity or an invalid entity reference.
 function readEntityReference(param: Serializable.DeserializeParam)
 {
   const id = getProperty(param, ID);
 
-  // Note:
-  //   We need to use Application.entities instead of Entities because
-  //   importing Entities to Serializable would cause cyclical module
-  //   dependancy (Entities import Entity which imports Serializable).
-  //   Doing this using Application.entities for some reason works.
-  // return Application.entities.getReference(id);
-  // return ClassFactory.entities.getReference(id);
-  return Entities.get(id);
+  return Entities.getReference(id);
 }
 
 // Attempts to convert 'param.sourceProperty' to reference to an Entity.

@@ -20,7 +20,6 @@ export abstract class Socket extends Shared.Socket
 
   // ---------------- Public methods --------------------
 
-  // tslint:disable-next-line:prefer-function-over-method
   public getOrigin() { return "the server"; }
 
   // ---------------- Event handlers --------------------

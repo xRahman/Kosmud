@@ -10,6 +10,21 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Nezapomenout, že po vytvoření zóny se musí zavolat createPhysicsWorld()
+  const zone = new Zone();
+  zone.createPhysicsWorld();
+- v konstruktoru to bejt nemůže, ten se volá jen pro root prototyp.
+
+TODO: loadovat zónu při startu serveru (Game.load()).
+- vyrobit do ní ship
+  (asi taky jednorázově)
+
+TODO: savnout zónu i s lodí (celé contents) do jednoho souboru.
+
+TODO: implementovat serializaci/deserializaci entities v packetu.
+
+TODO: posílat loď jako součást packetu (EnterFlightResponse).
+  - upravit kód, aby se data lodi četla přímo
 
 -----------------------
 

@@ -15,7 +15,6 @@ export class KeyboardInput extends Shared.KeyboardInput
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().
-  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
     console.log("Keyboard input processing is disabled for now");

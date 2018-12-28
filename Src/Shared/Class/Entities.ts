@@ -8,9 +8,9 @@ import { Types } from "../../Shared/Utils/Types";
 import { Entity } from "../../Shared/Class/Entity";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 
-// Use a static class because we need to inherit from it (because
-// new entities are only created on the server) which cannot be done
-// using namespaces split to different files.
+// Use a static class because we need to inherit from it
+// (new entities are only created on the server) which
+// cannot be done using namespaces split to different files.
 // tslint:disable-next-line:no-unnecessary-class
 export class Entities
 {
@@ -25,16 +25,20 @@ export class Entities
 
     if (entity === undefined)
     {
-      /// TODO: Prej mám vrátit "invalid entity reference"
-      ///  (říká Serializable.readEntityReference()).
-      /// - dává to možná smysl, protože když bude při loadování něco
-      ///   cyklicky prolinkované, tak zaručeně nastane situace, kdy
-      ///   referencovaná entita při loadingu ještě nebude loadnoutá.
-      ///   (ale třeba cyklická provázanost nenastane, kdo ví...).
-      /// Respektive možná spíš nechat metodu get() takhle a vrátit
-      ///   getReference(), která to bude dělat.
       throw new Error(`Entity with id '${id}' is not in Entities`);
     }
+
+    return entity;
+  }
+
+  // -> Returns respective entity if it exists in Entities,
+  ///   invalid entity otherwise.
+  public static getReference(id: string)
+  {
+    const entity = this.entities.get(id);
+
+    if (entity === undefined)
+      return createInvalidEntity(id);
 
     return entity;
   }
@@ -93,4 +97,16 @@ export class Entities
 
     return entity;
   }
+}
+
+function createInvalidEntity(id: string)
+{
+  const invalidEntity =
+  {
+    getId: () => { return id; },
+    isValid: () => { return false; },
+    debugId: `{ Invalid entity reference, id: ${id} }`
+  };
+
+  return invalidEntity;
 }

@@ -11,7 +11,6 @@ import { PacketHandler } from "../../Shared/Net/PacketHandler";
 
 export class Packet extends Serializable
 {
-  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: PacketHandler): Promise<void>
   {
     // Packet.process isn't abstract, because than it would be necessary

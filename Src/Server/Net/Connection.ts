@@ -65,6 +65,11 @@ export class Connection extends Socket
     this.account = account;
   }
 
+  public isLoggedIn()
+  {
+    return this.account !== "Not logged in";
+  }
+
   /// Tohle by mohl být getter...
   public getUserInfo()
   {
@@ -89,6 +94,19 @@ export class Connection extends Socket
       // ! Throws exception on error.
       packet.serialize("Send to client")
     );
+  }
+
+  // ! Throws exception on error.
+  public updateClient()
+  {
+    if (this.isLoggedIn())
+    {
+      // ! Throws exception on error.
+      const update = this.getAccount().getClientUpdate();
+
+      if (update !== "No update")
+        this.send(update);
+    }
   }
 
   // --------------- Private methods --------------------

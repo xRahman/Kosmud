@@ -204,7 +204,6 @@ export abstract class Scene
   }
 
   // ! Throws exception on error.
-  // tslint:disable-next-line:prefer-function-over-method
   protected update()
   {
     // Nothing here, this method needs to be overriden in descendants

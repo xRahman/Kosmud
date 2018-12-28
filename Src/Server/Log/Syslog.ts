@@ -20,7 +20,6 @@ export class Syslog extends Shared.Syslog
   // --------------- Protected methods ------------------
 
   // ~ Overrides Shared.Syslog.log().
-  // tslint:disable-next-line:prefer-function-over-method
   protected log(messageType: Shared.Syslog.MessageType, message: string)
   {
     const entry = Syslog.createLogEntry(messageType, message);

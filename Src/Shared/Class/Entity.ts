@@ -106,8 +106,7 @@ export class Entity extends Serializable
   public getName() { return this.name; }
   public setName(name: string) { this.name = name; }
 
-  // All entities are valid until 'invalidate()' is called on them.
-  // tslint:disable-next-line:prefer-function-over-method
+  // All entities are valid until deleted from Entities.
   public isValid() { return true; }
 
   // Invalidates all properties so any further access to this

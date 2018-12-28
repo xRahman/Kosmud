@@ -8,6 +8,8 @@ import { Entity } from "../../Shared/Class/Entity";
 
 export class ContainerEntity extends Entity
 {
+  private container: ContainerEntity | "Not in container" = "Not in container";
+
   // Every GameEntity can contain other game entities.
   private readonly contents = new Map<string, ContainerEntity>();
 
@@ -16,6 +18,23 @@ export class ContainerEntity extends Entity
   public has(entity: ContainerEntity)
   {
     return this.contents.has(entity.getId());
+  }
+
+  public isInContainer()
+  {
+    return this.container !== "Not in container";
+  }
+
+  // ! Throws exception on error.
+  public getContainer()
+  {
+    if (this.container === "Not in container")
+    {
+      throw new Error(`Failed to get container of ${this.debugId}`
+        + ` because this entity is not in any container`);
+    }
+
+    return this.container;
   }
 
   // --------------- Protected methods ------------------
@@ -36,7 +55,7 @@ export class ContainerEntity extends Entity
   }
 
   // ! Throws exception on error.
-  protected addToContents(entity: ContainerEntity)
+  protected insert(entity: ContainerEntity)
   {
     if (this.has(entity))
     {
@@ -45,6 +64,7 @@ export class ContainerEntity extends Entity
     }
 
     this.contents.set(entity.getId(), entity);
+    entity.container = this;
   }
 
   // ! Throws exception on error.
@@ -57,5 +77,7 @@ export class ContainerEntity extends Entity
       throw new Error(`Entity ${entity.debugId} isn't inside`
         + ` ${this.debugId} so it can't be removed from there`);
     }
+
+    entity.container = "Not in container";
   }
 }

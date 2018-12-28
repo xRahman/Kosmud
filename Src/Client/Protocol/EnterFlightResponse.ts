@@ -17,7 +17,6 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   // ---------------- Public methods --------------------
 
   // ~ Overrides Packet.process().
-  // tslint:disable-next-line:prefer-function-over-method
   public async process(connection: Connection)
   {
     const zone = fakeCreateZone();

@@ -36,6 +36,11 @@ export class GameEntity extends ContainerEntity
 
     return this.zone;
   }
+
+  public isInZone()
+  {
+    return this.zone !== "Not in zone";
+  }
 }
 
 // ------------------ Type declarations ----------------------

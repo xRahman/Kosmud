@@ -6,31 +6,18 @@
 
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Ship } from "../../Server/Game/Ship";
+import { Zone } from "../../Server/Game/Zone";
 import { Entities } from "../../Server/Class/Entities";
 import { Entity } from "../../Shared/Class/Entity";
-
-const accountsDirectory = "./Data/Accounts/";
+import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 
 export class Account extends Entity
 {
+  public static dataDirectory = "./Data/Accounts/";
+
   protected static version = 0;
 
   private ship: Ship | "Not assigned" = "Not assigned";
-
-  public static async loadAccountData(accountId: string)
-  {
-    const path = `${accountsDirectory}${accountId}`;
-
-    const readResult = await FileSystem.readFile(path);
-
-    if (readResult === "File doesn't exist")
-    {
-      throw new Error(`Failed to load account with id '${accountId}'`
-        + ` because file '${path}' doesn't exist`);
-    }
-
-    return readResult.data;
-  }
 
   // ---------------- Public methods --------------------
 
@@ -63,12 +50,33 @@ export class Account extends Entity
     return this.ship;
   }
 
+  // ! Throws exception on error.
   public async save()
   {
-    const fileName = this.getId();
+    // ! Throws exception on error.
+    const fileName = Entities.getFileName(this.getId());
+    // ! Throws exception on error.
     const data = this.serialize("Save to file");
 
-    await FileSystem.writeFile(accountsDirectory, fileName, data);
+    // ! Throws exception on error.
+    await FileSystem.writeFile(Account.dataDirectory, fileName, data);
+  }
+
+  public getClientUpdate(): ZoneUpdate | "No update"
+  {
+    if (!this.hasShip())
+      return "No update";
+
+    // ! Throws exception on error.
+    const ship = this.getShip();
+
+    if (!ship.isInZone())
+      return "No update";
+
+    // ! Throws exception on error.
+    // Use dynamic cast because we need server version of Zone.
+    const zone = ship.getZone().dynamicCast(Zone);
+    return zone.getUpdate();
   }
 }
 

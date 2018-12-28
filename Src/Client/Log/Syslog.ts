@@ -20,7 +20,6 @@ export class Syslog extends Shared.Syslog
   // --------------- Protected methods ------------------
 
   // ~ Overrides Shared.Syslog.log().
-  // tslint:disable-next-line:prefer-function-over-method
   protected log(messageType: Shared.Syslog.MessageType, message: string)
   {
     const entry = Shared.Syslog.createLogEntry(messageType, message);
@@ -29,7 +28,6 @@ export class Syslog extends Shared.Syslog
   }
 
   // ~ Overrides Shared.Syslog.reportException().
-  // tslint:disable-next-line:prefer-function-over-method
   protected reportException(error: Error, isCaught: boolean): void
   {
     const messageType = Shared.Syslog.exceptionMessageType(isCaught);
@@ -40,7 +38,6 @@ export class Syslog extends Shared.Syslog
   }
 
   // ~ Overrides Shared.Syslog.reportError().
-  // tslint:disable-next-line:prefer-function-over-method
   protected reportError(message: string): void
   {
     const logEntry = Shared.Syslog.createLogEntry("[ERROR]", message);

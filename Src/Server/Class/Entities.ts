@@ -4,9 +4,10 @@
   Server-side functionality of static class that stores all entities.
 */
 
+import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { timeOfBoot } from "../../Server/KosmudServer";
-import { PROTOTYPE_ID } from "../../Shared/Class/Entity";
+import { PROTOTYPE_ID, Entity } from "../../Shared/Class/Entity";
 import * as Shared from "../../Shared/Class/Entities";
 
 export class Entities extends Shared.Entities
@@ -31,19 +32,35 @@ export class Entities extends Shared.Entities
   }
 
   // ! Throws exception on error.
-  public static loadEntityFromJsonData(entityId: string, jsonData: string)
+  public static async loadEntity(directory: string, id: string)
   {
-    // const jsonObject = Serializable.deserialize(jsonData);
-    const jsonObject = JsonObject.parse(jsonData);
-    const prototypeId = getPrototypeIdFromJsonObject(jsonObject);
+    const fileName = Entities.getFileName(id);
     // ! Throws exception on error.
-    const prototype = Entities.get(prototypeId);
-    const entity = Entities.instantiateEntity(prototype, entityId);
+    const json = await FileSystem.loadJsonFromFile(directory, fileName);
 
-    return entity.deserialize(jsonObject);
+    // ! Throws exception on error.
+    return this.loadEntityFromJson(json, id);
+  }
+
+  public static getFileName(id: string)
+  {
+    return `${id}.json`;
   }
 
   // ------------- Private static methods ---------------
+
+  // ! Throws exception on error.
+  private static loadEntityFromJson(json: string, id: string)
+  {
+    // ! Throws exception on error.
+    const jsonObject = JsonObject.parse(json);
+    const prototypeId = readPrototypeId(jsonObject);
+    // ! Throws exception on error.
+    const prototype = this.get(prototypeId);
+    const entity = this.instantiateEntity(prototype, id);
+
+    return entity.deserialize(jsonObject);
+  }
 
   private static generateId()
   {
@@ -65,7 +82,7 @@ export class Entities extends Shared.Entities
 // ----------------- Auxiliary Functions ---------------------
 
 // ! Throws exception on error.
-function getPrototypeIdFromJsonObject(jsonData: object)
+function readPrototypeId(jsonData: object)
 {
   const prototypeId = (jsonData as any)[PROTOTYPE_ID];
 

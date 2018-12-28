@@ -66,7 +66,6 @@ export class PriorityQueue<T> extends Serializable
   // }
 
   // // ~ Overrides Serializable.customDeserializeProperty().
-  // // tslint:disable-next-line:prefer-function-over-method
   // protected customDeserializeProperty(param: Serializable.DeserializeParam)
   // {
   //   if (param.propertyName === "queue")
