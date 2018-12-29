@@ -1,3 +1,20 @@
+TODO: ships v Zóně asi taky nemusí bejt mapa
+  (getnout entitu podle idčka jde i z Entities, takže jakékoliv další seznamy
+   indexované idčkem postrádají smysl).
+[done]
+
+TODO: V zóně asi contents serializovat do json objectu místo
+  do stringu, ať se to savne bez \n.
+[done]
+
+TODO: Id taky savovat prioritně (asi hned za className).
+- a prototypeId taky.
+[done]
+
+TODO: Server/Zone.customDeserializeProperty()
+- snad
+[done]
+
 TODO: Projít Ship (Shared i Server verze) a VehiclePhysics a ošetřit,
   co se savuje a co ne.
 - jakž takž

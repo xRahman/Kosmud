@@ -10,18 +10,6 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: V zóně asi contents serializovat do json objectu místo
-  do stringu, ať se to savne bez \n.
-[done]
-
-TODO: Id taky savovat prioritně (asi hned za className).
-- a prototypeId taky.
-[done]
-
-TODO: Server/Zone.customDeserializeProperty()
-- snad
-[done]
-
 Ok, takže jinak.
 TODO: 1) Dočasně to hacknout, abych při přidání lodě do zóny nemusel
   řešit assety (ať můžu vyzkoušet savování zóny s contentem).
@@ -39,11 +27,17 @@ TODO: 4) Při přidání lodi do zóny je pushnout do assetů zóny
   (Tady je teda otázka, jak pořešit, když loď zas ze zóny odeberu.
    Asi k seznamu assetů v zóně přidat counter, kolikrát je použitej.)
 
+TODO: Posílat account na klient
+- asi ho dát do Connection (ať je to stejně jako na serveru).
 
 
 TODO: Výhledově pořešit savování/loadování pozice a rotace lodě.
   (pokud se savují accessory, tak by to šlo vytahovat z physicsBody getterem).
 
+TODO: Výhledově zvážit, jestli místo prototypeId nemít rovnou referenci
+  na prototyp.
+- asi by bylo trochu míň přehledný save fily (i když ne nějak závratně),
+  ale líp by se s tím nejspíš pracovalo.
 
 
 Problém: Nemůžu přidávat ship do zóny, dokud nemá initnutý assety

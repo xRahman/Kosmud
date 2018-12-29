@@ -1,17 +1,17 @@
 {
   "className": "Zone",
-  "id": "1-jq9ojani",
+  "id": "1-jq9s8emn",
   "prototypeId": "Zone",
   "name": "Test zone",
   "version": 0,
   "contents":
   {
-    "className": "Entity contents",
+    "className": "EntityContents",
     "version": 0,
     "contents": [
     {
       "className": "Ship",
-      "id": "2-jq9ojani",
+      "id": "2-jq9s8emn",
       "prototypeId": "Ship",
       "name": "Fighter",
       "version": 0,
@@ -24,26 +24,26 @@
       "container":
       {
         "className": "Reference",
-        "id": "1-jq9ojani",
+        "id": "1-jq9s8emn",
         "version": 0
       },
       "zone":
       {
         "className": "Reference",
-        "id": "1-jq9ojani",
+        "id": "1-jq9s8emn",
         "version": 0
       }
     }]
   },
   "ships":
   {
-    "className": "Map",
+    "className": "Set",
     "version": 0,
-    "map": [["2-jq9ojani",
+    "set": [
     {
       "className": "Reference",
-      "id": "2-jq9ojani",
+      "id": "2-jq9s8emn",
       "version": 0
-    }]]
+    }]
   }
 }

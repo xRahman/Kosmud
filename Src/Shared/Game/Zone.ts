@@ -58,7 +58,7 @@ export abstract class Zone extends ContainerEntity
     ]
   };
 
-  protected readonly ships = new Map<string, Ship>();
+  protected readonly ships = new Set<Ship>();
 
   protected readonly tilemaps = new Map<string, Tilemap>();
   protected static tilemaps: Attributes = { saved: false };
@@ -103,14 +103,14 @@ export abstract class Zone extends ContainerEntity
   // ! Throws exception on error.
   public addShip(ship: Ship)
   {
-    if (this.ships.has(ship.getId()))
+    if (this.ships.has(ship))
     {
       throw new Error(`Zone ${this.debugId} already has`
         + ` ship ${ship.debugId}`);
     }
 
     this.insert(ship);
-    this.ships.set(ship.getId(), ship);
+    this.ships.add(ship);
     ship.setZone(this);
 
     /// HACK (dočasný na testování serializace zóny)
@@ -122,15 +122,15 @@ export abstract class Zone extends ContainerEntity
     // );
   }
 
-  protected getShip(id: string): Ship | "Not found"
-  {
-    const ship = this.ships.get(id);
+  // protected getShip(id: string): Ship | "Not found"
+  // {
+  //   const ship = this.ships.get(id);
 
-    if (ship === undefined)
-      return "Not found";
+  //   if (ship === undefined)
+  //     return "Not found";
 
-    return ship;
-  }
+  //   return ship;
+  // }
 
   public update()
   {

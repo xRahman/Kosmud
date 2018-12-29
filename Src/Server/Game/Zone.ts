@@ -23,7 +23,7 @@ export class Zone extends Shared.Zone
 
   // ~ Overrides Shared.Zone.ships.
   //  (We need to override to use Server/Ship instead of Shared/Ship).
-  protected readonly ships = new Map<string, Ship>();
+  protected readonly ships = new Set<Ship>();
 
   // ---------------- Public methods --------------------
 

@@ -15,7 +15,7 @@ export class Zone extends Shared.Zone
 {
   // ~ Overrides Shared.Zone.ships.
   //  (We need to override to use Client/Ship instead of Shared/Ship).
-  protected readonly ships = new Map<string, Ship>();
+  protected readonly ships = new Set<Ship>();
 
   private scene: FlightScene | "Not assigned" = "Not assigned";
 
@@ -67,50 +67,53 @@ export class Zone extends Shared.Zone
 
   public updateShips(shipStates: Array<ZoneUpdate.ShipState>)
   {
-    for (const shipState of shipStates)
-    {
-      const ship = this.getShip(shipState.shipId);
+    /// TODO: Předělat
+    // for (const shipState of shipStates)
+    // {
+    //   const ship = this.getShip(shipState.shipId);
 
-      if (ship === "Not found")
-      {
-        throw new Error(`Failed to update ship because ship`
-          + ` with id ${shipState.shipId} isn't present in`
-          + ` zone ${this.debugId}`);
-      }
+    //   if (ship === "Not found")
+    //   {
+    //     throw new Error(`Failed to update ship because ship`
+    //       + ` with id ${shipState.shipId} isn't present in`
+    //       + ` zone ${this.debugId}`);
+    //   }
 
-      ship.update(shipState);
-    }
+    //   ship.update(shipState);
+    // }
   }
 
-  // ! Throws exception on error.
-  public getPlayerShip()
-  {
-    /// TODO: Odhackovat.
-    const playerShipId = "TEST_FIGHTER_ID";
-    const playerShip = this.getShip(playerShipId);
+  /// TODO: Tohle by asi vůbec nemělo bejt v zóně
+  ///   (player ship bude v accountu).
+  // // ! Throws exception on error.
+  // public getPlayerShip()
+  // {
+  //   /// TODO: Odhackovat.
+  //   const playerShipId = "TEST_FIGHTER_ID";
+  //   const playerShip = this.getShip(playerShipId);
 
-    if (playerShip === "Not found")
-    {
-      throw new Error(`Player ship (id '${playerShipId}')`
-        + ` doesn't exist in zone ${this.debugId}`);
-    }
+  //   if (playerShip === "Not found")
+  //   {
+  //     throw new Error(`Player ship (id '${playerShipId}')`
+  //       + ` doesn't exist in zone ${this.debugId}`);
+  //   }
 
-    return playerShip;
-  }
+  //   return playerShip;
+  // }
 
   // --------------- Protected methods ------------------
 
-  // ~ Overrides Shared.Zone.getShip().
-  //   (We override ancestor version to return client version of ship.)
-  protected getShip(id: string): Ship | "Not found"
-  {
-    const ship = this.ships.get(id);
+  // // ~ Overrides Shared.Zone.getShip().
+  // //   (We override ancestor version to return client version of ship.)
+  // protected getShip(id: string): Ship | "Not found"
+  // {
+  //   const ship = this.ships.get(id);
 
-    if (ship === undefined)
-      return "Not found";
+  //   if (ship === undefined)
+  //     return "Not found";
 
-    return ship;
-  }
+  //   return ship;
+  // }
 
   // ~ Overrides Shared.Zone.createTilemap().
 //   protected async createTilemap(config: Shared.Zone.TilemapConfig)

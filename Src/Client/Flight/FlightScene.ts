@@ -3,7 +3,7 @@ import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneInput } from "../../Client/Flight/FlightSceneInput";
 import { FlightSceneGUI } from "../../Client/Flight/FlightSceneGUI";
 import { Scene } from "../../Client/Engine/Scene";
-import { Connection } from "../Net/Connection";
+import { Connection } from "../../Client/Net/Connection";
 
 interface AnimatedTilesPlugin
 {
@@ -53,7 +53,10 @@ export class FlightScene extends Scene
 
   public moveWaypoint(position: { x: number; y: number })
   {
-    this.getZone().getPlayerShip().setWaypoint(position);
+    /// TODO: Opravit (player ship je v accountu).
+    // this.getZone().getPlayerShip().setWaypoint(position);
+    /// Nějak takhle (jestli bude account v Connection):
+    /// Connection.getAccount().getPlayerShip().setWaypoint(position);
 
     return this.getSceneGUI().moveWaypoint(position);
   }

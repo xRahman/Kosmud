@@ -18,7 +18,7 @@ export class Zones extends Shared.Zones
 
   protected static version = 0;
 
-  // ~ Override Shared.Zones.zones becuase we need to work
+  // ~ Override Shared.Zones.zones so we can work
   //   with server-side version of Zone.
   protected zones = new Set<Zone>();
 
