@@ -113,12 +113,13 @@ export abstract class Zone extends ContainerEntity
     this.ships.set(ship.getId(), ship);
     ship.setZone(this);
 
-    ship.addToPhysicsWorld
-    (
-      // ! Throws exception on error.
-      this.getPhysicsWorld(),
-      this
-    );
+    /// HACK (dočasný na testování serializace zóny)
+    // ship.addToPhysicsWorld
+    // (
+    //   // ! Throws exception on error.
+    //   this.getPhysicsWorld(),
+    //   this
+    // );
   }
 
   protected getShip(id: string): Ship | "Not found"

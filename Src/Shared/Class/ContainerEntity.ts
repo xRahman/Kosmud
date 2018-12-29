@@ -6,6 +6,8 @@
 
 import { Entity } from "../../Shared/Class/Entity";
 
+export const CONTENTS = "contents";
+
 export class ContainerEntity extends Entity
 {
   private container: ContainerEntity | "Not in container" = "Not in container";

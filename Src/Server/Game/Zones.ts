@@ -8,7 +8,6 @@ import { Serializable } from "../../Shared/Class/Serializable";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Zone } from "../../Server/Game/Zone";
-import { Ships } from "../../Server/Game/Ships";
 import { Entities } from "../../Server/Class/Entities";
 import * as Shared from "../../Shared/Game/Zones";
 
@@ -90,7 +89,7 @@ export class Zones extends Shared.Zones
   {
     for (const zone of this.zones)
     {
-      if (zone.isValid() === false)
+      if (!zone.isValid())
       {
         // ! Throws exception on error.
         const loadedZone = await loadZone(zone.getId());
@@ -108,13 +107,6 @@ export class Zones extends Shared.Zones
     {
       // ! Throws exception on error.
       await zone.loadAssets();
-
-      /// TEST:
-      zone.setName("Test zone");
-      const ship = Ships.newShip("Fighter");
-      ship.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
-      zone.addShip(ship);
-      zone.save();
     }
   }
 }

@@ -7,7 +7,8 @@
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { timeOfBoot } from "../../Server/KosmudServer";
-import { PROTOTYPE_ID, Entity } from "../../Shared/Class/Entity";
+import { ID, PROTOTYPE_ID } from "../../Shared/Class/Serializable";
+// import { Entity } from "../../Shared/Class/Entity";
 import * as Shared from "../../Shared/Class/Entities";
 
 export class Entities extends Shared.Entities
@@ -47,19 +48,38 @@ export class Entities extends Shared.Entities
     return `${id}.json`;
   }
 
-  // ------------- Private static methods ---------------
-
-  // ! Throws exception on error.
-  private static loadEntityFromJson(json: string, id: string)
+  public static loadEntityFromJsonObject
+  (
+    jsonObject: object,
+    expectedId?: string
+  )
   {
-    // ! Throws exception on error.
-    const jsonObject = JsonObject.parse(json);
-    const prototypeId = readPrototypeId(jsonObject);
+    const id = readId(jsonObject, ID);
+
+    if (expectedId !== undefined && expectedId !== id)
+    {
+      throw new Error(`Failed to load entity from json object because`
+        + ` contained id ${id} differs expected id ${expectedId} (which`
+        + ` is part of the name of file where the entity is saved)`);
+    }
+
+    const prototypeId = readId(jsonObject, PROTOTYPE_ID);
     // ! Throws exception on error.
     const prototype = this.get(prototypeId);
     const entity = this.instantiateEntity(prototype, id);
 
     return entity.deserialize(jsonObject);
+  }
+
+  // ------------- Private static methods ---------------
+
+  // ! Throws exception on error.
+  private static loadEntityFromJson(json: string, expectedId: string)
+  {
+    // ! Throws exception on error.
+    const jsonObject = JsonObject.parse(json);
+
+    return this.loadEntityFromJsonObject(jsonObject, expectedId);
   }
 
   private static generateId()
@@ -82,14 +102,14 @@ export class Entities extends Shared.Entities
 // ----------------- Auxiliary Functions ---------------------
 
 // ! Throws exception on error.
-function readPrototypeId(jsonData: object)
+function readId(jsonData: object, propertyName: string)
 {
-  const prototypeId = (jsonData as any)[PROTOTYPE_ID];
+  const id = (jsonData as any)[propertyName];
 
-  if (!prototypeId)
+  if (!id)
   {
-    throw new Error(`Missing or invalid ${PROTOTYPE_ID} in entity json data`);
+    throw new Error(`Missing or invalid ${propertyName} in entity json data`);
   }
 
-  return prototypeId;
+  return id;
 }

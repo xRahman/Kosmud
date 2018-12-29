@@ -1,0 +1,49 @@
+{
+  "className": "Zone",
+  "id": "1-jq9ojani",
+  "prototypeId": "Zone",
+  "name": "Test zone",
+  "version": 0,
+  "contents":
+  {
+    "className": "Entity contents",
+    "version": 0,
+    "contents": [
+    {
+      "className": "Ship",
+      "id": "2-jq9ojani",
+      "prototypeId": "Ship",
+      "name": "Fighter",
+      "version": 0,
+      "vehiclePhysics":
+      {
+        "className": "VehiclePhysics",
+        "version": 0,
+        "shapeId": "Fighter shape"
+      },
+      "container":
+      {
+        "className": "Reference",
+        "id": "1-jq9ojani",
+        "version": 0
+      },
+      "zone":
+      {
+        "className": "Reference",
+        "id": "1-jq9ojani",
+        "version": 0
+      }
+    }]
+  },
+  "ships":
+  {
+    "className": "Map",
+    "version": 0,
+    "map": [["2-jq9ojani",
+    {
+      "className": "Reference",
+      "id": "2-jq9ojani",
+      "version": 0
+    }]]
+  }
+}

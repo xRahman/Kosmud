@@ -7,6 +7,7 @@
 // Augment global namespace with number-related functions and constants.
 import "../../Shared/Utils/Number";
 
+import { Attributes } from "../../Shared/Class/Attributes";
 import { Angle } from "../../Shared/Utils/Angle";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { PositiveNumber } from "../../Shared/Utils/PositiveNumber";
@@ -23,6 +24,8 @@ import { Serializable } from "../../Shared/Class/Serializable";
 
 export class VehiclePhysics extends Serializable
 {
+  protected static version = 0;
+
   // These are constants. They only change if you install a new engine
   // into the vehicle or something like that.
   public readonly MAX_SPEED = new PositiveNumber(3);
@@ -40,8 +43,13 @@ export class VehiclePhysics extends Serializable
   // These variables reflect buffs and debuffs that change
   // current thrust, maximum speed or maximum angular velocity.
   public readonly thrustMultiplier = new NonnegativeNumber(1);
+  protected static thrustMultiplier: Attributes = { saved: false };
+
   public readonly speedMultiplier = new NonnegativeNumber(1);
+  protected static speedMultiplier: Attributes = { saved: false };
+
   public readonly angularVelocityMultiplier = new NonnegativeNumber(1);
+  protected static angularVelocityMultiplier: Attributes = { saved: false };
 
   /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
   ///   Property 'initialPosition' se totiž používá jen při vkládání
@@ -54,22 +62,35 @@ export class VehiclePhysics extends Serializable
 
   // These variables are updated in steering forces computation
   // and are sent to the client to be drawn in debug mode.
+
   public readonly desiredVelocity = new Vector();
+  protected static desiredVelocity: Attributes = { saved: false };
+
   public readonly steeringForce = new Vector();
+  protected static steeringForce: Attributes = { saved: false };
+
   // (This variable is not sent to the client, only torqueRatio is sent).
   public torque = 0;
+  protected static torque: Attributes = { saved: false };
 
+  /// TODO: Předělat na entitu PhysicsShape.
   public shapeId = "<missing physics shape id>";
 
-  /// TODO: Tohle by se nemělo savovat (až budu řešit savování).
   private physicsBody: PhysicsBody | "Not in physics world" =
     "Not in physics world";
+  protected static physicsBody: Attributes = { saved: false };
 
   // These variables are updated in steering forces computation and are
   // sent to the client where they are used for displaying ship thrusters.
+
   private forwardThrustRatio = 0;
+  protected static forwardThrustRatio: Attributes = { saved: false };
+
   private leftwardThrustRatio = 0;
+  protected static leftwardThrustRatio: Attributes = { saved: false };
+
   private torqueRatio = 0;
+  protected static torqueRatio: Attributes = { saved: false };
 
   private readonly waypoint =
   {

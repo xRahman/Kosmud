@@ -4,12 +4,11 @@
   Server-side game simulation.
 */
 
-// import { Zone } from "../../Server/Game/Zone";
 import { Zones } from "../../Server/Game/Zones";
-// import { Connections } from "../../Server/Net/Connections";
 
 /// TEST
-// import { Ship } from "../../Server/Game/Ship";
+import { Zone } from "../../Server/Game/Zone";
+import { Ships } from "../../Server/Game/Ships";
 
 let zones: Zones | "Not loaded" = "Not loaded";
 
@@ -27,9 +26,12 @@ export namespace Game
     zones = await Zones.load();
 
     /// TEST
-    // const zone = zones.newZone();
-    // await zone.save();
-    // await zones.save();
+    const zone = zones.newZone("Test zone");
+    const ship = Ships.newShip("Fighter");
+    ship.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
+    zone.addShip(ship);
+    await zone.save();
+    await zones.save();
   }
 }
 

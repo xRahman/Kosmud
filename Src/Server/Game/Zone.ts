@@ -6,6 +6,7 @@
 */
 
 import { Serializable } from "../../Shared/Class/Serializable";
+import { CONTENTS, ContainerEntity } from "../../Shared/Class/ContainerEntity";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
@@ -69,11 +70,18 @@ export class Zone extends Shared.Zone
       return "Property isn't serialized customly";
 
     if (param.property === this.getContents())
-    {
-      console.log(`Serializing zone contents`);
-    }
+      return this.serializeContents(param.property, "Save to file");
 
     return "Property isn't serialized customly";
+  }
+
+  // ~ Overrides Serializable.customDeserializeProperty.
+  protected customDeserializeProperty(param: Serializable.DeserializeParam)
+  {
+    if (param.propertyName === CONTENTS)
+      return this.deserializeContents(param.sourceProperty);
+
+    return "Property isn't deserialized customly";
   }
 
   // ---------------- Private methods -------------------
@@ -88,6 +96,45 @@ export class Zone extends Shared.Zone
 
       this.addTilemap(tilemap);
     }
+  }
+
+  private serializeContents
+  (
+    contents: Set<ContainerEntity>,
+    mode: Serializable.Mode
+  )
+  {
+    const serializedContents = new Array<object>();
+
+    // Unlike other entities, zone saves all of it's containing
+    // entities into the same json.
+    for (const entity of contents)
+      serializedContents.push(entity.saveToJsonObject(mode));
+
+    const result =
+    {
+      className: "EntityContents",
+      version: 0,
+      contents: serializedContents
+    };
+
+    return result;
+  }
+
+  private deserializeContents(sourceProperty: object)
+  {
+    const contents = new Set();
+    const serializedContents =
+      (sourceProperty as any)[CONTENTS] as Array<object>;
+
+    for (const serializedEntity of serializedContents)
+    {
+      const entity = Entities.loadEntityFromJsonObject(serializedEntity);
+
+      contents.add(entity);
+    }
+
+    return contents;
   }
 }
 

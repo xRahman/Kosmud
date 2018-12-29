@@ -75,6 +75,7 @@ const VECTOR_Y = "y";
 const MAP = "map";
 const SET = "set";
 export const ID = "id";
+export const PROTOTYPE_ID = "prototypeId";
 
 interface ObjectType { [key: string]: any; }
 
@@ -150,7 +151,7 @@ export class Serializable extends Attributable
 
   // ! Throws exception on error.
   // Extracts data from plain javascript object to this instance.
-  public deserialize(jsonObject: object, path?: string): Serializable
+  public deserialize(jsonObject: object, path?: string): this
   {
     // ! Throws exeption if versions don't match.
     this.versionMatchCheck(jsonObject, path);
@@ -187,6 +188,58 @@ export class Serializable extends Attributable
     return this;
   }
 
+  // ! Throws exception on error.
+  // Creates primitive Javascript object and fills it with properties
+  // of 'this'. Data types that can't be directly serialized to JSON
+  // (like Set or Map) are converted to something serializable (Array,
+  //  string, etc).
+  public saveToJsonObject(mode: Serializable.Mode): object
+  {
+    let jsonObject = {};
+
+    // A little hack - save 'name', 'id', 'version' and 'className' properties
+    // first (out of order) to make saved JSON files more readable.
+    jsonObject = this.writeClassName(jsonObject);
+    jsonObject = this.writeId(jsonObject, ID);
+    jsonObject = this.writeId(jsonObject, PROTOTYPE_ID);
+    jsonObject = this.writeName(jsonObject);
+    jsonObject = this.writeVersion(jsonObject, mode);
+
+    // Cycle through all properties in source object.
+    for (const propertyName in this)
+    {
+      // Skip 'name' and 'className' properties because they are already
+      // saved by hack (we don't have to skip 'version' property because
+      // it is static).
+      if (isSkippedProperty(propertyName))
+        continue;
+
+      // Skip inherited properties (they are serialized on prototype entity).
+      if (!this.hasOwnProperty(propertyName))
+        continue;
+
+      // Check if property is flagged to be serialized.
+      if (!this.isSerialized(propertyName, mode))
+        continue;
+
+      // Skip nonprimitive properties that don't have any own properties.
+      if (!hasOwnValue(this[propertyName]))
+        continue;
+
+      (jsonObject as any)[propertyName] = this.serializeProperty
+      (
+        {
+          property: this[propertyName],
+          description: propertyName,
+          className: this.getClassName(),
+          mode
+        }
+      );
+    }
+
+    return jsonObject;
+  }
+
   // -------------- Protected methods -------------------
 
   // This method can be overriden to change how a property is serialized.
@@ -197,6 +250,7 @@ export class Serializable extends Attributable
 
   // This method can be overriden to change how a property is deserialized.
   protected customDeserializeProperty(param: Serializable.DeserializeParam)
+  : any
   {
     return "Property isn't deserialized customly";
   }
@@ -254,52 +308,10 @@ export class Serializable extends Attributable
     return jsonObject;
   }
 
-  // ! Throws exception on error.
-  // Creates primitive Javascript object and fills it with properties
-  // of 'this'. Data types that can't be directly serialized to JSON
-  // (like Set or Map) are converted to something serializable (Array,
-  //  string, etc).
-  private saveToJsonObject(mode: Serializable.Mode): object
+  private writeId(jsonObject: object, propertyName: string)
   {
-    let jsonObject = {};
-
-    // A little hack - save 'name', 'version' and 'className' properties
-    // first (out of order) to make saved JSON files more readable.
-    jsonObject = this.writeClassName(jsonObject);
-    jsonObject = this.writeName(jsonObject);
-    jsonObject = this.writeVersion(jsonObject, mode);
-
-    // Cycle through all properties in source object.
-    for (const propertyName in this)
-    {
-      // Skip 'name' and 'className' properties because they are already
-      // saved by hack (we don't have to skip 'version' property because
-      // it is static).
-      if (propertyName === NAME || propertyName === CLASS_NAME)
-        continue;
-
-      // Skip inherited properties (they are serialized on prototype entity).
-      if (!this.hasOwnProperty(propertyName))
-        continue;
-
-      // Check if property is flagged to be serialized.
-      if (!this.isSerialized(propertyName, mode))
-        continue;
-
-      // Skip nonprimitive properties that don't have any own properties.
-      if (!hasOwnValue(this[propertyName]))
-        continue;
-
-      (jsonObject as any)[propertyName] = this.serializeProperty
-      (
-        {
-          property: this[propertyName],
-          description: propertyName,
-          className: this.getClassName(),
-          mode
-        }
-      );
-    }
+    if (this.hasOwnProperty(propertyName))
+      (jsonObject as any)[propertyName] = (this as any)[propertyName];
 
     return jsonObject;
   }
@@ -1219,6 +1231,14 @@ function getEntityId(entity: ObjectType, param: Serializable.SerializeParam)
   }
 
   return id;
+}
+
+function isSkippedProperty(name: string)
+{
+  return name === NAME
+      || name === CLASS_NAME
+      || name === ID
+      || name === PROTOTYPE_ID;
 }
 
 // ------------------ Type declarations ----------------------

@@ -10,6 +10,8 @@ import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship
 {
+  protected static version = 0;
+
   // ---------------- Public methods --------------------
 
   public getStateUpdate(): ZoneUpdate.ShipState

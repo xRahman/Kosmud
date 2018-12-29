@@ -28,8 +28,6 @@
 import { Types } from "../../Shared/Utils/Types";
 import { ID, Serializable } from "../../Shared/Class/Serializable";
 
-export const PROTOTYPE_ID = "prototypeId";
-
 export class Entity extends Serializable
 {
   private id = "<missing id>";
