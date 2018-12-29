@@ -5,6 +5,7 @@
   (all objects in the same zone can physically influence each other).
 */
 
+import { Serializable } from "../../Shared/Class/Serializable";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
@@ -57,6 +58,22 @@ export class Zone extends Shared.Zone
     }
 
     return new ZoneUpdate(shipStates);
+  }
+
+  // -------------- Protected methods -------------------
+
+  // ~ Overrides Serializable.customSerializeProperty.
+  protected customSerializeProperty(param: Serializable.SerializeParam): any
+  {
+    if (param.mode !== "Save to file")
+      return "Property isn't serialized customly";
+
+    if (param.property === this.getContents())
+    {
+      console.log(`Serializing zone contents`);
+    }
+
+    return "Property isn't serialized customly";
   }
 
   // ---------------- Private methods -------------------

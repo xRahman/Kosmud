@@ -19,12 +19,13 @@ export class EnterFlightResponse extends Shared.EnterFlightResponse
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    const zone = fakeCreateZone();
+    /// TODO: Znovu zprovoznit s novými zónami.
+  // const zone = fakeCreateZone();
 
-    await loadFlightScene(zone);
+  // await loadFlightScene(zone);
 
-    initBackgroundScene();
-    initFlightScene();
+  // initBackgroundScene();
+  // initFlightScene();
 
     /// Tady by asi mělo bejt ještě setnutí stavu GUI, aby se
     /// shownula/hidnula příslušná okna.
@@ -74,13 +75,13 @@ function initBackgroundScene()
 }
 
 /// TEST
-function fakeCreateZone()
-{
-  const zone = new Zone();
+// function fakeCreateZone()
+// {
+//   const zone = new Zone();
 
-  zone.createPhysicsWorld();
+//   zone.createPhysicsWorld();
 
-  return zone;
-}
+//   return zone;
+// }
 
 // This class is registered in Client/Net/Connection.

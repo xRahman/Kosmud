@@ -24,23 +24,23 @@ export class EnterFlightRequest extends Shared.EnterFlightRequest
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    const account = connection.getAccount();
+    // const account = connection.getAccount();
 
-    if (account.hasShip())
-    {
-      sendResponse(connection, account.getShip());
-    }
-    else
-    {
-      /// TEST
-      const fighter = fakeLoadFighter();
+    // if (account.hasShip())
+    // {
+    //   sendResponse(connection, account.getShip());
+    // }
+    // else
+    // {
+    //   /// TEST
+    //   const fighter = fakeLoadFighter();
 
-      // ! Throws exception on error.
-      account.setShip(fighter);
+    //   // ! Throws exception on error.
+    //   account.setShip(fighter);
 
-      // ! Throws exception on error.
-      sendResponse(connection, fighter);
-    }
+    //   // ! Throws exception on error.
+    //   sendResponse(connection, fighter);
+    // }
   }
 }
 
@@ -48,20 +48,20 @@ export class EnterFlightRequest extends Shared.EnterFlightRequest
 
 // ----------------- Auxiliary Functions ---------------------
 
-/// TEST
-function fakeLoadFighter()
-{
-  const fighter = new Ship();
+// /// TEST
+// function fakeLoadFighter()
+// {
+//   const fighter = new Ship();
 
-  /// TEST
-  fighter.setId("TEST_FIGHTER_ID");
-  fighter.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
+//   /// TEST
+//   fighter.setId("TEST_FIGHTER_ID");
+//   fighter.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
 
-  /// Tímhle se ship dostane do zóny.
-  // Game.addShip(fighter);
+//   /// Tímhle se ship dostane do zóny.
+//   // Game.addShip(fighter);
 
-  return fighter;
-}
+//   return fighter;
+// }
 
 function sendResponse(connection: Connection, ship: Ship)
 {

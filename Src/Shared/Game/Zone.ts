@@ -6,6 +6,7 @@
 */
 
 import { REPORT } from "../../Shared/Log/REPORT";
+import { Attributes } from "../../Shared/Class/Attributes";
 import { Ship } from "../../Shared/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
@@ -58,11 +59,15 @@ export abstract class Zone extends ContainerEntity
   };
 
   protected readonly ships = new Map<string, Ship>();
-  protected readonly tilemaps = new Map<string, Tilemap>();
-  protected readonly physicsShapes = new Map<string, Physics.Shape>();
 
-  private physicsWorld: PhysicsWorld | "Doesn't exist" =
-    "Doesn't exist";
+  protected readonly tilemaps = new Map<string, Tilemap>();
+  protected static tilemaps: Attributes = { saved: false };
+
+  protected readonly physicsShapes = new Map<string, Physics.Shape>();
+  protected static physicsShapes: Attributes = { saved: false };
+
+  private physicsWorld: PhysicsWorld | "Doesn't exist" = "Doesn't exist";
+  protected static physicsWorld: Attributes = { saved: false };
 
   // ---------------- Public methods --------------------
 
@@ -88,8 +93,8 @@ export abstract class Zone extends ContainerEntity
     if (shape === undefined)
     {
       throw new Error(`Failed to find physics shape with id '${shapeId}'`
-        + ` in zone ${this.debugId}. Make sure the shape is correctly`
-        + ` listed in zone assets`);
+        + ` in zone ${this.debugId}. Make sure the shape is listed in`
+        + ` zone assets`);
     }
 
     return shape;
@@ -126,20 +131,15 @@ export abstract class Zone extends ContainerEntity
     return ship;
   }
 
-  // ! Throws exception on error.
-  public createPhysicsWorld()
-  {
-    if (this.physicsWorld !== "Doesn't exist")
-    {
-      throw new Error(`Zone ${this.debugId} alread has a physics world`);
-    }
-
-    this.physicsWorld = Physics.createWorld();
-  }
-
   public update()
   {
     this.steerVehicles();
+  }
+
+  // Called after zone is loaded or created.
+  public init()
+  {
+    this.createPhysicsWorld();
   }
 
   // --------------- Protected methods ------------------
@@ -174,6 +174,17 @@ export abstract class Zone extends ContainerEntity
   }
 
   // ---------------- Private methods -------------------
+
+  // ! Throws exception on error.
+  private createPhysicsWorld()
+  {
+    if (this.physicsWorld !== "Doesn't exist")
+    {
+      throw new Error(`Zone ${this.debugId} alread has a physics world`);
+    }
+
+    this.physicsWorld = Physics.createWorld();
+  }
 
   private steerVehicles()
   {

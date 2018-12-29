@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Static class storing Zones.
+  Saves, loads and manages zones.
 */
 
 import { Zone } from "../../Shared/Game/Zone";

@@ -10,13 +10,20 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Nezapomenout, že po vytvoření zóny se musí zavolat createPhysicsWorld()
-  const zone = new Zone();
-  zone.createPhysicsWorld();
-- v konstruktoru to bejt nemůže, ten se volá jen pro root prototyp.
+TODO: Server/Zone.customSerializeProperty()
 
-TODO: loadovat zónu při startu serveru (Game.load()).
-- vyrobit do ní ship
+Assets se mi v zóně nesavujou, protože nejsou setnuté do instance,
+  ale do prototypu.
+  - savovat se každopádně assets maj, byť teda trochu jinak.
+TODO: Zruišit assets z prototypu Zóny a nasetovat je do savu test zóny.
+
+TODO: Projít Zone a důsledně zakázat savování všeho, co se nemá savovat.
+[done]
+
+TODO: Založit Ships (nejspíš classu).
+[done]
+
+TODO: vyrobit do zóny ship
   (asi taky jednorázově)
 
 TODO: savnout zónu i s lodí (celé contents) do jednoho souboru.
@@ -25,6 +32,10 @@ TODO: implementovat serializaci/deserializaci entities v packetu.
 
 TODO: posílat loď jako součást packetu (EnterFlightResponse).
   - upravit kód, aby se data lodi četla přímo
+
+TODO: Až se budou posílat entity v packetech, tak pořešit
+  posílání properties v zóně (tuším, že tilemapy a tak se zatím
+  předávají přes statickou property nebo tak nějak).
 
 -----------------------
 

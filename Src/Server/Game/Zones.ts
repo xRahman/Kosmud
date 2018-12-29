@@ -1,13 +1,14 @@
 /*
   Part of Kosmud
 
-  Zones and more zones.
+  Saves, loads and manages zones.
 */
 
 import { Serializable } from "../../Shared/Class/Serializable";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Zone } from "../../Server/Game/Zone";
+import { Ships } from "../../Server/Game/Ships";
 import { Entities } from "../../Server/Class/Entities";
 import * as Shared from "../../Shared/Game/Zones";
 
@@ -43,12 +44,15 @@ export class Zones extends Shared.Zones
 
   // ---------------- Public methods --------------------
 
-  public newZone()
+  public newZone(name: string)
   {
-    const className = Zone.name;
-    const zone = Entities.newEntity(className).dynamicCast(Zone);
+    const zone = Entities.newEntity(Zone.name).dynamicCast(Zone);
+
+    zone.setName(name);
 
     this.add(zone);
+
+    zone.init();
 
     return zone;
   }
@@ -104,6 +108,13 @@ export class Zones extends Shared.Zones
     {
       // ! Throws exception on error.
       await zone.loadAssets();
+
+      /// TEST:
+      zone.setName("Test zone");
+      const ship = Ships.newShip("Fighter");
+      ship.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
+      zone.addShip(ship);
+      zone.save();
     }
   }
 }
@@ -120,10 +131,12 @@ async function loadZoneListFromJson(json: string)
 async function loadZone(id: string)
 {
   // ! Throws exception on error.
-  const zone = await Entities.loadEntity(Zone.dataDirectory, id);
+  const zone =
+    (await Entities.loadEntity(Zone.dataDirectory, id)).dynamicCast(Zone);
 
-  // ! Throws exception on error.
-  return zone.dynamicCast(Zone);
+  zone.init();
+
+  return zone;
 }
 
 ClassFactory.registerClassPrototype(Zones);

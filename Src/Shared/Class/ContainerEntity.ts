@@ -11,13 +11,13 @@ export class ContainerEntity extends Entity
   private container: ContainerEntity | "Not in container" = "Not in container";
 
   // Every GameEntity can contain other game entities.
-  private readonly contents = new Map<string, ContainerEntity>();
+  private readonly contents = new Set<ContainerEntity>();
 
   // --------------- Public methods ---------------------
 
   public has(entity: ContainerEntity)
   {
-    return this.contents.has(entity.getId());
+    return this.contents.has(entity);
   }
 
   public isInContainer()
@@ -39,19 +39,9 @@ export class ContainerEntity extends Entity
 
   // --------------- Protected methods ------------------
 
-  protected get(id: string): ContainerEntity | "Not found"
-  {
-    const entity = this.contents.get(id);
-
-    if (entity === undefined)
-      return "Not found";
-
-    return entity;
-  }
-
   protected getContents()
   {
-    return this.contents.values();
+    return this.contents;
   }
 
   // ! Throws exception on error.
@@ -63,14 +53,14 @@ export class ContainerEntity extends Entity
         + ` ${entity.debugId}`);
     }
 
-    this.contents.set(entity.getId(), entity);
+    this.contents.add(entity);
     entity.container = this;
   }
 
   // ! Throws exception on error.
   protected remove(entity: ContainerEntity)
   {
-    const hadEntity = this.contents.delete(entity.getId());
+    const hadEntity = this.contents.delete(entity);
 
     if (!hadEntity)
     {

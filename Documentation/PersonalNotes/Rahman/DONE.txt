@@ -1,3 +1,16 @@
+Je vůbec nějakej důvod, proč mít contents Map a ne Set?
+- není
+[done]
+
+TODO: Nezapomenout, že po vytvoření zóny se musí zavolat createPhysicsWorld()
+  const zone = new Zone();
+  zone.createPhysicsWorld();
+- v konstruktoru to bejt nemůže, ten se volá jen pro root prototyp.
+[done]
+
+TODO: loadovat zónu při startu serveru (Game.load()).
+[done]
+
 TODO: Otázka je, jestli zóny dávat do Game, nebo spíš do World či tak něco
   (World asi ne, to znamená 1 planetu).
 - možná prostě Zones.
