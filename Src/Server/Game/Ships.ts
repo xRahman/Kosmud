@@ -14,7 +14,7 @@ export class Ships extends Shared.Ships
 
   public static newShip(name: string)
   {
-    const ship = Entities.newEntity(Ship.name).dynamicCast(Ship);
+    const ship = Entities.newRootEntity(Ship);
 
     ship.setName(name);
 

@@ -18,8 +18,9 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Engine } from "../../Shared/Engine/Engine";
 import { Zone } from "../../Shared/Game/Zone";
-import { Entity } from "../../Shared/Class/Entity";
+import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Physics } from "../../Shared/Physics/Physics";
+import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 import { Serializable } from "../../Shared/Class/Serializable";
 
 export class VehiclePhysics extends Serializable
@@ -73,8 +74,7 @@ export class VehiclePhysics extends Serializable
   public torque = 0;
   protected static torque: Attributes = { saved: false };
 
-  /// TODO: Předělat na entitu PhysicsShape.
-  public shapeId = "<missing physics shape id>";
+  private shapeAsset: ShapeAsset | "Not set" = "Not set";
 
   private physicsBody: PhysicsBody | "Not in physics world" =
     "Not in physics world";
@@ -100,12 +100,35 @@ export class VehiclePhysics extends Serializable
     direction: new ZeroTo2Pi(0)
   };
 
-  constructor(private readonly entity: Entity)
-  {
-    super();
-  }
+  private vehicle: Vehicle | "Not set" = "Not set";
 
   // --------------- Public accessors -------------------
+
+  // ! Throws exception on error.
+  public setVehicle(vehicle: Vehicle)
+  {
+    if (this.vehicle !== "Not set")
+    {
+      throw new Error(`Failed to set reference to ${vehicle.debugId}`
+        + ` to it's physics because the physics already has a reference`
+        + ` to a vehicle`);
+    }
+
+    this.vehicle = vehicle;
+  }
+
+  // ! Throws exception on error.
+  public getVehicle()
+  {
+    if (this.vehicle === "Not set")
+    {
+      throw new Error(`Missing reference to a respective vehicle in`
+        + ` vehicle physics. Make sure the reference is set in vehicle's`
+        + ` onInstantiation() method`);
+    }
+
+    return this.vehicle;
+  }
 
   public get currentMaxSpeed()
   {
@@ -150,6 +173,19 @@ export class VehiclePhysics extends Serializable
   {
     // ! Throws exception on error.
     return this.getPhysicsBody().getMass().valueOf();
+  }
+
+  // ! Throws exception on error.
+  public setShapeAsset(asset: ShapeAsset)
+  {
+    this.getVehicle().addAsset(asset);
+
+    if (this.shapeAsset !== "Not set")
+      // ! Throws exception on error.
+      this.getVehicle().removeAsset(this.shapeAsset);
+
+    // ! Throws exception on error.
+    this.shapeAsset = this.getVehicle().addAsset(asset);
   }
 
   // ---------------- Public methods --------------------
@@ -243,11 +279,11 @@ export class VehiclePhysics extends Serializable
   public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
   {
     // ! Throws exception on error.
-    const physicsShape = zone.getPhysicsShape(this.shapeId);
+    const physicsShape = zone.getPhysicsShape(this.shapeAsset);
 
     this.physicsBody = physicsWorld.createPhysicsBody
     (
-      this.entity, this, physicsShape
+      this.getVehicle(), this, physicsShape
     );
 
     /// Nothing needs to be initialized for now. I'll leave it here
@@ -361,8 +397,8 @@ export class VehiclePhysics extends Serializable
   {
     if (this.physicsBody === "Not in physics world")
     {
-      throw new Error(`${this.entity.debugId} is not in physics world`
-        + ` yet and doesn't have a physics body`);
+      throw new Error(`${this.getVehicle().debugId} is not in`
+        + ` physics world yet and doesn't have a physics body`);
     }
 
     return this.physicsBody;
@@ -708,7 +744,7 @@ export class VehiclePhysics extends Serializable
   {
     if (speed > Physics.MAXIMUM_POSSIBLE_SPEED)
     {
-      throw new Error(`Vehicle ${this.entity.debugId} attempts to reach`
+      throw new Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
         + ` speed '${speed}' which is greater than maximum speed allowed`
         + ` by Box2d physics engine (${Physics.MAXIMUM_POSSIBLE_SPEED}).`
         + ` There are three ways to handle this: 1 - set lower maximum`
@@ -726,7 +762,7 @@ export class VehiclePhysics extends Serializable
   {
     if (angularVelocity > Physics.MAXIMUM_POSSIBLE_ANGULAR_VELOCITY)
     {
-      throw new Error(`Vehicle ${this.entity.debugId} attempts to reach`
+      throw new Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
         + ` angular velocity '${angularVelocity}' which is greater than`
         + ` maximum angular velocity allowed by Box2d physics engine`
         + ` (${Physics.MAXIMUM_POSSIBLE_ANGULAR_VELOCITY}). There are`

@@ -4,12 +4,15 @@
   GameEntity class ancestor.
 */
 
+import { Asset } from "../../Shared/Asset/Asset";
 import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
 import { Zone } from "../../Shared/Game/Zone";
 
 export class GameEntity extends ContainerEntity
 {
   private zone: Zone | "Not in zone" = "Not in zone";
+
+  private assets = new Set<Asset>();
 
   // --------------- Public methods ---------------------
 
@@ -40,6 +43,31 @@ export class GameEntity extends ContainerEntity
   public isInZone()
   {
     return this.zone !== "Not in zone";
+  }
+
+  // ! Throws exception on error.
+  public addAsset<T extends Asset>(asset: T)
+  {
+    if (this.assets.has(asset))
+    {
+      throw new Error(`${this.debugId} already`
+        + ` contains asset ${asset.debugId}`);
+    }
+
+    this.assets.add(asset);
+
+    return asset;
+  }
+
+  // ! Throws exception on error.
+  public removeAsset(asset: Asset)
+  {
+    if (!this.assets.delete(asset))
+    {
+      throw new Error(`Failed to remove asset ${asset.debugId}`
+        + ` from ${this.debugId} because the entity didn't`
+        + ` have such asset`);
+    }
   }
 }
 

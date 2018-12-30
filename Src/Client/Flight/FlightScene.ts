@@ -1,4 +1,4 @@
-import { Ship } from "../../Client/Game/Ship";
+// import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneInput } from "../../Client/Flight/FlightSceneInput";
 import { FlightSceneGUI } from "../../Client/Flight/FlightSceneGUI";
@@ -36,8 +36,8 @@ export class FlightScene extends Scene
     // ! Throws exception on error.
     this.getZone().initSceneData(this);
 
-    // ! Throws exception on error.
-    this.getZone().addShip(fakeCreateShip());
+    // // ! Throws exception on error.
+    // this.getZone().addShip(fakeCreateShip());
 
     // ! Throws exception on error.
     this.getZone().createModels();
@@ -187,13 +187,3 @@ export namespace FlightScene
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-// ! Throws exception on error.
-function fakeCreateShip()
-{
-  const ship = new Ship();
-  ship.setId("TEST_FIGHTER_ID");
-  ship.physics.shapeId = Zone.FIGHTER_SHAPE_ID;
-
-  return ship;
-}

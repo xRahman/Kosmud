@@ -11,9 +11,7 @@ export namespace Accounts
 {
   export function newAccount()
   {
-    const className = Account.name;
-
-    return Entities.newEntity(className).dynamicCast(Account);
+    return Entities.newRootEntity(Account);
   }
 
   export async function loadAccount()

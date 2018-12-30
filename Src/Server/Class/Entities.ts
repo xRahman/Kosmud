@@ -4,6 +4,7 @@
   Server-side functionality of static class that stores all entities.
 */
 
+import { Types } from "../../Shared/Utils/Types";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { timeOfBoot } from "../../Server/KosmudServer";
@@ -17,6 +18,13 @@ export class Entities extends Shared.Entities
   private static lastIssuedId = 0;
 
   // ------------- Public static methods ----------------
+
+  // ! Throws exception on error.
+  public static newRootEntity<T>(Class: Types.NonabstractClass<T>): T
+  {
+    // ! Throws exception on error.
+    return this.newEntity(Class.name).dynamicCast(Class);
+  }
 
   // ! Throws exception on error.
   public static newEntity

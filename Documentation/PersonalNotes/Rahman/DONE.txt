@@ -1,3 +1,34 @@
+TODO: 2) Předělat assety na entity (nejspíš physics shape, tilemap, sound).
+[done]
+
+TODO: 3) Dávat do lodi reference na použité assety
+  - ideálně do nějakýho pole, ať se dají při přidávání lodi do zóny
+    zpracovávat hromadně
+[done]
+
+TODO: 4) Při přidání lodi do zóny je pushnout do assetů zóny
+  (Tady je teda otázka, jak pořešit, když loď zas ze zóny odeberu.
+   Asi k seznamu assetů v zóně přidat counter, kolikrát je použitej.)
+- tohle udělám jinak (projdu všechny entity v zóně, ty projdou svoje assety).
+[won't do]
+
+TODO: VehiclePhysics dostává entitu jako parametr konstruktoru,
+  to asi nebude fungovat.
+- snad fixed (přes onInstantiate()).
+[done]
+
+TODO: Dávat assetům jména.
+[done]
+
+TODO: Server/Zone.customSerializeProperty()
+[done]
+
+TODO: Projít Zone a důsledně zakázat savování všeho, co se nemá savovat.
+[done]
+
+TODO: Založit Ships (nejspíš classu).
+[done]
+
 TODO: ships v Zóně asi taky nemusí bejt mapa
   (getnout entitu podle idčka jde i z Entities, takže jakékoliv další seznamy
    indexované idčkem postrádají smysl).

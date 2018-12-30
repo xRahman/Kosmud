@@ -45,12 +45,10 @@ export class Zones extends Shared.Zones
 
   public newZone(name: string)
   {
-    const zone = Entities.newEntity(Zone.name).dynamicCast(Zone);
+    const zone = Entities.newRootEntity(Zone);
 
     zone.setName(name);
-
     this.add(zone);
-
     zone.init();
 
     return zone;

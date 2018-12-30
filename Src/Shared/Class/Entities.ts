@@ -95,6 +95,8 @@ export class Entities
 
     this.entities.set(id, entity);
 
+    entity.onInstantiation();
+
     return entity;
   }
 }

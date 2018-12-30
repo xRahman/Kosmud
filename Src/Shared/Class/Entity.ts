@@ -36,6 +36,12 @@ export class Entity extends Serializable
 
   // --------------- Public methods ---------------------
 
+  // This method is called when the entity is instantiated.
+  public onInstantiation()
+  {
+    // Nothing here be default, can be overriden.
+  }
+
   // ~ Overrides Serializable.get debugId().
   public get debugId()
   {

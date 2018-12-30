@@ -10,6 +10,24 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Místo "throw new Error()" používat "throw Error()";
+
+Ad assety: Ještě je tu jedna možnost - nepřekopírovávat reference na assety
+  do zóny a místo toho při loadu projít všechno, co je v zóně a naloadovat
+  od toho assety.
+- bylo by to asi jednodušší.
+- potenciálně bych procházel spoustu entit v zóně, který žádný assety nemají,
+  nebo už je mají loadnutý.
+Na druhou stranu se to dělá jen jednou při loadu zóny a navíc asi jen
+  na klientu, takže pohoda.
+- Pořád to ale asi bude chtít dávat seznam assetů do entity, ať nemusím psát
+  funkci, kde budou muset bejt všechny vyjmenované tak jako tak.
+IDEA: Asset.newXYAsset() by mohlo brát jako parametr GameEntitu a rovnou
+  to do ní přidat.
+  - hmm ovšem většinou se nebudou vyrábět nový ale setovat existující...
+TODO: Udělat to tak, že zóna v loadAssets projde do sebe vnořené entity
+  a ty projdou svoje assety.
+
 Ok, takže jinak.
 TODO: 1) Dočasně to hacknout, abych při přidání lodě do zóny nemusel
   řešit assety (ať můžu vyzkoušet savování zóny s contentem).
@@ -17,18 +35,10 @@ TODO: 1) Dočasně to hacknout, abych při přidání lodě do zóny nemusel
 [done]
 TODO: Nakonec zase odhackovat.
 
-TODO: 2) Předělat assety na entity (nejspíš physics shape, tilemap, sound).
-
-TODO: 3) Dávat do lodi reference na použité assety
-  - ideálně do nějakýho pole, ať se dají při přidávání lodi do zóny
-    zpracovávat hromadně
-
-TODO: 4) Při přidání lodi do zóny je pushnout do assetů zóny
-  (Tady je teda otázka, jak pořešit, když loď zas ze zóny odeberu.
-   Asi k seznamu assetů v zóně přidat counter, kolikrát je použitej.)
-
 TODO: Posílat account na klient
 - asi ho dát do Connection (ať je to stejně jako na serveru).
+
+TODO: Nakonec zase rozchodit lítání do původního stavu.
 
 
 TODO: Výhledově pořešit savování/loadování pozice a rotace lodě.
@@ -38,6 +48,9 @@ TODO: Výhledově zvážit, jestli místo prototypeId nemít rovnou referenci
   na prototyp.
 - asi by bylo trochu míň přehledný save fily (i když ne nějak závratně),
   ale líp by se s tím nejspíš pracovalo.
+Na druhou stranu na prototyp se nejspíš dostanu přes standardní prototype
+  chain, takže asi nepotřebuju extra referenci.
+  (můžu na to udělat metodu getPrototype()).
 
 
 Problém: Nemůžu přidávat ship do zóny, dokud nemá initnutý assety
@@ -47,19 +60,10 @@ Problém: Nemůžu přidávat ship do zóny, dokud nemá initnutý assety
     něco, co je vyžaduje :-)
 TODO: Při přidávání lodi do zóny přidat do zóny assety vyžadované lodí.
 
-TODO: Server/Zone.customSerializeProperty()
-[done]
-
 Assets se mi v zóně nesavujou, protože nejsou setnuté do instance,
   ale do prototypu.
   - savovat se každopádně assets maj, byť teda trochu jinak.
-TODO: Zruišit assets z prototypu Zóny a nasetovat je do savu test zóny.
-
-TODO: Projít Zone a důsledně zakázat savování všeho, co se nemá savovat.
-[done]
-
-TODO: Založit Ships (nejspíš classu).
-[done]
+TODO: Zrušit assets z prototypu Zóny a nasetovat je do savu test zóny.
 
 TODO: vyrobit do zóny ship
   (asi taky jednorázově)

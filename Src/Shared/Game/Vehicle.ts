@@ -11,9 +11,18 @@ import { VehiclePhysics } from "../../Shared/Physics/VehiclePhysics";
 
 export abstract class Vehicle extends GameEntity
 {
-  protected vehiclePhysics = new VehiclePhysics(this);
+  protected vehiclePhysics = new VehiclePhysics();
 
   // ---------------- Public methods --------------------
+
+  // ~ Overrides Entity.onInstantiation()
+  // This method is called when the entity is instantiated.
+  public onInstantiation()
+  {
+    super.onInstantiation();
+
+    this.vehiclePhysics.setVehicle(this);
+  }
 
   public get physics() { return this.vehiclePhysics; }
 
