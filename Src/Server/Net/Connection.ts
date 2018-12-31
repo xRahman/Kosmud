@@ -36,7 +36,7 @@ ClassFactory.registerClassPrototype(SetWaypoint);
 ClassFactory.registerClassPrototype(EnterFlightRequest);
 ClassFactory.registerClassPrototype(LoginRequest);
 
-export class Connection extends Shared.Connection
+export class Connection extends Shared.Connection<Player>
 {
   constructor
   (
@@ -50,12 +50,12 @@ export class Connection extends Shared.Connection
 
   // ---------------- Public methods --------------------
 
-  // ! Throws exception on error.
-  // ~ Overrides Shared.Connection.getPlayer.
-  public getPlayer(): Player
-  {
-    return super.getPlayer().dynamicCast(Player);
-  }
+  // // ! Throws exception on error.
+  // // ~ Overrides Shared.Connection.getPlayer.
+  // public getPlayer(): Player
+  // {
+  //   return super.getPlayer().dynamicCast(Player);
+  // }
 
   public getIpAddress(): string
   {

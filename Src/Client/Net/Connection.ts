@@ -32,7 +32,7 @@ ClassFactory.registerClassPrototype(EnterFlightResponse);
 ClassFactory.registerClassPrototype(KeyboardInput);
 ClassFactory.registerClassPrototype(MouseInput);
 
-export class Connection extends Shared.Connection
+export class Connection extends Shared.Connection<Player>
 {
   private static connection: Connection | "Not connected" = "Not connected";
 
@@ -127,12 +127,12 @@ export class Connection extends Shared.Connection
     return this.getConnection().isLoggedIn();
   }
 
-  // ! Throws exception on error.
-  public static getPlayer()
-  {
-    // ! Throws exception on error.
-    return this.getConnection().getPlayer();
-  }
+  // // ! Throws exception on error.
+  // public static getPlayer()
+  // {
+  //   // ! Throws exception on error.
+  //   return this.getConnection().getPlayer();
+  // }
 
   // ! Throws exception on error.
   public static setPlayer(player: Player)

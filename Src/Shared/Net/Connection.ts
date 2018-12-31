@@ -7,14 +7,14 @@
 import { Player } from "../../Shared/Game/Player";
 import { Socket } from "../../Shared/Net/Socket";
 
-export abstract class Connection extends Socket
+export abstract class Connection<T extends Player> extends Socket
 {
-  public player: Player | "Not logged in" = "Not logged in";
+  public player: T | "Not logged in" = "Not logged in";
 
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public getPlayer(): Player
+  public getPlayer(): T
   {
     if (this.player === "Not logged in")
     {
@@ -25,7 +25,7 @@ export abstract class Connection extends Socket
     return this.player;
   }
 
-  public setPlayer(player: Player)
+  public setPlayer(player: T)
   {
     this.player = player;
   }

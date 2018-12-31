@@ -1,3 +1,15 @@
+TODO: Neměl by bejt player i v Server/Connection?
+  V tom případě bych asi musel vyrobit shared verzi Connection a hodit
+  ho do ní.
+- zjevně tam dokonce je, takže to asi fakt sloučit.
+- místo hasPlayer() použít isLoggedIn().
+Hmm, to nebude tak jednoduchý. Client a server connection jsou zděděné
+  z client a server verze socketů.
+  - ty bych musel zrušit (tzn. věci z nich přesunout do connectionů)
+Asi to dává smysl - věci, co jsou jen na klientu nebo jen na serveru
+  budou pořád jen na klientu nebo jen na serveru. Společné věci budou společné.
+[done]
+
 TODO: Dočistit kód od pozůstatků accountu.
 - zbyly jen v commentech, na to peču.
 [done]

@@ -17,6 +17,9 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
   za T dosaděj příslušnej typ...
   (nemusel bych pak možná přetěžovat metody a tak).
 TODO: Vyzkoušet to a pokud to bude fungovat, tak to použít.
+- Vyzkoušel jsem to u Connection a zdá se, že to funguje.
+[done]
+TODO: Udělat to i o statních class
 
 Short descy na začátku souborů jsou asi naprd - typicky nevím,
  co tam psát, takže tam píšu redundantní věci
@@ -24,17 +27,6 @@ Short descy na začátku souborů jsou asi naprd - typicky nevím,
   protocol).
 TODO: Smazat všechny short descy na začátku souborů
   (nechat tam asi jen "Part of KOSMUD").
-
-TODO: Neměl by bejt player i v Server/Connection?
-  V tom případě bych asi musel vyrobit shared verzi Connection a hodit
-  ho do ní.
-- zjevně tam dokonce je, takže to asi fakt sloučit.
-- místo hasPlayer() použít isLoggedIn().
-Hmm, to nebude tak jednoduchý. Client a server connection jsou zděděné
-  z client a server verze socketů.
-  - ty bych musel zrušit (tzn. věci z nich přesunout do connectionů)
-Asi to dává smysl - věci, co jsou jen na klientu nebo jen na serveru
-  budou pořád jen na klientu nebo jen na serveru. Společné věci budou společné.
 
 TODO: Setovat playera do Client/Connection (v LoginResponse.process()).
 
