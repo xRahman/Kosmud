@@ -1,3 +1,13 @@
+TODO: Dočistit kód od pozůstatků accountu.
+- zbyly jen v commentech, na to peču.
+[done]
+
+TODO: Connection by neměla mít odkaz na zónu, ten by měl bejt
+  v playerovi.
+  (Player by měl sloužit jako kontejner všech věcí, které s ním nějak
+   souvisí.)
+[done]
+
 TODO: Přidávání entity do packetu (odebírání asi nebude potřeba).
 [done]
 

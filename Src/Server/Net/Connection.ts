@@ -4,15 +4,13 @@
   A connection to the server.
 */
 
-// import { Players } from "../../Server/Game/Players";
-import { Player } from "../../Server/Game/Player";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
 import { Packet } from "../../Shared/Protocol/Packet";
-import { Socket } from "../../Server/Net/Socket";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Connections } from "../../Server/Net/Connections";
+import { Player } from "../../Server/Game/Player";
 import { SystemMessage } from "../../Server/Protocol/SystemMessage";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import { EnterFlightResponse } from
@@ -22,6 +20,7 @@ import { MouseInput } from "../../Server/Protocol/MouseInput";
 import { SetWaypoint } from "../../Server/Protocol/SetWaypoint";
 import { EnterFlightRequest } from "../../Server/Protocol/EnterFlightRequest";
 import { LoginRequest } from "../../Server/Protocol/LoginRequest";
+import * as Shared from "../../Shared/Net/Connection";
 
 // 3rd party modules.
 // Use 'isomorphic-ws' to use the same code on both client and server.
@@ -37,47 +36,45 @@ ClassFactory.registerClassPrototype(SetWaypoint);
 ClassFactory.registerClassPrototype(EnterFlightRequest);
 ClassFactory.registerClassPrototype(LoginRequest);
 
-export class Connection extends Socket
+export class Connection extends Shared.Connection
 {
-  public account: Player | "Not logged in" = "Not logged in";
-
-  constructor(webSocket: WebSocket, ip: string, url: string)
+  constructor
+  (
+    webSocket: WebSocket,
+    private readonly ip: string,
+    private readonly url: string
+  )
   {
-    super(webSocket, ip, url);
+    super(webSocket);
   }
 
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public getAccount(): Player
+  // ~ Overrides Shared.Connection.getPlayer.
+  public getPlayer(): Player
   {
-    if (this.account === "Not logged in")
-    {
-      throw new Error(`User ${this.getUserInfo()}`
-      + ` is not logged in yet`);
-    }
-
-    return this.account;
+    return super.getPlayer().dynamicCast(Player);
   }
 
-  public setAccount(account: Player)
+  public getIpAddress(): string
   {
-    this.account = account;
+    return this.ip;
   }
 
-  public isLoggedIn()
+  public getOrigin()
   {
-    return this.account !== "Not logged in";
+    return `(${this.url} [${this.ip}])`;
   }
 
-  /// Tohle by mohl být getter...
-  public getUserInfo()
+  // ~ Overrides Shared.Connection.getPlayerInfo().
+  public getPlayerInfo()
   {
     let info = "";
 
     /// Disabled for now.
-    // if (this.account !== "Not attached")
-    //   info += this.account.getEmail() + " ";
+    // if (this.isLoggedIn())
+    //   info += this.getPlayer().getEmail() + " ";
 
     // Add (url [ip]).
     info += this.getOrigin();
@@ -102,7 +99,7 @@ export class Connection extends Socket
     if (this.isLoggedIn())
     {
       // ! Throws exception on error.
-      const update = this.getAccount().getClientUpdate();
+      const update = this.getPlayer().getClientUpdate();
 
       if (update !== "No update")
         this.send(update);
@@ -116,14 +113,14 @@ export class Connection extends Socket
   private release()
   {
     /// Disabled for now.
-    // // It's ok if account doesn't exist here, it happens
+    // // It's ok if player doesn't exist here, it happens
     // // when browser has opened connection but player hasn't
     // // logged in yet or when player reconnects from different
     // // location and the old connection is closed.
-    // if (this.account !== "Not attached")
+    // if (this.isLoggedIn())
     // {
-    //   this.account.logout();
-    //   this.account = null;
+    //   this.player.logout();
+    //   this.player = null;
     // }
 
     // Release this connection from memory.
@@ -139,7 +136,7 @@ export class Connection extends Socket
 
     if (isNormalDisconnect(event))
     {
-      logNormalDisconnect(this.getUserInfo(), event);
+      logNormalDisconnect(this.getPlayerInfo(), event);
     }
     else
     {

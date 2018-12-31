@@ -20,13 +20,13 @@ export class LoginRequest extends Shared.LoginRequest
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    // /// TEST: Vyrobit a savnout account.
-    // const account = Accounts.newAccount();
-    // await account.save();
+    // /// TEST: Vyrobit a savnout playera.
+    // const player = Players.newPlayer();
+    // await player.save();
 
-    const account = await Players.loadPlayer();
+    const player = await Players.loadPlayer();
 
-    connection.setAccount(account);
+    connection.setPlayer(player);
   }
 }
 

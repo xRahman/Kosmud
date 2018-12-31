@@ -84,7 +84,7 @@ export class Zone extends Shared.Zone
   }
 
   /// TODO: Tohle by asi vůbec nemělo bejt v zóně
-  ///   (player ship bude v accountu).
+  ///   (player ship bude v playerovi).
   // // ! Throws exception on error.
   // public getPlayerShip()
   // {

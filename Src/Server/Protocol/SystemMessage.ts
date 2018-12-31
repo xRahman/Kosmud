@@ -23,7 +23,7 @@ export class SystemMessage extends Shared.SystemMessage
         Syslog.log
         (
           this.messageType,
-          `User ${connection.getUserInfo()} ${this.message}`
+          `User ${connection.getPlayerInfo()} ${this.message}`
         );
         break;
 

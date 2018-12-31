@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Player accounts.
+  Textures, texture atlases, sounds, etc.
 */
 
 import { FileSystem } from "../../Server/FileSystem/FileSystem";

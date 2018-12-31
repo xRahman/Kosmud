@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Player accounts.
+  Players.
 */
 
 import { Entities } from "../../Server/Class/Entities";
@@ -16,7 +16,7 @@ export namespace Players
 
   export async function loadPlayer()
   {
-    // TODO: Determine account id.
+    // TODO: Determine player id.
     /// (Zatím natvrdo.)
     const playerId = "1-jq6wqw3s";
 

@@ -5,10 +5,8 @@
 */
 
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
-import { Entities } from "../../Shared/Class/Entities";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
-import { Zone } from "../../Client/Game/Zone";
 import { Player } from "../../Client/Game/Player";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { SystemMessage } from "../../Shared/Protocol/SystemMessage";
@@ -17,8 +15,8 @@ import { EnterFlightResponse } from
   "../../Client/Protocol/EnterFlightResponse";
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
-import { Socket } from "../../Client/Net/Socket";
 import { LoginRequest } from "../../Shared/Protocol/LoginRequest";
+import * as Shared from "../../Shared/Net/Connection";
 
 /// TEST
 import { EnterFlightRequest } from "../../Shared/Protocol/EnterFlightRequest";
@@ -34,11 +32,9 @@ ClassFactory.registerClassPrototype(EnterFlightResponse);
 ClassFactory.registerClassPrototype(KeyboardInput);
 ClassFactory.registerClassPrototype(MouseInput);
 
-export class Connection extends Socket
+export class Connection extends Shared.Connection
 {
   private static connection: Connection | "Not connected" = "Not connected";
-
-  private player: Player  | "Not set" = "Not set";
 
   constructor(address: string)
   {
@@ -125,10 +121,10 @@ export class Connection extends Socket
   }
 
   // ! Throws exception on error.
-  public static hasPlayer()
+  public static isLoggedIn()
   {
     // ! Throws exception on error.
-    return this.getConnection().hasPlayer();
+    return this.getConnection().isLoggedIn();
   }
 
   // ! Throws exception on error.
@@ -146,6 +142,12 @@ export class Connection extends Socket
   }
 
   // ------------- Private static methods ---------------
+
+  private static browserSupportsWebSockets(): boolean
+  {
+    // tslint:disable-next-line:
+    return typeof WebSocket !== "undefined";
+  }
 
   private static registerBeforeUnloadEvent()
   {
@@ -186,6 +188,22 @@ export class Connection extends Socket
   }
 
   // ---------------- Public methods --------------------
+
+  // ! Throws exception on error.
+  // ~ Overrides Shared.Connection.getPlayer.
+  public getPlayer(): Player
+  {
+    return super.getPlayer().dynamicCast(Player);
+  }
+
+  // ~ Overrides Socket.getOrigin().
+  public getOrigin() { return "the server"; }
+
+  // ~ Overrides Shared.Connection.getPlayerInfo().
+  public getPlayerInfo()
+  {
+    return "the player";
+  }
 
   // Disabled for now
   // // Sends system message to the connection.
@@ -246,36 +264,6 @@ export class Connection extends Socket
       // ! Throws exception on error.
       packet.serialize("Send to server")
     );
-  }
-
-  // ---------------- Private methods -------------------
-
-  private hasPlayer()
-  {
-    return this.player !== "Not set";
-  }
-
-  // ! Throws exception on error.
-  private getPlayer()
-  {
-    if (this.player === "Not set")
-    {
-      throw new Error(`Player is not set to the connection yet`);
-    }
-
-    return this.player;
-  }
-
-  // ! Throws exception on error.
-  private setPlayer(player: Player)
-  {
-    if (this.player !== "Not set")
-    {
-      throw new Error(`Player ${this.player.debugId} is already set`
-        + ` to the connection`);
-    }
-
-    this.player = player;
   }
 }
 

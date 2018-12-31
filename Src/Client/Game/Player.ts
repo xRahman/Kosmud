@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Player account.
+  Player.
 */
 
 import { Ship } from "../../Client/Game/Ship";

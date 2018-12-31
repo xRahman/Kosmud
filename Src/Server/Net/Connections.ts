@@ -22,7 +22,7 @@ export namespace Connections
     if (!connections.has(connection))
     {
       throw new Error(`Attempt to release connection`
-        + ` ${connection.getUserInfo()} which doesn't exist`);
+        + ` ${connection.getPlayerInfo()} which doesn't exist`);
     }
 
     connections.delete(connection);
@@ -58,7 +58,7 @@ export namespace Connections
       catch (error)
       {
         REPORT(error, `Failed to broadcast packet to connection`
-          + ` ${connection.getUserInfo()}`);
+          + ` ${connection.getPlayerInfo()}`);
       }
     }
   }

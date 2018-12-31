@@ -10,14 +10,31 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Connection by neměla mít odkaz na zónu, ten by měl bejt
-  v playerovi.
-  (Player by měl sloužit jako kontejner všech věcí, které s ním nějak
-   souvisí.)
+ÚVAHA: Několikrát jsem narazil na problém, že potomci mají stejnou
+  property (třeba player), ale potřebují pracovat s client nebo server
+  verzí.
+- možná by shared classa mohla bejt generic s tím, že si potomci
+  za T dosaděj příslušnej typ...
+  (nemusel bych pak možná přetěžovat metody a tak).
+TODO: Vyzkoušet to a pokud to bude fungovat, tak to použít.
+
+Short descy na začátku souborů jsou asi naprd - typicky nevím,
+ co tam psát, takže tam píšu redundantní věci
+ (třeba to, že je packet součástí prototcolu je daný už tím, že je v adresáři
+  protocol).
+TODO: Smazat všechny short descy na začátku souborů
+  (nechat tam asi jen "Part of KOSMUD").
 
 TODO: Neměl by bejt player i v Server/Connection?
   V tom případě bych asi musel vyrobit shared verzi Connection a hodit
   ho do ní.
+- zjevně tam dokonce je, takže to asi fakt sloučit.
+- místo hasPlayer() použít isLoggedIn().
+Hmm, to nebude tak jednoduchý. Client a server connection jsou zděděné
+  z client a server verze socketů.
+  - ty bych musel zrušit (tzn. věci z nich přesunout do connectionů)
+Asi to dává smysl - věci, co jsou jen na klientu nebo jen na serveru
+  budou pořád jen na klientu nebo jen na serveru. Společné věci budou společné.
 
 TODO: Setovat playera do Client/Connection (v LoginResponse.process()).
 
