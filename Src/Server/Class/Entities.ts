@@ -8,7 +8,6 @@ import { Types } from "../../Shared/Utils/Types";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { timeOfBoot } from "../../Server/KosmudServer";
-import { ID, PROTOTYPE_ID } from "../../Shared/Class/Serializable";
 // import { Entity } from "../../Shared/Class/Entity";
 import * as Shared from "../../Shared/Class/Entities";
 
@@ -56,29 +55,6 @@ export class Entities extends Shared.Entities
     return `${id}.json`;
   }
 
-  public static loadEntityFromJsonObject
-  (
-    jsonObject: object,
-    expectedId?: string
-  )
-  {
-    const id = readId(jsonObject, ID);
-
-    if (expectedId !== undefined && expectedId !== id)
-    {
-      throw new Error(`Failed to load entity from json object because`
-        + ` contained id ${id} differs expected id ${expectedId} (which`
-        + ` is part of the name of file where the entity is saved)`);
-    }
-
-    const prototypeId = readId(jsonObject, PROTOTYPE_ID);
-    // ! Throws exception on error.
-    const prototype = this.get(prototypeId);
-    const entity = this.instantiateEntity(prototype, id);
-
-    return entity.deserialize(jsonObject);
-  }
-
   // ------------- Private static methods ---------------
 
   // ! Throws exception on error.
@@ -105,19 +81,4 @@ export class Entities extends Shared.Entities
 
     return `${idCounter}-${bootTime}`;
   }
-}
-
-// ----------------- Auxiliary Functions ---------------------
-
-// ! Throws exception on error.
-function readId(jsonData: object, propertyName: string)
-{
-  const id = (jsonData as any)[propertyName];
-
-  if (!id)
-  {
-    throw new Error(`Missing or invalid ${propertyName} in entity json data`);
-  }
-
-  return id;
 }

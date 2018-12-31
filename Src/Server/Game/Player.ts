@@ -5,50 +5,18 @@
 */
 
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
-import { Ship } from "../../Server/Game/Ship";
 import { Zone } from "../../Server/Game/Zone";
 import { Entities } from "../../Server/Class/Entities";
-import { Entity } from "../../Shared/Class/Entity";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
+import * as Shared from "../../Shared/Game/Player";
 
-export class Account extends Entity
+export class Player extends Shared.Player
 {
-  public static dataDirectory = "./Data/Accounts/";
+  public static dataDirectory = "./Data/Players/";
 
   protected static version = 0;
 
-  private ship: Ship | "Not assigned" = "Not assigned";
-
   // ---------------- Public methods --------------------
-
-  // ! Throws exception on error.
-  public setShip(ship: Ship)
-  {
-    if (this.ship !== "Not assigned")
-    {
-      throw new Error(`Account ${this.debugId} already has assigned`
-        + ` ship ${this.ship.debugId}`);
-    }
-
-    this.ship = ship;
-  }
-
-  public hasShip()
-  {
-    return this.ship !== "Not assigned";
-  }
-
-  // ! Throws exception on error.
-  public getShip(): Ship
-  {
-    if (this.ship === "Not assigned")
-    {
-      throw new Error(`Account ${this.debugId} doesn't`
-        + ` have a ship assigned`);
-    }
-
-    return this.ship;
-  }
 
   // ! Throws exception on error.
   public async save()
@@ -59,16 +27,16 @@ export class Account extends Entity
     const data = this.serialize("Save to file");
 
     // ! Throws exception on error.
-    await FileSystem.writeFile(Account.dataDirectory, fileName, data);
+    await FileSystem.writeFile(Player.dataDirectory, fileName, data);
   }
 
   public getClientUpdate(): ZoneUpdate | "No update"
   {
-    if (!this.hasShip())
+    if (!this.hasActiveShip())
       return "No update";
 
     // ! Throws exception on error.
-    const ship = this.getShip();
+    const ship = this.getActiveShip();
 
     if (!ship.isInZone())
       return "No update";
@@ -80,4 +48,4 @@ export class Account extends Entity
   }
 }
 
-Entities.createRootPrototypeEntity(Account);
+Entities.createRootPrototypeEntity(Player);

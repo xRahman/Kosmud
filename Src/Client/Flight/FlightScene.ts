@@ -53,10 +53,7 @@ export class FlightScene extends Scene
 
   public moveWaypoint(position: { x: number; y: number })
   {
-    /// TODO: Opravit (player ship je v accountu).
-    // this.getZone().getPlayerShip().setWaypoint(position);
-    /// Nějak takhle (jestli bude account v Connection):
-    /// Connection.getAccount().getPlayerShip().setWaypoint(position);
+    Connection.getPlayer().getActiveShip().setWaypoint(position);
 
     return this.getSceneGUI().moveWaypoint(position);
   }

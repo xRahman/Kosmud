@@ -10,21 +10,26 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Connection by neměla mít odkaz na zónu, ten by měl bejt
+  v playerovi.
+  (Player by měl sloužit jako kontejner všech věcí, které s ním nějak
+   souvisí.)
+
+TODO: Neměl by bejt player i v Server/Connection?
+  V tom případě bych asi musel vyrobit shared verzi Connection a hodit
+  ho do ní.
+
+TODO: Setovat playera do Client/Connection (v LoginResponse.process()).
+
+TODO: LoginResponse neexistoval - přidělal jsem shared verzi, ale ještě
+  bude potřeba client verze, kde se bude processit.
+
+
+TODO: Projít všechny packety a při setování entity do packetu
+  je přidávat do .entities v packetu.
+
 TODO: Místo "throw new Error()" používat "throw Error()";
 
-Ad assety: Ještě je tu jedna možnost - nepřekopírovávat reference na assety
-  do zóny a místo toho při loadu projít všechno, co je v zóně a naloadovat
-  od toho assety.
-- bylo by to asi jednodušší.
-- potenciálně bych procházel spoustu entit v zóně, který žádný assety nemají,
-  nebo už je mají loadnutý.
-Na druhou stranu se to dělá jen jednou při loadu zóny a navíc asi jen
-  na klientu, takže pohoda.
-- Pořád to ale asi bude chtít dávat seznam assetů do entity, ať nemusím psát
-  funkci, kde budou muset bejt všechny vyjmenované tak jako tak.
-IDEA: Asset.newXYAsset() by mohlo brát jako parametr GameEntitu a rovnou
-  to do ní přidat.
-  - hmm ovšem většinou se nebudou vyrábět nový ale setovat existující...
 TODO: Udělat to tak, že zóna v loadAssets projde do sebe vnořené entity
   a ty projdou svoje assety.
 

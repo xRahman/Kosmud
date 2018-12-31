@@ -5,9 +5,11 @@
 */
 
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
+import { Entities } from "../../Shared/Class/Entities";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
 import { Zone } from "../../Client/Game/Zone";
+import { Player } from "../../Client/Game/Player";
 import { Packet } from "../../Shared/Protocol/Packet";
 import { SystemMessage } from "../../Shared/Protocol/SystemMessage";
 import { ZoneUpdate } from "../../Client/Protocol/ZoneUpdate";
@@ -36,7 +38,8 @@ export class Connection extends Socket
 {
   private static connection: Connection | "Not connected" = "Not connected";
 
-  private zone: Zone | "Not assigned" = "Not assigned";
+  private zone: Zone | "Not set" = "Not set";
+  private player: Player  | "Not set" = "Not set";
 
   constructor(address: string)
   {
@@ -131,12 +134,26 @@ export class Connection extends Socket
     /// TODO: Výhledově bude player cestovat do různých zón, takže
     ///  se určitě bude přesetovávat existující zóna. Zatím si to tu
     ///  ale nechám, dokud mám jen jednu zónu.
-    if (connection.zone !== "Not assigned")
+    if (connection.zone !== "Not set")
     {
       throw new Error(`Zone is already assigned to the connection`);
     }
 
     connection.zone = zone;
+  }
+
+  // ! Throws exception on error.
+  public static hasPlayer()
+  {
+    // ! Throws exception on error.
+    return this.getConnection().hasPlayer();
+  }
+
+  // ! Throws exception on error.
+  public static getPlayer()
+  {
+    // ! Throws exception on error.
+    return this.getConnection().getPlayer();
   }
 
   // ------------- Private static methods ---------------
@@ -181,10 +198,17 @@ export class Connection extends Socket
 
   // ---------------- Public methods --------------------
 
+  /// TODO: Přesunout do playera.
+  public hasZone()
+  {
+    return this.zone !== "Not set";
+  }
+
   // ! Throws exception on error.
+  /// TODO: Přesunout do playera.
   public getZone()
   {
-    if (this.zone === "Not assigned")
+    if (this.zone === "Not set")
     {
       throw new Error(`Zone is not assigned to the connection yet`);
     }
@@ -192,9 +216,20 @@ export class Connection extends Socket
     return this.zone;
   }
 
-  public hasZoneAssigned()
+  public hasPlayer()
   {
-    return this.zone !== "Not assigned";
+    return this.zone !== "Not set";
+  }
+
+  // ! Throws exception on error.
+  public getPlayer()
+  {
+    if (this.player === "Not set")
+    {
+      throw new Error(`Player is not set to the connection yet`);
+    }
+
+    return this.player;
   }
 
   // Disabled for now

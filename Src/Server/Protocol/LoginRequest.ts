@@ -6,8 +6,8 @@
   (Part of client-server communication protocol.)
 */
 
-// import { Account } from "../../Server/Account/Account";
-import { Accounts } from "../../Server/Account/Accounts";
+// import { Player } from "../../Server/Game/Player";
+import { Players } from "../../Server/Game/Players";
 // import * as Entities from "../../Server/Class/Entities";
 import { Connection } from "../../Server/Net/Connection";
 import * as Shared from "../../Shared/Protocol/LoginRequest";
@@ -24,7 +24,7 @@ export class LoginRequest extends Shared.LoginRequest
     // const account = Accounts.newAccount();
     // await account.save();
 
-    const account = await Accounts.loadAccount();
+    const account = await Players.loadPlayer();
 
     connection.setAccount(account);
   }

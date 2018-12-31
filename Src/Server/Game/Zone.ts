@@ -64,18 +64,20 @@ export class Zone extends Shared.Zone
   // -------------- Protected methods -------------------
 
   // ~ Overrides Serializable.customSerializeProperty.
+  // Serialize all entities from zones's 'contents' to the same save file.
   protected customSerializeProperty(param: Serializable.SerializeParam): any
   {
     if (param.mode !== "Save to file")
       return "Property isn't serialized customly";
 
     if (param.property === this.getContents())
-      return this.serializeContents(param.property, "Save to file");
+      return this.serializeContents(param.property, param.mode);
 
     return "Property isn't serialized customly";
   }
 
   // ~ Overrides Serializable.customDeserializeProperty.
+  // Deserialize all saved contained entities when zone is deserialized.
   protected customDeserializeProperty(param: Serializable.DeserializeParam)
   {
     if (param.propertyName === CONTENTS)

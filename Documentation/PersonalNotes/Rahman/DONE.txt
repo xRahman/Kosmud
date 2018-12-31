@@ -1,3 +1,47 @@
+TODO: Přidávání entity do packetu (odebírání asi nebude potřeba).
+[done]
+
+TODO: Přejmenovat Account na Player.
+[done]
+
+TODO: Shared verze accountu neexistuje - což musí, pokud se má posílat
+  na klient.
+[done]
+
+TODO: Registrovat Player prototyp na klientu (ze Shared to bejt nemůže).
+- zatím se registruje v Shared/Connection. Časem nejspíš bude client
+  verze playera, tak to budu moct přehodit do ní.
+[done]
+
+TODO: Založit rovnou i client verzi playera
+- dát do ní registrování entity (z connection).
+- přetížit getActiveShip() aby vracela client verzi lodi.
+[done]
+
+ÚVAHA: Přijde mi, že v Accountu motám dohromady dvě responsibility.
+- account by měl mít údaje o accountu, tzn. kdy byl vytvořenej, na jakej
+  mail je registrovanej, atd.
+- jakou má zrovna player aktivní loď by v něm bejt nemělo.
+  - jak to ale nazvat? Player?
+Možná tomu rovnou říkat Player místo Account.
+- jaké má hráč lodě, základny, atd.
+- určitě tyhle věci nechci savovat do jinýho souboru.
+
+Ad assety: Ještě je tu jedna možnost - nepřekopírovávat reference na assety
+  do zóny a místo toho při loadu projít všechno, co je v zóně a naloadovat
+  od toho assety.
+- bylo by to asi jednodušší.
+- potenciálně bych procházel spoustu entit v zóně, který žádný assety nemají,
+  nebo už je mají loadnutý.
+Na druhou stranu se to dělá jen jednou při loadu zóny a navíc asi jen
+  na klientu, takže pohoda.
+- Pořád to ale asi bude chtít dávat seznam assetů do entity, ať nemusím psát
+  funkci, kde budou muset bejt všechny vyjmenované tak jako tak.
+IDEA: Asset.newXYAsset() by mohlo brát jako parametr GameEntitu a rovnou
+  to do ní přidat.
+  - hmm ovšem většinou se nebudou vyrábět nový ale setovat existující...
+[úvaha done]
+
 TODO: 2) Předělat assety na entity (nejspíš physics shape, tilemap, sound).
 [done]
 

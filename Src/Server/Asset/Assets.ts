@@ -74,6 +74,7 @@ export namespace Assets
     await FileSystem.writeFile(directory, fileName, data);
   }
 
+/// Vzor pro případný loadování assetů přes Assets.loadAsset().
 // export async function loadAccount()
 // {
 //   // TODO: Determine account id.

@@ -4,8 +4,8 @@
   A connection to the server.
 */
 
-// import { Accounts } from "../../Server/Account/Accounts";
-import { Account } from "../../Server/Account/Account";
+// import { Players } from "../../Server/Game/Players";
+import { Player } from "../../Server/Game/Player";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";
 import { Types } from "../../Shared/Utils/Types";
@@ -39,7 +39,7 @@ ClassFactory.registerClassPrototype(LoginRequest);
 
 export class Connection extends Socket
 {
-  public account: Account | "Not logged in" = "Not logged in";
+  public account: Player | "Not logged in" = "Not logged in";
 
   constructor(webSocket: WebSocket, ip: string, url: string)
   {
@@ -49,7 +49,7 @@ export class Connection extends Socket
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public getAccount(): Account
+  public getAccount(): Player
   {
     if (this.account === "Not logged in")
     {
@@ -60,7 +60,7 @@ export class Connection extends Socket
     return this.account;
   }
 
-  public setAccount(account: Account)
+  public setAccount(account: Player)
   {
     this.account = account;
   }
