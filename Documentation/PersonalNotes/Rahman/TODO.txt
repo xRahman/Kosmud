@@ -10,6 +10,24 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+
+TODO: Prozkoumat private (a možná protected) konstruktory.
+- mělo by to fungovat tak, že class pak jde vyrobit pouze statickou
+  factory metodou (která si samozřejmě vezme isntanci z ClassFactory).
+- Hmm, to by pak mohlo fungovat tak, že všechny dynamické classy budou
+  mít prostě metodu newInstance().
+TODO: Pak je ještě jedna možnost - že by konstruktory fungovaly jako
+  factory funkce (protože konstruktor v zásadě asi může vrátit co chce).
+  - constructor by asi class factory passnul this, takže by ho mohla
+    využít jako root prototyp, pokud by ho ještě neměla. Díky tomu by
+    možná dokonce vůbec nebyla potřeba registrace.
+
+ÚVAHA: Psát si vyráběcí funkci na každou blbost je asi zbytečná spousta
+  kódu.
+TODO: Assets.newXYAsset() předělat na nějakou společnou funkci.
+- Entities.newRootEntity(TextureAsset, name);
+  (Name dát jako optional parametr. Nebo možná dokonce required).
+
 ÚVAHA: Několikrát jsem narazil na problém, že potomci mají stejnou
   property (třeba player), ale potřebují pracovat s client nebo server
   verzí.

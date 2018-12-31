@@ -1,3 +1,4 @@
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Connection } from "../../Client/Net/Connection";
 import { SetWaypoint } from "../../Shared/Protocol/SetWaypoint";
 import { FlightScene } from "../../Client/Flight/FlightScene";
@@ -42,6 +43,10 @@ export class FlightSceneInput extends SceneInput
 
 function sendWaypointUpdate(mousePosition: { x: number; y: number })
 {
+  const packet = ClassFactory.newInstance(SetWaypoint);
+
+  packet.waypoint = mousePosition;
+
   if (Connection.isOpen())
-    Connection.send(new SetWaypoint(mousePosition));
+    Connection.send(packet);
 }

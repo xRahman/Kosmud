@@ -5,6 +5,7 @@
   (all objects in the same zone can physically influence each other).
 */
 
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Serializable } from "../../Shared/Class/Serializable";
 import { CONTENTS, ContainerEntity } from "../../Shared/Class/ContainerEntity";
 import { JsonObject } from "../../Shared/Class/JsonObject";
@@ -58,7 +59,8 @@ export class Zone extends Shared.Zone
       shipStates.push(ship.getStateUpdate());
     }
 
-    return new ZoneUpdate(shipStates);
+    /// TODO: Původně to mělo jako parametr 'shipStates'.
+    return ClassFactory.newInstance(ZoneUpdate);
   }
 
   // -------------- Protected methods -------------------

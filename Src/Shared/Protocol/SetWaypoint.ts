@@ -11,8 +11,5 @@ import { Packet } from "../../Shared/Protocol/Packet";
 
 export class SetWaypoint extends Packet
 {
-  constructor(protected waypoint: { x: number; y: number })
-  {
-    super();
-  }
+  public waypoint: { x: number; y: number } | "Not set" = "Not set";
 }

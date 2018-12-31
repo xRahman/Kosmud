@@ -1,3 +1,11 @@
+TODO: Packety by se neměly vyrábět přes new
+  (new LoginRequest, atd.)
+  ClassFactory.newInstance(Class).
+TODO: Což zároveň znamená, že nemůžu předávat parametry konstruktoru.
+  Otázka teda je, jestli je to až taková výhra...
+  (vlastně asi jo, kvůli tomu, že serializable classy se deserializují)
+[done]
+
 TODO: Neměl by bejt player i v Server/Connection?
   V tom případě bych asi musel vyrobit shared verzi Connection a hodit
   ho do ní.

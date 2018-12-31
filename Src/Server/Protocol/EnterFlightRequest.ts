@@ -6,13 +6,12 @@
   (Part of client-server communication protocol.)
 */
 
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Connection } from "../../Server/Net/Connection";
 import * as Shared from "../../Shared/Protocol/EnterFlightRequest";
 
 /// TEST
 import { Ship } from "../../Server/Game/Ship";
-import { Game } from "../../Server/Game/Game";
-import { Zone } from "../../Server/Game/Zone";
 import { EnterFlightResponse } from
   "../../Shared/Protocol/EnterFlightResponse";
 
@@ -69,12 +68,11 @@ function sendResponse(connection: Connection, ship: Ship)
 
   /// TODO: Tady by se správně měla posílat zóna
   /// (respektive to z ní, co player vidí).
-  const packet = new EnterFlightResponse
-  (
-    // shipState.shape,
-    // shipState.position,
-    // shipState.rotation
-  );
+  const packet = ClassFactory.newInstance(EnterFlightResponse);
+  /// Původní parametry:
+  // shipState.shape,
+  // shipState.position,
+  // shipState.rotation
 
   connection.send(packet);
 }

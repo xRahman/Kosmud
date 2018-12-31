@@ -1,3 +1,4 @@
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { Connection } from "../../Client/Net/Connection";
@@ -109,9 +110,14 @@ function sendKeyboardInput
   if (!Connection.isOpen())
     return;
 
+  const packet = ClassFactory.newInstance(KeyboardInput);
+
+  packet.action = action;
+  packet.startOrStop = startOrStop;
+
   try
   {
-    Connection.send(new KeyboardInput(action, startOrStop));
+    Connection.send(packet);
   }
   catch (error)
   {

@@ -32,7 +32,7 @@ export class Zones extends Shared.Zones
     const readResult = await FileSystem.readFile(path);
 
     if (readResult === "File doesn't exist")
-      return ClassFactory.instantiateClass(Zones);
+      return ClassFactory.newInstance(Zones);
 
     const zones = await loadZoneListFromJson(readResult.data);
 

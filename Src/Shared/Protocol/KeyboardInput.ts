@@ -10,14 +10,9 @@ import { Packet } from "../../Shared/Protocol/Packet";
 
 export class KeyboardInput extends Packet
 {
-  constructor
-  (
-    protected action: KeyboardInput.Action,
-    protected startOrStop: KeyboardInput.StartOrStop
-  )
-  {
-    super();
-  }
+  public action: KeyboardInput.Action | "Not set" = "Not set";
+  public startOrStop: KeyboardInput.StartOrStop | "Not set" = "Not set";
+
 }
 
 // ------------------ Type declarations ----------------------

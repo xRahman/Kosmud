@@ -110,7 +110,7 @@ export class Serializable extends Attributable
         + ` '${CLASS_NAME}' isn't a string`);
     }
 
-    const serializable = ClassFactory.instantiateClassByName(className);
+    const serializable = ClassFactory.newInstance(className);
 
     return serializable.deserialize(jsonObject);
   }
@@ -1122,7 +1122,7 @@ function createNew(param: Serializable.DeserializeParam): object
   // in JSON, it can't be an entity class.
 
   // ! Throws exception on error.
-  return ClassFactory.instantiateClassByName(className);
+  return ClassFactory.newInstance(className);
 }
 
 // Converts 'param.sourceProperty' to a FastBitSet object.

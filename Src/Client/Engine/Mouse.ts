@@ -5,6 +5,7 @@
 */
 
 import { REPORT } from "../../Shared/Log/REPORT";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Vector } from "../../Shared/Physics/Vector";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { Connection } from "../../Client/Net/Connection";
@@ -111,9 +112,13 @@ function sendMouseInput(mousePosition: Vector)
   if (!Connection.isOpen())
     return;
 
+  const packet = ClassFactory.newInstance(MouseInput);
+
+  packet.mousePosition = mousePosition;
+
   try
   {
-    Connection.send(new MouseInput(mousePosition));
+    Connection.send(packet);
   }
   catch (error)
   {

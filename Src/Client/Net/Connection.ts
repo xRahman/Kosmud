@@ -127,12 +127,12 @@ export class Connection extends Shared.Connection<Player>
     return this.getConnection().isLoggedIn();
   }
 
-  // // ! Throws exception on error.
-  // public static getPlayer()
-  // {
-  //   // ! Throws exception on error.
-  //   return this.getConnection().getPlayer();
-  // }
+  // ! Throws exception on error.
+  public static getPlayer()
+  {
+    // ! Throws exception on error.
+    return this.getConnection().getPlayer();
+  }
 
   // ! Throws exception on error.
   public static setPlayer(player: Player)
@@ -323,10 +323,10 @@ function reportConnectionFailure()
 
 function sendEnterFlightRequest()
 {
-  Connection.send(new EnterFlightRequest());
+  Connection.send(ClassFactory.newInstance(EnterFlightRequest));
 }
 
 function sendLoginRequest()
 {
-  Connection.send(new LoginRequest());
+  Connection.send(ClassFactory.newInstance(LoginRequest));
 }

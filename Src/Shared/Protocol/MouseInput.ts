@@ -11,10 +11,7 @@ import { Packet } from "../../Shared/Protocol/Packet";
 
 export class MouseInput extends Packet
 {
-  constructor(protected mousePosition: Vector)
-  {
-    super();
-  }
+  public mousePosition: Vector | "Not set" = "Not set";
 }
 
 // ------------------ Type declarations ----------------------
