@@ -15,7 +15,7 @@ const ENTITIES = "entities";
 
 export class Packet extends Serializable
 {
-  private entities = new Set<Entity>();
+  private readonly entities = new Set<Entity>();
 
   // ---------------- Public methods --------------------
 

@@ -48,7 +48,7 @@ export class FlightScene extends Scene
     // ! Throws exception on error.
     this.createInput();
 
-    this.activate();
+    this.setActive(true);
   }
 
   public moveWaypoint(position: { x: number; y: number })
@@ -60,13 +60,16 @@ export class FlightScene extends Scene
 
   // --------------- Protected methods ------------------
 
-  // ~ Overrides Scene.activate().
-  protected activate()
-  {
-    super.setActive(true);
+  /// To be deleted
+  /// Zóna už se nesetuje do connection
+  /// (Player má activeShip a ta ví, ve které je zóně).
+  // // ~ Overrides Scene.activate().
+  // protected activate()
+  // {
+  //   super.setActive(true);
 
-    Connection.setZone(this.getZone());
-  }
+  //   Connection.setZone(this.getZone());
+  // }
 
   protected loadPlugins()
   {

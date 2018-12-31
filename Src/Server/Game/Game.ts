@@ -40,19 +40,19 @@ export namespace Game
     const tilemapAsset = Assets.newTilemapAsset("Basic ships");
     tilemapAsset.path = "Tilemaps/Ships/basic_ships.json";
     ship.setTilemapAsset(tilemapAsset);
-    Assets.saveAsset(tilemapAsset);
+    await Assets.saveAsset(tilemapAsset);
 
     const shapeAsset = Assets.newShapeAsset("Fighter hull");
     shapeAsset.tilemapAsset = tilemapAsset;
     shapeAsset.objectName = "Hull";
     shapeAsset.objectLayerName = "Basic fighter";
     ship.setShapeAsset(shapeAsset);
-    Assets.saveAsset(shapeAsset);
+    await Assets.saveAsset(shapeAsset);
 
     const exhaustSoundAsset = Assets.newSoundAsset("Exhaust sound 00");
     exhaustSoundAsset.path = "Sound/Ship/Engine/ShipEngine.mp3";
     ship.setExhaustSoundAsset(exhaustSoundAsset);
-    Assets.saveAsset(exhaustSoundAsset);
+    await Assets.saveAsset(exhaustSoundAsset);
 
     zone.addShip(ship);
 

@@ -12,7 +12,7 @@ export class GameEntity extends ContainerEntity
 {
   private zone: Zone | "Not in zone" = "Not in zone";
 
-  private assets = new Set<Asset>();
+  private readonly assets = new Set<Asset>();
 
   // --------------- Public methods ---------------------
 

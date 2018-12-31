@@ -18,8 +18,9 @@ export class ZoneUpdate extends Shared.ZoneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    if (Scenes.getFlightScene().isActive())
-      connection.getZone().updateShips(this.shipStates);
+    /// TODO: Přepsat.
+    // if (Scenes.getFlightScene().isActive())
+    //   connection.getZone().updateShips(this.shipStates);
   }
 }
 
