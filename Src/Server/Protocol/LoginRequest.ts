@@ -6,10 +6,12 @@
   (Part of client-server communication protocol.)
 */
 
-// import { Player } from "../../Server/Game/Player";
+import { Player } from "../../Server/Game/Player";
 import { Players } from "../../Server/Game/Players";
 // import * as Entities from "../../Server/Class/Entities";
 import { Connection } from "../../Server/Net/Connection";
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
+import { LoginResponse } from "../../Shared/Protocol/LoginResponse";
 import * as Shared from "../../Shared/Protocol/LoginRequest";
 
 export class LoginRequest extends Shared.LoginRequest
@@ -27,7 +29,20 @@ export class LoginRequest extends Shared.LoginRequest
     const player = await Players.loadPlayer();
 
     connection.setPlayer(player);
+
+    acceptRequest(connection, player);
   }
+}
+
+// ----------------- Auxiliary Functions ---------------------
+
+function acceptRequest(connection: Connection, player: Player)
+{
+  const response = ClassFactory.newInstance(LoginResponse);
+
+  response.setPlayer(player);
+
+  connection.send(response);
 }
 
 // This class is registered in Server/Net/Connection.

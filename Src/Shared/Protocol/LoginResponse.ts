@@ -11,10 +11,10 @@ import { Packet } from "../../Shared/Protocol/Packet";
 
 export class LoginResponse extends Packet
 {
-  private player: Player;
+  private player: Player | "Not set" = "Not set";
 
   public setPlayer(player: Player)
   {
-    this.player = this.add(player);
+    this.player = this.addEntity(player);
   }
 }

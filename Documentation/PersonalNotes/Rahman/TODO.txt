@@ -10,6 +10,8 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Packet SetWaypoint se může jmenovat prostě jen Waypoint.
+  Nebo WaypointChange, WaypointMove
 
 TODO: Prozkoumat private (a možná protected) konstruktory.
 - mělo by to fungovat tak, že class pak jde vyrobit pouze statickou

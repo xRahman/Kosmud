@@ -30,7 +30,7 @@ export class Packet extends Serializable
   }
 
   // ! Throws exception on error.
-  protected add<T extends Entity>(entity: T): T
+  protected addEntity<T extends Entity>(entity: T): T
   {
     if (this.entities.has(entity))
     {

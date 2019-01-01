@@ -17,8 +17,10 @@ export class SetWaypoint extends Shared.SetWaypoint
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    const waypoint = this.getWaypoint();
+
     // ! Throws exception on error.
-    connection.getPlayer().getActiveShip().physics.setWaypoint(this.waypoint);
+    connection.getPlayer().getActiveShip().physics.setWaypoint(waypoint);
   }
 }
 

@@ -110,7 +110,7 @@ export class Serializable extends Attributable
         + ` '${CLASS_NAME}' isn't a string`);
     }
 
-    const serializable = ClassFactory.newInstance(className);
+    const serializable = ClassFactory.newInstanceByName(className);
 
     return serializable.deserialize(jsonObject);
   }
