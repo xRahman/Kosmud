@@ -1,3 +1,25 @@
+TODO: Zónu serializovat s contentem nejen při savování, ale i při posílání
+  na klienta (místo ZoneUpdate);
+  - tímhle taky vyřeším, co všechno se má posílat po nalogování.
+    Pošle se prostě player a pokud je v zóně, tak zóna.
+Budu asi předpokládat, že loď vždycky musí bejt v nějaký zóně
+  (jinak bych musel řešit případ, kdy player má aktivní loď, ale nemá ji
+   v zóně).
+Hmm, customSerializeProperty() by asi stačilo na serveru, ale co už.
+[done]
+
+TODO: Posílat definice assetů.
+- buď je přihodit do contents zóny (pak se ale budou posílat i při zone updatu,
+  což bych asi musel ošetřit dalším serializable módem), nebo je přibalit
+  při loginu (respektive obecně při loadování nové zóny).
+  - každopádně abych je mohl přibalit, tak je musím mít v nějakém seznamu.
+Buď ten seznam vytvořím při posílání (projdu entity, vytáhnu to z nich),
+  nebo už při vkládání entit do zóny.
+- tohle už jsem řešil a rozhodl sem se projít entity. Fakt ale je, že to
+  nemusím dělat až na klientu při loadování assetů, ale už před posláním
+  zóny (protože beztak musím poslat definice assetů).
+[done]
+
 TODO: Packety by se neměly vyrábět přes new
   (new LoginRequest, atd.)
   ClassFactory.newInstance(Class).

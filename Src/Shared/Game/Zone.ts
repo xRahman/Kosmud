@@ -19,48 +19,48 @@ import { GameEntity } from "../../Shared/Game/GameEntity";
 
 export abstract class Zone extends ContainerEntity<GameEntity>
 {
-  protected readonly assets: Zone.Assets =
-  {
-    textures:
-    [
-      {
-        textureId: "Basic ships Texture",
-        texturePath: "Textures/Ships/basic_ships.png"
-      }
-    ],
-    atlases:
-    [
-      {
-        atlasId: "Exhaust yellow rectangular Texture atlas",
-        atlasJsonPath:
-          "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
-        textureDirectory: "Textures/Effects/Exhausts"
-      }
-    ],
-    sounds:
-    [
-      {
-        soundId: Zone.SHIP_SOUND_ID,
-        soundPath: "Sound/Ship/Engine/ShipEngine.mp3"
-      }
-    ],
-    tilemaps:
-    [
-      {
-        tilemapId: Zone.BASIC_SHIPS_TILEMAP_ID,
-        tilemapJsonPath: "Tilemaps/Ships/basic_ships.json"
-      }
-    ],
-    shapes:
-    [
-      {
-        shapeId: Zone.FIGHTER_SHAPE_ID,
-        tilemapName: Zone.BASIC_SHIPS_TILEMAP_ID,
-        objectLayerName: "Basic fighter",
-        objectName: "Hull"
-      }
-    ]
-  };
+  // protected readonly assets: Zone.Assets =
+  // {
+  //   textures:
+  //   [
+  //     {
+  //       textureId: "Basic ships Texture",
+  //       texturePath: "Textures/Ships/basic_ships.png"
+  //     }
+  //   ],
+  //   atlases:
+  //   [
+  //     {
+  //       atlasId: "Exhaust yellow rectangular Texture atlas",
+  //       atlasJsonPath:
+  //         "Textures/Effects/Exhausts/ExhaustYellowRectangular.json",
+  //       textureDirectory: "Textures/Effects/Exhausts"
+  //     }
+  //   ],
+  //   sounds:
+  //   [
+  //     {
+  //       soundId: Zone.SHIP_SOUND_ID,
+  //       soundPath: "Sound/Ship/Engine/ShipEngine.mp3"
+  //     }
+  //   ],
+  //   tilemaps:
+  //   [
+  //     {
+  //       tilemapId: Zone.BASIC_SHIPS_TILEMAP_ID,
+  //       tilemapJsonPath: "Tilemaps/Ships/basic_ships.json"
+  //     }
+  //   ],
+  //   shapes:
+  //   [
+  //     {
+  //       shapeId: Zone.FIGHTER_SHAPE_ID,
+  //       tilemapName: Zone.BASIC_SHIPS_TILEMAP_ID,
+  //       objectLayerName: "Basic fighter",
+  //       objectName: "Hull"
+  //     }
+  //   ]
+  // };
 
   protected readonly ships = new Set<Ship>();
 
@@ -312,51 +312,51 @@ function steerShip(ship: Ship)
 
 // ------------------ Type declarations ----------------------
 
-export namespace Zone
-{
-  export const FIGHTER_SHAPE_ID = "Fighter shape";
-  export const BASIC_SHIPS_TILEMAP_ID = "Basic ships Tilemap";
-  export const SHIP_SOUND_ID = "Ship Engine Sound";
+// export namespace Zone
+// {
+//   export const FIGHTER_SHAPE_ID = "Fighter shape";
+//   export const BASIC_SHIPS_TILEMAP_ID = "Basic ships Tilemap";
+//   export const SHIP_SOUND_ID = "Ship Engine Sound";
 
-  export interface SoundConfig
-  {
-    soundId: string;
-    soundPath: string;
-  }
+//   export interface SoundConfig
+//   {
+//     soundId: string;
+//     soundPath: string;
+//   }
 
-  export interface TextureConfig
-  {
-    textureId: string;
-    texturePath: string;
-  }
+//   export interface TextureConfig
+//   {
+//     textureId: string;
+//     texturePath: string;
+//   }
 
-  export interface TextureAtlasConfig
-  {
-    atlasId: string;
-    atlasJsonPath: string;
-    textureDirectory: string;
-  }
+//   export interface TextureAtlasConfig
+//   {
+//     atlasId: string;
+//     atlasJsonPath: string;
+//     textureDirectory: string;
+//   }
 
-  export interface TilemapConfig
-  {
-    tilemapId: string;
-    tilemapJsonPath: string;
-  }
+//   export interface TilemapConfig
+//   {
+//     tilemapId: string;
+//     tilemapJsonPath: string;
+//   }
 
-  export interface ShapeConfig
-  {
-    shapeId: string;
-    tilemapName: string;
-    objectLayerName: string;
-    objectName: string;
-  }
+//   export interface ShapeConfig
+//   {
+//     shapeId: string;
+//     tilemapName: string;
+//     objectLayerName: string;
+//     objectName: string;
+//   }
 
-  export interface Assets
-  {
-    textures: Array<TextureConfig>;
-    atlases: Array<TextureAtlasConfig>;
-    sounds: Array<SoundConfig>;
-    tilemaps: Array<TilemapConfig>;
-    shapes: Array<ShapeConfig>;
-  }
-}
+//   export interface Assets
+//   {
+//     textures: Array<TextureConfig>;
+//     atlases: Array<TextureAtlasConfig>;
+//     sounds: Array<SoundConfig>;
+//     tilemaps: Array<TilemapConfig>;
+//     shapes: Array<ShapeConfig>;
+//   }
+// }
