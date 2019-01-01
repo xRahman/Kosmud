@@ -35,4 +35,19 @@ export class Player extends Entity
 
     return this.activeShip;
   }
+
+  public isInZone()
+  {
+    if (this.activeShip === "Not set")
+      return false;
+
+    return this.activeShip.isInZone();
+  }
+
+  // ! Throws exception on error.
+  public getZone()
+  {
+    // ! Throws exception on error.
+    return this.getActiveShip().getZone();
+  }
 }

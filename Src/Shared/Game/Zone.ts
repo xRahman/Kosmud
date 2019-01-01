@@ -7,13 +7,17 @@
 
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Attributes } from "../../Shared/Class/Attributes";
+import { Serializable } from "../../Shared/Class/Serializable";
+import { Entities } from "../../Server/Class/Entities";
 import { Ship } from "../../Shared/Game/Ship";
+import { Asset } from "../../Shared/Asset/Asset";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Physics } from "../../Shared/Physics/Physics";
-import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
+import { CONTENTS, ContainerEntity } from "../../Shared/Class/ContainerEntity";
+import { GameEntity } from "../../Shared/Game/GameEntity";
 
-export abstract class Zone extends ContainerEntity
+export abstract class Zone extends ContainerEntity<GameEntity>
 {
   protected readonly assets: Zone.Assets =
   {
@@ -61,13 +65,22 @@ export abstract class Zone extends ContainerEntity
   protected readonly ships = new Set<Ship>();
 
   protected readonly tilemaps = new Map<string, Tilemap>();
-  protected static tilemaps: Attributes = { saved: false };
+  protected static tilemaps: Attributes =
+  {
+    saved: false, sentToClient: false
+  };
 
   protected readonly physicsShapes = new Map<string, Physics.Shape>();
-  protected static physicsShapes: Attributes = { saved: false };
+  protected static physicsShapes: Attributes =
+  {
+    saved: false, sentToClient: false
+  };
 
   private physicsWorld: PhysicsWorld | "Doesn't exist" = "Doesn't exist";
-  protected static physicsWorld: Attributes = { saved: false };
+  protected static physicsWorld: Attributes =
+  {
+    saved: false, sentToClient: false
+  };
 
   // ---------------- Public methods --------------------
 
@@ -143,6 +156,23 @@ export abstract class Zone extends ContainerEntity
     this.createPhysicsWorld();
   }
 
+  public compileListOfAssets()
+  {
+    const assets = new Set<Asset>();
+
+    for (const entity of this.getContents())
+    {
+      const entityAssets = entity.getAssets();
+
+      for (const asset of entityAssets)
+      {
+        assets.add(asset);
+      }
+    }
+
+    return assets;
+  }
+
   // --------------- Protected methods ------------------
 
   protected addTilemap(tilemap: Tilemap)
@@ -172,6 +202,26 @@ export abstract class Zone extends ContainerEntity
 
       this.addPhysicsShape(config.shapeId, shape);
     }
+  }
+
+  // ~ Overrides Serializable.customSerializeProperty.
+  // Serialize all entities from zones's 'contents' to the same save file.
+  protected customSerializeProperty(param: Serializable.SerializeParam): any
+  {
+    if (param.property === this.getContents())
+      return this.serializeContents(param.property, param.mode);
+
+    return "Property isn't serialized customly";
+  }
+
+  // ~ Overrides Serializable.customDeserializeProperty.
+  // Deserialize all saved contained entities when zone is deserialized.
+  protected customDeserializeProperty(param: Serializable.DeserializeParam)
+  {
+    if (param.propertyName === CONTENTS)
+      return this.deserializeContents(param.sourceProperty);
+
+    return "Property isn't deserialized customly";
   }
 
   // ---------------- Private methods -------------------
@@ -204,6 +254,45 @@ export abstract class Zone extends ContainerEntity
     }
 
     return this.physicsWorld;
+  }
+
+  private serializeContents
+  (
+    contents: Set<ContainerEntity<GameEntity>>,
+    mode: Serializable.Mode
+  )
+  {
+    const serializedContents = new Array<object>();
+
+    // Unlike other entities, zone saves all of it's containing
+    // entities into the same json.
+    for (const entity of contents)
+      serializedContents.push(entity.saveToJsonObject(mode));
+
+    const result =
+    {
+      className: "EntityContents",
+      version: 0,
+      contents: serializedContents
+    };
+
+    return result;
+  }
+
+  private deserializeContents(sourceProperty: object)
+  {
+    const contents = new Set();
+    const serializedContents =
+      (sourceProperty as any)[CONTENTS] as Array<object>;
+
+    for (const serializedEntity of serializedContents)
+    {
+      const entity = Entities.loadEntityFromJsonObject(serializedEntity);
+
+      contents.add(entity);
+    }
+
+    return contents;
   }
 }
 

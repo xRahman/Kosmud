@@ -8,16 +8,17 @@ import { Entity } from "../../Shared/Class/Entity";
 
 export const CONTENTS = "contents";
 
-export class ContainerEntity extends Entity
+export class ContainerEntity<T extends ContainerEntity<T>> extends Entity
 {
-  private container: ContainerEntity | "Not in container" = "Not in container";
+  private container: ContainerEntity<T> | "Not in container" =
+    "Not in container";
 
   // Every GameEntity can contain other game entities.
-  private readonly contents = new Set<ContainerEntity>();
+  private readonly contents = new Set<T>();
 
   // --------------- Public methods ---------------------
 
-  public has(entity: ContainerEntity)
+  public has(entity: T)
   {
     return this.contents.has(entity);
   }
@@ -47,7 +48,7 @@ export class ContainerEntity extends Entity
   }
 
   // ! Throws exception on error.
-  protected insert(entity: ContainerEntity)
+  protected insert(entity: T)
   {
     if (this.has(entity))
     {
@@ -60,7 +61,7 @@ export class ContainerEntity extends Entity
   }
 
   // ! Throws exception on error.
-  protected remove(entity: ContainerEntity)
+  protected remove(entity: T)
   {
     const hadEntity = this.contents.delete(entity);
 

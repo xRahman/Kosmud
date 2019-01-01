@@ -38,11 +38,31 @@ export class LoginRequest extends Shared.LoginRequest
 
 function acceptRequest(connection: Connection, player: Player)
 {
-  const response = ClassFactory.newInstance(LoginResponse);
-
-  response.setPlayer(player);
+  const response = createOkResponse(player);
 
   connection.send(response);
+}
+
+// ! Throws exception on error.
+function createOkResponse(player: Player)
+{
+  // ! Throws exception on error.
+  const response = ClassFactory.newInstance(LoginResponse);
+
+  // ! Throws exception on error.
+  response.setPlayer(player);
+
+  if (player.isInZone())
+  {
+    // ! Throws exception on error.
+    const zone = player.getZone();
+    const assets = zone.compileListOfAssets();
+
+    response.setZone(zone);
+    response.setAssets(assets);
+  }
+
+  return response;
 }
 
 // This class is registered in Server/Net/Connection.

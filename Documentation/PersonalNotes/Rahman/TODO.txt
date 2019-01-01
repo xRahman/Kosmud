@@ -10,6 +10,36 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Posílat definice assetů.
+- buď je přihodit do contents zóny (pak se ale budou posílat i při zone updatu,
+  což bych asi musel ošetřit dalším serializable módem), nebo je přibalit
+  při loginu (respektive obecně při loadování nové zóny).
+  - každopádně abych je mohl přibalit, tak je musím mít v nějakém seznamu.
+Buď ten seznam vytvořím při posílání (projdu entity, vytáhnu to z nich),
+  nebo už při vkládání entit do zóny.
+- tohle už jsem řešil a rozhodl sem se projít entity. Fakt ale je, že to
+  nemusím dělat až na klientu při loadování assetů, ale už před posláním
+  zóny (protože beztak musím poslat definice assetů).
+
+TODO: Možná bych měl spíš explicitně deklarovat, co se savuje a posílá,
+  spíš než co se nesavuje a neposílá.
+  (tzn. setovat saved=true místo saved=false).
+
+TODO: Zónu serializovat s contentem nejen při savování, ale i při posílání
+  na klienta (místo ZoneUpdate);
+  - tímhle taky vyřeším, co všechno se má posílat po nalogování.
+    Pošle se prostě player a pokud je v zóně, tak zóna.
+Budu asi předpokládat, že loď vždycky musí bejt v nějaký zóně
+  (jinak bych musel řešit případ, kdy player má aktivní loď, ale nemá ji
+   v zóně).
+Hmm, customSerializeProperty() by asi stačilo na serveru, ale co už.
+
+TODO: Umožnit deserializaci do existující entity (overwrite mód),
+  abych mohl v zone updatech prostě posílat zónu.
+
+TODO: Projít zónu a všechno, co je do ní vloženo (Ship nejspíš) a zkontrolovat,
+  co se má posílat na klienta.
+
 TODO: Packet SetWaypoint se může jmenovat prostě jen Waypoint.
   Nebo WaypointChange, WaypointMove
 

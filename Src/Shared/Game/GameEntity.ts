@@ -8,7 +8,7 @@ import { Asset } from "../../Shared/Asset/Asset";
 import { ContainerEntity } from "../../Shared/Class/ContainerEntity";
 import { Zone } from "../../Shared/Game/Zone";
 
-export class GameEntity extends ContainerEntity
+export class GameEntity extends ContainerEntity<GameEntity>
 {
   private zone: Zone | "Not in zone" = "Not in zone";
 
@@ -68,6 +68,11 @@ export class GameEntity extends ContainerEntity
         + ` from ${this.debugId} because the entity didn't`
         + ` have such asset`);
     }
+  }
+
+  public getAssets()
+  {
+    return this.assets;
   }
 }
 
