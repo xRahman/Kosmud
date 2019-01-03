@@ -69,7 +69,7 @@ function getZones()
 {
   if (zones === "Not loaded")
   {
-    throw new Error(`Zones aren't loaded yet`);
+    throw Error(`Zones aren't loaded yet`);
   }
 
   return zones;

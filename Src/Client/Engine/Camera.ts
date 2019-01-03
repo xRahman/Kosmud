@@ -29,13 +29,13 @@ function getMainCamera(scene: Scene)
 {
   if (scene.cameras === undefined)
   {
-    throw new Error("Failed to create camera because 'cameras'"
+    throw Error("Failed to create camera because 'cameras'"
       + " don't exist in the scene");
   }
 
   if (scene.cameras.main === undefined)
   {
-    throw new Error("Failed to create camera because 'main'"
+    throw Error("Failed to create camera because 'main'"
       + " camera doesn't exist in the scene");
   }
 

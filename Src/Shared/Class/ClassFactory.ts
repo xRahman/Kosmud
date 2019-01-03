@@ -31,7 +31,7 @@ export namespace ClassFactory
 
     if (prototype === "Doesn't exist")
     {
-      throw new Error(`Failed to instantiate class '${className}'`
+      throw Error(`Failed to instantiate class '${className}'`
         + ` is not registered in the class factory. Make sure`
         + ` ClassFactory.registerClassPrototype(${className}) is`
         + ` called somewhere`);
@@ -56,7 +56,7 @@ export namespace ClassFactory
   {
     if (prototypes.has(className))
     {
-      throw new Error(`Failed to register prototype '${className}'`
+      throw Error(`Failed to register prototype '${className}'`
         + ` because there already is a prototype registered under this`
         + ` name in the class factory`);
     }
@@ -104,7 +104,7 @@ function instantiateProperties(instance: object, prototype: object)
 {
   if (instance === null)
   {
-    throw new Error(`Failed to instantiate properties because 'instance'`
+    throw Error(`Failed to instantiate properties because 'instance'`
       + ` has 'null' value. Don't ever use 'null', use 'undefined'`
       + ` instead or even better a string type like "Not found" or`
       + ` something like that`);
@@ -162,7 +162,7 @@ function instantiateProperty(prototypeProperty: any)
 {
   if (prototypeProperty === null)
   {
-    throw new Error(`Failed to instantiate object property because`
+    throw Error(`Failed to instantiate object property because`
       + ` respective prototype property has 'null' value. Don't ever`
       + ` use 'null', use 'undefined' instead or even better a string`
       + ` type like "Not found" or something like that`);
@@ -198,7 +198,7 @@ function instantiateProperty(prototypeProperty: any)
 
   if (Types.isDate(prototypeProperty))
   {
-    throw new Error(`Attempt to instantiate property of type Date.`
+    throw Error(`Attempt to instantiate property of type Date.`
       + ` Don't use Date type, use class Time instead. Property is`
       + ` not instantiated`);
   }

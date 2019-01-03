@@ -67,7 +67,7 @@ export class HttpsServer
   {
     if (this.httpServer !== "Not running")
     {
-      throw new Error(`Failed to start http server because it's`
+      throw Error(`Failed to start http server because it's`
         + ` already running`);
     }
 
@@ -93,7 +93,7 @@ export class HttpsServer
   {
     if (this.httpsServer !== "Not running")
     {
-      throw new Error("Failed to start https server because it's"
+      throw Error("Failed to start https server because it's"
         + " already running");
     }
 
@@ -161,7 +161,7 @@ export class HttpsServer
   private static onHttpsError(error: any)
   {
     if (!(error instanceof Error))
-      throw new Error("Invalid error object");
+      throw Error("Invalid error object");
 
     Syslog.log("[HTTPS_SERVER]", `Https error: ${error.message}`);
   }
@@ -185,7 +185,7 @@ async function readPrivateKey(): Promise<string>
   catch (error)
   {
     if (!(error instanceof Error))
-      throw new Error("Invalid error object");
+      throw Error("Invalid error object");
 
     error.message = `Failed to read ssl private key: ${error.message}`;
 
@@ -203,7 +203,7 @@ async function readCertificate(): Promise<string>
   catch (error)
   {
     if (!(error instanceof Error))
-      throw new Error("Invalid error object");
+      throw Error("Invalid error object");
 
     error.message = `Failed to read ssl certificate: ${error.message}`;
 

@@ -21,7 +21,7 @@ export class GameEntity extends ContainerEntity<GameEntity>
   {
     if (!zone.has(this))
     {
-      throw new Error(`Attempt to directly call GameEntity.setZone().`
+      throw Error(`Attempt to directly call GameEntity.setZone().`
         + ` That is not possible, use zone.addXY() instead`);
     }
 
@@ -33,7 +33,7 @@ export class GameEntity extends ContainerEntity<GameEntity>
   {
     if (this.zone === "Not in zone")
     {
-      throw new Error(`Entity ${this.debugId} is not placed`
+      throw Error(`Entity ${this.debugId} is not placed`
         + ` in any zone yet`);
     }
 
@@ -50,7 +50,7 @@ export class GameEntity extends ContainerEntity<GameEntity>
   {
     if (this.assets.has(asset))
     {
-      throw new Error(`${this.debugId} already`
+      throw Error(`${this.debugId} already`
         + ` contains asset ${asset.debugId}`);
     }
 
@@ -64,7 +64,7 @@ export class GameEntity extends ContainerEntity<GameEntity>
   {
     if (!this.assets.delete(asset))
     {
-      throw new Error(`Failed to remove asset ${asset.debugId}`
+      throw Error(`Failed to remove asset ${asset.debugId}`
         + ` from ${this.debugId} because the entity didn't`
         + ` have such asset`);
     }

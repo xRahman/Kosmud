@@ -74,7 +74,7 @@ export class Zone extends Shared.Zone
 
     //   if (ship === "Not found")
     //   {
-    //     throw new Error(`Failed to update ship because ship`
+    //     throw Error(`Failed to update ship because ship`
     //       + ` with id ${shipState.shipId} isn't present in`
     //       + ` zone ${this.debugId}`);
     //   }
@@ -94,7 +94,7 @@ export class Zone extends Shared.Zone
 
   //   if (playerShip === "Not found")
   //   {
-  //     throw new Error(`Player ship (id '${playerShipId}')`
+  //     throw Error(`Player ship (id '${playerShipId}')`
   //       + ` doesn't exist in zone ${this.debugId}`);
   //   }
 
@@ -154,7 +154,7 @@ export class Zone extends Shared.Zone
   {
     if (this.scene === "Not assigned")
     {
-      throw new Error(`Scene is not assigned to zone ${this.debugId}`
+      throw Error(`Scene is not assigned to zone ${this.debugId}`
         + ` yet. Make sure you call create() on the zone before you`
         + ` use the scene`);
     }

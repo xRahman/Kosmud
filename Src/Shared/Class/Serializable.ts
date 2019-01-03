@@ -100,13 +100,13 @@ export class Serializable extends Attributable
 
     if (className === null || className === undefined)
     {
-      throw new Error(`Unable to deserialize data because there is`
+      throw Error(`Unable to deserialize data because there is`
         + ` no '${CLASS_NAME}' property in it`);
     }
 
     if (typeof className !== "string")
     {
-      throw new Error(`Unable to deserialize data because property`
+      throw Error(`Unable to deserialize data because property`
         + ` '${CLASS_NAME}' isn't a string`);
     }
 
@@ -133,7 +133,7 @@ export class Serializable extends Attributable
     // from requested class (or an instance of the class itself).
     if (!(this instanceof Class))
     {
-      throw new Error (`Type cast error: serializable`
+      throw Error (`Type cast error: serializable`
         + ` object ${this.debugId} is not an instance`
         + ` of class (${Class.name})`);
     }
@@ -280,7 +280,7 @@ export class Serializable extends Attributable
     // 'this.constructor' contains static properties of this class.
     if (!this.constructor.hasOwnProperty(VERSION))
     {
-      throw new Error(`Failed to serialize ${this.debugId}`
+      throw Error(`Failed to serialize ${this.debugId}`
         + ` because static '${VERSION}' property is missing`
         + ` on it. Make sure that 'static ${VERSION}' is`
         + ` inicialized in class ${this.getClassName()}`);
@@ -290,7 +290,7 @@ export class Serializable extends Attributable
 
     if (!Types.isNumber(version))
     {
-      throw new Error(`Failed to serialize ${this.debugId}`
+      throw Error(`Failed to serialize ${this.debugId}`
         + ` because static '${VERSION}' property is not a number.`
         + ` Make sure that 'static ${VERSION}' is inicialized in`
         + ` class ${this.getClassName()} to some number`);
@@ -377,7 +377,7 @@ export class Serializable extends Attributable
 
     if (Types.isDate(property))
     {
-      throw new Error("Attempt to serialize property of type Date()."
+      throw Error("Attempt to serialize property of type Date()."
         + " Date object should not be used because it can't be"
         + " properly inherited using prototypal inheritance."
         + " Use class Time instead. Property is not serialized");
@@ -398,7 +398,7 @@ export class Serializable extends Attributable
     if (Types.isPlainObject(property))
       return this.serializePlainObject(param, objectProperty);
 
-    throw new Error(`Property '${param.description}' in class`
+    throw Error(`Property '${param.description}' in class`
       + ` '${param.className}' (or inherited from one of it's`
       + ` ancestors) is a class but is neither inherited from`
       + ` Serializable nor has a type that we know how to save.`
@@ -495,7 +495,7 @@ export class Serializable extends Attributable
       // case target property will also be 'null', no matter what type it is.
       if (param.sourceProperty === null)
       {
-        throw new Error(`Property '${param.propertyName}'`
+        throw Error(`Property '${param.propertyName}'`
           + `${inFile(param.path)} has 'null' value.`
           + `'null' is not allowed, make sure that it`
           + ` is not used anywhere`);
@@ -569,14 +569,14 @@ export class Serializable extends Attributable
 
     if (sourceClassName === undefined)
     {
-      throw new Error(`Failed to deserialize because`
+      throw Error(`Failed to deserialize because`
         + ` there is no '${CLASS_NAME}' property`
         + ` in JSON data${inFile(path)}`);
     }
 
     if (sourceClassName !== targetClassName)
     {
-      throw new Error(`Failed to deserialize because`
+      throw Error(`Failed to deserialize because`
         + ` JSON data${inFile(path)} belongs to class`
         + ` '${sourceClassName}' while target class is`
         + ` '${targetClassName})`);
@@ -600,7 +600,7 @@ export class Serializable extends Attributable
 
     if (version !== thisVersion)
     {
-      throw new Error(`Failed to deserialize because version of`
+      throw Error(`Failed to deserialize because version of`
         + ` JSON data (${version})${inFile(path)} doesn't match`
         + ` required version (${thisVersion})`);
     }
@@ -619,7 +619,7 @@ export class Serializable extends Attributable
 
     if (!targetIsValid)
     {
-      throw new Error(`Failed to deserialize because target property`
+      throw Error(`Failed to deserialize because target property`
         + ` '${param.propertyName}'${inFile(param.path)} is not 'null'`
         + ` or 'Set' when deserializing property of type 'Set'`);
     }
@@ -640,7 +640,7 @@ export class Serializable extends Attributable
 
     if (!targetIsValid)
     {
-      throw new Error(`Failed to deserialize because target property`
+      throw Error(`Failed to deserialize because target property`
         + ` '${param.propertyName}'${inFile(param.path)} is not 'null'`
         + ` or 'Map' when deserializing property of type 'Map'`);
     }
@@ -664,7 +664,7 @@ export class Serializable extends Attributable
 
     if (!targetIsValid)
     {
-      throw new Error(`Failed to deserialize because target property`
+      throw Error(`Failed to deserialize because target property`
         + ` '${param.propertyName}'${inFile(param.path)} is not 'null'`
         + ` or 'Array' when deserializing property of type 'Array'`);
     }
@@ -685,7 +685,7 @@ export class Serializable extends Attributable
 
     if (!targetIsValid)
     {
-      throw new Error(`Failed to deserialize because target property`
+      throw Error(`Failed to deserialize because target property`
         + ` '${param.propertyName}'${inFile(param.path)} is not 'null',`
         + ` 'undefined' or 'object' when deserializing 'object' property`);
     }
@@ -707,7 +707,7 @@ export class Serializable extends Attributable
 
     if (instance === null || instance === undefined)
     {
-      throw new Error(`Failed to instantiate property '${param.propertyName}'`
+      throw Error(`Failed to instantiate property '${param.propertyName}'`
         + `${inFile(param.path)}`);
     }
 
@@ -718,7 +718,7 @@ export class Serializable extends Attributable
 
     if (!Types.isPlainObject(instance))
     {
-      throw new Error("Attempt to deserialize a nonprimitive property which"
+      throw Error("Attempt to deserialize a nonprimitive property which"
         + " is neither an instance of Serializable class nor a plain"
         + " Javascript object. This means that you have a class inherited"
         + " from Serializable and you put a property in it which is"
@@ -833,14 +833,14 @@ export class Serializable extends Attributable
 
     if (array === null || array === undefined)
     {
-      throw new Error(`Failed to deserialize array because`
+      throw Error(`Failed to deserialize array because`
         + ` source property '${param.propertyName}' is`
         + ` invalid${inFile(param.path)}`);
     }
 
     if (!Array.isArray(array))
     {
-      throw new Error(`Failed to deserialize array because`
+      throw Error(`Failed to deserialize array because`
         + ` source property '${param.propertyName}' is not`
         + ` an array${inFile(param.path)}`);
     }
@@ -997,7 +997,7 @@ function createBitvectorSaver(bitvector: any)
 {
   if (bitvector === null)
   {
-    throw new Error("Failed to create bitvector saver because"
+    throw Error("Failed to create bitvector saver because"
     + " bitvector which should be saved is 'null'");
   }
 
@@ -1005,7 +1005,7 @@ function createBitvectorSaver(bitvector: any)
 
   if (!("toJSON" in bitvector))
   {
-    throw new Error("Failed to create bitvector saver because bitvector"
+    throw Error("Failed to create bitvector saver because bitvector"
       + " which should be saved doesn't have 'toJSON' method");
   }
 
@@ -1088,7 +1088,7 @@ function getProperty
 {
   if (!param.sourceProperty)
   {
-    throw new Error(`Failed to deserialize because source property`
+    throw Error(`Failed to deserialize because source property`
       + ` '${param.propertyName}'${inFile(param.path)} isn't valid`);
   }
 
@@ -1096,7 +1096,7 @@ function getProperty
 
   if (property === undefined || property === null)
   {
-    throw new Error(`Failed to deserialize because property`
+    throw Error(`Failed to deserialize because property`
       + ` '${propertyName}'${inFile(param.path)} isn't valid`);
   }
 
@@ -1156,7 +1156,7 @@ function deserializeAsBitvector(param: Serializable.DeserializeParam)
 
   if (!targetIsValid)
   {
-    throw new Error(`Failed to deserialize because target property`
+    throw Error(`Failed to deserialize because target property`
       + ` '${param.propertyName}'${inFile(param.path)} is not 'null',`
       + ` 'undefined' or 'bitvector' when deserializing property of`
       + ` type 'bitvector'`);
@@ -1178,7 +1178,7 @@ function deserializeAsVector(param: Serializable.DeserializeParam)
 
   if (!targetIsValid)
   {
-    throw new Error(`Failed to deserialize because target property`
+    throw Error(`Failed to deserialize because target property`
       + ` '${param.propertyName}'${inFile(param.path)} is not 'null',`
       + ` 'undefined' or 'Vector' when deserializing property of type`
       + ` 'Vector'`);
@@ -1224,7 +1224,7 @@ function getEntityId(entity: ObjectType, param: Serializable.SerializeParam)
 
   if (typeof id !== "string")
   {
-    throw new Error(`Failed to serialize class '${param.className}'`
+    throw Error(`Failed to serialize class '${param.className}'`
       + ` because 'id' property '${id}' of it's property ${param.description}`
       + ` is not a string. Object's with 'id' property are considered`
       + ` entities and as such must have a string 'id' property`);

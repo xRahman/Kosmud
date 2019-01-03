@@ -23,7 +23,7 @@ export class PositiveNumber extends NumberWrapper
   {
     if (value <= 0)
     {
-      throw new Error(`Attempt to set invalid value`
+      throw Error(`Attempt to set invalid value`
         + ` to a PositiveNumber (${value})`);
     }
 

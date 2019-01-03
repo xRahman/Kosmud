@@ -33,7 +33,7 @@ export class ContainerEntity<T extends ContainerEntity<T>> extends Entity
   {
     if (this.container === "Not in container")
     {
-      throw new Error(`Failed to get container of ${this.debugId}`
+      throw Error(`Failed to get container of ${this.debugId}`
         + ` because this entity is not in any container`);
     }
 
@@ -52,7 +52,7 @@ export class ContainerEntity<T extends ContainerEntity<T>> extends Entity
   {
     if (this.has(entity))
     {
-      throw new Error(`Entity ${this.debugId} already contains`
+      throw Error(`Entity ${this.debugId} already contains`
         + ` ${entity.debugId}`);
     }
 
@@ -67,7 +67,7 @@ export class ContainerEntity<T extends ContainerEntity<T>> extends Entity
 
     if (!hadEntity)
     {
-      throw new Error(`Entity ${entity.debugId} isn't inside`
+      throw Error(`Entity ${entity.debugId} isn't inside`
         + ` ${this.debugId} so it can't be removed from there`);
     }
 

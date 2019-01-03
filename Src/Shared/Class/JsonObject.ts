@@ -45,15 +45,15 @@ export namespace JsonObject
     catch (error)
     {
       if (!(error instanceof Error))
-        throw new Error("Invalid error object");
+        throw Error("Invalid error object");
 
-      throw new Error(`Syntax error in JSON data:`
+      throw Error(`Syntax error in JSON data:`
         + ` ${error.message}${fileInfo(path)}`);
     }
 
     if (!Types.isPlainObject(result))
     {
-      throw new Error(`Failed to parse JSON data${fileInfo(path)}`
+      throw Error(`Failed to parse JSON data${fileInfo(path)}`
         + `: Parsed result is not an object`);
     }
 

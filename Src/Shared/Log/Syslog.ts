@@ -64,7 +64,7 @@ export abstract class Syslog
     // logging process so we throw exception instead.
     if (this.instance === "Doesn't exist")
     {
-      throw new Error(`ERROR() occured before`
+      throw Error(`ERROR() occured before`
         + `application was created: "${message}"`);
     }
 
@@ -130,7 +130,7 @@ export abstract class Syslog
   {
     if (this.instance === "Doesn't exist")
     {
-      throw new Error
+      throw Error
       (
         "Syslog.instance is not inicialized. It needs to be"
         + " assigned in all descendant classes."

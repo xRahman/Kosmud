@@ -36,7 +36,7 @@ export class WebSocketServer
   {
     if (this.webSocketServer !== "Not running")
     {
-      throw new Error("Failed to start websocket server"
+      throw Error("Failed to start websocket server"
         + " because it's already running");
     }
 

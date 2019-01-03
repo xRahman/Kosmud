@@ -31,7 +31,7 @@ export class Scenes
   {
     if (Scenes.sceneList.has(scene.getName()))
     {
-      throw new Error(`Scene ${scene.debugId} already exists`);
+      throw Error(`Scene ${scene.debugId} already exists`);
     }
 
     Scenes.sceneList.set(scene.getName(), scene);

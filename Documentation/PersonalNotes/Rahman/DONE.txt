@@ -1,3 +1,6 @@
+TODO: Místo "throw Error()" používat "throw Error()";
+[done]
+
 TODO: Zónu serializovat s contentem nejen při savování, ale i při posílání
   na klienta (místo ZoneUpdate);
   - tímhle taky vyřeším, co všechno se má posílat po nalogování.

@@ -15,7 +15,7 @@ export class Zones extends Serializable
   {
     if (this.zones.has(zone))
     {
-      throw new Error(`Attempt to add zone ${zone.debugId}`
+      throw Error(`Attempt to add zone ${zone.debugId}`
         + ` which already exists in Zones`);
     }
 

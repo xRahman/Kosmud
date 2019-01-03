@@ -71,7 +71,7 @@ export class Attributable
 
     if (!Types.isPlainObject(propertySpecificAttributes))
     {
-      throw new Error(`Static propety ${propertyName} in class`
+      throw Error(`Static propety ${propertyName} in class`
         + ` ${this.getClassName()} is not of type 'Attributes'`);
     }
 
@@ -90,7 +90,7 @@ export class Attributable
 
     if (!Types.isPlainObject(classDefaultAttributes))
     {
-      throw new Error(`Static propety ${DEFAULT_ATTRIBUTES_PROPERTY} in`
+      throw Error(`Static propety ${DEFAULT_ATTRIBUTES_PROPERTY} in`
         + ` class ${this.getClassName()} is not of type 'Attributes'`);
     }
 

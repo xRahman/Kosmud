@@ -55,7 +55,7 @@ export abstract class Socket extends PacketHandler
   {
     if (this.isClosingOrClosed())
     {
-      throw new Error(`Failed to close socket to ${this.getOrigin()}`
+      throw Error(`Failed to close socket to ${this.getOrigin()}`
         + ` because it is already closing or closed`);
     }
 
@@ -69,7 +69,7 @@ export abstract class Socket extends PacketHandler
   {
     if (!this.isOpen())
     {
-      throw new Error(`Failed to send data to ${this.getOrigin()}`
+      throw Error(`Failed to send data to ${this.getOrigin()}`
         + ` because the connection is not open`);
     }
 
@@ -81,7 +81,7 @@ export abstract class Socket extends PacketHandler
       }
       catch (error)
       {
-        throw new Error(`Failed to send data to ${this.getOrigin()}.`
+        throw Error(`Failed to send data to ${this.getOrigin()}.`
           + ` Reason: ${error.message}`);
       }
     }

@@ -42,7 +42,7 @@ export class BackgroundScene extends Scene
   {
     if (this.backgroundModel !== "Doesn't exist")
     {
-      throw new Error(`Failed to create background model`
+      throw Error(`Failed to create background model`
         + `in ${this.debugId} because it already exists`);
     }
 

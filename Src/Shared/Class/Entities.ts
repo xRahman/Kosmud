@@ -26,7 +26,7 @@ export class Entities
 
     if (entity === undefined)
     {
-      throw new Error(`Entity with id '${id}' is not in Entities`);
+      throw Error(`Entity with id '${id}' is not in Entities`);
     }
 
     return entity;
@@ -54,7 +54,7 @@ export class Entities
   {
     if (!this.entities.delete(entity.getId()))
     {
-      throw new Error(`Failed to remove entity with id '${entity.getId()}'`
+      throw Error(`Failed to remove entity with id '${entity.getId()}'`
         + ` from Entities because it's not there`);
     }
 
@@ -90,7 +90,7 @@ export class Entities
 
     if (expectedId !== undefined && expectedId !== id)
     {
-      throw new Error(`Failed to load entity from json object because`
+      throw Error(`Failed to load entity from json object because`
         + ` contained id ${id} differs expected id ${expectedId} (which`
         + ` is part of the name of file where the entity is saved)`);
     }
@@ -110,7 +110,7 @@ export class Entities
   {
     if (this.entities.has(id))
     {
-      throw new Error(`Failed to instantiate entity because entity`
+      throw Error(`Failed to instantiate entity because entity`
         + ` with id '${id}' already exists in Entities`);
     }
 
@@ -148,7 +148,7 @@ function readId(jsonData: object, propertyName: string)
 
   if (!id)
   {
-    throw new Error(`Missing or invalid ${propertyName} in entity json data`);
+    throw Error(`Missing or invalid ${propertyName} in entity json data`);
   }
 
   return id;

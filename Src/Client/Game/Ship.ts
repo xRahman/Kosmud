@@ -20,7 +20,7 @@ export class Ship extends Shared.Ship
 
     if (this.model !== "Not created")
     {
-      throw new Error(`Ship ${this.debugId} already has a model`);
+      throw Error(`Ship ${this.debugId} already has a model`);
     }
 
     this.model = new ShipModel
@@ -84,7 +84,7 @@ export class Ship extends Shared.Ship
   {
     if (this.model === "Not created")
     {
-      throw new Error(`Ship ${this.debugId} doesn't have a model yet.`
+      throw Error(`Ship ${this.debugId} doesn't have a model yet.`
         + ` Make sure create() is called before whatever has just been`
         + ` called`);
     }

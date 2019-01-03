@@ -17,7 +17,7 @@ export namespace Gui
   {
     if (body === "Doesn't exist")
     {
-      throw new Error("Body component doesn't exist");
+      throw Error("Body component doesn't exist");
     }
 
     return body;
@@ -28,7 +28,7 @@ export namespace Gui
   {
     if (html === "Doesn't exist")
     {
-      throw new Error("Html component doesn't exist");
+      throw Error("Html component doesn't exist");
     }
 
     return html;
@@ -54,14 +54,14 @@ function initHtmlComponent()
 {
   if (html !== "Doesn't exist")
   {
-    throw new Error("Failed to init <html> component"
+    throw Error("Failed to init <html> component"
       + " because it already exists");
   }
 
   // 'document.documentElement' is a direct reference to <html> element.
   if (document.documentElement === null)
   {
-    throw new Error("Failed to init <html> component"
+    throw Error("Failed to init <html> component"
       + " because it doesn't exist in the DOM");
   }
 
@@ -73,7 +73,7 @@ function initBodyComponent()
 {
   if (body !== "Doesn't exist")
   {
-    throw new Error("Failed to init <body> component"
+    throw Error("Failed to init <body> component"
       + " because it already exists");
   }
 

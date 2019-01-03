@@ -105,7 +105,7 @@ export class FlightScene extends Scene
   {
     if (this.input === "Doesn't exist")
     {
-      throw new Error(`Scene ${this.debugId} doesn't have input active yet`);
+      throw Error(`Scene ${this.debugId} doesn't have input active yet`);
     }
 
     return this.input;
@@ -116,7 +116,7 @@ export class FlightScene extends Scene
   {
     if (this.sceneGUI === "Doesn't exist")
     {
-      throw new Error(`Scene GUI doesn't exists yet in ${this.debugId}`);
+      throw Error(`Scene GUI doesn't exists yet in ${this.debugId}`);
     }
 
     return this.sceneGUI;
@@ -127,7 +127,7 @@ export class FlightScene extends Scene
   {
     if (this.sceneGUI !== "Doesn't exist")
     {
-      throw new Error(`Scene GUI already exists in ${this.debugId}`);
+      throw Error(`Scene GUI already exists in ${this.debugId}`);
     }
 
     this.sceneGUI = new FlightSceneGUI(this);
@@ -155,7 +155,7 @@ export class FlightScene extends Scene
   {
     if (this.zone === "Not assigned")
     {
-      throw new Error(`Scene '${this.name}' doesn't have`
+      throw Error(`Scene '${this.name}' doesn't have`
         + ` a zone attached yet. Make sure you call setZone()`
         + ` before you start this scene`);
     }
@@ -168,7 +168,7 @@ export class FlightScene extends Scene
   {
     if (this.input !== "Doesn't exist")
     {
-      throw new Error(`Failed to create input in ${this.debugId}`
+      throw Error(`Failed to create input in ${this.debugId}`
         + ` because it already exists`);
     }
 

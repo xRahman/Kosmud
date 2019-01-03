@@ -21,7 +21,7 @@ export namespace Connections
   {
     if (!connections.has(connection))
     {
-      throw new Error(`Attempt to release connection`
+      throw Error(`Attempt to release connection`
         + ` ${connection.getPlayerInfo()} which doesn't exist`);
     }
 
@@ -35,7 +35,7 @@ export namespace Connections
 
     if (connections.has(connection))
     {
-      throw new Error("Attempt to add connection which already"
+      throw Error("Attempt to add connection which already"
         + " exists in Connections");
     }
 

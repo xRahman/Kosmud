@@ -67,7 +67,7 @@ export class Tilemap extends Shared.Tilemap
 
     if (result.length === 0)
     {
-      throw new Error(`No sprites based on object name '${tilemapObjectName}'`
+      throw Error(`No sprites based on object name '${tilemapObjectName}'`
         + ` have been found in object layer '${tilemapObjectLayerName}' of`
         + ` tilemap '${this.getName()}'`);
     }

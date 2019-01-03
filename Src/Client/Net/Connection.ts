@@ -47,10 +47,10 @@ export class Connection extends Shared.Connection<Player>
   public static connect()
   {
     if (this.isOpen())
-      throw new Error("Already connected");
+      throw Error("Already connected");
 
     if (!this.browserSupportsWebSockets())
-      throw new Error("Your browser doesn't support websockets.");
+      throw Error("Your browser doesn't support websockets.");
 
     this.registerBeforeUnloadEvent();
 
@@ -114,7 +114,7 @@ export class Connection extends Shared.Connection<Player>
   {
     if (this.connection === "Not connected")
     {
-      throw new Error("Connection doesn't exist yet. Packet is not sent");
+      throw Error("Connection doesn't exist yet. Packet is not sent");
     }
 
     this.connection.send(packet);
@@ -181,7 +181,7 @@ export class Connection extends Shared.Connection<Player>
   {
     if (this.connection === "Not connected")
     {
-      throw new Error(`Connection is not open yet`);
+      throw Error(`Connection is not open yet`);
     }
 
     return this.connection;

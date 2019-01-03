@@ -70,7 +70,7 @@ export class Entity extends Serializable
     // is not our id (id has to be unique for each entity instance).
     if (!hasOwnValidId)
     {
-      throw new Error(`Attempt to get ${ID} of an entity which`
+      throw Error(`Attempt to get ${ID} of an entity which`
         + ` doesn't have an ${ID}. This must never happen, each`
         + ` entity must have a valid ${ID}"`);
     }
@@ -88,7 +88,7 @@ export class Entity extends Serializable
     // that of our prototype.
     if (this.hasOwnProperty(ID) && this.id !== "<missing id>")
     {
-      throw new Error(`Failed to set ${ID} of entity ${this.debugId}`
+      throw Error(`Failed to set ${ID} of entity ${this.debugId}`
         + ` because it already has an ${ID}`);
     }
 
@@ -96,7 +96,7 @@ export class Entity extends Serializable
 
     if (!this.hasOwnProperty(ID))
     {
-      throw new Error(`Something is terribly broken - property`
+      throw Error(`Something is terribly broken - property`
         + `'${ID}' has been set to prototype object rather than`
         + `to the instance`);
     }

@@ -35,7 +35,7 @@ export namespace Renderer
   {
     if (scenes === "Doesn't exist")
     {
-      throw new Error(`Instance of 'Scenes' doesn't exist yet`);
+      throw Error(`Instance of 'Scenes' doesn't exist yet`);
     }
 
     return scenes;
@@ -59,7 +59,7 @@ export namespace Renderer
 function getPhaserGame(): Phaser.Game
 {
   if (phaserGame === "Doesn't exist")
-    throw new Error("Phaser game doesn't exist yet");
+    throw Error("Phaser game doesn't exist yet");
 
   return phaserGame;
 }
@@ -68,7 +68,7 @@ function getPhaserGame(): Phaser.Game
 function createPhaserGame(width: number, height: number): Phaser.Game
 {
   if (phaserGame !== "Doesn't exist")
-    throw new Error("Flight scene already exists");
+    throw Error("Flight scene already exists");
 
   return new Phaser.Game
   (

@@ -33,7 +33,7 @@ export abstract class NumberInInterval extends Serializable
 
     if (minimum > max)
     {
-      throw new Error(`Invalid minimum value '${minimum}' requested`
+      throw Error(`Invalid minimum value '${minimum}' requested`
         + ` from interval <${min}, ${max}>`);
     }
 
@@ -51,7 +51,7 @@ export abstract class NumberInInterval extends Serializable
 
     if (maximum < min)
     {
-      throw new Error(`Invalid maximum value '${maximum}' requested`
+      throw Error(`Invalid maximum value '${maximum}' requested`
         + ` from interval <${min}, ${max}>`);
     }
 
@@ -68,7 +68,7 @@ export abstract class NumberInInterval extends Serializable
 
     if (value < min || value > max)
     {
-      throw new Error(`Attempt to set invalid value (${value})`
+      throw Error(`Attempt to set invalid value (${value})`
         + ` to interval <${min}, ${max}>`);
     }
 

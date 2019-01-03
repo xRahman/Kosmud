@@ -62,7 +62,7 @@ String.prototype.toInt = function(): number
   // Check that result doesn't have any decimal part.
   if (!isInteger(value))
   {
-    throw new Error(`Failed to convert string "${this}"`
+    throw Error(`Failed to convert string "${this}"`
       + ` to integer because it's not a stringified integer`);
   }
 
@@ -134,7 +134,7 @@ function convertToNumber(input: any): number
 
   if (Number.isNaN(result))
   {
-    throw new Error(`Failed to convert "${input}"`
+    throw Error(`Failed to convert "${input}"`
       + ` to number because it's not a stringified number`);
   }
 

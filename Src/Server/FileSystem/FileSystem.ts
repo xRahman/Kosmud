@@ -89,7 +89,7 @@ export namespace FileSystem
 
     if (readResult === "File doesn't exist")
     {
-      throw new Error(`File "${path}" doesn't exist`);
+      throw Error(`File "${path}" doesn't exist`);
     }
 
     return readResult.data;
@@ -117,14 +117,14 @@ export namespace FileSystem
     catch (error)
     {
       if (!error)
-        throw new Error("Invalid error object");
+        throw Error("Invalid error object");
 
       const errorCode = getErrorCode(error);
 
       if (errorCode === "ENOENT")
         return "File doesn't exist";
 
-      throw new Error(`Unable to read file '${path}': ${errorCode}`);
+      throw Error(`Unable to read file '${path}': ${errorCode}`);
     }
 
     return { data };
@@ -142,7 +142,7 @@ export namespace FileSystem
 
     if (!isValidFileName(fileName))
     {
-      throw new Error(`Failed to write file because path "${path}"`
+      throw Error(`Failed to write file because path "${path}"`
         + ` doesn't contain a valid file name`);
     }
 
@@ -191,7 +191,7 @@ export namespace FileSystem
     {
       const errorCode = getErrorCode(error);
 
-      throw new Error(`Failed to delete file "${path}": ${errorCode}`);
+      throw Error(`Failed to delete file "${path}": ${errorCode}`);
     }
   }
 
@@ -218,7 +218,7 @@ export namespace FileSystem
     {
       const errorCode = getErrorCode(error);
 
-      throw new Error(`Unable to ensure existence of`
+      throw Error(`Unable to ensure existence of`
         + ` directory "${directory}": ${errorCode}`);
     }
   }
@@ -257,7 +257,7 @@ export namespace FileSystem
     {
       const errorCode = getErrorCode(error);
 
-      throw new Error(`Unable to read contents of directory`
+      throw Error(`Unable to read contents of directory`
         + ` "${path}": ${errorCode}`);
     }
   }
@@ -305,7 +305,7 @@ export namespace FileSystem
 
     if (readResult === "File doesn't exist")
     {
-      throw new Error(`Failed to load file '${path}'`
+      throw Error(`Failed to load file '${path}'`
         + ` because it doesn't exist`);
     }
 
@@ -356,7 +356,7 @@ function finishSaving(path: string)
 
   if (queue === undefined)
   {
-    throw new Error(`Attempt to report finished saving of file`
+    throw Error(`Attempt to report finished saving of file`
       + ` "${path}" which is not registered as being saved`);
   }
 
@@ -381,13 +381,13 @@ function checkPathValidity(path: string)
 {
   if (!isRelative(path))
   {
-    throw new Error(`File path "${path}" is not relative.`
+    throw Error(`File path "${path}" is not relative.`
     + ` Ensure that it starts with './'`);
   }
 
   if (containsDoubleDot(path))
   {
-    throw new Error(`File path "${path}" is not valid.`
+    throw Error(`File path "${path}" is not valid.`
     + ` Ensure that it doesn't contain '..'`);
   }
 }
@@ -419,7 +419,7 @@ async function write(path: string, data: string)
   {
     const errorCode = getErrorCode(error);
 
-    throw new Error (`Failed to save file "${path}": ${errorCode}`);
+    throw Error (`Failed to save file "${path}": ${errorCode}`);
   }
 }
 
@@ -447,7 +447,7 @@ async function statFile(path: string): Promise<FS.Stats>
   {
     const errorCode = getErrorCode(error);
 
-    throw new Error(`Unable to stat file "${path}": ${errorCode}`);
+    throw Error(`Unable to stat file "${path}": ${errorCode}`);
   }
 }
 
@@ -457,7 +457,7 @@ function getByteLength(str: string)
   // This should work on node.js.
   if (typeof (Buffer as any) === "undefined")
   {
-    throw new Error("Unable to compute byte length of"
+    throw Error("Unable to compute byte length of"
     + " a string because 'Buffer' object is supported.");
   }
 
@@ -471,7 +471,7 @@ function truncateByteLength(str: string, maxByteLength: number)
 {
   if (maxByteLength < 1)
   {
-    throw new Error("Invalid 'maxByteLength' parameter."
+    throw Error("Invalid 'maxByteLength' parameter."
       + " String is not truncated");
   }
 
@@ -493,7 +493,7 @@ function truncateByteLength(str: string, maxByteLength: number)
 
   if (truncatedStr.length < str.length)
   {
-    throw new Error(`Failed to correctly encode string "${str}" as`
+    throw Error(`Failed to correctly encode string "${str}" as`
       + ` filename because it's longer than ${maxByteLength} bytes`
       + ` after encoding. Truncating it to "${truncatedStr}". Note`
       + ` that this means that if some other string used as file name`
@@ -586,12 +586,12 @@ function encodeStringAsFileName(str: string)
 function getErrorCode(error: any)
 {
   if (!error)
-    throw new Error("Invalid error object");
+    throw Error("Invalid error object");
 
   const code = (error as NodeJS.ErrnoException).code;
 
   if (code === undefined)
-    throw new Error("Missing 'code' property on error object");
+    throw Error("Missing 'code' property on error object");
 
   return code;
 }

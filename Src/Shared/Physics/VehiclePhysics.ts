@@ -109,7 +109,7 @@ export class VehiclePhysics extends Serializable
   {
     if (this.vehicle !== "Not set")
     {
-      throw new Error(`Failed to set reference to ${vehicle.debugId}`
+      throw Error(`Failed to set reference to ${vehicle.debugId}`
         + ` to it's physics because the physics already has a reference`
         + ` to a vehicle`);
     }
@@ -122,7 +122,7 @@ export class VehiclePhysics extends Serializable
   {
     if (this.vehicle === "Not set")
     {
-      throw new Error(`Missing reference to a respective vehicle in`
+      throw Error(`Missing reference to a respective vehicle in`
         + ` vehicle physics. Make sure the reference is set in vehicle's`
         + ` onInstantiation() method`);
     }
@@ -397,7 +397,7 @@ export class VehiclePhysics extends Serializable
   {
     if (this.physicsBody === "Not in physics world")
     {
-      throw new Error(`${this.getVehicle().debugId} is not in`
+      throw Error(`${this.getVehicle().debugId} is not in`
         + ` physics world yet and doesn't have a physics body`);
     }
 
@@ -744,7 +744,7 @@ export class VehiclePhysics extends Serializable
   {
     if (speed > Physics.MAXIMUM_POSSIBLE_SPEED)
     {
-      throw new Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
+      throw Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
         + ` speed '${speed}' which is greater than maximum speed allowed`
         + ` by Box2d physics engine (${Physics.MAXIMUM_POSSIBLE_SPEED}).`
         + ` There are three ways to handle this: 1 - set lower maximum`
@@ -762,7 +762,7 @@ export class VehiclePhysics extends Serializable
   {
     if (angularVelocity > Physics.MAXIMUM_POSSIBLE_ANGULAR_VELOCITY)
     {
-      throw new Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
+      throw Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
         + ` angular velocity '${angularVelocity}' which is greater than`
         + ` maximum angular velocity allowed by Box2d physics engine`
         + ` (${Physics.MAXIMUM_POSSIBLE_ANGULAR_VELOCITY}). There are`

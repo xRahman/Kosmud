@@ -64,7 +64,7 @@ function indexLayers(data: Tilemap.Data, tilemapName: string)
 {
   if (data.layersMap !== undefined)
   {
-    throw new Error(`Hashmap of layers already`
+    throw Error(`Hashmap of layers already`
       + ` exists in tilemap '${tilemapName}'`);
   }
 
@@ -74,7 +74,7 @@ function indexLayers(data: Tilemap.Data, tilemapName: string)
   {
     if (!layer.name)
     {
-      throw new Error(`One of layers of tilemap '${tilemapName}'`
+      throw Error(`One of layers of tilemap '${tilemapName}'`
         + ` doesn't have a name`);
     }
 
@@ -90,7 +90,7 @@ function indexLayer(layer: Tilemap.Layer, tilemapName: string)
 {
   if (layer.objectsMap !== undefined)
   {
-    throw new Error(`Hashmap of objects already exists`
+    throw Error(`Hashmap of objects already exists`
       + ` in layer '${layer.name}' of tilemap '${tilemapName}'`);
   }
 
@@ -100,7 +100,7 @@ function indexLayer(layer: Tilemap.Layer, tilemapName: string)
   {
     if (!object.name)
     {
-      throw new Error(`One of objects in layer '${layer.name}'`
+      throw Error(`One of objects in layer '${layer.name}'`
         + ` of tilemap '${tilemapName}' doesn't have a name`);
     }
 
@@ -122,7 +122,7 @@ function indexTiles(data: Tilemap.Data, tilemapName: string)
 {
   if (data.tilesMap !== undefined)
   {
-    throw new Error(`Hashmap of tiles already`
+    throw Error(`Hashmap of tiles already`
       + ` exists in tilemap '${tilemapName}'`);
   }
 
@@ -155,7 +155,7 @@ function getLayer
 {
   if (data.layersMap === undefined)
   {
-    throw new Error(`Tilemap '${tilemapName}' doesn't have`
+    throw Error(`Tilemap '${tilemapName}' doesn't have`
       + ` a 'layersMap' property. It needs to be initialized`
       + ` after loading`);
   }
@@ -164,7 +164,7 @@ function getLayer
 
   if (layer === undefined)
   {
-    throw new Error(`Tilemap '${tilemapName}' doesn't`
+    throw Error(`Tilemap '${tilemapName}' doesn't`
       + ` have layer '${layerName}'`);
   }
 
@@ -180,7 +180,7 @@ function getObjects
 {
   if (layer.objectsMap === undefined)
   {
-    throw new Error(`Layer '${layer.name}' of tilemap '${tilemapName}'`
+    throw Error(`Layer '${layer.name}' of tilemap '${tilemapName}'`
       + ` doesn't have an 'objectsMap' property. It needs to be`
       + ` initialized after loading`);
   }
@@ -189,7 +189,7 @@ function getObjects
 
   if (objects === undefined)
   {
-    throw new Error(`There are no '${objectName}' objects`
+    throw Error(`There are no '${objectName}' objects`
       + ` in layer '${layer.name}' of tilemap '${tilemapName}'`);
   }
 
@@ -210,7 +210,7 @@ function getHullTileGid
 
   if (objects.length !== 1)
   {
-    throw new Error(`Failed to get physics shape from tilemap`
+    throw Error(`Failed to get physics shape from tilemap`
       + ` '${tilemapName}' because there is more (or less) than one`
       + ` '${objectName}' object in it's '${layerName}' layer`);
   }
@@ -219,7 +219,7 @@ function getHullTileGid
 
   if (hullTileGid === undefined)
   {
-    throw new Error(`Failed to get physics shape from tilemap`
+    throw Error(`Failed to get physics shape from tilemap`
     + ` '${tilemapName}' because object '${objectName}' in layer`
     + ` '${layerName}' doesn't have a 'gid' property. Make sure`
     + ` that ship hull object is a tile in Tiled editor`);
@@ -242,7 +242,7 @@ function getTileShape
 
   if (tile.objectgroup === undefined)
   {
-    throw new Error(`Failed to get physics shape from tilemap`
+    throw Error(`Failed to get physics shape from tilemap`
       + ` '${tilemapName}' because tile with gid '${tileGid}'`
       + ` corresponding to layer object '${layerObjectName}'`
       + ` doesn't have an 'objectgroup' in it. You probably`
@@ -269,7 +269,7 @@ function getTileShape
 
   if (shape.length === 0)
   {
-    throw new Error(`Failed to get physics shape from tilemap`
+    throw Error(`Failed to get physics shape from tilemap`
       + ` '${tilemapName}' because tile with gid '${tileGid}'`
       + ` corresponding to layer object '${layerObjectName}'`
       + ` doesn't have any polygons in it. You probably`
@@ -292,7 +292,7 @@ function getPolygon
 {
   if (object.polygon === undefined)
   {
-    throw new Error(`Failed to get physics shape from tilemap`
+    throw Error(`Failed to get physics shape from tilemap`
       + ` '${tilemapName}' because object '${object.name}' in`
       + ` tile with gid '${tileGid}' corresponding to layer object`
       + ` '${layerObjectName}' doesn't have a 'polygon' property`);
@@ -339,7 +339,7 @@ function getTile
 {
   if (data.tilesMap === undefined)
   {
-    throw new Error(`Tilemap '${tilemapName}' doesn't have`
+    throw Error(`Tilemap '${tilemapName}' doesn't have`
       + ` a 'tilesMap' property. It needs to be initialized`
       + ` after loading`);
   }
@@ -348,7 +348,7 @@ function getTile
 
   if (tile === undefined)
   {
-    throw new Error(`Tilemap ${tilemapName} doesn't have tile`
+    throw Error(`Tilemap ${tilemapName} doesn't have tile`
       + ` with gid '${tileGid}'`);
   }
 

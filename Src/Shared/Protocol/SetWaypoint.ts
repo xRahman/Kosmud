@@ -16,7 +16,7 @@ export class SetWaypoint extends Packet
   {
     if (this.waypoint === "Not set")
     {
-      throw new Error(`Waypoint has not been set`);
+      throw Error(`Waypoint has not been set`);
     }
 
     return this.waypoint;

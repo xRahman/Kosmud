@@ -72,7 +72,6 @@ TODO: LoginResponse neexistoval - přidělal jsem shared verzi, ale ještě
 TODO: Projít všechny packety a při setování entity do packetu
   je přidávat do .entities v packetu.
 
-TODO: Místo "throw new Error()" používat "throw Error()";
 
 TODO: Udělat to tak, že zóna v loadAssets projde do sebe vnořené entity
   a ty projdou svoje assety.
@@ -493,6 +492,6 @@ TODO: Tslint (co momentálně nejde v tslintu nastavit):
   (mělo by to bejt tak, že když je za ifem jeden řádek a je to return nebo
    throw, tak {} být nemusí, jinak ano).
    - Hmm a vlastně ani to vždycky neplatí, protože když je za ifem
-     throw new Error(), kterej se nevejde na jeden řádek, tak je taky lepší
+     throw Error(), kterej se nevejde na jeden řádek, tak je taky lepší
      ho uzávorkovat do {}.
 - kontroly vyžadující type information

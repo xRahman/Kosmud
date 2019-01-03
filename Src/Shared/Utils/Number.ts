@@ -66,7 +66,7 @@ Number.prototype.isValid = function(): boolean
 Number.prototype.validate = function(): number
 {
   if (!this.isValid())
-    throw new Error(`Invalid number: ${this.valueOf()}`);
+    throw Error(`Invalid number: ${this.valueOf()}`);
 
   return this.valueOf();
 };
@@ -107,7 +107,7 @@ Number.prototype.validateToInterval = function
 {
   if (this < minimum || this > maximum)
   {
-    throw new Error(`Value '${this.valueOf()}' is not in`
+    throw Error(`Value '${this.valueOf()}' is not in`
       + ` allowed interval <${minimum}, ${maximum}>`);
   }
 };
@@ -117,7 +117,7 @@ Number.prototype.validateToAtLeast = function(minimum: number)
 {
   if (this < minimum)
   {
-    throw new Error(`Value '${this.valueOf()}' is lesser`
+    throw Error(`Value '${this.valueOf()}' is lesser`
       + ` than allowed minimum '${minimum}'`);
   }
 };
@@ -127,7 +127,7 @@ Number.prototype.validateToAtMost = function(maximum: number)
 {
   if (this > maximum)
   {
-    throw new Error(`Value '${this.valueOf()}' is greater`
+    throw Error(`Value '${this.valueOf()}' is greater`
       + ` than allowed maximum '${maximum}'`);
   }
 };

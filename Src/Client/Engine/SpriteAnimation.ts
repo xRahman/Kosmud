@@ -52,7 +52,7 @@ function generateFrameNames
 {
   if (animationConfig.pathInTextureAtlas.slice(-1) !== "/")
   {
-    throw new Error(`Failed to generate animation frame names because path`
+    throw Error(`Failed to generate animation frame names because path`
       + ` '${animationConfig.pathInTextureAtlas}' doesn't end with '/'`);
   }
 

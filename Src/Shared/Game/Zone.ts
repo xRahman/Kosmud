@@ -91,7 +91,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 
     if (tilemap === undefined)
     {
-      throw new Error(`Failed to find tilemap '${name}' in the`
+      throw Error(`Failed to find tilemap '${name}' in the`
         + ` list of loaded tilemaps in zone ${this.debugId}`);
     }
 
@@ -105,7 +105,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 
     if (shape === undefined)
     {
-      throw new Error(`Failed to find physics shape with id '${shapeId}'`
+      throw Error(`Failed to find physics shape with id '${shapeId}'`
         + ` in zone ${this.debugId}. Make sure the shape is listed in`
         + ` zone assets`);
     }
@@ -118,7 +118,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   {
     if (this.ships.has(ship))
     {
-      throw new Error(`Zone ${this.debugId} already has`
+      throw Error(`Zone ${this.debugId} already has`
         + ` ship ${ship.debugId}`);
     }
 
@@ -231,7 +231,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   {
     if (this.physicsWorld !== "Doesn't exist")
     {
-      throw new Error(`Zone ${this.debugId} alread has a physics world`);
+      throw Error(`Zone ${this.debugId} alread has a physics world`);
     }
 
     this.physicsWorld = Physics.createWorld();
@@ -248,7 +248,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   {
     if (this.physicsWorld === "Doesn't exist")
     {
-      throw new Error(`Zone ${this.debugId} doesn't have a physics`
+      throw Error(`Zone ${this.debugId} doesn't have a physics`
       + ` world yet. Make sure that you call createPhysicsWorld()`
       + ` before you try to do anything with it`);
     }

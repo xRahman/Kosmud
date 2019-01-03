@@ -111,10 +111,10 @@ export class Vector
   : { x: number; y: number }
   {
     if (!x.isValid())
-      throw new Error(`Invalid 'x' in vector: ${x}`);
+      throw Error(`Invalid 'x' in vector: ${x}`);
 
     if (!y.isValid())
-      throw new Error(`Invalid 'y' in vector: ${y}`);
+      throw Error(`Invalid 'y' in vector: ${y}`);
 
     return { x, y };
   }
@@ -249,10 +249,10 @@ export class Vector
   public validate(): this
   {
     if (!this.x.isValid())
-      throw new Error(`Invalid 'x' in vector: ${this.x}`);
+      throw Error(`Invalid 'x' in vector: ${this.x}`);
 
     if (!this.y.isValid())
-      throw new Error(`Invalid 'y' in vector: ${this.y}`);
+      throw Error(`Invalid 'y' in vector: ${this.y}`);
 
     return this;
   }

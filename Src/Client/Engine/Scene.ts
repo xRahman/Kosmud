@@ -181,7 +181,7 @@ export abstract class Scene
 
     if (!jsonData || typeof jsonData !== "object")
     {
-      throw new Error(`Failed to find tilemap json data for tilemap`
+      throw Error(`Failed to find tilemap json data for tilemap`
         + ` id '${tilemapId}'. Make sure that tilemap with this id`
         + ` is loaded`);
     }

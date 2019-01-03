@@ -26,7 +26,7 @@ export class Packet extends Serializable
     // classes even though they are only processed on one side.
     //  (Perfectly clean solution would require multiple inheritance so we
     // don't use it.)
-    throw new Error("This method needs to be overriden in descendant class");
+    throw Error("This method needs to be overriden in descendant class");
   }
 
   // ! Throws exception on error.
@@ -34,7 +34,7 @@ export class Packet extends Serializable
   {
     if (this.entities.has(entity))
     {
-      throw new Error(`Packet ${this.debugId} already has ${entity.debugId}`);
+      throw Error(`Packet ${this.debugId} already has ${entity.debugId}`);
     }
 
     this.entities.add(entity);

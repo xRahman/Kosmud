@@ -18,7 +18,7 @@ export abstract class Connection<T extends Player> extends Socket
   {
     if (this.player === "Not logged in")
     {
-      throw new Error(`Player ${this.getPlayerInfo()}`
+      throw Error(`Player ${this.getPlayerInfo()}`
       + ` is not logged in yet`);
     }
 

@@ -29,7 +29,7 @@ export class Player extends Entity
   {
     if (this.activeShip === "Not set")
     {
-      throw new Error(`Player ${this.debugId}`
+      throw Error(`Player ${this.debugId}`
         + ` doesn't have an active ship`);
     }
 
