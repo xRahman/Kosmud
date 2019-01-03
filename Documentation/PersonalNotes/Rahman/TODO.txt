@@ -17,13 +17,6 @@ TODO: Zvážit poznámku z entity (možná použít novější verzi z ClassFact
 
 TODO: Client/Gui/Html rozdělit na Html a Document.
 
-Short descy na začátku souborů jsou asi naprd - typicky nevím,
- co tam psát, takže tam píšu redundantní věci
- (třeba to, že je packet součástí prototcolu je daný už tím, že je v adresáři
-  protocol).
-TODO: Smazat všechny short descy na začátku souborů
-  (nechat tam asi jen "Part of KOSMUD").
-- občas je tam něco smysluplného (třeba co ta classa wrappuje), to tam nechám.
 
 ÚVAHA: Několikrát jsem narazil na problém, že potomci mají stejnou
   property (třeba player), ale potřebují pracovat s client nebo server

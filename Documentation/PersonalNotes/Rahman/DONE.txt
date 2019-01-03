@@ -1,3 +1,12 @@
+Short descy na začátku souborů jsou asi naprd - typicky nevím,
+ co tam psát, takže tam píšu redundantní věci
+ (třeba to, že je packet součástí prototcolu je daný už tím, že je v adresáři
+  protocol).
+TODO: Smazat všechny short descy na začátku souborů
+  (nechat tam asi jen "Part of KOSMUD").
+- občas je tam něco smysluplného (třeba co ta classa wrappuje), to tam nechám.
+[done]
+
 TODO: Místo "throw Error()" používat "throw Error()";
 [done]
 
