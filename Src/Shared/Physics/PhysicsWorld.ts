@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Physics World.
+  Wraps Box2d physics world.
 */
 
 import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";

@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { WaypointModel } from "../../Client/Flight/WaypointModel";
 

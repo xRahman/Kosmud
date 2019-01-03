@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Request to enter the game.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Asset } from "../../Shared/Asset/Asset";
 import { Player } from "../../Shared/Game/Player";

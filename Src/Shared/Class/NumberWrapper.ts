@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Abstract ancestor of number-wrapping classes.
-*/
+/*  Part of Kosmud  */
 
 import { Serializable } from "../../Shared/Class/Serializable";
 

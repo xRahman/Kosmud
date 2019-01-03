@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  A connection to the server.
-*/
+/*  Part of Kosmud  */
 
 import { Player } from "../../Shared/Game/Player";
 import { Socket } from "../../Shared/Net/Socket";

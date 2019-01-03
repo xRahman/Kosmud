@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Static class that stores all entities.
-*/
+/*  Part of Kosmud  */
 
 import { Types } from "../../Shared/Utils/Types";
 import { ID, PROTOTYPE_ID } from "../../Shared/Class/Serializable";

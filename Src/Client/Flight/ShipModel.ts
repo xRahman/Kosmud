@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Engine/Sprite";

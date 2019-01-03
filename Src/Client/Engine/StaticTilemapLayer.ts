@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Wraps Phaser.Tilemaps.StaticTilemapLayer.
+  Wraps Phaser.Tilemaps.StaticTilemapLayer
 */
 
 import { Scene } from "../../Client/Engine/Scene";

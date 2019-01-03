@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { Scene } from "../../Client/Engine/Scene";
 import { Physics } from "../../Shared/Physics/Physics";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";

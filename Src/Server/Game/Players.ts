@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Players.
-*/
+/*  Part of Kosmud  */
 
 import { Entities } from "../../Server/Class/Entities";
 import { Player } from "../../Server/Game/Player";

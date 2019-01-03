@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Saves, loads and manages zones.
-*/
+/*  Part of Kosmud  */
 
 import { Serializable } from "../../Shared/Class/Serializable";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";

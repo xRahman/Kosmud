@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 /*
   Note:
     This class transforms coordinates from Box2D to Phaser coords

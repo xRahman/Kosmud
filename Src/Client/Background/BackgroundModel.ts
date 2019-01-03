@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { Sprite } from "../../Client/Engine/Sprite";
 import { Scene } from "../../Client/Engine/Scene";
 

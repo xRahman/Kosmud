@@ -2,7 +2,9 @@
   Part of Kosmud
 
   Runtime error reporting.
+*/
 
+/*
        --------------------------------------------------------
                EVERY ERROR() NEEDS TO BE FIXED ASAP!
            (Even if application doesn't crash right away)

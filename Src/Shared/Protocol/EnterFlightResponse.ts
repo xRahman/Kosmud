@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Notifies the client about a new visible ship.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Packet } from "../../Shared/Protocol/Packet";
 

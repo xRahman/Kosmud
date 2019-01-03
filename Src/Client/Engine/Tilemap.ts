@@ -1,5 +1,12 @@
 /*
-  This class is not a graphic element, it only stores tilemap data.
+  Part of Kosmud
+
+  Wraps Phaser.Tilemaps.Tilemap
+*/
+
+/*
+  Note:
+    This class is not a graphic element, it only stores tilemap data.
 */
 
 import { Coords } from "../../Shared/Engine/Coords";

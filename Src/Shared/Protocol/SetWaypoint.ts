@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Request to set player ship waypoint.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Packet } from "../../Shared/Protocol/Packet";
 

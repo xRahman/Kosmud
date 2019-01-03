@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Div element containing html canvas.
+  Wraps html <div> element containing html canvas.
 */
 
 import { Component } from "../../Client/Gui/Component";

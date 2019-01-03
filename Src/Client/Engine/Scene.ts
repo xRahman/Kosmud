@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Wraps Phaser.GameObjects.Container
+  Wraps Scene.PhaserScene
 */
 
 import { ERROR } from "../../Shared/Log/ERROR";

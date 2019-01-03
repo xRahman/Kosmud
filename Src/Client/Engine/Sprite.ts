@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Wraps Phaser.GameObjects.Sprite.
+  Wraps Phaser.GameObjects.Sprite
 */
 
 import { Vector } from "../../Shared/Physics/Vector";

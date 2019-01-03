@@ -1,7 +1,8 @@
 /*
   Part of Kosmud
 
-  Allows serializing to and from JSON format.
+  Automatized serializing to and from JSON format including
+  re-creating classes that were serialized.
 */
 
 /*

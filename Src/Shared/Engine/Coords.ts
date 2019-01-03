@@ -1,9 +1,7 @@
 /*
-  Provides methods to transform coordinates from Box2D to Phaser and back.
-*/
+  Part of Kosmud
 
-/*
-  Note: All transform functions work both ways.
+  Transforms coordinates from Box2D to Phaser and back.
 */
 
 import { Physics } from "../../Shared/Physics/Physics";

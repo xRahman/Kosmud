@@ -1,5 +1,7 @@
 /*
-  Draws lines directly to canvas.
+  Part of Kosmud
+
+  Wraps Phaser.GameObjects.Graphics
 */
 
 /*

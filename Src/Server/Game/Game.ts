@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Server-side game simulation.
-*/
+/*  Part of Kosmud  */
 
 import { Zones } from "../../Server/Game/Zones";
 

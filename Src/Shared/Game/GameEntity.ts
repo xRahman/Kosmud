@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  GameEntity class ancestor.
-*/
+/*  Part of Kosmud  */
 
 import { Asset } from "../../Shared/Asset/Asset";
 import { ContainerEntity } from "../../Shared/Class/ContainerEntity";

@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Incoming mouse input packet.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Connection } from "../../Server/Net/Connection";
 // import { Game } from "../../Server/Game/Game";

@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Logger abstract ancestor.
-*/
+/*  Part of Kosmud  */
 
 import "../../Shared/Utils/String";
 

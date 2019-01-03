@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Shared Ship class ancestor.
-*/
+/*  Part of Kosmud  */
 
 // import { Zone } from "../../Shared/Game/Zone";
 import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";

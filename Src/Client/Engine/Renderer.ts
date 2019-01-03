@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { REPORT } from "../../Shared/Log/REPORT";
 import { CanvasDiv } from "../../Client/Gui/CanvasDiv";
 import { Scenes } from "../../Client/Engine/Scenes";

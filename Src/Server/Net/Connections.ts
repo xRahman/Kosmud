@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Player connections.
-*/
+/*  Part of Kosmud  */
 
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Packet } from "../../Shared/Protocol/Packet";

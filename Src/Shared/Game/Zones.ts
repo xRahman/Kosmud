@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Saves, loads and manages zones.
-*/
+/*  Part of Kosmud  */
 
 import { Zone } from "../../Shared/Game/Zone";
 import { Serializable } from "../../Shared/Class/Serializable";

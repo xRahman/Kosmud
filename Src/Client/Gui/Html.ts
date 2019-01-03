@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  <html> element and functionality attached to html 'document'.
+  Wraps <html> element and html 'document'.
 */
 
 import { Component } from "../../Client/Gui/Component";

@@ -1,4 +1,10 @@
 /*
+  Part of Kosmud
+
+  Wraps Phaser.Cameras.Scene2D.Camera
+*/
+
+/*
 import { Scene } from "../../Client/Engine/Scene";
 
 export class Camera

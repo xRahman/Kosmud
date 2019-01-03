@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { FlightScene } from "../../Client/Flight/FlightScene";

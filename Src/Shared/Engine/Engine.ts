@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Shared part of game engine.
-*/
+/*  Part of Kosmud  */
 
 export namespace Engine
 {

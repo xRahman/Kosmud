@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Physics engine wrapper.
+  Box2d physics engine wrapper.
 */
 
 import { b2_maxTranslation, b2_maxRotation } from

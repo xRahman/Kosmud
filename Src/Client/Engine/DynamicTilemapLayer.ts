@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Wraps Phaser.Tilemaps.DynamicTilemapLayer.
+  Wraps Phaser.Tilemaps.DynamicTilemapLayer
 */
 
 import { Scene } from "../../Client/Engine/Scene";

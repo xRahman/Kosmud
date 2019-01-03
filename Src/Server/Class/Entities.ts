@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Server-side functionality of static class that stores all entities.
-*/
+/*  Part of Kosmud  */
 
 import { Types } from "../../Shared/Utils/Types";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";

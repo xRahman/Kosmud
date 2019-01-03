@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { Scene } from "../../Client/Engine/Scene";
 import { Renderer } from "../../Client/Engine/Renderer";
 import { FlightScene } from "../../Client/Flight/FlightScene";

@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Engine/Sprite";

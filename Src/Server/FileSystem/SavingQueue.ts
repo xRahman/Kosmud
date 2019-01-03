@@ -6,11 +6,11 @@
 
 /*
   Note:
-    It would make sense to 'deduplicate' saving requests (beside the one
-    currently beeing processed), because it doesn't make much sense to
-    resave the same file multiple times. But I'm not going to implement
-    it right now because it wouldn't be trivial and it will probably be
-    extremely rare scenario anyways.
+    It would make sense to deduplicate saving requests (beside the one
+    currently beeing processed), because resaving the same file multiple
+    times probably isn't necessary. But I'm not going to implement it
+    right now because it wouldn't be trivial and it will probably be very
+    rare scenario anyways.
 */
 
 import { Types } from "../../Shared/Utils/Types";

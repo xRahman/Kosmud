@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  A connection to the server.
-*/
+/*  Part of Kosmud  */
 
 import { Syslog } from "../../Shared/Log/Syslog";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";

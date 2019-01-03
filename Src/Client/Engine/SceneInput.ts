@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { Keyboard } from "../../Client/Engine/Keyboard";
 import { Mouse } from "../../Client/Engine/Mouse";
 import { Scene } from "../../Client/Engine/Scene";

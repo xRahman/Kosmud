@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/Flight/ShipModel";

@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Rigid body.
+  Wraps Box2d rigid body.
 */
 
 import { Physics } from "../../Shared/Physics/Physics";

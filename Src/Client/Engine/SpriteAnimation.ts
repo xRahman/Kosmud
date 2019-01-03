@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Wraps Phaser.GameObjects.Sprite.
+  Wraps Phaser.Animations.Animation
 */
 
 import { Scene } from "../../Client/Engine/Scene";

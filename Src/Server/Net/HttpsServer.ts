@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Https server.
-*/
+/*  Part of Kosmud  */
 
 import { REPORT } from "../../Shared/Log/REPORT";
 import { ERROR } from "../../Shared/Log/ERROR";

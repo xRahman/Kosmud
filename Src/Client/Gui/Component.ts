@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Abstract ancestor of classes that encapsulate DOM elements.
+  Abstract ancestor of classes wrapping DOM elements.
 */
 
 import { ERROR } from "../../Shared/Log/ERROR";

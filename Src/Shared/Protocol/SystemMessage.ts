@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  System message sent by client.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Packet } from "../../Shared/Protocol/Packet";

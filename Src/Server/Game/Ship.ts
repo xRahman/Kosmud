@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  TEST - a ship.
-*/
+/*  Part of Kosmud  */
 
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import { Entities } from "../../Server/Class/Entities";

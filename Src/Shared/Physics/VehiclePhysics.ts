@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Vehicle physics properties and behaviour.
-*/
+/*  Part of Kosmud  */
 
 // Augment global namespace with number-related functions and constants.
 import "../../Shared/Utils/Number";

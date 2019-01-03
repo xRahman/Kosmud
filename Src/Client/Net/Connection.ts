@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Connection to the server.
-*/
+/*  Part of Kosmud  */
 
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { WebSocketEvent } from "../../Shared/Net/WebSocketEvent";

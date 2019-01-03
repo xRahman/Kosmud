@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Deserializes and processes packets.
-*/
+/*  Part of Kosmud  */
 
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Serializable } from "../../Shared/Class/Serializable";

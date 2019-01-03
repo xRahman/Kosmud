@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Static property attributes.
+  Interface of static property attributes.
 */
 
 export interface Attributes

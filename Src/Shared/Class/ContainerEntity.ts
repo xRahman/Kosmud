@@ -1,7 +1,8 @@
 /*
   Part of Kosmud
 
-  GameEntity class ancestor.
+  An entity that can contain other entities and be contained in
+  another container entity.
 */
 
 import { Entity } from "../../Shared/Class/Entity";

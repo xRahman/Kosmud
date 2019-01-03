@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Server part of game engine.
-*/
+/*  Part of Kosmud  */
 
 import { ERROR } from "../../Shared/Log/ERROR";
 import { Syslog } from "../../Shared/Log/Syslog";

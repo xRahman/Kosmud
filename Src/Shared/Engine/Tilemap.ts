@@ -1,6 +1,4 @@
-/*
-  Shared abstract ancestor of Tilemap classes.
-*/
+/*  Part of Kosmud  */
 
 import { Coords } from "../../Shared/Engine/Coords";
 import { Physics } from "../../Shared/Physics/Physics";

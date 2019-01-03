@@ -1,11 +1,4 @@
-
-/*
-  Part of Kosmud
-
-  Description of change of scene contents.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Connection } from "../../Client/Net/Connection";

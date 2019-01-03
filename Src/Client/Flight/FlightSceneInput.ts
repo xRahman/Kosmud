@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Connection } from "../../Client/Net/Connection";
 import { SetWaypoint } from "../../Shared/Protocol/SetWaypoint";

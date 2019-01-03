@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Shared Ship class ancestor.
-*/
+/*  Part of Kosmud  */
 
 import { Entities } from "../../Shared/Class/Entities";
 import { Asset } from "../../Shared/Asset/Asset";

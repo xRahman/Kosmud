@@ -1,10 +1,19 @@
+/*  Part of Kosmud  */
+
 /*
-  Part of Kosmud
-
-  Stores instances of classes so they can be instantiated
-  in runtime using Object.create(prototype).
-
-  TODO: Poznámka o true prototypal inheritance.
+  Note:
+    ClassFactory creates instances of typescript classes
+    using 'Object.create()' rather than 'new'. It means
+    that created instances are in fact empty objects with
+    no own properties - all of their properties are inherited
+    from the prototype object (which is an instance of requested
+    class).
+      ClassFactory also makes sure that prototypal inheritance
+    works correcly event for nonprimitive properties by also
+    instantiating them using Object.create() with the respective
+    nonprimitive property on the prototype object as their
+    prototype. This prevents modifying the prototype object
+    when writing to the instance.
 */
 
 import { ID, Serializable } from "../../Shared/Class/Serializable";

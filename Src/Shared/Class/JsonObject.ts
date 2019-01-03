@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Auxiliary static class that serializes objects to and from JSON.
+  Wraps javascript JSON class.
 */
 
 import { js_beautify as beautify } from "js-beautify";

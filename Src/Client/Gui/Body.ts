@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  <body> element.
+  Wraps html <body> element.
 */
 
 import { Component } from "../../Client/Gui/Component";

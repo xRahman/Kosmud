@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Types and associated utility functions.
+  Wraps FastPriotityQueue.
 */
 
 import { Serializable } from "../../Shared/Class/Serializable";

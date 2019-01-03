@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Server-side functionality regarding ships.
-*/
+/*  Part of Kosmud  */
 
 import { Ship } from "../../Server/Game/Ship";
 import { Entities } from "../../Server/Class/Entities";

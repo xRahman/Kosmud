@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";

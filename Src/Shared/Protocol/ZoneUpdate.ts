@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Description of change of scene contents.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { Packet } from "../../Shared/Protocol/Packet";

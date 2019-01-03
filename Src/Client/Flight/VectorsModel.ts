@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { Scene } from "../../Client/Engine/Scene";
 import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Graphics } from "../../Client/Engine/Graphics";

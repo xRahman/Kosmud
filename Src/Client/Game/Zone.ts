@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Part of game universe that fits into one physics world
+  Part of game world that fits into one physics world
   (all objects in the same zone can physically influence each other).
 */
 

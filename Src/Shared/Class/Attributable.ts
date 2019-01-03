@@ -1,7 +1,7 @@
 /*
   Part of Kosmud
 
-  Enables using static attributes of class methods and variables.
+  Enables static attributes of class methods and variables.
 */
 
 /*

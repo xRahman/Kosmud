@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { Sound } from "../../Client/Engine/Sound";
 import { Sprite } from "../../Client/Engine/Sprite";

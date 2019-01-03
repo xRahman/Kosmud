@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Textures, texture atlases, sounds, etc.
-*/
+/*  Part of Kosmud  */
 
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Asset } from "../../Shared/Asset/Asset";

@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 // import { Ship } from "../../Client/Game/Ship";
 import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneInput } from "../../Client/Flight/FlightSceneInput";

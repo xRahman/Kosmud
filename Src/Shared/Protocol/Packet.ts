@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Abstract ancestor of incoming data packet classes.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Entity } from "../../Shared/Class/Entity";
 import { Entities } from "../../Shared/Class/Entities";

@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Incoming system message packet.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Syslog } from "../../Shared/Log/Syslog";
 import { Connection } from "../../Server/Net/Connection";

@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Incoming request to enter game.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Connection } from "../../Server/Net/Connection";

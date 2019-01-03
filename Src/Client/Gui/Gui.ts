@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Manages interface.
-*/
+/*  Part of Kosmud  */
 
 import { Html } from "../../Client/Gui/Html";
 import { Body } from "../../Client/Gui/Body";

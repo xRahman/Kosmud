@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Information about mouse input activity.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 import { Vector } from "../../Shared/Physics/Vector";
 import { Packet } from "../../Shared/Protocol/Packet";

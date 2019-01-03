@@ -1,10 +1,4 @@
-/*
-  Part of Kosmud
-
-  Incoming keyboard input packet.
-
-  (Part of client-server communication protocol.)
-*/
+/*  Part of Kosmud  */
 
 // import { Syslog } from "../../Shared/log/Syslog";
 import { Connection } from "../../Server/Net/Connection";

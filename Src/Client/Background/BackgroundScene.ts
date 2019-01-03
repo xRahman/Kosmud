@@ -1,3 +1,5 @@
+/*  Part of Kosmud  */
+
 import { BackgroundModel } from "../../Client/Background/BackgroundModel";
 import { Scene } from "../../Client/Engine/Scene";
 

@@ -1,8 +1,4 @@
-/*
-  Part of Kosmud
-
-  Player.
-*/
+/*  Part of Kosmud  */
 
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Zone } from "../../Server/Game/Zone";

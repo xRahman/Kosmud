@@ -1,6 +1,4 @@
-/*
-  Abstract ancestor of Phaser game object warappers.
-*/
+/*  Part of Kosmud  */
 
 /*
   Note:
