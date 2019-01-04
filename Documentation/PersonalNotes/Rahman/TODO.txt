@@ -10,10 +10,23 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: 'assets' by se možná mohly setnout rovnou do zóny místo to LoginResponse.
+  beztak by se v loginResponse.precess() setovaly do zóny (a jsou to assety
+  zóny).
+- nechtěl jsem je tam ale dávat, aby se mi neposílaly při každym zone updatu...
+Hmm, takže nakonec bude asi nejlepší nechat assets v LoginResponse, vůbec
+  je nedávat do zóny a loadAssets() zavolat přímo z LoginResponse, nebo
+  případně ze scény (passnout to do loadu scény, nebo tak něco).
+
+TODO: Předělat Client/Zone.loadAssets()
+- projít this.assets() a zavolat na každém z nich load().
+TODO: Implementovat load() na asset classách
+  (možná to bude chtít, udělat jim klient verze...)
+
 TODO: Poznámka o true prototypal inheritance do ClassFactory.
 [done]
 
-TODO: Zvážit poznámku z entity (možná použít novější verzi z ClassFactory).
+TODO: Zvážit poznámku v Entity (možná použít novější verzi z ClassFactory).
 
 TODO: Client/Gui/Html rozdělit na Html a Document.
 
@@ -27,7 +40,7 @@ TODO: Client/Gui/Html rozdělit na Html a Document.
 TODO: Vyzkoušet to a pokud to bude fungovat, tak to použít.
 - Vyzkoušel jsem to u Connection a zdá se, že to funguje.
 [done]
-TODO: Udělat to i o statních class
+TODO: Udělat to i u ostatních class
 
 
 
