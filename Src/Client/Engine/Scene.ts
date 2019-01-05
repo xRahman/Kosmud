@@ -17,8 +17,11 @@ import { Keyboard } from "../../Client/Engine/Keyboard";
 import { Sound } from "../../Client/Engine/Sound";
 import { SceneInput } from "../../Client/Engine/SceneInput";
 import { Scenes } from "../../Client/Engine/Scenes";
-import { Zone } from "../../Shared/Game/Zone";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
+import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
+import { SoundAsset } from "../../Client/Asset/SoundAsset";
 
 export abstract class Scene
 {
@@ -28,6 +31,11 @@ export abstract class Scene
 
   private finishLoading: Types.ResolveFunction<void> | "Not loading"
     = "Not loading";
+
+  private assets: Set<ClientAsset> | "Not set" = "Not set";
+
+  private readonly tilemapAssets = new Set<TilemapAsset>();
+  private readonly shapeAssets = new Set<ShapeAsset>();
 
   constructor
   (
@@ -49,6 +57,22 @@ export abstract class Scene
   }
 
   // ---------------- Public methods --------------------
+
+  public setAssets(assets: Set<ClientAsset>)
+  {
+    this.assets = assets;
+  }
+
+  // ! Throws exception on error.
+  public getAssets()
+  {
+    if (this.assets === "Not set")
+    {
+      throw Error(`Assets are not se to the scene`);
+    }
+
+    return this.assets;
+  }
 
   public get debugId()
   {
@@ -101,9 +125,16 @@ export abstract class Scene
     );
   }
 
-  public loadTilemap(tilemapDataId: string, tilemapJsonFilePath: string)
+  public loadTilemap(tilemapAsset: TilemapAsset)
   {
+    const tilemapDataId = tilemapAsset.getId();
+    const tilemapJsonFilePath = tilemapAsset.path;
+
     this.phaserScene.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
+
+    // Add reference to 'tilemapAsset' so we can init it's tilemap
+    // reference after loading finishes.
+    this.addTilemapAsset(tilemapAsset);
   }
 
   public loadScenePlugin
@@ -140,14 +171,14 @@ export abstract class Scene
 
   public createTilemap
   (
-    tilemapConfig: Zone.TilemapConfig,
+    tilemapAsset: TilemapAsset,
     tilemapJsonData: object
   )
   {
     return new Tilemap
     (
       this.phaserScene,
-      tilemapConfig,
+      tilemapAsset,
       tilemapJsonData
     );
   }
@@ -158,9 +189,9 @@ export abstract class Scene
     return new SpriteAnimation(this.phaserScene, animationConfig);
   }
 
-  public createSound(soundId: string, baseVolume: ZeroToOne)
+  public createSound(soundAsset: SoundAsset, baseVolume: ZeroToOne)
   {
-    return new Sound(this.phaserScene, soundId, baseVolume);
+    return new Sound(this.phaserScene, soundAsset.getId(), baseVolume);
   }
 
   public createKeyboard()
@@ -173,20 +204,19 @@ export abstract class Scene
     return new Mouse(this.phaserScene);
   }
 
-  // ! Throws exception on error.
-  public getTilemapJsonData(tilemapId: string)
+  public init()
   {
-    // Phaser loads tilemap json data so we don't have to do it again.
-    const jsonData = this.phaserScene.cache.tilemap.get(tilemapId).data;
+    this.initTilemaps();
+    this.initShapes();
+  }
 
-    if (!jsonData || typeof jsonData !== "object")
+  public addShapeAsset(shapeAsset: ShapeAsset)
+  {
+    if (this.shapeAssets.has(shapeAsset))
     {
-      throw Error(`Failed to find tilemap json data for tilemap`
-        + ` id '${tilemapId}'. Make sure that tilemap with this id`
-        + ` is loaded`);
+      throw Error(`${this.debugId} already has ${shapeAsset} in`
+        + ` the list of shape assets`);
     }
-
-    return jsonData as object;
   }
 
   // --------------- Protected methods ------------------
@@ -196,7 +226,19 @@ export abstract class Scene
   protected loadPlugins() {}
 
   // ! Throws exception on error.
-  protected abstract loadAssets(): void;
+  protected loadAssets()
+  {
+    if (this.assets === "Not set")
+    {
+      throw Error(`${this.debugId} doesn't have a list of assets.`
+        + ` It needs to be set prior to loading the scene`);
+    }
+
+    for (const asset of this.assets)
+    {
+      asset.load(this);
+    }
+  }
 
   protected setActive(active: boolean)
   {
@@ -239,6 +281,60 @@ export abstract class Scene
     // this.getScenePlugin().start(this.getName());
     // this.phaserScene.sys.scenePlugin.start(this.getName());
     this.phaserGame.scene.start(this.getName());
+  }
+
+  private addTilemapAsset(tilemapAsset: TilemapAsset)
+  {
+    if (this.tilemapAssets.has(tilemapAsset))
+    {
+      throw Error(`${this.debugId} already has ${tilemapAsset} in`
+        + ` the list of tilemap assets`);
+    }
+  }
+
+  // ! Throws exception on error.
+  private getTilemapJsonData(tilemapId: string)
+  {
+    // Phaser loads tilemap json data so we don't have to do it again.
+    const jsonData = this.phaserScene.cache.tilemap.get(tilemapId).data;
+
+    if (!jsonData || typeof jsonData !== "object")
+    {
+      throw Error(`Failed to find tilemap json data for tilemap`
+        + ` id '${tilemapId}'. Make sure that tilemap with this id`
+        + ` is loaded`);
+    }
+
+    return jsonData as object;
+  }
+
+  private initTilemaps()
+  {
+    for (const tilemapAsset of this.tilemapAssets)
+    {
+      // ! Throws exception on error.
+      const tilemapJsonData = this.getTilemapJsonData(tilemapAsset.getId());
+      const tilemap = this.createTilemap(tilemapAsset, tilemapJsonData);
+
+      tilemapAsset.setTilemap(tilemap);
+    }
+  }
+
+  private initShapes()
+  {
+    for (const shapeAsset of this.shapeAssets)
+    {
+      const tilemap = shapeAsset.getTilemapAsset().getTilemap();
+
+      // ! Throws exception on error.
+      const shape = tilemap.getShape
+      (
+        shapeAsset.objectLayerName,
+        shapeAsset.objectName
+      );
+
+      shapeAsset.setShape(shape);
+    }
   }
 
   // ---------------- Event handlers --------------------

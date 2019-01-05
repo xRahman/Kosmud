@@ -8,10 +8,12 @@
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Attributes } from "../../Shared/Class/Attributes";
 import { Serializable } from "../../Shared/Class/Serializable";
-import { Entities } from "../../Server/Class/Entities";
+import { Entities } from "../../Shared/Class/Entities";
 import { Ship } from "../../Shared/Game/Ship";
 import { Asset } from "../../Shared/Asset/Asset";
-import { Tilemap } from "../../Shared/Engine/Tilemap";
+// import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
+// import { SoundAsset } from "../../Shared/Asset/SoundAsset";
+// import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Physics } from "../../Shared/Physics/Physics";
 import { CONTENTS, ContainerEntity } from "../../Shared/Class/ContainerEntity";
@@ -64,17 +66,17 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 
   protected readonly ships = new Set<Ship>();
 
-  protected readonly tilemaps = new Map<string, Tilemap>();
-  protected static tilemaps: Attributes =
-  {
-    saved: false, sentToClient: false
-  };
+  // protected readonly tilemaps = new Map<string, Tilemap>();
+  // protected static tilemaps: Attributes =
+  // {
+  //   saved: false, sentToClient: false
+  // };
 
-  protected readonly physicsShapes = new Map<string, Physics.Shape>();
-  protected static physicsShapes: Attributes =
-  {
-    saved: false, sentToClient: false
-  };
+  // protected readonly physicsShapes = new Map<string, Physics.Shape>();
+  // protected static physicsShapes: Attributes =
+  // {
+  //   saved: false, sentToClient: false
+  // };
 
   private physicsWorld: PhysicsWorld | "Doesn't exist" = "Doesn't exist";
   protected static physicsWorld: Attributes =
@@ -84,34 +86,34 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 
   // ---------------- Public methods --------------------
 
-  // ! Throws exception on error.
-  public getTilemap(name: string)
-  {
-    const tilemap = this.tilemaps.get(name);
+  // // ! Throws exception on error.
+  // public getTilemap(name: string)
+  // {
+  //   const tilemap = this.tilemaps.get(name);
 
-    if (tilemap === undefined)
-    {
-      throw Error(`Failed to find tilemap '${name}' in the`
-        + ` list of loaded tilemaps in zone ${this.debugId}`);
-    }
+  //   if (tilemap === undefined)
+  //   {
+  //     throw Error(`Failed to find tilemap '${name}' in the`
+  //       + ` list of loaded tilemaps in zone ${this.debugId}`);
+  //   }
 
-    return tilemap;
-  }
+  //   return tilemap;
+  // }
 
-  // ! Throws exception on error.
-  public getPhysicsShape(shapeId: string)
-  {
-    const shape = this.physicsShapes.get(shapeId);
+  // // ! Throws exception on error.
+  // public getPhysicsShape(shapeId: string)
+  // {
+  //   const shape = this.physicsShapes.get(shapeId);
 
-    if (shape === undefined)
-    {
-      throw Error(`Failed to find physics shape with id '${shapeId}'`
-        + ` in zone ${this.debugId}. Make sure the shape is listed in`
-        + ` zone assets`);
-    }
+  //   if (shape === undefined)
+  //   {
+  //     throw Error(`Failed to find physics shape with id '${shapeId}'`
+  //       + ` in zone ${this.debugId}. Make sure the shape is listed in`
+  //       + ` zone assets`);
+  //   }
 
-    return shape;
-  }
+  //   return shape;
+  // }
 
   // ! Throws exception on error.
   public addShip(ship: Ship)
@@ -175,34 +177,34 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 
   // --------------- Protected methods ------------------
 
-  protected addTilemap(tilemap: Tilemap)
-  {
-    this.tilemaps.set(tilemap.getName(), tilemap);
-  }
+  // protected addTilemap(tilemap: Tilemap)
+  // {
+  //   this.tilemaps.set(tilemap.getName(), tilemap);
+  // }
 
-  protected addPhysicsShape(shapeId: string, shape: Physics.Shape)
-  {
-    this.physicsShapes.set(shapeId, shape);
-  }
+  // protected addPhysicsShape(shapeId: string, shape: Physics.Shape)
+  // {
+  //   this.physicsShapes.set(shapeId, shape);
+  // }
 
-  // ! Throws exception on error.
-  protected initShapes()
-  {
-    for (const config of this.assets.shapes)
-    {
-      // ! Throws exception on error.
-      const tilemap = this.getTilemap(config.tilemapName);
+  // // ! Throws exception on error.
+  // protected initShapes()
+  // {
+  //   for (const config of this.assets.shapes)
+  //   {
+  //     // ! Throws exception on error.
+  //     const tilemap = this.getTilemap(config.tilemapName);
 
-      // ! Throws exception on error.
-      const shape = tilemap.getShape
-      (
-        config.objectLayerName,
-        config.objectName
-      );
+  //     // ! Throws exception on error.
+  //     const shape = tilemap.getShape
+  //     (
+  //       config.objectLayerName,
+  //       config.objectName
+  //     );
 
-      this.addPhysicsShape(config.shapeId, shape);
-    }
-  }
+  //     this.addPhysicsShape(config.shapeId, shape);
+  //   }
+  // }
 
   // ~ Overrides Serializable.customSerializeProperty.
   // Serialize all entities from zones's 'contents' to the same save file.

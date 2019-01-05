@@ -10,7 +10,8 @@
 */
 
 import { Coords } from "../../Shared/Engine/Coords";
-import { Zone } from "../../Shared/Game/Zone";
+// import { Zone } from "../../Shared/Game/Zone";
+import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
 import { Scene } from "../../Client/Engine/Scene";
 import { Sprite } from "../../Client/Engine/Sprite";
 import * as Shared from "../../Shared/Engine/Tilemap";
@@ -22,13 +23,13 @@ export class Tilemap extends Shared.Tilemap
   constructor
   (
     scene: Scene.PhaserScene,
-    config: Zone.TilemapConfig,
+    tilemapAsset: TilemapAsset,
     tilemapJsonData: object
   )
   {
-    super(config.tilemapId, tilemapJsonData);
+    super(tilemapAsset.getName(), tilemapJsonData);
 
-    this.phaserTilemap = scene.make.tilemap({ key: config.tilemapId });
+    this.phaserTilemap = scene.make.tilemap({ key: tilemapAsset.getId() });
   }
 
   // ---------------- Public methods --------------------

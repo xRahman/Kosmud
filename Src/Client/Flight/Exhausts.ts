@@ -1,11 +1,12 @@
 /*  Part of Kosmud  */
 
-import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
+// import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { ExhaustModel } from "../../Client/Flight/ExhaustModel";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import { SoundAsset } from "../../Client/Asset/SoundAsset";
 import { SpriteAnimation } from "../Engine/SpriteAnimation";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 
@@ -43,7 +44,7 @@ export class Exhausts
     tilemap: Tilemap,
     tilemapObjectLayerName: string,
     graphicContainer: GraphicContainer,
-    exhaustSoundId: string
+    exhaustSoundAsset: SoundAsset
   )
   {
     this.exhaustSpriteAnimation = this.createExhaustAnimation(scene);
@@ -56,7 +57,7 @@ export class Exhausts
       exhaustTextureOrAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
       graphicContainer,
       exhaustAnimationName: this.exhaustAnimationName,
-      exhaustSoundId
+      exhaustSoundAsset
     };
 
     // ! Throws exception on error.

@@ -6,7 +6,10 @@ import { ShipModel } from "../../Client/Flight/ShipModel";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { Zone } from "../../Client/Game/Zone";
 import { Entities } from "../../Shared/Class/Entities";
+import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
+import { SoundAsset } from "../../Client/Asset/SoundAsset";
 import * as Shared from "../../Shared/Game/Ship";
+import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
 
 export class Ship extends Shared.Ship
 {
@@ -29,9 +32,14 @@ export class Ship extends Shared.Ship
     (
       scene,
       // ! Throws exception on error.
-      zone.getTilemap(this.tilemapId),
-      zone.getPhysicsShape(this.physicsShapeId),
-      this.exhaustSoundId
+      this.getTilemapAsset().getTilemap(),
+      // ! Throws exception on error.
+      this.getShapeAsset(),
+      // ! Throws exception on error.
+      this.getExhaustSoundAsset()
+      // zone.getTilemap(this.tilemapId),
+      // zone.getPhysicsShape(this.physicsShapeId),
+      // this.exhaustSoundId
     );
   }
 
@@ -77,6 +85,32 @@ export class Ship extends Shared.Ship
   {
     // ! Throws exception on error.
     this.physics.setWaypoint(position);
+  }
+
+  // --------------- Protected methods ------------------
+
+  // ! Throws exception on error.
+  // ~ Overrides Shared.Ship.getTilemapAsset().
+  protected getTilemapAsset()
+  {
+    // ! Throws exception on error.
+    return super.getTilemapAsset().dynamicCast(TilemapAsset);
+  }
+
+  // ! Throws exception on error.
+  // ~ Overrides Shared.Ship.getShapeAsset().
+  protected getExhaustSoundAsset()
+  {
+    // ! Throws exception on error.
+    return super.getExhaustSoundAsset().dynamicCast(SoundAsset);
+  }
+
+  // ! Throws exception on error.
+  // ~ Overrides Shared.Ship.getShapeAsset().
+  protected getShapeAsset()
+  {
+    // ! Throws exception on error.
+    return super.getShapeAsset().dynamicCast(ShapeAsset);
   }
 
   // ---------------- Private methods -------------------

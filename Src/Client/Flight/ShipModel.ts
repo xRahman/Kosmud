@@ -1,7 +1,7 @@
 /*  Part of Kosmud  */
 
-import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
-import { Vector } from "../../Shared/Physics/Vector";
+// import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
+// import { Vector } from "../../Shared/Physics/Vector";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
@@ -10,7 +10,9 @@ import { ShapeModel } from "../../Client/Flight/ShapeModel";
 import { VectorsModel } from "../../Client/Flight/VectorsModel";
 import { Exhausts } from "../../Client/Flight/Exhausts";
 import { Vehicle } from "../../Shared/Game/Vehicle";
-import { Physics } from "../../Shared/Physics/Physics";
+import { SoundAsset } from "../../Client/Asset/SoundAsset";
+import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
+// import { Physics } from "../../Shared/Physics/Physics";
 
 const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
 
@@ -32,8 +34,8 @@ export class ShipModel
   (
     private readonly scene: FlightScene,
     private readonly tilemap: Tilemap,
-    shape: Physics.Shape,
-    exhaustSoundId: string
+    shapeAsset: ShapeAsset,
+    exhaustSoundAsset: SoundAsset
   )
   {
     this.graphicContainer = scene.createGraphicContainer();
@@ -46,7 +48,7 @@ export class ShipModel
       tilemap,
       BASIC_FIGHTER_TILEMAP_LAYER,
       this.graphicContainer,
-      exhaustSoundId
+      exhaustSoundAsset
     );
 
     // ! Throws exception on error.
@@ -54,7 +56,7 @@ export class ShipModel
     this.shapeModel = new ShapeModel
     (
       scene,
-      shape,
+      shapeAsset.getShape(),
       this.graphicContainer
     );
 

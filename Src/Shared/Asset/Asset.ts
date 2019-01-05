@@ -4,6 +4,8 @@ import { Entity } from "../../Shared/Class/Entity";
 
 export abstract class Asset extends Entity
 {
-  // Nothing for now, the class only serves as a common ancestor
-  // for various asset classes.
+  // public async load(): Promise<void>
+  // {
+  //   throw Error(`This method needs to be overriden in descendant class`);
+  // }
 }

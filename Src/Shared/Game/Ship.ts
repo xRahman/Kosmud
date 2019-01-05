@@ -50,4 +50,33 @@ export class Ship extends Vehicle
     // ! Throws exception on error.
     this.physics.setShapeAsset(asset);
   }
+
+  // --------------- Protected methods ------------------
+
+  protected getTilemapAsset()
+  {
+    if (this.tilemapAsset === "Not set")
+    {
+      throw new Error(`${this.debugId} doesn't have tilemap asset`);
+    }
+
+    return this.tilemapAsset;
+  }
+
+  protected getExhaustSoundAsset()
+  {
+    if (this.exhaustSoundAsset === "Not set")
+    {
+      throw new Error(`${this.debugId} doesn't have exhaust sound asset`);
+    }
+
+    return this.exhaustSoundAsset;
+  }
+
+  // ! Throws exception on error.
+  protected getShapeAsset()
+  {
+    // ! Throws exception on error.
+    return this.physics.getShapeAsset();
+  }
 }

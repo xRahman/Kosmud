@@ -39,7 +39,7 @@ export namespace Game
     await Assets.saveAsset(tilemapAsset);
 
     const shapeAsset = Assets.newShapeAsset("Fighter hull");
-    shapeAsset.tilemapAsset = tilemapAsset;
+    shapeAsset.setTilemapAsset(tilemapAsset);
     shapeAsset.objectName = "Hull";
     shapeAsset.objectLayerName = "Basic fighter";
     ship.setShapeAsset(shapeAsset);

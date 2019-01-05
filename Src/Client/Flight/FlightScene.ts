@@ -1,6 +1,7 @@
 /*  Part of Kosmud  */
 
 // import { Ship } from "../../Client/Game/Ship";
+// import { Asset } from "../../Shared/Asset/Asset";
 import { Zone } from "../../Client/Game/Zone";
 import { FlightSceneInput } from "../../Client/Flight/FlightSceneInput";
 import { FlightSceneGUI } from "../../Client/Flight/FlightSceneGUI";
@@ -20,7 +21,7 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.input.
   protected input: FlightSceneInput | "Doesn't exist" = "Doesn't exist";
 
-  private zone: Zone | "Not assigned" = "Not assigned";
+  private zone: Zone | "Not set" = "Not set";
 
   private sceneGUI: FlightSceneGUI | "Doesn't exist" = "Doesn't exist";
 
@@ -31,15 +32,18 @@ export class FlightScene extends Scene
     this.zone = zone;
   }
 
+  // ! Throws exception on error.
+  // ~ Overrides Scene.init().
   public init()
   {
+    super.init();
+
     this.updateCamera();
 
+    /// TODO: Tohle teď jen setne odkaz na scénu,
+    ///   přepsat to jinak.
     // ! Throws exception on error.
     this.getZone().initSceneData(this);
-
-    // // ! Throws exception on error.
-    // this.getZone().addShip(fakeCreateShip());
 
     // ! Throws exception on error.
     this.getZone().createModels();
@@ -155,7 +159,7 @@ export class FlightScene extends Scene
   // ! Throws exception on error.
   private getZone()
   {
-    if (this.zone === "Not assigned")
+    if (this.zone === "Not set")
     {
       throw Error(`Scene '${this.name}' doesn't have`
         + ` a zone attached yet. Make sure you call setZone()`

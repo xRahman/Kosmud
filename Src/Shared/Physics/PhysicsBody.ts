@@ -6,6 +6,7 @@
 
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
+import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 import { Entity } from "../../Shared/Class/Entity";
 
 // 3rd party modules.

@@ -6,6 +6,7 @@ import { Sprite } from "../../Client/Engine/Sprite";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import { SoundAsset } from "../../Client/Asset/SoundAsset";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 
 export class ExhaustModel
@@ -96,7 +97,7 @@ function createSound
 {
   const sound = config.scene.createSound
   (
-    config.exhaustSoundId, exhaustSoundBaseVolume
+    config.exhaustSoundAsset, exhaustSoundBaseVolume
   );
 
   sound.play(true, new ZeroToOne(1));
@@ -116,6 +117,6 @@ export namespace ExhaustModel
     exhaustTextureOrAtlasId: string;
     graphicContainer: GraphicContainer;
     exhaustAnimationName: string;
-    exhaustSoundId: string;
+    exhaustSoundAsset: SoundAsset;
   }
 }

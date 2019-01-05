@@ -3,11 +3,13 @@
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Player } from "../../Client/Game/Player";
 import { Zone } from "../../Client/Game/Zone";
+import { ClientAsset } from "../../Client/Asset/ClientAsset";
 import { Connection } from "../../Client/Net/Connection";
 import { Scenes } from "../../Client/Engine/Scenes";
 import * as Shared from "../../Shared/Protocol/LoginResponse";
 
-export class LoginResponse extends Shared.LoginResponse<Player, Zone>
+export class LoginResponse
+  extends Shared.LoginResponse<Player, Zone, ClientAsset>
 {
   // ---------------- Public methods --------------------
 
@@ -16,15 +18,14 @@ export class LoginResponse extends Shared.LoginResponse<Player, Zone>
   {
     connection.setPlayer(this.getPlayer());
 
-    await loadFlightScene(this.getZone());
+    await loadFlightScene(this.getZone(), this.getAssets());
+
+    /// Tady by to chtělo:
+    ///   initTilemaps();
+    ///   initShapes();
 
     initBackgroundScene();
     initFlightScene();
-
-    /// TODO: Někde se taky musí volat zone.createPhysicsWorld();
-
-    /// TODO: Co s assetama?
-    // this.getAssets()
 
     /// Tady by asi mělo bejt ještě setnutí stavu GUI, aby se
     /// shownula/hidnula příslušná okna.
@@ -36,13 +37,17 @@ export class LoginResponse extends Shared.LoginResponse<Player, Zone>
 // ----------------- Auxiliary Functions ---------------------
 
 /// TODO: Tohle by se dalo přesunout do Scenes.
-async function loadFlightScene(zone: Zone)
+async function loadFlightScene(zone: Zone, assets: Set<ClientAsset>)
 {
-  Scenes.getFlightScene().setZone(zone);
-
   try
   {
-    await Scenes.getFlightScene().load();
+    // ! Throws exception on error.
+    const flightScene = Scenes.getFlightScene();
+
+    flightScene.setZone(zone);
+    flightScene.setAssets(assets);
+
+    await flightScene.load();
   }
   catch (error)
   {
@@ -50,7 +55,6 @@ async function loadFlightScene(zone: Zone)
   }
 }
 
-/// TODO: Tohle by se dalo přesunout do Scenes.
 function initFlightScene()
 {
   try
@@ -63,7 +67,6 @@ function initFlightScene()
   }
 }
 
-/// TODO: Tohle by se dalo přesunout do Scenes.
 function initBackgroundScene()
 {
   try

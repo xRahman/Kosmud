@@ -184,6 +184,17 @@ export class VehiclePhysics extends Serializable
     this.shapeAsset = this.getVehicle().addAsset(asset);
   }
 
+  // ! Throws exception on error.
+  public getShapeAsset()
+  {
+    if (this.shapeAsset === "Not set")
+    {
+      throw new Error(`${this.getVehicle().debugId} doesn't have shape asset`);
+    }
+
+    return this.shapeAsset;
+  }
+
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
@@ -275,7 +286,7 @@ export class VehiclePhysics extends Serializable
   public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
   {
     // ! Throws exception on error.
-    const physicsShape = zone.getPhysicsShape(this.shapeAsset);
+    const physicsShape = zone.getPhysicsShape(this.getShapeAsset());
 
     this.physicsBody = physicsWorld.createPhysicsBody
     (

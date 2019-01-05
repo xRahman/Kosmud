@@ -58,7 +58,7 @@ export class ContainerEntity<T extends ContainerEntity<T>> extends Entity
     }
 
     this.contents.add(entity);
-    entity.container = this;
+    entity.setContainer(this);
   }
 
   // ! Throws exception on error.
@@ -73,5 +73,10 @@ export class ContainerEntity<T extends ContainerEntity<T>> extends Entity
     }
 
     entity.container = "Not in container";
+  }
+
+  private setContainer(container: ContainerEntity<T>)
+  {
+    this.container = container;
   }
 }

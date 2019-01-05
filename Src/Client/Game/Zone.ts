@@ -21,30 +21,30 @@ export class Zone extends Shared.Zone
 
   // ---------------- Public methods --------------------
 
-  public loadAssets(scene: FlightScene)
-  {
-    loadTextures(scene, this.assets.textures);
-    loadAtlases(scene, this.assets.atlases);
-    loadSounds(scene, this.assets.sounds);
+  // public loadAssets(scene: FlightScene)
+  // {
+  //   loadTextures(scene, this.assets.textures);
+  //   loadAtlases(scene, this.assets.atlases);
+  //   loadSounds(scene, this.assets.sounds);
 
-    loadTilemaps(scene, this.assets.tilemaps);
-  }
+  //   loadTilemaps(scene, this.assets.tilemaps);
+  // }
 
   // ! Throws exception on error.
   public initSceneData(scene: FlightScene)
   {
     this.scene = scene;
 
-    // ! Throws exception on error.
-    this.createTilemaps(scene);
+    // // ! Throws exception on error.
+    // this.createTilemaps(scene);
 
-    // ! Throws exception on error.
-    this.initShapes();
+    // // ! Throws exception on error.
+    // this.initShapes();
 
-    /// V tenhle moment ještě nemůžou bejt v zóně lodě,
-    /// protože přidat je lze až poté, co jsou vyrobené
-    /// tilemapy a initnuté shapy.
-    // this.createShips(scene);
+    // /// V tenhle moment ještě nemůžou bejt v zóně lodě,
+    // /// protože přidat je lze až poté, co jsou vyrobené
+    // /// tilemapy a initnuté shapy.
+    // // this.createShips(scene);
   }
 
   // ! Throws exception on error.
@@ -137,17 +137,17 @@ export class Zone extends Shared.Zone
 
   // ---------------- Private methods -------------------
 
-  // ! Throws exception on error.
-  private createTilemaps(scene: FlightScene)
-  {
-    for (const config of this.assets.tilemaps)
-    {
-      // ! Throws exception on error.
-      const tilemapJsonData = scene.getTilemapJsonData(config.tilemapId);
+  // // ! Throws exception on error.
+  // private createTilemaps(scene: FlightScene)
+  // {
+  //   for (const config of this.assets.tilemaps)
+  //   {
+  //     // ! Throws exception on error.
+  //     const tilemapJsonData = scene.getTilemapJsonData(config.tilemapId);
 
-      this.addTilemap(scene.createTilemap(config, tilemapJsonData));
-    }
-  }
+  //     this.addTilemap(scene.createTilemap(config, tilemapJsonData));
+  //   }
+  // }
 
   // ! Throws exception on error.
   private getScene()
@@ -175,55 +175,55 @@ export class Zone extends Shared.Zone
 
 // ----------------- Auxiliary Functions ---------------------
 
-function loadTextures
-(
-  scene: FlightScene,
-  configs: Array<Shared.Zone.TextureConfig>
-)
-{
-  for (const config of configs)
-  {
-    scene.loadTexture(config.textureId, config.texturePath);
-  }
-}
+// function loadTextures
+// (
+//   scene: FlightScene,
+//   configs: Array<Shared.Zone.TextureConfig>
+// )
+// {
+//   for (const config of configs)
+//   {
+//     scene.loadTexture(config.textureId, config.texturePath);
+//   }
+// }
 
-function loadAtlases
-(
-  scene: FlightScene,
-  configs: Array<Shared.Zone.TextureAtlasConfig>
-)
-{
-  for (const config of configs)
-  {
-    scene.loadTextureAtlas
-    (
-      config.atlasId,
-      config.atlasJsonPath,
-      config.textureDirectory
-    );
-  }
-}
+// function loadAtlases
+// (
+//   scene: FlightScene,
+//   configs: Array<Shared.Zone.TextureAtlasConfig>
+// )
+// {
+//   for (const config of configs)
+//   {
+//     scene.loadTextureAtlas
+//     (
+//       config.atlasId,
+//       config.atlasJsonPath,
+//       config.textureDirectory
+//     );
+//   }
+// }
 
-function loadSounds
-(
-  scene: FlightScene,
-  configs: Array<Shared.Zone.SoundConfig>
-)
-{
-  for (const config of configs)
-  {
-    scene.loadSound(config.soundId, config.soundPath);
-  }
-}
+// function loadSounds
+// (
+//   scene: FlightScene,
+//   configs: Array<Shared.Zone.SoundConfig>
+// )
+// {
+//   for (const config of configs)
+//   {
+//     scene.loadSound(config.soundId, config.soundPath);
+//   }
+// }
 
-function loadTilemaps
-(
-  scene: FlightScene,
-  configs: Array<Shared.Zone.TilemapConfig>
-)
-{
-  for (const config of configs)
-  {
-    scene.loadTilemap(config.tilemapId, config.tilemapJsonPath);
-  }
-}
+// function loadTilemaps
+// (
+//   scene: FlightScene,
+//   configs: Array<Shared.Zone.TilemapConfig>
+// )
+// {
+//   for (const config of configs)
+//   {
+//     scene.loadTilemap(config.tilemapId, config.tilemapJsonPath);
+//   }
+// }

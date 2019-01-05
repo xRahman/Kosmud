@@ -10,6 +10,39 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: V LoginReponse() dát background scéně seznam assetů
+ a následně ji loadnout (nevím, jak se to dělá teď).
+
+TODO: Asi fakt bude lepší použítvat AssetDefinition
+  (TextureDefinition, SoundDefinition, etc.) místo SoundAsset, etc.
+
+-----------------------
+
+TODO: Zrušit Server/Zone.getUpdate() a posílat místo toho rovnou zónu.
+
+-----------------------
+
+Ok, shapy a tilemapy:
+
+  Na klientu:
+    - musím nejdřív nechat scénu, ať loadne assety
+      (tím se loadne json tilemapy).
+    - následně je mým ultimátním cílem vytvořit shapy,
+      takže technicky vzato bych asi mohl projít shape assety
+      a ve chvíli, když asset potřebuje tilemapu, tak se ta
+      tilemapa vytvoří z příslušných json dat (který si vytáhne
+      ze scény přes svoje idčko).
+    Problém je, že nemám nikde seznam shapů v zóně.
+    - ale mohl bych jít ještě o krok dál - shapy jsou potřeba
+      ve chvíli, kdy se loď přidává do physics worldu. Tzn. bych
+      možná mohl shapy vyrábět taky on-request
+      (data tilemapy se nějak složitě parsujou, ale to se v zásadě
+       dá udělat on-request, není to async operace).
+TODO: Takže vyzkoušet, jestli půjde jít na to odzadu. Tzn. začít
+  vytvořením physics worldu a vložením lodi.
+
+-----------------------
+
 TODO: 'assets' by se možná mohly setnout rovnou do zóny místo to LoginResponse.
   beztak by se v loginResponse.precess() setovaly do zóny (a jsou to assety
   zóny).
@@ -17,6 +50,13 @@ TODO: 'assets' by se možná mohly setnout rovnou do zóny místo to LoginRespon
 Hmm, takže nakonec bude asi nejlepší nechat assets v LoginResponse, vůbec
   je nedávat do zóny a loadAssets() zavolat přímo z LoginResponse, nebo
   případně ze scény (passnout to do loadu scény, nebo tak něco).
+Ok, tak ještě trochu jinak:
+- assety si musí loadnout scéna v preloadu, tzn. je musím
+  v LoginResponse.process() setnout do scény.
+
+TODO: FlightScene.assets by možná mohly bejt rovnou ve Scene, protože
+  každá scéna asi bude mít (a loadovat) nějaký assety.
+- hmm, viz třeba textura waypointu, to by taky měl bejt TextureAsset.
 
 TODO: Předělat Client/Zone.loadAssets()
 - projít this.assets() a zavolat na každém z nich load().
@@ -72,6 +112,8 @@ TODO: Pak je ještě jedna možnost - že by konstruktory fungovaly jako
   - constructor by asi class factory passnul this, takže by ho mohla
     využít jako root prototyp, pokud by ho ještě neměla. Díky tomu by
     možná dokonce vůbec nebyla potřeba registrace.
+NOTE: Pokud by se instance vyráběly konstruktorem, mohl bych zrušit
+  zone.init() (přesunout to do konstruktoru).
 
 ÚVAHA: Psát si vyráběcí funkci na každou blbost je asi zbytečná spousta
   kódu.

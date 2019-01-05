@@ -5,11 +5,12 @@ import { Player } from "../../Shared/Game/Player";
 import { Zone } from "../../Shared/Game/Zone";
 import { Packet } from "../../Shared/Protocol/Packet";
 
-export class LoginResponse<P extends Player, Z extends Zone> extends Packet
+export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
+  extends Packet
 {
   private player: P | "Not set" = "Not set";
   private zone: Z | "Not set" = "Not set";
-  private assets: Set<Asset> | "Not set" = "Not set";
+  private assets: Set<A> | "Not set" = "Not set";
 
   // ! Throws exception on error.
   public setPlayer(player: P)
@@ -26,7 +27,7 @@ export class LoginResponse<P extends Player, Z extends Zone> extends Packet
   }
 
   // ! Throws exception on error.
-  public setAssets(assets: Set<Asset>)
+  public setAssets(assets: Set<A>)
   {
     for (const asset of assets)
       this.addEntity(asset);
