@@ -88,8 +88,7 @@ export class Zones extends Shared.Zones
         // ! Throws exception on error.
         const loadedZone = await loadZone(zone.getId());
 
-        this.zones.delete(zone);
-        this.zones.add(loadedZone);
+        this.replaceZone(zone, loadedZone);
       }
     }
   }
@@ -102,6 +101,12 @@ export class Zones extends Shared.Zones
       // ! Throws exception on error.
       await zone.loadAssets();
     }
+  }
+
+  private replaceZone(oldReference: Zone, newReference: Zone)
+  {
+    this.zones.delete(oldReference);
+    this.zones.add(newReference);
   }
 }
 
@@ -116,9 +121,9 @@ async function loadZoneListFromJson(json: string)
 // ! Throws exception on error.
 async function loadZone(id: string)
 {
+  const directory = Zone.dataDirectory;
   // ! Throws exception on error.
-  const zone =
-    (await Entities.loadEntity(Zone.dataDirectory, id)).dynamicCast(Zone);
+  const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
 
   zone.init();
 

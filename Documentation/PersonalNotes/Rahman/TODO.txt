@@ -10,8 +10,20 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+Možná by scény přece jen měly bejt taky entity, aby se daly
+  editovat a savovat na serveru
+  (definice, co ve scéně je, atd.)
+- na druhou stranu to může bejt i přímo v kódu
+
+
+Ještě bych asi přece jen měl zvážit, jestli by na klientu neměla
+  zone assety loadovat zóna, aby to bylo stejně jako na serveru.
+
 TODO: V LoginReponse() dát background scéně seznam assetů
  a následně ji loadnout (nevím, jak se to dělá teď).
+
+TODO: Taky nějak pořešit FlightSceneGUI - assety by se měly přidat
+  do scene assetů.
 
 TODO: Asi fakt bude lepší použítvat AssetDefinition
   (TextureDefinition, SoundDefinition, etc.) místo SoundAsset, etc.

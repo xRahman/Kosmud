@@ -20,10 +20,6 @@ export class LoginResponse
 
     await loadFlightScene(this.getZone(), this.getAssets());
 
-    /// Tady by to chtělo:
-    ///   initTilemaps();
-    ///   initShapes();
-
     initBackgroundScene();
     initFlightScene();
 

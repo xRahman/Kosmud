@@ -85,10 +85,13 @@ export class FlightScene extends Scene
   // ! Throws exception on error.
   protected loadAssets()
   {
+    /// TODO: Tohle předělat (SceneGUI assety je třeba přidat do seznamu
+    ///   assetů ve scéně coby entity)
     FlightSceneGUI.loadAssets(this);
 
-    // ! Throws exception on error.
-    this.getZone().loadAssets(this);
+    /// Tohle je teď jinak, assety na klientu loaduje scéna, ne zóna.
+    // // ! Throws exception on error.
+    // this.getZone().loadAssets(this);
   }
 
   // ! Throws exception on error.

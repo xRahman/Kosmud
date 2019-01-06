@@ -57,13 +57,13 @@ export class Zone extends Shared.Zone
     }
   }
 
-  // ! Throws exception on error.
-  // ~ Overrides Shared.Zone.getTilemap().
-  //   (Override is needed to return client version of Tilemap.)
-  public getTilemap(name: string)
-  {
-    return super.getTilemap(name) as Tilemap;
-  }
+  // // ! Throws exception on error.
+  // // ~ Overrides Shared.Zone.getTilemap().
+  // //   (Override is needed to return client version of Tilemap.)
+  // public getTilemap(name: string)
+  // {
+  //   return super.getTilemap(name) as Tilemap;
+  // }
 
   public updateShips(shipStates: Array<ZoneUpdate.ShipState>)
   {
