@@ -10,10 +10,96 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Sakryš, cesta k tilemapě je na serveru jiná než na klientu
+  - kurnik, co s tím?
+(Zatím nic, přeložit to půjde i takhle. Pořeším to potom.)
+
+TODO: Zkusit předělat loadování a savování definic assetů tak, aby se
+  savovaly do podadresáře podle class name
+  (znamenalo by to do reference savovat i className, což by asi šlo);
+
+Ehm, takže co s tím?
+- definice assetů nebudu savovat společně se zónou, protože mohou být použity
+  ve více zónách (tzn. se nic nemění).
+- na serveru zavést loadAssetDefinitions().
+- na serveru udělat fci na vytvoření seznamu tilemap a shapů v zóně.
+- projít ty seznamy, loadnout tilemapy a pak z nich initnout shapy.
+
+- nebudu si to komplikovat. V zóně mám seznam ships, takže ho
+  prostě projdu a řeknu si o shapy a tilemapy.
+  (protože ships jsou teď jediné entity v zóně, které mají shapy).
+
+Hms, na klientu se vlastně definice assetů vůbec neloadujou, protože
+  přijdou paketem.
+- LoadAssets() znamená něco jinýho než loadAssetDefinitions() (což se musí
+  dělat jen na serveru).
+
+A hmm, na serveru v zásadě musím loadovat jen tilemapy (textury a podobně
+  nemusím vůbec procházet), takže dělat obecnej load() u assetů je zbytečný.
+(navíc to teď potřebuju hlavně rozchodit, refactorovat můžu potom).
+
+
+TODO: Safra, Shared/Zone.compileListOfAssets() taky není dobře, respektive
+  celé vkládání entit do zóny.
+- container entity se vkládají do sebe, takže nejde prostě prohlásit
+  zónu za container a všechno házet do contents (leda by entita mohla bejt
+  ve více kontejnerech a to je taky problém).
+Správně by měla mít zóna vlastní seznam jiný než contents, do kterého se
+  dávají všechny entity v zóně (podobně jako packet - možná by to mohlo
+  mít společného předka?).
+
+IDEA: Zóna na klientu by mohla vědět, ke ve které scéně se renderuje.
+  Díky tomu by Asset.load() mohl mít jako parametr vždycky zónu
+  (a navíc ideálně Shared.Zone) a zóna na klientu by prostě zavolala
+  load assetu do scény.
+- na druhou stranu asi pořád budu potřebovat server a client verze assetů
+  kvůli polymorfismu (některé assety se na serveru vůbec neloadují). Leda
+  bych to přenesl do zóny...
+
+Ok. Když bych chtěl mít jen Shared verze asset class, tak:
+- shared assety by měly load(zone), kde by se zavolalo zone.loadXYasset().
+- client a server verze zóny by měly různé verze těchle metod.
+
+Pak je tu ještě úplně jiná možnost - vůbec nebuildit seznam assetů
+  a místo toho při průchodu entitama v zóně rovnou loadnout příslušné
+  assety. Tzn. by se vůbec nevolalo asset.load(), ale třeba Ship
+  by ve svém loadAssets() natvrdo loadla příslušné assety rovnou
+  podle druhu.
+
+Pozn: Asi chci, aby assety (definice) měly přímo odkaz na phaser object...
+- i když to je blbost, k jedné SoundDefinition může existovat víc instancí
+  Phaser.Sound.
+Platí to ale u tilemap, protože ty jsou taky generické (úplně ideálně
+  bych asi měl zrušit Engine/Tilemap a dát to rovnou do assetu.
+- nebo naopak vyhodit odkaz na Engine/Tilemap z definice.
+To je asi dost základní otázka: Má bejt AssetDefinition pouze
+  definice (datová struktura), podle které to loadne někdo jinej,
+  nebo to má bejt komplet asset se vším všudy?
+Spíš dává smysl jen definice a jen v Shared.
+- jak potom na lodování?
+Na serveru:
+- zóna projde všechny entity
+  (otázka na okraj: Kam se loadnuté assety (třeba Server/Tilemap) uloží?)
+  - to souvisí s tím, kdo ho pak používá.
+    - na serveru v zásadě asi jen při initu shapů...
+
+POZN.: Pak tu ještě byla úvaha, že bych definice assetů přihodil do zóny
+  - tím by se mi automaticky loadnuly při loadu zóny.
+(Jasně, protože já teď spojuju dvě různé věci dohromady: Load definice assetu,
+ tedy entity, a následný load Tilemapy, kterou ta definice popisuje).
+- Problém nastane, když bude asset použitej ve více zónách
+  (tomu jsem původně chtěl bránit právě tím, že se každá entita savuje
+   nezávisle).
+
+
+
 Možná by scény přece jen měly bejt taky entity, aby se daly
   editovat a savovat na serveru
   (definice, co ve scéně je, atd.)
-- na druhou stranu to může bejt i přímo v kódu
+- na druhou stranu to může bejt i přímo v kódu, ten se taky "posílá"
+  na klienta (a různý scene ui a podobně se bude stejně měnit spíš
+  podle stavu hry než podle obsahu).
+  - a hlavně to nemusím nutně řešit teď.
 
 
 Ještě bych asi přece jen měl zvážit, jestli by na klientu neměla
@@ -54,6 +140,13 @@ TODO: Takže vyzkoušet, jestli půjde jít na to odzadu. Tzn. začít
   vytvořením physics worldu a vložením lodi.
 
 -----------------------
+
+TODO: Zajistit (a hlídat), že zone entity jsou vždycky právě v jedné zóně.
+  (Jinak bych měl jednu entitu ve více savech).
+- při loadu zóny taky kontrolovat, že entity ještě nejsou loadnuté
+  (pokud ano, tak to právě znamená, že mám entitu ve více zónách).
+  (bude to asi někde v přetížení deserializace zóny).
+
 
 TODO: 'assets' by se možná mohly setnout rovnou do zóny místo to LoginResponse.
   beztak by se v loginResponse.precess() setovaly do zóny (a jsou to assety

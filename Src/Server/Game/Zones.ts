@@ -81,6 +81,15 @@ export class Zones extends Shared.Zones
   // ! Throws exception on error.
   private async loadZones()
   {
+    // Since entities listed in this.zones hadn't been loaded
+    // yet at the time of loading of the list of zones, is
+    // had been populated with "invalid entity references"
+    // instead. Such reference only has an entity id in the,
+    // other properties are undefined.
+    //   So in order to load zone entities, we iterate through
+    // this list, load each zone using id stored in respective
+    // invalid entity reference and replace the invalid reference
+    // with a newly loaded zone entity.
     for (const zone of this.zones)
     {
       if (!zone.isValid())
@@ -88,7 +97,7 @@ export class Zones extends Shared.Zones
         // ! Throws exception on error.
         const loadedZone = await loadZone(zone.getId());
 
-        this.replaceZone(zone, loadedZone);
+        this.replaceZoneReference(zone, loadedZone);
       }
     }
   }
@@ -103,7 +112,7 @@ export class Zones extends Shared.Zones
     }
   }
 
-  private replaceZone(oldReference: Zone, newReference: Zone)
+  private replaceZoneReference(oldReference: Zone, newReference: Zone)
   {
     this.zones.delete(oldReference);
     this.zones.add(newReference);
@@ -124,6 +133,13 @@ async function loadZone(id: string)
   const directory = Zone.dataDirectory;
   // ! Throws exception on error.
   const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
+
+  // Definitions of assets used in zone are not listed in zone
+  // entities because they are shared among different zones.
+  // It means that we need to load them separately.
+  await zone.loadAssetDefinitions();
+
+  await zone.loadAssets();
 
   zone.init();
 

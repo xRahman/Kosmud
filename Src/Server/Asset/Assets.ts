@@ -9,6 +9,8 @@ import { TextureAsset } from "../../Shared/Asset/TextureAsset";
 import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
 import { Entities } from "../../Server/Class/Entities";
 
+const assetsDataDirectory = "./Data/Assets/";
+
 export namespace Assets
 {
   export function newShapeAsset(name: string)
@@ -64,23 +66,21 @@ export namespace Assets
     // ! Throws exception on error.
     const data = asset.serialize("Save to file");
 
-    const directory = `./Data/Assets/${asset.getClassName()}/`;
+    /// TODO: Loadovat definice assetů z podadresářů podle class name
+    ///   by znamenalo savovat className do referencí, takže prozatím
+    ///   hodím všechno do Data/Assets.
+    /// const directory = `./Data/Assets/${asset.getClassName()}/`;
 
     // ! Throws exception on error.
-    await FileSystem.writeFile(directory, fileName, data);
+    await FileSystem.writeFile(assetsDataDirectory, fileName, data);
   }
 
-/// Vzor pro případný loadování assetů přes Assets.loadAsset().
-// export async function loadAccount()
-// {
-//   // TODO: Determine account id.
-//   /// (Zatím natvrdo.)
-//   const accountId = "1-jq6wqw3s";
+  export async function loadAsset(id: string)
+  {
+    // ! Throws exception on error.
+    const entity = await Entities.loadEntity(assetsDataDirectory, id);
 
-//   // ! Throws exception on error.
-// const entity = await Entities.loadEntity(Account.dataDirectory, accountId);
-
-//   // ! Throws exception on error.
-//   return entity.dynamicCast(Account);
-// }
+    // ! Throws exception on error.
+    return entity.dynamicCast(Asset);
+  }
 }

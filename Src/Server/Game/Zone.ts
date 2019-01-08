@@ -9,6 +9,7 @@ import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
+import { Assets } from "../../Server/Asset/Assets";
 import { Ship } from "../../Server/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
@@ -27,13 +28,23 @@ export class Zone extends Shared.Zone
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
+  public async loadAssetDefinitions()
+  {
+    const listOfAssets = this.compileListOfAssets();
+
+    // List of assets contains invalid entity references which.
+    // We use id's stored in those references to load respective
+    // entities.
+    for (const asset of listOfAssets)
+    {
+      if (!asset.isValid())
+        Assets.loadAsset(asset.getId());
+    }
+  }
+
   public async loadAssets()
   {
-    // ! Throws exception on error.
     await this.loadTilemaps();
-
-    // ! Throws exception on error.
-    this.initShapes();
   }
 
   // ! Throws exception on error.
@@ -61,18 +72,37 @@ export class Zone extends Shared.Zone
     return ClassFactory.newInstance(ZoneUpdate);
   }
 
+  // ~ Overrides Shared.Zone.init().
+  // Called after zone is loaded or created.
+  public init()
+  {
+    super.init();
+
+    this.initShapes();
+  }
+
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
   private async loadTilemaps()
   {
-    for (const tilemapConfig of this.assets.tilemaps)
+    /// Prozatím prolezu ships - to jsou jediné entity v zóně,
+    /// které mají physics shape. Časem jich bude víc.
+    ///   TODO: Rozšířit to pro rakey, objekty v zóně a podobně
+    /// (nejspíš to místo do .ships házet do .physicsObjects, nebo
+    ///  tak něco).
+    for (const ship of this.ships)
     {
-      // ! Throws exception on error.
-      const tilemap = await createTilemap(tilemapConfig);
-
-      this.addTilemap(tilemap);
+      ship.loadTilemap();
     }
+
+    // for (const tilemapConfig of this.assets.tilemaps)
+    // {
+    //   // ! Throws exception on error.
+    //   const tilemap = await createTilemap(tilemapConfig);
+
+    //   this.addTilemap(tilemap);
+    // }
   }
 }
 
