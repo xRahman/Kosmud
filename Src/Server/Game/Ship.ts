@@ -38,9 +38,9 @@ export class Ship extends Shared.Ship
     return shipState;
   }
 
-  public async loadTilemap()
-  {
-  }
+  // public async loadTilemap()
+  // {
+  // }
 
   // public getInitialState()
   // {

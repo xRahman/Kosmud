@@ -1,5 +1,6 @@
 /*  Part of Kosmud  */
 
+import { Serializable } from "../../Shared/Class/Serializable";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Asset } from "../../Shared/Asset/Asset";
 import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
@@ -11,8 +12,34 @@ import { Entities } from "../../Server/Class/Entities";
 
 const assetsDataDirectory = "./Data/Assets/";
 
-export namespace Assets
+export class Assets extends Serializable
 {
+  public static dataDirectory = "./Data/";
+  public static fileName = "assets.json";
+
+  private static version = 0;
+
+  private sounds = new Set<SoundAsset>();
+
+  // ------------- Public static methods ----------------
+
+  // ! Throws exception on error.
+  public static async load()
+  {
+    const path = FileSystem.composePath(Assets.dataDirectory, Assets.fileName);
+
+    const readResult = await FileSystem.readFile(path);
+
+    if (readResult === "File doesn't exist")
+      return ClassFactory.newInstance(Zones);
+
+    const zones = await loadZoneListFromJson(readResult.data);
+
+    await zones.load();
+
+    return zones;
+  }
+
   export function newShapeAsset(name: string)
   {
     const asset = Entities.newRootEntity(ShapeAsset);
@@ -81,6 +108,10 @@ export namespace Assets
     const entity = await Entities.loadEntity(assetsDataDirectory, id);
 
     // ! Throws exception on error.
-    return entity.dynamicCast(Asset);
+    const asset = entity.dynamicCast(Asset);
+
+    await asset.load();
+
+    return asset;
   }
 }

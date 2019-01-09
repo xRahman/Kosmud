@@ -9,6 +9,7 @@ import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
+import { Asset } from "../../Shared/Asset/Asset";
 import { Assets } from "../../Server/Asset/Assets";
 import { Ship } from "../../Server/Game/Ship";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
@@ -28,24 +29,26 @@ export class Zone extends Shared.Zone
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public async loadAssetDefinitions()
+  public async loadAssets()
   {
     const listOfAssets = this.compileListOfAssets();
 
-    // List of assets contains invalid entity references which.
-    // We use id's stored in those references to load respective
-    // entities.
+    // Use asset entity id's stored in invalid references to load
+    // respective entities.
     for (const asset of listOfAssets)
     {
+      // If the reference is valid, it means the asset is already loaded.
       if (!asset.isValid())
-        Assets.loadAsset(asset.getId());
+      {
+        await Assets.loadAsset(asset.getId());
+      }
     }
   }
 
-  public async loadAssets()
-  {
-    await this.loadTilemaps();
-  }
+  // public async loadAssets()
+  // {
+  //   await this.loadTilemaps();
+  // }
 
   // ! Throws exception on error.
   public async save()
@@ -72,38 +75,38 @@ export class Zone extends Shared.Zone
     return ClassFactory.newInstance(ZoneUpdate);
   }
 
-  // ~ Overrides Shared.Zone.init().
-  // Called after zone is loaded or created.
-  public init()
-  {
-    super.init();
+  // // ~ Overrides Shared.Zone.init().
+  // // Called after zone is loaded or created.
+  // public init()
+  // {
+  //   super.init();
 
-    this.initShapes();
-  }
+  //   this.initShapes();
+  // }
 
   // ---------------- Private methods -------------------
 
-  // ! Throws exception on error.
-  private async loadTilemaps()
-  {
-    /// Prozatím prolezu ships - to jsou jediné entity v zóně,
-    /// které mají physics shape. Časem jich bude víc.
-    ///   TODO: Rozšířit to pro rakey, objekty v zóně a podobně
-    /// (nejspíš to místo do .ships házet do .physicsObjects, nebo
-    ///  tak něco).
-    for (const ship of this.ships)
-    {
-      ship.loadTilemap();
-    }
+  // // ! Throws exception on error.
+  // private async loadTilemaps()
+  // {
+  //   /// Prozatím prolezu ships - to jsou jediné entity v zóně,
+  //   /// které mají physics shape. Časem jich bude víc.
+  //   ///   TODO: Rozšířit to pro missiles, objekty v zóně a podobně
+  //   /// (nejspíš to místo do .ships házet do .physicsObjects, nebo
+  //   ///  tak něco).
+  //   for (const ship of this.ships)
+  //   {
+  //     ship.loadTilemap();
+  //   }
 
-    // for (const tilemapConfig of this.assets.tilemaps)
-    // {
-    //   // ! Throws exception on error.
-    //   const tilemap = await createTilemap(tilemapConfig);
+  //   // for (const tilemapConfig of this.assets.tilemaps)
+  //   // {
+  //   //   // ! Throws exception on error.
+  //   //   const tilemap = await createTilemap(tilemapConfig);
 
-    //   this.addTilemap(tilemap);
-    // }
-  }
+  //   //   this.addTilemap(tilemap);
+  //   // }
+  // }
 }
 
 // ----------------- Auxiliary Functions ---------------------

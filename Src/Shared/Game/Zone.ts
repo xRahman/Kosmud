@@ -11,6 +11,7 @@ import { Serializable } from "../../Shared/Class/Serializable";
 import { Entities } from "../../Shared/Class/Entities";
 import { Ship } from "../../Shared/Game/Ship";
 import { Asset } from "../../Shared/Asset/Asset";
+import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 // import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
 // import { SoundAsset } from "../../Shared/Asset/SoundAsset";
 // import { Tilemap } from "../../Shared/Engine/Tilemap";
@@ -162,17 +163,32 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   {
     const assets = new Set<Asset>();
 
+    // TODO: Předělat (entity v zóně nemůžou být v contents).
     for (const entity of this.getContents())
     {
       const entityAssets = entity.getAssets();
 
       for (const asset of entityAssets)
-      {
         assets.add(asset);
-      }
     }
 
     return assets;
+  }
+
+  public compileListOfShapes()
+  {
+    const shapes = new Set<ShapeAsset>();
+
+    // TODO: Předělat (entity v zóně nemůžou být v contents).
+    for (const entity of this.getContents())
+    {
+      const entityShapes = entity.getShapes();
+
+      for (const shape of entityShapes)
+        shapes.add(shape);
+    }
+
+    return shapes;
   }
 
   // --------------- Protected methods ------------------

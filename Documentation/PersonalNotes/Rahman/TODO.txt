@@ -10,6 +10,116 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Začal jsem z Assets dělat Serializable.
+
+Ok, takže TODO:
+0) Zrušit stávající loadování.
+1) Při vyrábění nových assetů a jejich setování do entit:
+   - je přidávat do Server/Assets (deduplikace podle idčka).
+   - je přidávat do Zone/Assets (deduplikace podle idčka).
+2) Při loadování na serveru prostě loadnout Assets.
+3) Při posílání na klienta prostě poslat zone.assets.
+
+Tím jsem ale nepořešil, jak loadovat Tilemapy a jak na klientu
+  vyrábět assety do scény.
+Ok, takže jak na preload. Možnosti jsou:
+- polymorfní AssetEntity
+  (musel bych k nim mít client a server verze a problém je, že na klientu
+   to chce předávat scénu jako parametr)
+- rovnou při přidávání to rozhodit do víc seznamů
+  Hmm. Vzato kolem a kolem, tohle se může udělat už při zakládání
+    novýho assetu.
+  - při přidání novýho typu assetu budu teda muset vyrobit novej
+    seznam v assets... A v zone...
+    (leda by byl seznam assetů typ, kterej prostě importnu).
+- nedělat to přes seznamy, procházet rovnou entity v zóně
+  - to asi fakt ne.
+
+class AssetList extends Serializable
+{
+  textures;
+  sounds;
+  tilemaps;
+  shapes;
+
+  addTexture();
+  addSound();
+  addTilemap();
+  addShape();
+}
+
+(generování seznamu assetů v zóně můžu taky nechat, jak je, tzn. že
+ entita bude mít seznam svých assetů a před posláním zóny se projdou
+ entity v zóně).
+ - pořád je lepší dávat asset do seznamu jen při jeho setnutí do entity,
+   než pokaždý, když dávám entitu do zóny.
+Na druhou stranu když už mám zónu na klientu a přidám do ní entitu...
+- Když bych nechal assety čistě v entitách, tak by se prostě přidaly při
+  poslání nový entity. Na druhou stranu asset asi v phaseru nejde loadnout
+  za běhu (nebo jo?)
+Tzn. prostě seznam assetů v zóně vůbec nebudovat a až na klientu projít
+  seznam entit v zóně a preloadnout to z něj?
+  (ideálně asi přes ship.loadAssets()).
+
+Obecně bude asi nejlepší neřešit polymorfismus na úrovni assetů,
+  ale na úrovni entit, které je vlastní.
+  - loď ví, že má odkaz na tilemapu, tak ji může loadnout. A ví taky,
+    ve který je scéně.
+
+Na serveru by dávalo vůbec největší smysl mít assety v Assets a loadnout
+  prostě celé Assets.
+  - a tudíž můžu loadnout i tilemapy.
+    (možná si tilemap assety dávat do samostatnýho seznamu?)
+Na klienta asi nechci posílat úplně všechny, takže nějaké zjištění, jaké
+  assety zrovna zóna používá, asi fakt bude na místě.
+- nebo je fakt rovnou do zóny registrovat...
+
+IDEA:
+- Nechat AssetEntity čistě jako definice a čistě Shared
+- Do Assets dávat instance assetů (tilemap, zvuků, atd.),
+  indexovaný asi idčkem asset entity.
+Na klientu by se volalo asi něco jako Assets.createSceneAsset(scene, assetDef)
+  (to ale furt neřeší to, že potřebuju polymorfismus).
+
+Ehm - vytváření seznamu unikátních assetů nebude fungovat, protože jsou
+  to invalid reference a ta se vždycky vyrábí nová.
+  - musel bych ten seznam indexovat idčkem (nebo ho vyrábět z validních entit,
+    tzn. v runtime).
+- místo to entity.assets můžu přidávat rovnou do zone.assets
+  (pokud se to bude deduplikovat, tak ale musím přidat counter, abych věděl,
+   kdy to můžu vyhodit).
+
+Možnosti jsou:
+- když už mám seznam assetů v zóně, tak ho prostě
+  projít a provolat polymorfní load()
+    (ve kterém se loadnou tilemapy)
+  - většinou se nic nestane, ale co.
+   (pokud bude mít TilemapEntity rovnou v sobě Tilemapu, tak tohle bude
+    dávat dobrej smysl).
+
+
+TODO: TODO v Server/Zone.loadTilemaps()
+  (neprocházet ships, ale nějakej obecnější seznam entit s fyzikou)
+  - nebo možná shapy registrovat do zóny ve chvíli, kdy se přidává
+    entita se shapem.
+  - nebo na to kašlat úplně a vyrábět shape z tilemapy až on-demand
+    (ShapeDefinition má odkaz na TilemapDefinition, která obsahuje
+     idčko tilemapy).
+    Hmm, sakryš, špatně - řeším load tilemapy, ne shapu.
+- Asi bych se měl vrátit k tomu, že projdu všechny entity v zóně
+  a vytvořím při tom seznamy tilemap a shapů.
+- Stačí seznam shapů, tilemapy si z něj vytáhnu.
+
+Pak se taky budu muset ještě jednou zamyslet, kdo bude držet odkaz na shape.
+- zjevně jednotlivý lodě, ale když budu chtít třeba loadnout jinou, tak
+  se budu k tomu shapu potřebovat dostat (nechci mít u každý lodě separátní
+  instanci shapu, leda by se teda měnil třeba při poškození lodě - na to ale
+  zatím kašlat).
+  - ShapeAsset entita je logický místo, no.
+
+IDEA: Místo TextureDefinition říkat TextureEntity
+  (sice budu mít přeentitováno, ale bude z toho jasný, že jde o entitu).
+
 TODO: Sakryš, cesta k tilemapě je na serveru jiná než na klientu
   - kurnik, co s tím?
 (Zatím nic, přeložit to půjde i takhle. Pořeším to potom.)

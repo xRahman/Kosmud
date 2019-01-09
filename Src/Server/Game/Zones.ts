@@ -137,7 +137,7 @@ async function loadZone(id: string)
   // Definitions of assets used in zone are not listed in zone
   // entities because they are shared among different zones.
   // It means that we need to load them separately.
-  await zone.loadAssetDefinitions();
+  await zone.loadAssets();
 
   await zone.loadAssets();
 
