@@ -13,6 +13,11 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 TODO: Zrevidovat assety na klientu.
 - nestačí poslat zónu, protože asset entity v ní nejsou
   (jsou tam jen reference).
+- jasně, proto se volá compileListOfAssets() a příslušné entity se následně
+  přidají do packet.entities (což je automaticky serializuje a deserializuje).
+Otázka je, jestli je při tom rovnou roztřídit podle druhů...
+
+TODO: Opravit Zone.compileListOfAssets()
 
 Pozn.: Na serveru bych nemusel mít tilemapy v TilemapAssetech,
   mohl bych je mít v seznamu indexovaném idčkem tilemapAssetu.
