@@ -8,7 +8,7 @@ import * as Shared from "../../Shared/Asset/TilemapAsset";
 
 export class TilemapAsset extends Shared.TilemapAsset implements ClientAsset
 {
-  private tilemap: Tilemap | "Not set" = "Not set";
+  // private tilemap: Tilemap | "Not set" = "Not set";
 
   // ---------------- Public methods --------------------
 
@@ -17,28 +17,28 @@ export class TilemapAsset extends Shared.TilemapAsset implements ClientAsset
     scene.loadTilemap(this);
   }
 
-  // ! Throws exception on error.
-  public setTilemap(tilemap: Tilemap)
-  {
-    if (this.tilemap !== "Not set")
-    {
-      throw Error(`${this.debugId} already has a tilemap reference`);
-    }
+  // // ! Throws exception on error.
+  // public setTilemap(tilemap: Tilemap)
+  // {
+  //   if (this.tilemap !== "Not set")
+  //   {
+  //     throw Error(`${this.debugId} already has a tilemap reference`);
+  //   }
 
-    this.tilemap = tilemap;
-  }
+  //   this.tilemap = tilemap;
+  // }
 
-  // ! Throws exception on error.
-  public getTilemap()
-  {
-    if (this.tilemap === "Not set")
-    {
-      throw Error(`Tilemap is not inicialized in ${this.debugId}.`
-        + ` Make sure init() is called before you access the tilemap`);
-    }
+  // // ! Throws exception on error.
+  // public getTilemap()
+  // {
+  //   if (this.tilemap === "Not set")
+  //   {
+  //     throw Error(`Tilemap is not inicialized in ${this.debugId}.`
+  //       + ` Make sure init() is called before you access the tilemap`);
+  //   }
 
-    return this.tilemap;
-  }
+  //   return this.tilemap;
+  // }
 }
 
 Entities.createRootPrototypeEntity(TilemapAsset);

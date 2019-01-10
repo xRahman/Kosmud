@@ -10,7 +10,51 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Začal jsem z Assets dělat Serializable.
+TODO: Zrevidovat assety na klientu.
+- nestačí poslat zónu, protože asset entity v ní nejsou
+  (jsou tam jen reference).
+
+Pozn.: Na serveru bych nemusel mít tilemapy v TilemapAssetech,
+  mohl bych je mít v seznamu indexovaném idčkem tilemapAssetu.
+  (když bych chtěl nechat Assety čistě jako definice).
+
+TODO: Tilemapy na serveru loaduju, ještě je potřeba pořešit shapy.
+[na serveru snad ok]
+
+IDEA: Client a server verze assetů se stejně asi budou hodit, abych z nich
+  dokázal dostat například client/server verzi tilemapy...
+
+TODO: Po loadu assetů na serveru vyrobit tilemapy.
+[done]
+
+TODO: Instance assets se musí někde vyrobit a držet.
+[zatím v Game]
+TODO: Loadovat Server/Assets při startu serveru.
+[done]
+
+TODO: Savovat Server/Assets při savu (při přidání, možná?) assetů.
+- zatím volám save() ručně, ale bylo by lepší, kdyby se savovalo
+  automaticky při přidání nového assetu.
+TODO: totéž se táká zón (save Zones when new Zone is added).
+- Problém je, že potom vyrobení nové zóny/assetu bude async operace.
+
+TODO: funkce loadTilemap() v Assets by asi měla bejt spíš v server
+  verzi TilemapAssetu.
+
+TODO: lepší vyrábění server path k tilemapě
+  (ošetřit případné ./ na začátku cesty)
+  - je to ve funkci loadTilemap() v Server/Assets
+
+TODO: Asi by bylo lepší, aby intance assets držely Assets a instanci zones
+  držely Zones (místo Game). I když... (ale asi jo).
+
+TODO: Zones a Assets mají hodně podobnej kód - udělat jim společnýho předka.
+
+TODO: Property jako
+    public path = "<missing file path>";
+  by asi měly bejt spíš privat s příslušnou get a set metodou.
+  (Takže při getu to hodí výjimku, když se pracuje s neinicializovanou
+   propertou).
 
 Ok, takže TODO:
 0) Zrušit stávající loadování.

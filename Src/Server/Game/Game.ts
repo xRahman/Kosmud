@@ -13,6 +13,7 @@ import { SoundAsset } from "../../Shared/Asset/SoundAsset";
 import { TextureAsset } from "../../Shared/Asset/TextureAsset";
 import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
 
+let assets: Assets | "Not loaded" = "Not loaded";
 let zones: Zones | "Not loaded" = "Not loaded";
 
 export namespace Game
@@ -26,6 +27,9 @@ export namespace Game
   export async function load()
   {
     // ! Throws exception on error.
+    assets = await Assets.load();
+
+    // ! Throws exception on error.
     zones = await Zones.load();
 
     /// ---------------- TEST ----------------
@@ -33,22 +37,24 @@ export namespace Game
     const zone = zones.newZone("Test zone");
     const ship = Ships.newShip("Fighter");
 
-    const tilemapAsset = Assets.newTilemapAsset("Basic ships");
+    const tilemapAsset = assets.newTilemapAsset("Basic ships");
     tilemapAsset.path = "Tilemaps/Ships/basic_ships.json";
     ship.setTilemapAsset(tilemapAsset);
-    await Assets.saveAsset(tilemapAsset);
+    await assets.saveAsset(tilemapAsset);
 
-    const shapeAsset = Assets.newShapeAsset("Fighter hull");
+    const shapeAsset = assets.newShapeAsset("Fighter hull");
     shapeAsset.setTilemapAsset(tilemapAsset);
     shapeAsset.objectName = "Hull";
     shapeAsset.objectLayerName = "Basic fighter";
     ship.setShapeAsset(shapeAsset);
-    await Assets.saveAsset(shapeAsset);
+    await assets.saveAsset(shapeAsset);
 
-    const exhaustSoundAsset = Assets.newSoundAsset("Exhaust sound 00");
+    const exhaustSoundAsset = assets.newSoundAsset("Exhaust sound 00");
     exhaustSoundAsset.path = "Sound/Ship/Engine/ShipEngine.mp3";
     ship.setExhaustSoundAsset(exhaustSoundAsset);
-    await Assets.saveAsset(exhaustSoundAsset);
+    await assets.saveAsset(exhaustSoundAsset);
+
+    await assets.save();
 
     zone.addShip(ship);
 

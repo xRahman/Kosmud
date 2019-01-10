@@ -286,7 +286,7 @@ export class VehiclePhysics extends Serializable
   public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
   {
     // ! Throws exception on error.
-    const physicsShape = zone.getPhysicsShape(this.getShapeAsset());
+    const physicsShape = this.getShapeAsset().getShape();
 
     this.physicsBody = physicsWorld.createPhysicsBody
     (

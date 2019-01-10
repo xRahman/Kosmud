@@ -6,13 +6,13 @@
 */
 
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
-import { JsonObject } from "../../Shared/Class/JsonObject";
+// import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
-import { Asset } from "../../Shared/Asset/Asset";
-import { Assets } from "../../Server/Asset/Assets";
+// import { Asset } from "../../Shared/Asset/Asset";
+// import { Assets } from "../../Server/Asset/Assets";
 import { Ship } from "../../Server/Game/Ship";
-import { Tilemap } from "../../Shared/Engine/Tilemap";
+// import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import * as Shared from "../../Shared/Game/Zone";
 
@@ -28,22 +28,22 @@ export class Zone extends Shared.Zone
 
   // ---------------- Public methods --------------------
 
-  // ! Throws exception on error.
-  public async loadAssets()
-  {
-    const listOfAssets = this.compileListOfAssets();
+  // // ! Throws exception on error.
+  // public async loadAssets()
+  // {
+  //   const listOfAssets = this.compileListOfAssets();
 
-    // Use asset entity id's stored in invalid references to load
-    // respective entities.
-    for (const asset of listOfAssets)
-    {
-      // If the reference is valid, it means the asset is already loaded.
-      if (!asset.isValid())
-      {
-        await Assets.loadAsset(asset.getId());
-      }
-    }
-  }
+  //   // Use asset entity id's stored in invalid references to load
+  //   // respective entities.
+  //   for (const asset of listOfAssets)
+  //   {
+  //     // If the reference is valid, it means the asset is already loaded.
+  //     if (!asset.isValid())
+  //     {
+  //       await Assets.loadAsset(asset.getId());
+  //     }
+  //   }
+  // }
 
   // public async loadAssets()
   // {
@@ -111,27 +111,26 @@ export class Zone extends Shared.Zone
 
 // ----------------- Auxiliary Functions ---------------------
 
-// ~ Overrides Shared.Zone.createTilemap().
-async function createTilemap(config: Shared.Zone.TilemapConfig)
-{
-  // Path is different on the server because server root is '/'
-  // and client root is '/Client'. And we also need to make sure
-  // that the part starts with './' on the sever (FileSystem
-  // checks that to prevent traversing out of project directory).
-  const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
-  const jsonData = await loadTilemapJsonData(tilemapJsonPath);
+// async function createTilemap(config: Shared.Zone.TilemapConfig)
+// {
+//   // Path is different on the server because server root is '/'
+//   // and client root is '/Client'. And we also need to make sure
+//   // that the part starts with './' on the sever (FileSystem
+//   // checks that to prevent traversing out of project directory).
+//   const tilemapJsonPath = `./Client/${config.tilemapJsonPath}`;
+//   const jsonData = await loadTilemapJsonData(tilemapJsonPath);
 
-  // ! Throws exception on error.
-  return new Tilemap(config.tilemapId, jsonData);
-}
+//   // ! Throws exception on error.
+//   return new Tilemap(config.tilemapId, jsonData);
+// }
 
-async function loadTilemapJsonData(jsonFilePath: string)
-{
-  // ! Throws exception on error.
-  const jsonData = await FileSystem.readExistingFile(jsonFilePath);
+// async function loadTilemapJsonData(jsonFilePath: string)
+// {
+//   // ! Throws exception on error.
+//   const jsonData = await FileSystem.readExistingFile(jsonFilePath);
 
-  // ! Throws exception on error.
-  return JsonObject.parse(jsonData);
-}
+//   // ! Throws exception on error.
+//   return JsonObject.parse(jsonData);
+// }
 
 Entities.createRootPrototypeEntity(Zone);

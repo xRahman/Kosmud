@@ -23,16 +23,10 @@ export class Zones extends Shared.Zones
   // ! Throws exception on error.
   public static async load()
   {
-    const path = FileSystem.composePath(Zones.dataDirectory, Zones.fileName);
+    // ! Throws exception on error.
+    const zones = await loadListOfZones();
 
-    const readResult = await FileSystem.readFile(path);
-
-    if (readResult === "File doesn't exist")
-      return ClassFactory.newInstance(Zones);
-
-    const zones = await loadZoneListFromJson(readResult.data);
-
-    await zones.load();
+    await zones.loadZones();
 
     return zones;
   }
@@ -70,26 +64,13 @@ export class Zones extends Shared.Zones
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
-  private async load()
-  {
-    // ! Throws exception on error.
-    await this.loadZones();
-    // ! Throws exception on error.
-    await this.loadAssets();
-  }
-
-  // ! Throws exception on error.
   private async loadZones()
   {
-    // Since entities listed in this.zones hadn't been loaded
-    // yet at the time of loading of the list of zones, is
-    // had been populated with "invalid entity references"
-    // instead. Such reference only has an entity id in the,
-    // other properties are undefined.
-    //   So in order to load zone entities, we iterate through
-    // this list, load each zone using id stored in respective
-    // invalid entity reference and replace the invalid reference
-    // with a newly loaded zone entity.
+    // Entities listed in this.zones hasn't been loaded yet,
+    // the list contains only "invalid entity references".
+    //   So we iterate through these invalid references, load
+    // each zone using id stored in the reference and replace
+    // the invalid reference with a newly loaded zone.
     for (const zone of this.zones)
     {
       if (!zone.isValid())
@@ -102,15 +83,15 @@ export class Zones extends Shared.Zones
     }
   }
 
-  // ! Throws exception on error.
-  private async loadAssets()
-  {
-    for (const zone of this.zones)
-    {
-      // ! Throws exception on error.
-      await zone.loadAssets();
-    }
-  }
+  // // ! Throws exception on error.
+  // private async loadAssets()
+  // {
+  //   for (const zone of this.zones)
+  //   {
+  //     // ! Throws exception on error.
+  //     await zone.loadAssets();
+  //   }
+  // }
 
   private replaceZoneReference(oldReference: Zone, newReference: Zone)
   {
@@ -121,10 +102,19 @@ export class Zones extends Shared.Zones
 
 // ----------------- Auxiliary Functions ---------------------
 
-async function loadZoneListFromJson(json: string)
+async function loadListOfZones()
 {
+  const path = FileSystem.composePath(Zones.dataDirectory, Zones.fileName);
+
   // ! Throws exception on error.
-  return Serializable.deserialize(json).dynamicCast(Zones);
+  const readResult = await FileSystem.readFile(path);
+
+  if (readResult === "File doesn't exist")
+    // ! Throws exception on error.
+    return ClassFactory.newInstance(Zones);
+
+  // ! Throws exception on error.
+  return Serializable.deserialize(readResult.data).dynamicCast(Zones);
 }
 
 // ! Throws exception on error.
@@ -134,12 +124,11 @@ async function loadZone(id: string)
   // ! Throws exception on error.
   const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
 
-  // Definitions of assets used in zone are not listed in zone
-  // entities because they are shared among different zones.
-  // It means that we need to load them separately.
-  await zone.loadAssets();
-
-  await zone.loadAssets();
+  /// Assets se teď loadnou najednou před loadem zón.
+  // // Definitions of assets used in zone are not listed in zone
+  // // entities because they are shared among different zones.
+  // // It means that we need to load them separately.
+  // await zone.loadAssets();
 
   zone.init();
 

@@ -7,7 +7,7 @@
 
 import { Ship } from "../../Client/Game/Ship";
 import { FlightScene } from "../../Client/Flight/FlightScene";
-import { Tilemap } from "../../Client/Engine/Tilemap";
+// import { Tilemap } from "../../Client/Engine/Tilemap";
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import * as Shared from "../../Shared/Game/Zone";
 

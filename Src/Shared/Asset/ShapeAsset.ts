@@ -1,7 +1,9 @@
 /*  Part of Kosmud  */
 
+import { Attributes } from "../../Shared/Class/Attributes";
 import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
 import { Entities } from "../../Shared/Class/Entities";
+import { Physics } from "../../Shared/Physics/Physics";
 import { Asset } from "../../Shared/Asset/Asset";
 
 export class ShapeAsset extends Asset
@@ -10,6 +12,13 @@ export class ShapeAsset extends Asset
   public objectName = "<missing object name>";
 
   private tilemapAsset: TilemapAsset | "Not set" = "Not set";
+
+  private shape: Physics.Shape | "Not set" = "Not set";
+  private static readonly shape: Attributes =
+  {
+    saved: false,
+    sentToClient: false
+  };
 
   // ---------------- Public methods --------------------
 
@@ -33,6 +42,28 @@ export class ShapeAsset extends Asset
     }
 
     return this.tilemapAsset;
+  }
+
+    // ! Throws exception on error.
+  public setShape(shape: Physics.Shape)
+  {
+    if (this.shape === "Not set")
+    {
+      throw Error(`${this.debugId} already has physics shape reference`);
+    }
+
+    this.shape = shape;
+  }
+
+  // ! Throws exception on error.
+  public getShape()
+  {
+    if (this.shape === "Not set")
+    {
+      throw Error(`${this.debugId} doesn't have physics shape`);
+    }
+
+    return this.shape;
   }
 }
 

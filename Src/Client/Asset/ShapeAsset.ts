@@ -10,7 +10,7 @@ import * as Shared from "../../Shared/Asset/ShapeAsset";
 
 export class ShapeAsset extends Shared.ShapeAsset implements ClientAsset
 {
-  private shape: Physics.Shape | "Not set" = "Not set";
+  // private shape: Physics.Shape | "Not set" = "Not set";
 
   // ---------------- Public methods --------------------
 
@@ -22,27 +22,27 @@ export class ShapeAsset extends Shared.ShapeAsset implements ClientAsset
     scene.addShapeAsset(this);
   }
 
-  public setShape(shape: Physics.Shape)
-  {
-    if (this.shape !== "Not set")
-    {
-      throw Error(`${this.debugId} already has reference to physics shape`);
-    }
+  // public setShape(shape: Physics.Shape)
+  // {
+  //   if (this.shape !== "Not set")
+  //   {
+  //     throw Error(`${this.debugId} already has reference to physics shape`);
+  //   }
 
-    this.shape = shape;
-  }
+  //   this.shape = shape;
+  // }
 
-  public getShape()
-  {
-    if (this.shape === "Not set")
-    {
-      throw Error(`${this.debugId} doesn't have reference to physics shape.`
-        + ` Make sure respective scene.init() is called before you access`
-        + ` the physics shape`);
-    }
+  // public getShape()
+  // {
+  //   if (this.shape === "Not set")
+  //   {
+  //     throw Error(`${this.debugId} doesn't have reference to physics shape.`
+  //       + ` Make sure respective scene.init() is called before you access`
+  //       + ` the physics shape`);
+  //   }
 
-    return this.shape;
-  }
+  //   return this.shape;
+  // }
 
   // ! Throws exception on error.
   // ~ Overrides Shared.ShapeAsset.getTilemapAsset().

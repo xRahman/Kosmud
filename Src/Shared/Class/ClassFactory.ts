@@ -29,6 +29,7 @@ export namespace ClassFactory
   // ! Throws exception on error.
   export function newInstance<T>(Class: Types.NonabstractClass<T>): T
   {
+    // ! Throws exception on error.
     return newInstanceByName(Class.name).dynamicCast(Class);
   }
 
