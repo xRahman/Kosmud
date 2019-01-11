@@ -1,4 +1,10 @@
-﻿Steering behaviour examples
+﻿Phaser space shooter demo games:
+--------------------------------
+https://github.com/jschomay/phaser-demo-game
+https://github.com/juliobetta/space-shooter-es6
+
+
+Steering behaviour examples
 ----------------------------
 
 https://www.gamedevelopment.blog/full-libgdx-game-tutorial-ashley-steering-behaviors/
