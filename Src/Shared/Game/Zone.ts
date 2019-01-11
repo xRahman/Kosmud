@@ -169,26 +169,21 @@ export abstract class Zone extends ContainerEntity<GameEntity>
       const entityAssets = entity.getAssets();
 
       for (const asset of entityAssets)
-        assets.add(asset);
+      {
+        // For the deduplication to work we need to make sure
+        // that we put only valid references to the set. It's
+        // because even though there can only be one valid
+        // reference to an entity, there can be any number
+        // of invalid references to it as well.
+        //   Also when the asset descriptor is deleted (so it
+        // get's invalid), we don't want to send it to the client
+        // anyways).
+        if (asset.isValid())
+          assets.add(asset);
+      }
     }
 
     return assets;
-  }
-
-  public compileListOfShapes()
-  {
-    const shapes = new Set<ShapeAsset>();
-
-    // TODO: Předělat (entity v zóně nemůžou být v contents).
-    for (const entity of this.getContents())
-    {
-      const entityShapes = entity.getShapes();
-
-      for (const shape of entityShapes)
-        shapes.add(shape);
-    }
-
-    return shapes;
   }
 
   // --------------- Protected methods ------------------

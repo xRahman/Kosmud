@@ -150,4 +150,15 @@ export namespace Types
   {
     return typeof variable === "number";
   }
+
+  // ! Throws exception on error.
+  export function dynamicCast<T>(instance: unknown, Class: AnyClass<T>): T
+  {
+    if (!(instance instanceof Class))
+    {
+      throw Error (`Variable is not an instance of class (${Class.name})`);
+    }
+
+    return instance as T;
+  }
 }

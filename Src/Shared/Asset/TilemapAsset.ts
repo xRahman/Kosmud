@@ -2,10 +2,9 @@
 
 import { Attributes } from "../../Shared/Class/Attributes";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
-import { Entities } from "../../Shared/Class/Entities";
 import { Asset } from "../../Shared/Asset/Asset";
 
-export class TilemapAsset extends Asset
+export abstract class TilemapAsset extends Asset
 {
   public path = "<missing file path>";
 
@@ -38,5 +37,3 @@ export class TilemapAsset extends Asset
     return this.tilemap;
   }
 }
-
-Entities.createRootPrototypeEntity(TilemapAsset);

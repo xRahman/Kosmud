@@ -1,3 +1,18 @@
+IDEA: Assets přejmenovat na AssetData
+  SoundData, TilemapData
+  - potom se ale současná Shared/Tilemap nemůže jmenovat TilemapData
+Dává to celkem smysl, protože třeba ShapeData v sobě má schovaný Physics.Shape
+  (což jsou ta data...)
+AssetInfo, AssetDescription, AssetDefinition, AssetNode
+  AssetDefs, SoundDef...
+  AssetRecord, SoundRecord...
+  Entry
+  SoundDescriptor
+  AssetDescriptor
+Ehm, tak nic. Nakonec asi bude nejlepší zůstat u XxxAsset.
+  (Deskriptory jsou dlouhý a zní to divně).
+[no change after all]
+
 Short descy na začátku souborů jsou asi naprd - typicky nevím,
  co tam psát, takže tam píšu redundantní věci
  (třeba to, že je packet součástí prototcolu je daný už tím, že je v adresáři

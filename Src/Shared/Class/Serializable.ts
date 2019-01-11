@@ -139,7 +139,7 @@ export class Serializable extends Attributable
         + ` of class (${Class.name})`);
     }
 
-    return (this as any);
+    return (this as unknown) as T;
   }
 
   // ! Throws exception on error.

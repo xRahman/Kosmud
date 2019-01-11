@@ -22,7 +22,6 @@ export class Ship extends Shared.Ship
   ///   se nachází - takže parametr asi není potřeba.
   public createModel(scene: FlightScene, zone: Zone)
   {
-
     if (this.model !== "Not created")
     {
       throw Error(`Ship ${this.debugId} already has a model`);

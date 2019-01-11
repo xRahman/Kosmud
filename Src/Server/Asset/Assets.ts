@@ -3,16 +3,17 @@
 // import { Attributes } from "../../Shared/Class/Attributes";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Serializable } from "../../Shared/Class/Serializable";
-import { JsonObject } from "../../Shared/Class/JsonObject";
+// import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 // import { Physics } from "../../Shared/Physics/Physics";
-import { Tilemap } from "../../Shared/Engine/Tilemap";
+// import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { Asset } from "../../Shared/Asset/Asset";
-import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
-import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
-import { SoundAsset } from "../../Shared/Asset/SoundAsset";
-import { TextureAsset } from "../../Shared/Asset/TextureAsset";
-import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
+import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { ShapeAsset } from "../../Server/Asset/ShapeAsset";
+import { TilemapAsset } from "../../Server/Asset/TilemapAsset";
+import { SoundAsset } from "../../Server/Asset/SoundAsset";
+import { TextureAsset } from "../../Server/Asset/TextureAsset";
+import { TextureAtlasAsset } from "../../Server/Asset/TextureAtlasAsset";
 import { Entities } from "../../Server/Class/Entities";
 
 const assetsDataDirectory = "./Data/Assets/";
@@ -24,9 +25,7 @@ export class Assets extends Serializable
 
   protected static version = 0;
 
-  private assets = new Set<Asset>();
-  private tilemapAssets = new Set<TilemapAsset>();
-  private shapeAssets = new Set<ShapeAsset>();
+  private readonly assets = new Set<ServerAsset>();
 
   // ------------- Public static methods ----------------
 
@@ -37,10 +36,12 @@ export class Assets extends Serializable
     const assets = await loadListOfAssets();
 
     // ! Throws exception on error.
-    await assets.loadAssetEntities();
+    await assets.loadAssetDescriptors();
 
     // ! Throws exception on error.
-    await assets.loadTilemaps();
+    await assets.loadAssetData();
+
+    assets.init();
 
     return assets;
   }
@@ -51,7 +52,6 @@ export class Assets extends Serializable
 
     asset.setName(name);
     this.assets.add(asset);
-    this.shapeAssets.add(asset);
 
     return asset;
   }
@@ -62,7 +62,6 @@ export class Assets extends Serializable
 
     asset.setName(name);
     this.assets.add(asset);
-    this.tilemapAssets.add(asset);
 
     return asset;
   }
@@ -138,7 +137,7 @@ export class Assets extends Serializable
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
-  private async loadAssetEntities()
+  private async loadAssetDescriptors()
   {
     // Entities listed in this.assets hasn't been loaded yet,
     // the list contains only "invalid entity references".
@@ -150,47 +149,66 @@ export class Assets extends Serializable
       if (!asset.isValid())
       {
         // ! Throws exception on error.
-        const loadedAsset = await loadAssetEntity(asset.getId());
+        const loadedAsset = await loadAssetDescriptor(asset.getId());
 
         this.replaceAssetReference(asset, loadedAsset);
       }
     }
   }
 
-  private replaceAssetReference(oldReference: Asset, newReference: Asset)
+  private replaceAssetReference
+  (
+    oldReference: ServerAsset,
+    newReference: ServerAsset
+  )
   {
     this.assets.delete(oldReference);
     this.assets.add(newReference);
   }
 
   // ! Throws exception on error.
-  private async loadTilemaps()
+  private async loadAssetData()
   {
-    for (const tilemapAsset of this.tilemapAssets)
+    for (const asset of this.assets)
     {
-      // ! Throws exception on error.
-      await loadTilemap(tilemapAsset);
+      if (asset.load !== undefined)
+      {
+        // ! Throws exception on error.
+        await asset.load();
+      }
     }
   }
 
-  // ! Throws exception on error.
-  protected initShapes()
+  private init()
   {
-    for (const shapeAsset of this.shapeAssets)
+    for (const asset of this.assets)
     {
-      // ! Throws exception on error.
-      const tilemap = shapeAsset.getTilemapAsset().getTilemap();
-
-      // ! Throws exception on error.
-      const shape = tilemap.getShape
-      (
-        shapeAsset.objectLayerName,
-        shapeAsset.objectName
-      );
-
-      shapeAsset.setShape(shape);
+      if (asset.init !== undefined)
+      {
+        // ! Throws exception on error.
+        asset.init();
+      }
     }
   }
+
+//   // ! Throws exception on error.
+//   protected initShapes()
+//   {
+//     for (const shapeAsset of this.shapeAssets)
+//     {
+//       // ! Throws exception on error.
+//       const tilemap = shapeAsset.getTilemapAsset().getTilemap();
+
+//       // ! Throws exception on error.
+//       const shape = tilemap.getShape
+//       (
+//         shapeAsset.objectLayerName,
+//         shapeAsset.objectName
+//       );
+
+//       shapeAsset.setShape(shape);
+//     }
+//   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
@@ -210,34 +228,38 @@ async function loadListOfAssets()
 }
 
 // ! Throws exception on error.
-async function loadAssetEntity(id: string)
+async function loadAssetDescriptor(id: string)
 {
   const directory = Assets.dataDirectory;
+  // ! Throws exception on error.
+  const entity = await Entities.loadEntity(directory, id);
 
   // ! Throws exception on error.
-  return (await Entities.loadEntity(directory, id)).dynamicCast(Asset);
+  // Note that ServerAsset is just an interface so unfortunately
+  // we can't typecheck it in runtime and we need to typecast.
+  return entity.dynamicCast(Asset) as ServerAsset;
 }
 
-// ! Throws exception on error.
-async function loadTilemap(tilemapAsset: TilemapAsset)
-{
-  const tilemapJsonPath = `./Client/${tilemapAsset.path}`;
+// // ! Throws exception on error.
+// async function loadTilemap(tilemapAsset: TilemapAsset)
+// {
+//   const tilemapJsonPath = `./Client/${tilemapAsset.path}`;
 
-  // ! Throws exception on error.
-  const jsonData = await loadTilemapJsonData(tilemapJsonPath);
+//   // ! Throws exception on error.
+//   const jsonData = await loadTilemapJsonData(tilemapJsonPath);
 
-  // ! Throws exception on error.
-  tilemapAsset.setTilemap(new Tilemap(tilemapAsset.getId(), jsonData));
-}
+//   // ! Throws exception on error.
+//   tilemapAsset.setTilemap(new Tilemap(tilemapAsset.getId(), jsonData));
+// }
 
-// ! Throws exception on error.
-async function loadTilemapJsonData(jsonFilePath: string)
-{
-  // ! Throws exception on error.
-  const jsonData = await FileSystem.readExistingFile(jsonFilePath);
+// // ! Throws exception on error.
+// async function loadTilemapJsonData(jsonFilePath: string)
+// {
+//   // ! Throws exception on error.
+//   const jsonData = await FileSystem.readExistingFile(jsonFilePath);
 
-  // ! Throws exception on error.
-  return JsonObject.parse(jsonData);
-}
+//   // ! Throws exception on error.
+//   return JsonObject.parse(jsonData);
+// }
 
 ClassFactory.registerClassPrototype(Assets);
