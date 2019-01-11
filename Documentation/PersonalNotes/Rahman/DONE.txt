@@ -1,3 +1,43 @@
+TODO: Tilemapy na serveru loaduju, ještě je potřeba pořešit shapy.
+[na serveru snad ok]
+
+TODO: Po loadu assetů na serveru vyrobit tilemapy.
+[done]
+
+TODO: Instance assets se musí někde vyrobit a držet.
+[zatím v Game]
+TODO: Loadovat Server/Assets při startu serveru.
+[done]
+
+TODO: Zrevidovat assety na klientu.
+- nestačí poslat zónu, protože asset entity v ní nejsou
+  (jsou tam jen reference).
+- jasně, proto se volá compileListOfAssets() a příslušné entity se následně
+  přidají do packet.entities (což je automaticky serializuje a deserializuje).
+Otázka je, jestli je při tom rovnou roztřídit podle druhů...
+[nakonec zůstanu u polymorfismu]
+
+TODO: Opravit Zone.compileListOfAssets()
+[snad?]
+
+IDEA: Shared/Tilemap přejmenovat na Shared/TilemapData,
+  Client/Tilemap nedědit (z předka nic nepoužívá)
+- pak je ovšem otázka, jak PhaserTilemap vyrábět a kde ji držet.
+Znamenalo by to:
+- phaser tilemapy držet ve scéně (beztak se vyrábí přes scene.make.tilemap()),
+  a to asi v Mapě indexované idečkem tilemap entity.
+[nakonec to nechám, jak to bylo]
+
+Tak zpátky na stromy - polymofismus má fakt příliš mnoho "pro".
+  Takže naopak:
+0) Přejmenovat to na deskriptory, ať o tom pořád neuvažuju postaru.
+[nakonec zůstanu u assetů]
+1) Udělat polymorfní i server-side, tzn. loadovat tilemapy přes
+   TilemapAsset.
+[done]
+2) Klienta vlastně nechat, jak je. Jen to trochu opravit.
+[done]
+
 IDEA: Assets přejmenovat na AssetData
   SoundData, TilemapData
   - potom se ale současná Shared/Tilemap nemůže jmenovat TilemapData
