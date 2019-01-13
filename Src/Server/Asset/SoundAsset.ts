@@ -6,6 +6,8 @@ import * as Shared from "../../Shared/Asset/SoundAsset";
 
 export class SoundAsset extends Shared.SoundAsset implements ServerAsset
 {
+  protected static version = 0;
+
   // public async load()
   // {
   //   // Sounds are not loaded on the server.

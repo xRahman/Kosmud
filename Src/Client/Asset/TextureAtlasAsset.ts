@@ -8,6 +8,10 @@ import * as Shared from "../../Shared/Asset/TextureAtlasAsset";
 export class TextureAtlasAsset extends Shared.TextureAtlasAsset
   implements ClientAsset
 {
+  protected static version = 0;
+
+  // ---------------- Public methods --------------------
+
   public load(scene: Scene)
   {
     scene.loadTextureAtlas(this.getId(), this.path, this.textureDirectory);

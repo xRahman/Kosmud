@@ -103,11 +103,11 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   public setVehicle(vehicle: Vehicle)
   {
-    if (this.vehicle !== "Not set")
+    if (this.hasOwnProperty("vehicle") && this.vehicle !== "Not set")
     {
       throw Error(`Failed to set reference to ${vehicle.debugId}`
-        + ` to it's physics because the physics already has a reference`
-        + ` to a vehicle`);
+        + ` to it's physics because there already is a reference`
+        + ` to vehicle ${this.vehicle.debugId} there`);
     }
 
     this.vehicle = vehicle;

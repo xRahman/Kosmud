@@ -8,6 +8,8 @@ import * as Shared from "../../Shared/Asset/ShapeAsset";
 
 export class ShapeAsset extends Shared.ShapeAsset implements ServerAsset
 {
+  protected static version = 0;
+
   // ---------------- Public methods --------------------
 
   // public async load()

@@ -7,6 +7,10 @@ import * as Shared from "../../Shared/Asset/TextureAsset";
 
 export class TextureAsset extends Shared.TextureAsset implements ClientAsset
 {
+  protected static version = 0;
+
+  // ---------------- Public methods --------------------
+
   public load(scene: Scene)
   {
     scene.loadTexture(this.getId(), this.path);

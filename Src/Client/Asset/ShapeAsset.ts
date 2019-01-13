@@ -10,6 +10,8 @@ import * as Shared from "../../Shared/Asset/ShapeAsset";
 
 export class ShapeAsset extends Shared.ShapeAsset implements ClientAsset
 {
+  protected static version = 0;
+
   // private shape: Physics.Shape | "Not set" = "Not set";
 
   // ---------------- Public methods --------------------

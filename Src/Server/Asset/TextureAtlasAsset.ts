@@ -7,6 +7,8 @@ import * as Shared from "../../Shared/Asset/TextureAtlasAsset";
 export class TextureAtlasAsset extends Shared.TextureAtlasAsset
   implements ServerAsset
 {
+  protected static version = 0;
+
   // public async load()
   // {
   //   // Textures atlases are not loaded on the server.

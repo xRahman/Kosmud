@@ -7,6 +7,10 @@ import * as Shared from "../../Shared/Asset/SoundAsset";
 
 export class SoundAsset extends Shared.SoundAsset implements ClientAsset
 {
+  protected static version = 0;
+
+  // ---------------- Public methods --------------------
+
   public load(scene: Scene)
   {
     scene.loadSound(this.getId(), this.path);

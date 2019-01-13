@@ -9,6 +9,8 @@ import * as Shared from "../../Shared/Asset/TilemapAsset";
 
 export class TilemapAsset extends Shared.TilemapAsset implements ClientAsset
 {
+  protected static version = 0;
+
   // private tilemap: Tilemap | "Not set" = "Not set";
 
   // ---------------- Public methods --------------------

@@ -9,6 +9,8 @@ import * as Shared from "../../Shared/Asset/TilemapAsset";
 
 export class TilemapAsset extends Shared.TilemapAsset implements ServerAsset
 {
+  protected static version = 0;
+
   // ---------------- Public methods --------------------
 
   public async load()

@@ -10,6 +10,9 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Ošetřit, když při savování souboru neexistuje adresář
+  (teď to hodí ENOENT, což není moc informativní).
+- asi by se ten adresář měl automaticky vyrobit.
 
 
 TODO: Výhledově udělat globální konstantu DATA_DIRECTORY.
