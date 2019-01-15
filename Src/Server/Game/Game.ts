@@ -4,14 +4,14 @@ import { Zones } from "../../Server/Game/Zones";
 
 /// TEST
 // import { Zone } from "../../Server/Game/Zone";
-import { Entities } from "../../Server/Class/Entities";
+// import { Entities } from "../../Server/Class/Entities";
 import { Ships } from "../../Server/Game/Ships";
 import { Assets } from "../../Server/Asset/Assets";
-import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
-import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
-import { SoundAsset } from "../../Shared/Asset/SoundAsset";
-import { TextureAsset } from "../../Shared/Asset/TextureAsset";
-import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
+// import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
+// import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
+// import { SoundAsset } from "../../Shared/Asset/SoundAsset";
+// import { TextureAsset } from "../../Shared/Asset/TextureAsset";
+// import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
 
 let assets: Assets | "Not loaded" = "Not loaded";
 let zones: Zones | "Not loaded" = "Not loaded";
@@ -55,6 +55,12 @@ export namespace Game
     await assets.saveAsset(exhaustSoundAsset);
 
     await assets.save();
+
+    /// IMPORTANT:
+    /// Před tím, než se ship přidá do zóny, je na nově vytvořených
+    /// assetech potřeba loadnout data tilemapy a inicializovat shape.
+    await tilemapAsset.load();
+    shapeAsset.init();
 
     zone.addShip(ship);
 

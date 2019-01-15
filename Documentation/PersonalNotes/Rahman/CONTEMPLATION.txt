@@ -1,3 +1,46 @@
+==================================================================
+
+Class factory instancování přes new:
+------------------------------------
+
+/*
+  Idea je, že první zavolané new vyrobí root prototyp a další ho pak budou
+  používat. Tím odpadne potřeba registrovat classy do ClassFactory
+  (registraci automaticky provede první zavolané new).
+*/
+
+
+let prototype: A | undefined = undefined;
+
+class A
+{
+    public x = undefined;
+
+    constructor()
+    {
+        /// Tohle by delala class factory.
+        if (prototype === undefined)
+        {
+            console.log(this);
+            prototype = this;
+        }
+
+        const instance = Object.create(prototype);
+
+        /// tady by se daly setovat defaultni hodnoty do instance.
+        instance.x = 12;
+
+        return instance;
+    }
+}
+
+const a = new A();
+
+console.log(a.x);
+
+==================================================================
+
+
 Budu player ship savovat do zóny?
 - pokud je v zóně, tak asi jo
   (představuju si save zóny třeba před rebootem - savne se do ní úplně

@@ -174,9 +174,7 @@ export class VehiclePhysics extends Serializable
   // ! Throws exception on error.
   public setShapeAsset(asset: ShapeAsset)
   {
-    this.getVehicle().addAsset(asset);
-
-    if (this.shapeAsset !== "Not set")
+    if (this.hasOwnProperty("shapeAsset") && this.shapeAsset !== "Not set")
       // ! Throws exception on error.
       this.getVehicle().removeAsset(this.shapeAsset);
 
@@ -404,7 +402,7 @@ export class VehiclePhysics extends Serializable
   {
     if (this.physicsBody === "Not in physics world")
     {
-      throw Error(`${this.getVehicle().debugId} is not in`
+      throw Error(`Vehicle ${this.getVehicle().debugId} is not in`
         + ` physics world yet and doesn't have a physics body`);
     }
 

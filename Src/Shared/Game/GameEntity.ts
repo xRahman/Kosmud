@@ -46,7 +46,8 @@ export class GameEntity extends ContainerEntity<GameEntity>
   {
     if (this.assets.has(asset))
     {
-      throw Error(`${this.debugId} already contains asset ${asset.debugId}`);
+      throw Error(`Game entity ${this.debugId} already`
+        + ` contains asset ${asset.debugId}`);
     }
 
     this.assets.add(asset);

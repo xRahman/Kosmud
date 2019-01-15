@@ -10,6 +10,35 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Vehicle zdědit z PhysicsEntity (kterážto bude zděděná z GameEntity).
+  rationale:
+   - ne všechny game entity mají fyziku (a i kdyby, tak dává smysl to oddělit)
+   - ne všechny game entity s fyzikou jsou vehicly
+Otázka: Může existovat entita s fyzikou, která nebude game entita?
+  - asi by neměla. Všechno jde potenciálně damagit, když nic jinýho.
+Při tý příležitosti asi taky sjednotit .physics
+  (Vehicle to má jako getter, jednodušší bude to udělat readonly).
+TODO: Taky budu potřebovat předka pro VehiclePhysics.
+  (EntityPhysics?).
+
+TODO: V zóně potřebuju seznam physics entit (paralelně k seznamu všech entit).
+- seznam lodí asi můžu prozatím zrušit, zatím se k ničemu konkrétnímu
+  nepoužívá.
+
+
+TODO: Při loadu přidat loď do physics worldu.
+- to teď řeším - znamená to v zóně projít všechny physics entity
+  a zavolat jim addToPhysicsWorld().
+
+
+TODO: Na serveru vyrábět všechny potřebný assety (včetně textury lodi,
+  texture atlasu exhaustů...).
+  - a přidávat je do lodi, aby se posílaly na klienta.
+
+TODO: Promyslet a pořešit problém "own" properties.
+   Shared/VehiclePhysics.setShapeAsset()
+
+
 TODO: Ošetřit, když při savování souboru neexistuje adresář
   (teď to hodí ENOENT, což není moc informativní).
 - asi by se ten adresář měl automaticky vyrobit.

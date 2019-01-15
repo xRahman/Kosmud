@@ -24,9 +24,9 @@ export abstract class ShapeAsset extends Asset
   // ! Throws exception on error.
   public setTilemapAsset(tilemapAsset: TilemapAsset)
   {
-    if (this.tilemapAsset === "Not set")
+    if (this.hasOwnProperty("tilemapAsset") && this.tilemapAsset !== "Not set")
     {
-      throw Error(`${this.debugId} already has tilemap asset reference`);
+      throw Error(`Shape asset ${this.debugId} already has a tilemap asset`);
     }
 
     this.tilemapAsset = tilemapAsset;
@@ -37,7 +37,8 @@ export abstract class ShapeAsset extends Asset
   {
     if (this.tilemapAsset === "Not set")
     {
-      throw Error(`${this.debugId} doesn't have tilemap asset reference`);
+      throw Error(`Shape asset  ${this.debugId} doesn't have`
+        + ` tilemap asset reference`);
     }
 
     return this.tilemapAsset;
@@ -46,9 +47,10 @@ export abstract class ShapeAsset extends Asset
     // ! Throws exception on error.
   public setShape(shape: Physics.Shape)
   {
-    if (this.shape === "Not set")
+    if (this.hasOwnProperty("shape") && this.shape !== "Not set")
     {
-      throw Error(`${this.debugId} already has physics shape reference`);
+      throw Error(`Shape asset ${this.debugId} already has physics`
+        + ` shape reference`);
     }
 
     this.shape = shape;
@@ -59,7 +61,8 @@ export abstract class ShapeAsset extends Asset
   {
     if (this.shape === "Not set")
     {
-      throw Error(`${this.debugId} doesn't have physics shape`);
+      throw Error(`Shape asset ${this.debugId} doesn't have`
+        + ` physics shape initialized`);
     }
 
     return this.shape;

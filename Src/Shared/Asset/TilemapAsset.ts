@@ -31,7 +31,8 @@ export abstract class TilemapAsset extends Asset
   {
     if (this.tilemap === "Not set")
     {
-      throw Error(`${this.debugId} doesn't have a tilemap set yet`);
+      throw Error(`Tilemap asset ${this.debugId} doesn't`
+        + ` have a tilemap data loaded yet`);
     }
 
     return this.tilemap;

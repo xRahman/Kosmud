@@ -129,13 +129,12 @@ export abstract class Zone extends ContainerEntity<GameEntity>
     this.ships.add(ship);
     ship.setZone(this);
 
-    /// HACK (dočasný na testování serializace zóny)
-    // ship.addToPhysicsWorld
-    // (
-    //   // ! Throws exception on error.
-    //   this.getPhysicsWorld(),
-    //   this
-    // );
+    ship.addToPhysicsWorld
+    (
+      // ! Throws exception on error.
+      this.getPhysicsWorld(),
+      this
+    );
   }
 
   // protected getShip(id: string): Ship | "Not found"
@@ -157,6 +156,8 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   public init()
   {
     this.createPhysicsWorld();
+
+    this.addContentsToPhysicsWorld();
   }
 
   public compileListOfAssets()
@@ -248,6 +249,17 @@ export abstract class Zone extends ContainerEntity<GameEntity>
     }
 
     this.physicsWorld = Physics.createWorld();
+  }
+
+  private addContentsToPhysicsWorld()
+  {
+    for (const entity of this.getContents())
+    {
+      TODO
+      /// 2 možnosti: Buď dám všem GameEntitám metodu addToPhysicsWorld(),
+      /// nebo musím cyklovat jen přes PhysicsEntity.
+      entity.addToPhysicsWorld();
+    }
   }
 
   private steerVehicles()

@@ -230,9 +230,8 @@ async function loadListOfAssets()
 // ! Throws exception on error.
 async function loadAssetDescriptor(id: string)
 {
-  const directory = Assets.dataDirectory;
   // ! Throws exception on error.
-  const entity = await Entities.loadEntity(directory, id);
+  const entity = await Entities.loadEntity(assetsDataDirectory, id);
 
   // ! Throws exception on error.
   // Note that ServerAsset is just an interface so unfortunately

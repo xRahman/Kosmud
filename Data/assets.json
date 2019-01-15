@@ -1,0 +1,25 @@
+{
+  "className": "Assets",
+  "version": 0,
+  "assets":
+  {
+    "className": "Set",
+    "version": 0,
+    "set": [
+    {
+      "className": "Reference",
+      "id": "3-jqxp1f9w",
+      "version": 0
+    },
+    {
+      "className": "Reference",
+      "id": "4-jqxp1f9w",
+      "version": 0
+    },
+    {
+      "className": "Reference",
+      "id": "5-jqxp1f9w",
+      "version": 0
+    }]
+  }
+}

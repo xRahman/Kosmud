@@ -124,12 +124,6 @@ async function loadZone(id: string)
   // ! Throws exception on error.
   const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
 
-  /// Assets se teď loadnou najednou před loadem zón.
-  // // Definitions of assets used in zone are not listed in zone
-  // // entities because they are shared among different zones.
-  // // It means that we need to load them separately.
-  // await zone.loadAssets();
-
   zone.init();
 
   return zone;
