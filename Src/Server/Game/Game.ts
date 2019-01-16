@@ -62,7 +62,7 @@ export namespace Game
     await tilemapAsset.load();
     shapeAsset.init();
 
-    zone.addShip(ship);
+    zone.addVehicle(ship);
 
     await zone.save();
     await zones.save();

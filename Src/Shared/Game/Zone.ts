@@ -10,8 +10,10 @@ import { Attributes } from "../../Shared/Class/Attributes";
 import { Serializable } from "../../Shared/Class/Serializable";
 import { Entities } from "../../Shared/Class/Entities";
 import { Ship } from "../../Shared/Game/Ship";
+import { PhysicsEntity } from "../../Shared/Game/PhysicsEntity";
+import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Asset } from "../../Shared/Asset/Asset";
-import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
+// import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 // import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
 // import { SoundAsset } from "../../Shared/Asset/SoundAsset";
 // import { Tilemap } from "../../Shared/Engine/Tilemap";
@@ -65,7 +67,9 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   //   ]
   // };
 
-  protected readonly ships = new Set<Ship>();
+  protected readonly vehicles = new Set<Vehicle>();
+
+  protected readonly physicsEntities = new Set<PhysicsEntity>();
 
   // protected readonly tilemaps = new Map<string, Tilemap>();
   // protected static tilemaps: Attributes =
@@ -117,35 +121,25 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   // }
 
   // ! Throws exception on error.
-  public addShip(ship: Ship)
+  public addVehicle(ship: Ship)
   {
-    if (this.ships.has(ship))
+    if (this.vehicles.has(ship))
     {
       throw Error(`Zone ${this.debugId} already has`
         + ` ship ${ship.debugId}`);
     }
 
     this.insert(ship);
-    this.ships.add(ship);
+    this.vehicles.add(ship);
+    this.physicsEntities.add(ship);
     ship.setZone(this);
 
     ship.addToPhysicsWorld
     (
       // ! Throws exception on error.
-      this.getPhysicsWorld(),
-      this
+      this.getPhysicsWorld()
     );
   }
-
-  // protected getShip(id: string): Ship | "Not found"
-  // {
-  //   const ship = this.ships.get(id);
-
-  //   if (ship === undefined)
-  //     return "Not found";
-
-  //   return ship;
-  // }
 
   public update()
   {
@@ -157,7 +151,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   {
     this.createPhysicsWorld();
 
-    this.addContentsToPhysicsWorld();
+    this.addEntitiesToPhysicsWorld();
   }
 
   public compileListOfAssets()
@@ -251,21 +245,20 @@ export abstract class Zone extends ContainerEntity<GameEntity>
     this.physicsWorld = Physics.createWorld();
   }
 
-  private addContentsToPhysicsWorld()
+  private addEntitiesToPhysicsWorld()
   {
-    for (const entity of this.getContents())
+    for (const entity of this.physicsEntities)
     {
-      TODO
-      /// 2 možnosti: Buď dám všem GameEntitám metodu addToPhysicsWorld(),
-      /// nebo musím cyklovat jen přes PhysicsEntity.
-      entity.addToPhysicsWorld();
+      entity.addToPhysicsWorld(this.getPhysicsWorld());
     }
   }
 
   private steerVehicles()
   {
-    for (const ship of this.ships.values())
-      steerShip(ship);
+    for (const vehicle of this.vehicles.values())
+    {
+      steer(vehicle);
+    }
   }
 
   // ! Throws exception on error.
@@ -323,15 +316,15 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 
 // ----------------- Auxiliary Functions ---------------------
 
-function steerShip(ship: Ship)
+function steer(vehicle: Vehicle)
 {
   try
   {
-    ship.steer();
+    vehicle.steer();
   }
   catch (error)
   {
-    REPORT(error, `Failed to steer ship ${ship.debugId}`);
+    REPORT(error, `Failed to steer vehicle ${vehicle.debugId}`);
   }
 }
 

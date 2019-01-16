@@ -3,23 +3,26 @@
 // Augment global namespace with number-related functions and constants.
 import "../../Shared/Utils/Number";
 
+import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Attributes } from "../../Shared/Class/Attributes";
 import { Angle } from "../../Shared/Utils/Angle";
-import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
+// import { ZeroToOne } from "../../Shared/Utils/ZeroToOne";
 import { PositiveNumber } from "../../Shared/Utils/PositiveNumber";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
 import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 import { Vector } from "../../Shared/Physics/Vector";
-import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
+// import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 import { PhysicsWorld } from "../../Shared/Physics/PhysicsWorld";
 import { Engine } from "../../Shared/Engine/Engine";
-import { Zone } from "../../Shared/Game/Zone";
-import { Vehicle } from "../../Shared/Game/Vehicle";
+// import { Zone } from "../../Shared/Game/Zone";
+// import { Vehicle } from "../../Shared/Game/Vehicle";
 import { Physics } from "../../Shared/Physics/Physics";
-import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
-import { Serializable } from "../../Shared/Class/Serializable";
+// import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
+// import { Serializable } from "../../Shared/Class/Serializable";
+import { EntityPhysics } from "../../Shared/Physics/EntityPhysics";
+import { Vehicle } from "../Game/Vehicle";
 
-export class VehiclePhysics extends Serializable
+export class VehiclePhysics extends EntityPhysics
 {
   protected static version = 0;
 
@@ -32,10 +35,11 @@ export class VehiclePhysics extends Serializable
   public readonly MAX_ANGULAR_VELOCITY = new PositiveNumber(Math.PI / 2);
   public readonly ANGULAR_THRUST = new PositiveNumber(1);
 
-  public readonly DENSITY = new PositiveNumber(1);
-  public readonly FRICTION = new ZeroToOne(0.5);
-  // 0 - almost no bouncing, 1 - maximum bouncing.
-  public readonly RESTITUTION = new ZeroToOne(1);
+  /// Přesunuto do předka.
+  // public readonly DENSITY = new PositiveNumber(1);
+  // public readonly FRICTION = new ZeroToOne(0.5);
+  // // 0 - almost no bouncing, 1 - maximum bouncing.
+  // public readonly RESTITUTION = new ZeroToOne(1);
 
   // These variables reflect buffs and debuffs that change
   // current thrust, maximum speed or maximum angular velocity.
@@ -48,14 +52,15 @@ export class VehiclePhysics extends Serializable
   public readonly angularVelocityMultiplier = new NonnegativeNumber(1);
   protected static angularVelocityMultiplier: Attributes = { saved: false };
 
-  /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
-  ///   Property 'initialPosition' se totiž používá jen při vkládání
-  /// do physics worldu - getPosition() potom vytahuje pozici s physicsBody.
-  ///   Možná to bude chtít custom savování/loadování, protože při savu
-  /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
-  /// savnout. A při loadu se pak zas musí body vytvořit.
-  public readonly initialPosition = { x: 0, y: 0 };
-  public readonly initialRotation = new ZeroTo2Pi(0);
+  /// Přesunuto do předka.
+  // /// TODO: Až budu chtít PhysicsBody savovat, tak musím tohle pořešit.
+  // ///   Property 'initialPosition' se totiž používá jen při vkládání
+  // /// do physics worldu - getPosition() potom vytahuje pozici s physicsBody.
+  // ///   Možná to bude chtít custom savování/loadování, protože při savu
+  // /// je potřeba nejdřív vytáhnout aktuální pozici z this.body a pak až ji
+  // /// savnout. A při loadu se pak zas musí body vytvořit.
+  // public readonly initialPosition = { x: 0, y: 0 };
+  // public readonly initialRotation = new ZeroTo2Pi(0);
 
   // These variables are updated in steering forces computation
   // and are sent to the client to be drawn in debug mode.
@@ -70,11 +75,13 @@ export class VehiclePhysics extends Serializable
   public torque = 0;
   protected static torque: Attributes = { saved: false };
 
-  private shapeAsset: ShapeAsset | "Not set" = "Not set";
+  /// Přesunuto do předka.
+  // private shapeAsset: ShapeAsset | "Not set" = "Not set";
 
-  private physicsBody: PhysicsBody | "Not in physics world" =
-    "Not in physics world";
-  protected static physicsBody: Attributes = { saved: false };
+  /// Přesunuto do předka.
+  // private physicsBody: PhysicsBody | "Not in physics world" =
+  //   "Not in physics world";
+  // protected static physicsBody: Attributes = { saved: false };
 
   // These variables are updated in steering forces computation and are
   // sent to the client where they are used for displaying ship thrusters.
@@ -96,35 +103,38 @@ export class VehiclePhysics extends Serializable
     direction: new ZeroTo2Pi(0)
   };
 
-  private vehicle: Vehicle | "Not set" = "Not set";
+  /// Přesunuto do předka.
+  // private vehicle: Vehicle | "Not set" = "Not set";
 
   // --------------- Public accessors -------------------
 
-  // ! Throws exception on error.
-  public setVehicle(vehicle: Vehicle)
-  {
-    if (this.hasOwnProperty("vehicle") && this.vehicle !== "Not set")
-    {
-      throw Error(`Failed to set reference to ${vehicle.debugId}`
-        + ` to it's physics because there already is a reference`
-        + ` to vehicle ${this.vehicle.debugId} there`);
-    }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public setVehicle(vehicle: Vehicle)
+  // {
+  //   if (this.hasOwnProperty("vehicle") && this.vehicle !== "Not set")
+  //   {
+  //     throw Error(`Failed to set reference to ${vehicle.debugId}`
+  //       + ` to it's physics because there already is a reference`
+  //       + ` to vehicle ${this.vehicle.debugId} there`);
+  //   }
 
-    this.vehicle = vehicle;
-  }
+  //   this.vehicle = vehicle;
+  // }
 
-  // ! Throws exception on error.
-  public getVehicle()
-  {
-    if (this.vehicle === "Not set")
-    {
-      throw Error(`Missing reference to a respective vehicle in`
-        + ` vehicle physics. Make sure the reference is set in vehicle's`
-        + ` onInstantiation() method`);
-    }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public getVehicle()
+  // {
+  //   if (this.vehicle === "Not set")
+  //   {
+  //     throw Error(`Missing reference to a respective vehicle in`
+  //       + ` vehicle physics. Make sure the reference is set in vehicle's`
+  //       + ` onInstantiation() method`);
+  //   }
 
-    return this.vehicle;
-  }
+  //   return this.vehicle;
+  // }
 
   public get currentMaxSpeed()
   {
@@ -157,60 +167,67 @@ export class VehiclePhysics extends Serializable
     return this.ANGULAR_THRUST.valueOf() * this.thrustMultiplier.valueOf();
   }
 
-  // ! Throws exception on error.
-  public get inertiaValue()
-  {
-    // ! Throws exception on error.
-    return this.getPhysicsBody().getInertia().valueOf();
-  }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public get inertiaValue()
+  // {
+  //   // ! Throws exception on error.
+  //   return this.getPhysicsBody().getInertia().valueOf();
+  // }
 
-  // ! Throws exception on error.
-  public get massValue()
-  {
-    // ! Throws exception on error.
-    return this.getPhysicsBody().getMass().valueOf();
-  }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public get massValue()
+  // {
+  //   // ! Throws exception on error.
+  //   return this.getPhysicsBody().getMass().valueOf();
+  // }
 
-  // ! Throws exception on error.
-  public setShapeAsset(asset: ShapeAsset)
-  {
-    if (this.hasOwnProperty("shapeAsset") && this.shapeAsset !== "Not set")
-      // ! Throws exception on error.
-      this.getVehicle().removeAsset(this.shapeAsset);
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public setShapeAsset(asset: ShapeAsset)
+  // {
+  //   if (this.hasOwnProperty("shapeAsset") && this.shapeAsset !== "Not set")
+  //     // ! Throws exception on error.
+  //     this.getVehicle().removeAsset(this.shapeAsset);
 
-    // ! Throws exception on error.
-    this.shapeAsset = this.getVehicle().addAsset(asset);
-  }
+  //   // ! Throws exception on error.
+  //   this.shapeAsset = this.getVehicle().addAsset(asset);
+  // }
 
-  // ! Throws exception on error.
-  public getShapeAsset()
-  {
-    if (this.shapeAsset === "Not set")
-    {
-      throw new Error(`${this.getVehicle().debugId} doesn't have shape asset`);
-    }
+  /// Přesunuto do předka.
+// // ! Throws exception on error.
+// public getShapeAsset()
+// {
+//   if (this.shapeAsset === "Not set")
+//   {
+//    throw new Error(`${this.getVehicle().debugId} doesn't have shape asset`);
+//   }
 
-    return this.shapeAsset;
-  }
+//   return this.shapeAsset;
+// }
 
   // ---------------- Public methods --------------------
 
-  // ! Throws exception on error.
-  public getPosition() { return this.getPhysicsBody().getPosition(); }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public getPosition() { return this.getPhysicsBody().getPosition(); }
 
-  // ! Throws exception on error.
-  public setPosition(position: { x: number; y: number })
-  {
-    // ! Throws exception on error.
-    this.getPhysicsBody().setPosition(position);
-  }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public setPosition(position: { x: number; y: number })
+  // {
+  //   // ! Throws exception on error.
+  //   this.getPhysicsBody().setPosition(position);
+  // }
 
-  // ! Throws exception on error.
-  public getX() { return this.getPhysicsBody().getX(); }
-  // ! Throws exception on error.
-  public getY() { return this.getPhysicsBody().getY(); }
-  // ! Throws exception on error.
-  public getRotation() { return this.getPhysicsBody().getRotation(); }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public getX() { return this.getPhysicsBody().getX(); }
+  // // ! Throws exception on error.
+  // public getY() { return this.getPhysicsBody().getY(); }
+  // // ! Throws exception on error.
+  // public getRotation() { return this.getPhysicsBody().getRotation(); }
 
   public getDesiredVelocity() { return this.desiredVelocity; }
   public getSteeringForce() { return this.steeringForce; }
@@ -273,28 +290,42 @@ export class VehiclePhysics extends Serializable
     this.updateWaypointDirection();
   }
 
-  // ! Throws exception on error.
-  public getShape()
-  {
-    // ! Throws exception on error.
-    return this.getPhysicsBody().getShape();
-  }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public getShape()
+  // {
+  //   // ! Throws exception on error.
+  //   return this.getPhysicsBody().getShape();
+  // }
+
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
+  // {
+  //   // ! Throws exception on error.
+  //   const physicsShape = this.getShapeAsset().getShape();
+
+  //   this.physicsBody = physicsWorld.createPhysicsBody
+  //   (
+  //     this.getVehicle(), this, physicsShape
+  //   );
+
+  //   /// Nothing needs to be initialized for now. I'll leave it here
+  //   /// for possible future use.
+  //   // // ! Throws exception on error.
+  //   // this.init();
+
+  //   // ! Throws exception on error.
+  //   // Set waypoint to the new position so the vehicle doesn't
+  //   // go back to where it was.
+  //   this.setWaypoint(this.getPhysicsBody().getPosition());
+  // }
 
   // ! Throws exception on error.
-  public addToPhysicsWorld(physicsWorld: PhysicsWorld, zone: Zone)
+  // ~ Overrides EntityPhysics.addToPhysicsWorld().
+  public addToPhysicsWorld(physicsWorld: PhysicsWorld)
   {
-    // ! Throws exception on error.
-    const physicsShape = this.getShapeAsset().getShape();
-
-    this.physicsBody = physicsWorld.createPhysicsBody
-    (
-      this.getVehicle(), this, physicsShape
-    );
-
-    /// Nothing needs to be initialized for now. I'll leave it here
-    /// for possible future use.
-    // // ! Throws exception on error.
-    // this.init();
+    super.addToPhysicsWorld(physicsWorld);
 
     // ! Throws exception on error.
     // Set waypoint to the new position so the vehicle doesn't
@@ -397,17 +428,18 @@ export class VehiclePhysics extends Serializable
 
   // ---------------- Private methods -------------------
 
-  // ! Throws exception on error.
-  private getPhysicsBody()
-  {
-    if (this.physicsBody === "Not in physics world")
-    {
-      throw Error(`Vehicle ${this.getVehicle().debugId} is not in`
-        + ` physics world yet and doesn't have a physics body`);
-    }
+  /// Přesunuto do předka.
+  // // ! Throws exception on error.
+  // private getPhysicsBody()
+  // {
+  //   if (this.physicsBody === "Not in physics world")
+  //   {
+  //     throw Error(`Vehicle ${this.getVehicle().debugId} is not in`
+  //       + ` physics world yet and doesn't have a physics body`);
+  //   }
 
-    return this.physicsBody;
-  }
+  //   return this.physicsBody;
+  // }
 
   // --- Init ---
 
@@ -749,7 +781,7 @@ export class VehiclePhysics extends Serializable
   {
     if (speed > Physics.MAXIMUM_POSSIBLE_SPEED)
     {
-      throw Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
+      throw Error(`Vehicle ${this.getEntity().debugId} attempts to reach`
         + ` speed '${speed}' which is greater than maximum speed allowed`
         + ` by Box2d physics engine (${Physics.MAXIMUM_POSSIBLE_SPEED}).`
         + ` There are three ways to handle this: 1 - set lower maximum`
@@ -767,7 +799,7 @@ export class VehiclePhysics extends Serializable
   {
     if (angularVelocity > Physics.MAXIMUM_POSSIBLE_ANGULAR_VELOCITY)
     {
-      throw Error(`Vehicle ${this.getVehicle().debugId} attempts to reach`
+      throw Error(`Vehicle ${this.getEntity().debugId} attempts to reach`
         + ` angular velocity '${angularVelocity}' which is greater than`
         + ` maximum angular velocity allowed by Box2d physics engine`
         + ` (${Physics.MAXIMUM_POSSIBLE_ANGULAR_VELOCITY}). There are`
@@ -804,3 +836,5 @@ type ThrustData =
   leftwardThrustRatio: number;
   fullThrust: number;
 };
+
+ClassFactory.registerClassPrototype(VehiclePhysics);

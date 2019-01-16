@@ -1,3 +1,22 @@
+TODO: Vehicle zdědit z PhysicsEntity (kterážto bude zděděná z GameEntity).
+  rationale:
+   - ne všechny game entity mají fyziku (a i kdyby, tak dává smysl to oddělit)
+   - ne všechny game entity s fyzikou jsou vehicly
+Otázka: Může existovat entita s fyzikou, která nebude game entita?
+  - asi by neměla. Všechno jde potenciálně damagit, když nic jinýho.
+Při tý příležitosti asi taky sjednotit .physics
+  (Vehicle to má jako getter, jednodušší bude to udělat readonly).
+[done]
+TODO: Taky budu potřebovat předka pro VehiclePhysics.
+  (EntityPhysics?).
+[done]
+
+TODO: seznam lodí asi můžu prozatím zrušit, zatím se k ničemu konkrétnímu
+  nepoužívá.
+  - zrušit ho nemůžu, respektive musím někde mít seznam vehiclů.
+   TODO: Takže přejmenovat ships na vehicles.
+[done]
+
 TODO: Tilemapy na serveru loaduju, ještě je potřeba pořešit shapy.
 [na serveru snad ok]
 

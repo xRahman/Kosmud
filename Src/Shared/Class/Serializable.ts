@@ -1123,7 +1123,7 @@ function createNew(param: Serializable.DeserializeParam): object
   // in JSON, it can't be an entity class.
 
   // ! Throws exception on error.
-  return ClassFactory.newInstance(className);
+  return ClassFactory.newInstanceByName(className);
 }
 
 // Converts 'param.sourceProperty' to a FastBitSet object.

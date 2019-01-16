@@ -71,35 +71,39 @@ export class Packet extends Serializable
     mode: Serializable.Mode
   )
   {
-    const serializedEntities = new Array<object>();
+    const serializedEntities = new Set<object>();
 
     for (const entity of entities)
-      serializedEntities.push(entity.saveToJsonObject(mode));
+      serializedEntities.add(entity.saveToJsonObject(mode));
 
-    const result =
-    {
-      className: "Entities",
-      version: 0,
-      contents: serializedEntities
-    };
+    // const result =
+    // {
+    //   className: "Entities",
+    //   version: 0,
+    //   contents: serializedEntities
+    // };
 
-    return result;
+    // return result;
+
+    return serializedEntities;
   }
 
   private deserializeEntities(sourceProperty: object)
   {
-    const contents = new Set();
-    const serializedContents =
-      (sourceProperty as any)[ENTITIES] as Array<object>;
+    // const contents = new Set();
+    const deserializedEntities = new Set();
+    // const serializedContents =
+    //   (sourceProperty as any)[ENTITIES] as Array<object>;
+    const entities = (sourceProperty as any)[ENTITIES] as Set<object>;
 
-    for (const serializedEntity of serializedContents)
+    for (const serializedEntity of entities)
     {
       const entity = Entities.loadEntityFromJsonObject(serializedEntity);
 
-      contents.add(entity);
+      deserializedEntities.add(entity);
     }
 
-    return contents;
+    return deserializedEntities;
   }
 }
 

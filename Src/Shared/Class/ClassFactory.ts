@@ -41,13 +41,12 @@ export namespace ClassFactory
 
     if (prototype === "Doesn't exist")
     {
-      throw Error(`Failed to instantiate class '${className}'`
-        + ` is not registered in the class factory. Make sure`
-        + ` ClassFactory.registerClassPrototype(${className}) is`
+      throw Error(`Failed to instantiate class '${className}' because`
+        + ` it's prototype isn't registered in the class factory. Make `
+        + ` sure ClassFactory.registerClassPrototype(${className}) is`
         + ` called somewhere`);
     }
 
-    /// TODO: True prototypová dědičnost
     return instantiate(prototype);
   }
 

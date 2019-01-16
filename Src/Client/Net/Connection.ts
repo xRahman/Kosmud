@@ -12,6 +12,7 @@ import { EnterFlightResponse } from
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
 import { LoginRequest } from "../../Shared/Protocol/LoginRequest";
+import { LoginResponse } from "../../Client/Protocol/LoginResponse";
 import * as Shared from "../../Shared/Net/Connection";
 
 /// TEST
@@ -25,6 +26,8 @@ import * as WebSocket from "isomorphic-ws";
 ClassFactory.registerClassPrototype(SystemMessage);
 ClassFactory.registerClassPrototype(ZoneUpdate);
 ClassFactory.registerClassPrototype(EnterFlightResponse);
+ClassFactory.registerClassPrototype(LoginRequest);
+ClassFactory.registerClassPrototype(LoginResponse);
 ClassFactory.registerClassPrototype(KeyboardInput);
 ClassFactory.registerClassPrototype(MouseInput);
 

@@ -6,13 +6,13 @@
 
 import { Physics } from "../../Shared/Physics/Physics";
 import { Vector } from "../../Shared/Physics/Vector";
-import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
+// import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 import { Entity } from "../../Shared/Class/Entity";
 
 // 3rd party modules.
 import { b2World, b2Vec2, b2BodyDef, b2Body, b2PolygonShape, b2BodyType,
   b2FixtureDef, b2ShapeType, b2MassData } from "../../Shared/Box2D/Box2D";
-import { VehiclePhysics } from "./VehiclePhysics";
+import { EntityPhysics } from "../../Shared/Physics/EntityPhysics";
 import { PositiveNumber } from "../Utils/PositiveNumber";
 import { ZeroTo2Pi } from "../Utils/ZeroTo2Pi";
 
@@ -25,7 +25,7 @@ export class PhysicsBody
     /// TODO: Tohle nesavovat.
     private readonly entity: Entity,
     box2dWorld: b2World,
-    entityPhysics: VehiclePhysics,
+    entityPhysics: EntityPhysics,
     physicsShape: Physics.Shape
   )
   {
@@ -211,7 +211,7 @@ function createBody
 (
   box2dWorld: b2World,
   physicsShape: Physics.Shape,
-  entityPhysics: VehiclePhysics
+  entityPhysics: EntityPhysics
 )
 {
   const bodyDefinition = new b2BodyDef();
@@ -235,7 +235,7 @@ function createFixtures
 (
   box2dBody: b2Body,
   shape: Physics.Shape,
-  entityPhysics: VehiclePhysics
+  entityPhysics: EntityPhysics
 )
 {
   for (const polygon of shape)
@@ -252,7 +252,7 @@ function createFixtures
 function createFixtureDefinition
 (
   polygon: Physics.Polygon,
-  entityPhysics: VehiclePhysics
+  entityPhysics: EntityPhysics
 )
 : b2FixtureDef
 {

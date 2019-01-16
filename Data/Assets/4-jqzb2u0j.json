@@ -1,0 +1,15 @@
+{
+  "className": "ShapeAsset",
+  "id": "4-jqzb2u0j",
+  "prototypeId": "ShapeAsset",
+  "name": "Fighter hull",
+  "version": 0,
+  "tilemapAsset":
+  {
+    "className": "Reference",
+    "id": "3-jqzb2u0j",
+    "version": 0
+  },
+  "objectName": "Hull",
+  "objectLayerName": "Basic fighter"
+}

@@ -9,9 +9,9 @@ import { PhysicsBody } from "../../Shared/Physics/PhysicsBody";
 // 3rd party modules.
 import { b2World, b2Vec2 } from "../../Shared/Box2D/Box2D";
 import { Entity } from "../Class/Entity";
-import { VehiclePhysics } from "./VehiclePhysics";
+import { EntityPhysics } from "../../Shared/Physics/EntityPhysics";
 import { Physics } from "./Physics";
-import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
+// import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 
 const VELOCITY_ITERATIONS = 6;
 const PARTICLE_ITERATIONS = 2;
@@ -25,7 +25,7 @@ export class PhysicsWorld
   public createPhysicsBody
   (
     entity: Entity,
-    entityPhysics: VehiclePhysics,
+    entityPhysics: EntityPhysics,
     physicsShape: Physics.Shape
   )
   {

@@ -10,20 +10,13 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Vehicle zdědit z PhysicsEntity (kterážto bude zděděná z GameEntity).
-  rationale:
-   - ne všechny game entity mají fyziku (a i kdyby, tak dává smysl to oddělit)
-   - ne všechny game entity s fyzikou jsou vehicly
-Otázka: Může existovat entita s fyzikou, která nebude game entita?
-  - asi by neměla. Všechno jde potenciálně damagit, když nic jinýho.
-Při tý příležitosti asi taky sjednotit .physics
-  (Vehicle to má jako getter, jednodušší bude to udělat readonly).
-TODO: Taky budu potřebovat předka pro VehiclePhysics.
-  (EntityPhysics?).
+TODO: Opravit serializaci a deserializaci entit v Packetu.
+
+TODO: Při reloadu browser tabu se asi server pokusí znova lodnout
+  stejného playera (což hodí exception, že už je loadnutý).
+
 
 TODO: V zóně potřebuju seznam physics entit (paralelně k seznamu všech entit).
-- seznam lodí asi můžu prozatím zrušit, zatím se k ničemu konkrétnímu
-  nepoužívá.
 
 
 TODO: Při loadu přidat loď do physics worldu.
