@@ -18,10 +18,13 @@ export class LoginResponse
   {
     connection.setPlayer(this.getPlayer());
 
-    await loadFlightScene(this.getZone(), this.getAssets());
+    if (this.hasZone())
+    {
+      await loadFlightScene(this.getZone(), this.getAssets());
 
-    initBackgroundScene();
-    initFlightScene();
+      initBackgroundScene();
+      initFlightScene();
+    }
 
     /// Tady by asi mělo bejt ještě setnutí stavu GUI, aby se
     /// shownula/hidnula příslušná okna.

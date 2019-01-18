@@ -60,6 +60,11 @@ export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
     return this.zone;
   }
 
+  protected hasZone()
+  {
+    return this.zone !== "Not set";
+  }
+
   // ! Throws exception on error.
   protected getAssets()
   {

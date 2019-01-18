@@ -10,6 +10,22 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Pustil jsem se do psaní Server/EntityList (společný předek Assets
+  a Zones), ale vůbec mi to nejde. Takže příště asi znovu a lépe.
+
+TODO: Server/EntityList.dataDirectory by mělo bejt někde jinde
+  (v Game?)
+
+TODO: Asi by bylo lepší, aby instance assets držely Assets a instanci zones
+  držely Zones (místo Game). I když... (ale asi jo).
+- zjevně to fakt potřebuju.
+
+TODO: Zones a Assets mají hodně podobnej kód - udělat jim společnýho předka.
+
+
+TODO: Do loginResponse se nedává zóna.
+- protože player nemá activeShip.
+
 TODO: Při reloadu browser tabu se asi server pokusí znova lodnout
   stejného playera (což hodí exception, že už je loadnutý).
 
@@ -28,6 +44,9 @@ TODO: Na serveru vyrábět všechny potřebný assety (včetně textury lodi,
 
 TODO: Promyslet a pořešit problém "own" properties.
    Shared/VehiclePhysics.setShapeAsset()
+Pozn.: Něco je divně, protože když jde o instanci root prototypu,
+  tak přece musí mít zděděné properties inicializované na "Not set"
+  (protože prototyp je prostě jen 'new Class');
 
 
 TODO: Ošetřit, když při savování souboru neexistuje adresář
@@ -57,11 +76,6 @@ TODO: funkce loadTilemap() v Assets by asi měla bejt spíš v server
 TODO: lepší vyrábění server path k tilemapě
   (ošetřit případné ./ na začátku cesty)
   - je to ve funkci loadTilemap() v Server/Assets
-
-TODO: Asi by bylo lepší, aby intance assets držely Assets a instanci zones
-  držely Zones (místo Game). I když... (ale asi jo).
-
-TODO: Zones a Assets mají hodně podobnej kód - udělat jim společnýho předka.
 
 TODO: Property jako
     public path = "<missing file path>";
