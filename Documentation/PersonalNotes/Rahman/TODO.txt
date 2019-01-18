@@ -10,8 +10,6 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Opravit serializaci a deserializaci entit v Packetu.
-
 TODO: Při reloadu browser tabu se asi server pokusí znova lodnout
   stejného playera (což hodí exception, že už je loadnutý).
 

@@ -1,0 +1,15 @@
+{
+  "className": "ShapeAsset",
+  "id": "4-jr21crzo",
+  "prototypeId": "ShapeAsset",
+  "name": "Fighter hull",
+  "version": 0,
+  "tilemapAsset":
+  {
+    "className": "Reference",
+    "id": "3-jr21crzo",
+    "version": 0
+  },
+  "objectName": "Hull",
+  "objectLayerName": "Basic fighter"
+}

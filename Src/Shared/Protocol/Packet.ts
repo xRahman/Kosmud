@@ -65,45 +65,28 @@ export class Packet extends Serializable
 
   // ---------------- Private methods -------------------
 
-  private serializeEntities
-  (
-    entities: Set<Entity>,
-    mode: Serializable.Mode
-  )
+  private serializeEntities(entities: Set<Entity>, mode: Serializable.Mode)
   {
-    const serializedEntities = new Set<object>();
+    const serializedEntities = new Array<object>();
 
     for (const entity of entities)
-      serializedEntities.add(entity.saveToJsonObject(mode));
-
-    // const result =
-    // {
-    //   className: "Entities",
-    //   version: 0,
-    //   contents: serializedEntities
-    // };
-
-    // return result;
+      serializedEntities.push(entity.saveToJsonObject(mode));
 
     return serializedEntities;
   }
 
-  private deserializeEntities(sourceProperty: object)
+  private deserializeEntities(sourceProperty: any)
   {
-    // const contents = new Set();
-    const deserializedEntities = new Set();
-    // const serializedContents =
-    //   (sourceProperty as any)[ENTITIES] as Array<object>;
-    const entities = (sourceProperty as any)[ENTITIES] as Set<object>;
+    const entites = new Set();
 
-    for (const serializedEntity of entities)
+    for (const jsonObject of sourceProperty)
     {
-      const entity = Entities.loadEntityFromJsonObject(serializedEntity);
+      const entity = Entities.loadEntityFromJsonObject(jsonObject);
 
-      deserializedEntities.add(entity);
+      entites.add(entity);
     }
 
-    return deserializedEntities;
+    return entites;
   }
 }
 

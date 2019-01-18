@@ -1,3 +1,6 @@
+TODO: Opravit serializaci a deserializaci entit v Packetu.
+[done]
+
 TODO: Vehicle zdědit z PhysicsEntity (kterážto bude zděděná z GameEntity).
   rationale:
    - ne všechny game entity mají fyziku (a i kdyby, tak dává smysl to oddělit)
