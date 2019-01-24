@@ -7,6 +7,7 @@ TODO: Sledovat moji issue v typescript Box2d:
 TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
   (momentálně mám hacknutou client-side opravu v 'up: function (event, time)').
   https://github.com/photonstorm/phaser/issues/3779
+- fixnuli to. Otázka je, kdy releasnou verzi, ve které to bude opravené.
 
 -----------------------
 
