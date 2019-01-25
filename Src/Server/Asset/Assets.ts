@@ -25,6 +25,8 @@ export class Assets extends Serializable
 
   protected static version = 0;
 
+  private static instance = new Assets();
+
   private readonly assets = new Set<ServerAsset>();
 
   // ------------- Public static methods ----------------
@@ -33,17 +35,17 @@ export class Assets extends Serializable
   public static async load()
   {
     // ! Throws exception on error.
-    const assets = await loadListOfAssets();
+    this.instance = await loadAssetsInstance();
 
     // ! Throws exception on error.
-    await assets.loadAssetDescriptors();
+    await this.instance.loadAssetDescriptors();
 
     // ! Throws exception on error.
-    await assets.loadAssetData();
+    await this.instance.loadAssetData();
 
-    assets.init();
+    this.instance.init();
 
-    return assets;
+    // return assets;
   }
 
   public newShapeAsset(name: string)
@@ -213,7 +215,7 @@ export class Assets extends Serializable
 
 // ----------------- Auxiliary Functions ---------------------
 
-async function loadListOfAssets()
+async function loadAssetsInstance()
 {
   const path = FileSystem.composePath(Assets.dataDirectory, Assets.fileName);
   // ! Throws exception on error.

@@ -1,5 +1,6 @@
 /*  Part of Kosmud  */
 
+/*
 // import { Attributes } from "../../Shared/Class/Attributes";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Serializable } from "../../Shared/Class/Serializable";
@@ -290,3 +291,4 @@ async function loadAssetDescriptor(id: string)
 // }
 
 ClassFactory.registerClassPrototype(Assets);
+*/

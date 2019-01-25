@@ -13,6 +13,11 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 TODO: Pustil jsem se do psaní Server/EntityList (společný předek Assets
   a Zones), ale vůbec mi to nejde. Takže příště asi znovu a lépe.
+- mám dojem, že jsem začal dělat dvě věci dohromady: Společnýho předka
+  a současně přesun instance dovnitř Assets a Zones. Takže raději popořadě
+  (nejdřív instanci dovnitř).
+Přidal jsem .instance do Assets s tím, že load() ji přepíše novou instancí.
+  Neřešil jsem zatím metody a nic dalšího.
 
 TODO: Server/EntityList.dataDirectory by mělo bejt někde jinde
   (v Game?)
