@@ -11,6 +11,28 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+- Asi by dávalo větší smysl říkat descriptor než asset
+  (tj. např. SoundDescriptor místo SoundAsset).
+  (Asset je přímo ten zvukovej soubor. Deskriptor popisuje, kde je uloženej.)
+
+TODO: V assetech by mělo bejt .clientPath místo .path
+  (páč je to cesta platná jen na klientu, na serveru se před ni musí dávat
+   /Client/).
+TODO: Client adresář by měl bejt definovanej konstantou, neměl by se
+  přilepovat explicitní string.
+
+TODO: Nepovinný metody (v ServerAsset) se mi vůbec nelíběj. Spíš by v předkovi
+  měla bejt prázdná metoda s tím, že kdo potřebuje, tak si ji přetíží
+  a implementuje.
+- neměly by pak bejt potřeba metody jako getTilemapAsset(). Ta existuje
+  jen proto, aby se mohl vrátit explicitně Server/TilemapAssset. Ten se
+  ale neliší tím, jaké má properties, jen má trochu jiný chování.
+    Ten, kdo ho používá, tudíž nepotřebuje vědět, že to je ServerAsset.
+  Když ta metoda bude i na SharedAssetu, tak ji prostě zavolá a udělá to
+  správnou věc díky tomu, že je přetížená.
+
+-----------------------
+
 TODO: Pustil jsem se do psaní Server/EntityList (společný předek Assets
   a Zones), ale vůbec mi to nejde. Takže příště asi znovu a lépe.
 - mám dojem, že jsem začal dělat dvě věci dohromady: Společnýho předka

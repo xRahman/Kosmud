@@ -141,11 +141,11 @@ export class Assets extends Serializable
   // ! Throws exception on error.
   private async loadAssetDescriptors()
   {
-    // Entities listed in this.assets hasn't been loaded yet,
+    // Entities listed in this.assets haven't been loaded yet,
     // the list contains only "invalid entity references".
     //   So we iterate through these invalid references, load
     // each asset using id stored in the reference and replace
-    // the invalid reference with a newly loaded zone.
+    // the invalid reference with a newly loaded asset.
     for (const asset of this.assets)
     {
       if (!asset.isValid())
@@ -233,12 +233,12 @@ async function loadAssetsInstance()
 async function loadAssetDescriptor(id: string)
 {
   // ! Throws exception on error.
-  const entity = await Entities.loadEntity(assetsDataDirectory, id);
+  const asset = await Entities.loadEntity(assetsDataDirectory, id);
 
   // ! Throws exception on error.
   // Note that ServerAsset is just an interface so unfortunately
   // we can't typecheck it in runtime and we need to typecast.
-  return entity.dynamicCast(Asset) as ServerAsset;
+  return asset.dynamicCast(Asset) as ServerAsset;
 }
 
 // // ! Throws exception on error.
