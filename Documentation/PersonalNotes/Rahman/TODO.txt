@@ -30,6 +30,24 @@ TODO: Nepovinný metody (v ServerAsset) se mi vůbec nelíběj. Spíš by v pře
     Ten, kdo ho používá, tudíž nepotřebuje vědět, že to je ServerAsset.
   Když ta metoda bude i na SharedAssetu, tak ji prostě zavolá a udělá to
   správnou věc díky tomu, že je přetížená.
+Sakryš. Problém je v tom, že load() na klientu není async a má parametr
+  'scene'.
+
+Ok, pak je tu ještě varianta s kompozicí.
+- v /Shared budou pouze společná data (ShapeDescriptorData)
+- v /Client bude ClientDescriptor s metodou load(), který bude mít
+  .data typu ShapeDescriptorData.
+- v /Server bude ServerDescriptor s metodama load() a init(), který bude mít
+  .data typu ShapeDescriptorData.
+Jak to pořeší getTilemapAsset()?
+- není žádný společný předek, takže ShapeDescriptory na clientu a na serveru
+  si ji každej implementuje zvlášť (to je asi ok řešení).
+Jak bude fungovat posílání?
+- blbě, protože chybí společnej předek. I když, musí nutně chybět?
+/Shared/ShapeDescriptor bude zděděnej z Entity (což je Serializable)
+  a bude mít property .data: ShapeDescriptorData.
+/Client/ShapeDescriptor bude zděděnej ze /Shared/ShapeDescriptor
+  a bude se jmenovat stejně jako na serveru, takže by posílání mělo zafungovat.
 
 -----------------------
 

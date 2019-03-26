@@ -4,11 +4,15 @@ import { Entity } from "../../Shared/Class/Entity";
 
 export abstract class Asset extends Entity
 {
-  // public async load(): Promise<void>
-  // {
-  //   /// TODO: Lepší comment.
-  //   // Some assets aren't loaded on the server.
+// public async load(): Promise<void>
+// {
+//   // Nothing here.
+//   // (Descendants that actually load something should override this method).
+// }
 
-  //   // throw Error(`This method needs to be overriden in descendant class`);
-  // }
+// public init()
+// {
+//   // Nothing here.
+//   // (Descendants that actually need to init should override this method).
+// }
 }
