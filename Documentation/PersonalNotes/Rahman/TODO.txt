@@ -49,6 +49,37 @@ Jak bude fungovat posílání?
 /Client/ShapeDescriptor bude zděděnej ze /Shared/ShapeDescriptor
   a bude se jmenovat stejně jako na serveru, takže by posílání mělo zafungovat.
 
+
+Loadování (a případně inicializace) assetů musí být polymorfní.
+- hmm, možná ale míchám dohromady Deskriptory a vlastní assety.
+    Assety se loadují z descriptorů, proto potřebuju u deskriptorů dost šílenou
+  dědičnost...
+Mohly by se assety loadovat nezávisle?
+- Deskriptory assetů by měly bejt čistě datové struktury a měly by bejt
+  deklarované jen v /Shared.
+- Na klienta se neposílají assety, ale deskriptory assetů. Assety si klient
+  vyrobí podle deskriptorů.
+  - Tohle je ale problém. Klient musí nějak vědět, které assety má vyrábět.
+    Když assety vyrábí deskriptory, tak ty samozřejmě vědí, co mají vyrobit.
+    - Mělo by to bejt asi tak, že entita má assety (i serverová) a ty se
+      pošlou a zinicializujou podle svých deskriptorů.
+- Na serveru vůbec nemusí existovat assety, které se tam nepoužívají
+  (textury, zvuky).
+
+
+Zóna by měla vědět, jaké pod ni spadají definice assetů, aby
+  se daly poslat spolu s ní.
+- definice by možná neměly bejt entity (to až vlastní assety).
+  (entity jsem z toho chtěl mít kvůli tomu, aby assety měly unikátní
+   idčko - to se totiž používá v Phaseru.)
+  => Všechny assety musí existovat i na serveru, protože idčka entit
+   se generují jen tam.
+
+Možná bych se měl vykašlat na optimální řešení a udělat to přes brute-force.
+  Optimalizovat můžu potom.
+- tzn. narvat assety do entity a nechat je, ať si je loadnou samy.
+
+
 -----------------------
 
 TODO: Pustil jsem se do psaní Server/EntityList (společný předek Assets
