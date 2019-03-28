@@ -2,18 +2,21 @@
 
 import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
+import { TextureDescriptor } from "../../Shared/Asset/TextureDescriptor";
 import { ClientAsset } from "../../Client/Asset/ClientAsset";
-import * as Shared from "../../Shared/Asset/TextureAsset";
 
-export class TextureAsset extends Shared.TextureAsset implements ClientAsset
+export class TextureAsset extends ClientAsset
 {
   protected static version = 0;
 
+  protected descriptor = new TextureDescriptor();
+
   // ---------------- Public methods --------------------
 
+  // ~ Overrides ClientAsset.load().
   public load(scene: Scene)
   {
-    scene.loadTexture(this.getId(), this.path);
+    scene.loadTexture(this.getId(), this.descriptor.path);
   }
 }
 

@@ -1,14 +1,14 @@
 /*  Part of Kosmud  */
 
 // import { Zone } from "../../Shared/Game/Zone";
-import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
-import { SoundAsset } from "../../Shared/Asset/SoundAsset";
+import { TilemapDescriptor } from "../Asset/TilemapDescriptor";
+import { SoundAsset } from "../Asset/SoundDescriptor";
 import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 import { Vehicle } from "../../Shared/Game/Vehicle";
 
 export class Ship extends Vehicle
 {
-  private tilemapAsset: TilemapAsset | "Not set" = "Not set";
+  private tilemapAsset: TilemapDescriptor | "Not set" = "Not set";
   private exhaustSoundAsset: SoundAsset | "Not set" = "Not set";
   // Tohle je v .physics
   // protected readonly physicsShapeId = Zone.FIGHTER_SHAPE_ID;
@@ -23,7 +23,7 @@ export class Ship extends Vehicle
   }
 
   // ! Throws exception on error.
-  public setTilemapAsset(asset: TilemapAsset)
+  public setTilemapAsset(asset: TilemapDescriptor)
   {
     if (this.tilemapAsset !== "Not set")
       // ! Throws exception on error.

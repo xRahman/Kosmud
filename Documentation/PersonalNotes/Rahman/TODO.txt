@@ -11,6 +11,14 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Shared/Ship nemůže odkazovat na assety
+ (ty existují až na klientu a serveru)
+
+TODO: ShapeAsset se odkazuje na TilemapAsset
+- asi nemá smysl, aby se ShapeDescriptor odkazoval na TilemapDescriptor
+- nějak musím vyřešit, aby se při výrobě tilemapAssetu správně zinicializoval
+  odkaz na příslušnej TilemapAsset.
+
 - Asi by dávalo větší smysl říkat descriptor než asset
   (tj. např. SoundDescriptor místo SoundAsset).
   (Asset je přímo ten zvukovej soubor. Deskriptor popisuje, kde je uloženej.)

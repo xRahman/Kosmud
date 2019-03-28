@@ -2,8 +2,9 @@
 
 import { Asset } from "../../Shared/Asset/Asset";
 
-export interface ServerAsset extends Asset
+export abstract class ServerAsset extends Asset
 {
-  load?(): Promise<void>;
-  init?(): void;
+  public abstract async load(): Promise<void>;
+
+  public abstract init(): void;
 }

@@ -3,7 +3,7 @@
 import { Asset } from "../../Shared/Asset/Asset";
 import { Scene } from "../../Client/Engine/Scene";
 
-export interface ClientAsset extends Asset
+export abstract class ClientAsset extends Asset
 {
-  load(scene: Scene): void;
+  public abstract load(scene: Scene): void;
 }

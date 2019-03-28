@@ -2,8 +2,8 @@
 
 import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import { Entities } from "../../Server/Class/Entities";
-import { TilemapAsset } from "../../Shared/Asset/TilemapAsset";
-import { SoundAsset } from "../../Shared/Asset/SoundAsset";
+import { TilemapDescriptor } from "../../Shared/Asset/TilemapDescriptor";
+import { SoundAsset } from "../../Shared/Asset/SoundDescriptor";
 import * as Shared from "../../Shared/Game/Ship";
 
 export class Ship extends Shared.Ship

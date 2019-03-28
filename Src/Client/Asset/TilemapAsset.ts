@@ -1,29 +1,53 @@
 /*  Part of Kosmud  */
 
+import { Attributes } from "../../Shared/Class/Attributes";
 import { Types } from "../../Shared/Utils/Types";
 import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
+import { TilemapDescriptor } from "../../Shared/Asset/TilemapDescriptor";
 import { ClientAsset } from "../../Client/Asset/ClientAsset";
 import { Tilemap } from "../../Client/Engine/Tilemap";
-import * as Shared from "../../Shared/Asset/TilemapAsset";
 
-export class TilemapAsset extends Shared.TilemapAsset implements ClientAsset
+export class TilemapAsset extends ClientAsset
 {
   protected static version = 0;
 
-  // private tilemap: Tilemap | "Not set" = "Not set";
+  protected descriptor = new TilemapDescriptor();
+
+  private tilemap: Tilemap | "Not set" = "Not set";
+  private static readonly tilemap: Attributes =
+  {
+    saved: false,
+    sentToClient: false
+  };
 
   // ---------------- Public methods --------------------
 
+  // ~ Overrides ClientAsset.load().
   public load(scene: Scene)
   {
     scene.loadTilemap(this);
   }
 
-  // ! Throws exception on error.
+  public setTilemap(tilemap: Tilemap)
+  {
+    if (this.tilemap !== "Not set")
+    {
+      throw Error(`Tilemap is already set to ${this.debugId}`);
+    }
+
+    this.tilemap = tilemap;
+  }
+
   public getTilemap()
   {
-    return Types.dynamicCast(super.getTilemap(), Tilemap);
+    if (this.tilemap === "Not set")
+    {
+      throw Error(`Tilemap asset ${this.debugId} doesn't`
+        + ` have a tilemap data loaded yet`);
+    }
+
+    return this.tilemap;
   }
 }
 

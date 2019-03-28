@@ -1,18 +1,27 @@
 /*  Part of Kosmud  */
 
 import { Entities } from "../../Server/Class/Entities";
+import { TextureAtlasDescriptor } from
+  "../../Shared/Asset/TextureAtlasDescriptor";
 import { ServerAsset } from "../../Server/Asset/ServerAsset";
-import * as Shared from "../../Shared/Asset/TextureAtlasAsset";
 
-export class TextureAtlasAsset extends Shared.TextureAtlasAsset
-  implements ServerAsset
+export class TextureAtlasAsset extends ServerAsset
 {
   protected static version = 0;
 
-  // public async load()
-  // {
-  //   // Textures atlases are not loaded on the server.
-  // }
+  protected descriptor = new TextureAtlasDescriptor();
+
+  // ~ Overrides ServerAsset.load().
+  public async load()
+  {
+    // Nothing here (texture atlas isn't loaded on the server).
+  }
+
+  // ~ Overrides ServerAsset.init().
+  public init()
+  {
+    // Nothing here (texture atlas doesn't need init on the server).
+  }
 }
 
 Entities.createRootPrototypeEntity(TextureAtlasAsset);

@@ -1,21 +1,32 @@
 /*  Part of Kosmud  */
 
+import { Attributes } from "../../Shared/Class/Attributes";
 import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
+import { TilemapDescriptor } from "../../Shared/Asset/TilemapDescriptor";
 import { ServerAsset } from "../../Server/Asset/ServerAsset";
-import * as Shared from "../../Shared/Asset/TilemapAsset";
 
-export class TilemapAsset extends Shared.TilemapAsset implements ServerAsset
+export class TilemapAsset extends ServerAsset
 {
   protected static version = 0;
 
+  protected descriptor = new TilemapDescriptor();
+
+  private tilemap: Tilemap | "Not set" = "Not set";
+  private static readonly tilemap: Attributes =
+  {
+    saved: false,
+    sentToClient: false
+  };
+
   // ---------------- Public methods --------------------
 
+  // ~ Overrides ServerAsset.load().
   public async load()
   {
-    const tilemapJsonPath = `./Client/${this.path}`;
+    const tilemapJsonPath = `./Client/${this.descriptor.path}`;
 
     // ! Throws exception on error.
     const jsonData = await loadTilemapJsonData(tilemapJsonPath);
@@ -23,6 +34,33 @@ export class TilemapAsset extends Shared.TilemapAsset implements ServerAsset
 
     // ! Throws exception on error.
     this.setTilemap(tilemap);
+  }
+
+  // ~ Overrides ServerAsset.init().
+  public init()
+  {
+    // Nothing here (tilemap doesn't need init on the server).
+  }
+
+  public setTilemap(tilemap: Tilemap)
+  {
+    if (this.tilemap !== "Not set")
+    {
+      throw Error(`Tilemap is already set to ${this.debugId}`);
+    }
+
+    this.tilemap = tilemap;
+  }
+
+  public getTilemap()
+  {
+    if (this.tilemap === "Not set")
+    {
+      throw Error(`Tilemap asset ${this.debugId} doesn't`
+        + ` have a tilemap data loaded yet`);
+    }
+
+    return this.tilemap;
   }
 }
 

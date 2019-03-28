@@ -2,18 +2,21 @@
 
 import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
+import { SoundDescriptor } from "../../Shared/Asset/SoundDescriptor";
 import { ClientAsset } from "../../Client/Asset/ClientAsset";
-import * as Shared from "../../Shared/Asset/SoundAsset";
 
-export class SoundAsset extends Shared.SoundAsset implements ClientAsset
+export class SoundAsset extends ClientAsset
 {
   protected static version = 0;
 
+  protected descriptor = new SoundDescriptor();
+
   // ---------------- Public methods --------------------
 
+  // ~ Overrides ClientAsset.load().
   public load(scene: Scene)
   {
-    scene.loadSound(this.getId(), this.path);
+    scene.loadSound(this.getId(), this.descriptor.path);
   }
 }
 
