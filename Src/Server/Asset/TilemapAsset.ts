@@ -10,9 +10,9 @@ import { ServerAsset } from "../../Server/Asset/ServerAsset";
 
 export class TilemapAsset extends ServerAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new TilemapDescriptor();
 
-  protected descriptor = new TilemapDescriptor();
+  protected static version = 0;
 
   private tilemap: Tilemap | "Not set" = "Not set";
   private static readonly tilemap: Attributes =

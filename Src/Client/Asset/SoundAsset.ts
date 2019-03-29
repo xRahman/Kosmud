@@ -7,9 +7,9 @@ import { ClientAsset } from "../../Client/Asset/ClientAsset";
 
 export class SoundAsset extends ClientAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new SoundDescriptor();
 
-  protected descriptor = new SoundDescriptor();
+  protected static version = 0;
 
   // ---------------- Public methods --------------------
 

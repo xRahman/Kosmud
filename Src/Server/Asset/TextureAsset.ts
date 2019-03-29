@@ -6,9 +6,9 @@ import { ServerAsset } from "../../Server/Asset/ServerAsset";
 
 export class TextureAsset extends ServerAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new TextureDescriptor();
 
-  protected descriptor = new TextureDescriptor();
+  protected static version = 0;
 
   // ~ Overrides ServerAsset.load().
   public async load()

@@ -128,7 +128,7 @@ export abstract class Scene
   public loadTilemap(tilemapAsset: TilemapAsset)
   {
     const tilemapDataId = tilemapAsset.getId();
-    const tilemapJsonFilePath = tilemapAsset.path;
+    const tilemapJsonFilePath = tilemapAsset.descriptor.path;
 
     this.phaserScene.load.tilemapTiledJSON(tilemapDataId, tilemapJsonFilePath);
 
@@ -329,8 +329,8 @@ export abstract class Scene
       // ! Throws exception on error.
       const shape = tilemap.getShape
       (
-        shapeAsset.objectLayerName,
-        shapeAsset.objectName
+        shapeAsset.descriptor.objectLayerName,
+        shapeAsset.descriptor.objectName
       );
 
       shapeAsset.setShape(shape);

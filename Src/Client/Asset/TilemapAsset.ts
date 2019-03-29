@@ -10,9 +10,9 @@ import { Tilemap } from "../../Client/Engine/Tilemap";
 
 export class TilemapAsset extends ClientAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new TilemapDescriptor();
 
-  protected descriptor = new TilemapDescriptor();
+  protected static version = 0;
 
   private tilemap: Tilemap | "Not set" = "Not set";
   private static readonly tilemap: Attributes =

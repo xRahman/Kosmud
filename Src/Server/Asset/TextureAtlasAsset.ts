@@ -7,9 +7,9 @@ import { ServerAsset } from "../../Server/Asset/ServerAsset";
 
 export class TextureAtlasAsset extends ServerAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new TextureAtlasDescriptor();
 
-  protected descriptor = new TextureAtlasDescriptor();
+  protected static version = 0;
 
   // ~ Overrides ServerAsset.load().
   public async load()

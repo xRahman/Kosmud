@@ -9,9 +9,9 @@ import { ServerAsset } from "../../Server/Asset/ServerAsset";
 
 export class ShapeAsset extends ServerAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new ShapeDescriptor();
 
-  protected descriptor = new ShapeDescriptor();
+  protected static version = 0;
 
   private tilemapAsset: TilemapAsset | "Not set" = "Not set";
 

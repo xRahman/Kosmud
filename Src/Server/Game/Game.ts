@@ -13,8 +13,8 @@ import { Assets } from "../../Server/Asset/Assets";
 // import { TextureAsset } from "../../Shared/Asset/TextureAsset";
 // import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
 
-let assets: Assets | "Not loaded" = "Not loaded";
-let zones: Zones | "Not loaded" = "Not loaded";
+// let assets: Assets | "Not loaded" = "Not loaded";
+// let zones: Zones | "Not loaded" = "Not loaded";
 
 export namespace Game
 {
@@ -27,10 +27,10 @@ export namespace Game
   export async function load()
   {
     // ! Throws exception on error.
-    assets = await Assets.load();
+    await Assets.load();
 
     // ! Throws exception on error.
-    zones = await Zones.load();
+    await Zones.load();
   }
 }
 

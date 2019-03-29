@@ -7,9 +7,9 @@ import { ClientAsset } from "../../Client/Asset/ClientAsset";
 
 export class TextureAsset extends ClientAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new TextureDescriptor();
 
-  protected descriptor = new TextureDescriptor();
+  protected static version = 0;
 
   // ---------------- Public methods --------------------
 

@@ -6,9 +6,9 @@ import { ServerAsset } from "../../Server/Asset/ServerAsset";
 
 export class SoundAsset extends ServerAsset
 {
-  protected static version = 0;
+  public readonly descriptor = new SoundDescriptor();
 
-  protected descriptor = new SoundDescriptor();
+  protected static version = 0;
 
   // ~ Overrides ServerAsset.load().
   public async load()

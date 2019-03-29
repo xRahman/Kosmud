@@ -5,5 +5,5 @@ import { AssetDescriptor } from "../../Shared/Asset/AssetDescriptor";
 
 export abstract class Asset extends Entity
 {
-  protected abstract descriptor: AssetDescriptor;
+  public abstract readonly descriptor: AssetDescriptor;
 }

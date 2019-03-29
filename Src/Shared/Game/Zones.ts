@@ -1,5 +1,5 @@
 /*  Part of Kosmud  */
-
+/*
 import { Zone } from "../../Shared/Game/Zone";
 import { Serializable } from "../../Shared/Class/Serializable";
 
@@ -18,3 +18,4 @@ export class Zones extends Serializable
     this.zones.add(zone);
   }
 }
+*/
