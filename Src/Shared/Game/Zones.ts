@@ -1,4 +1,7 @@
 /*  Part of Kosmud  */
+
+// Shared/Zones nejspíš nebude potřeba. V tom případě tohle smazat.
+
 /*
 import { Zone } from "../../Shared/Game/Zone";
 import { Serializable } from "../../Shared/Class/Serializable";

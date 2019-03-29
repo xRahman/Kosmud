@@ -1,21 +1,25 @@
 /*  Part of Kosmud  */
 
+import { Syslog } from "../../Shared/Log/Syslog";
 import { Serializable } from "../../Shared/Class/Serializable";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Zone } from "../../Server/Game/Zone";
 import { Entities } from "../../Server/Class/Entities";
-import * as Shared from "../../Shared/Game/Zones";
 
-export class Zones extends Shared.Zones
+export class Zones extends Serializable
 {
+  // -------------- Static class data -------------------
+
   public static dataDirectory = "./Data/";
   public static fileName = "zones.json";
 
   protected static version = 0;
 
-  // ~ Override Shared.Zones.zones so we can work
-  //   with server-side version of Zone.
+  private static zoneList: Zones | "Doesn't exist" = "Doesn't exist";
+
+  // ----------------- Private data ---------------------
+
   protected zones = new Set<Zone>();
 
   // ------------- Public static methods ----------------
@@ -23,12 +27,33 @@ export class Zones extends Shared.Zones
   // ! Throws exception on error.
   public static async load()
   {
+    if (this.zoneList !== "Doesn't exist")
+      throw Error("Zone list already exists");
+
     // ! Throws exception on error.
-    const zones = await loadListOfZones();
+    this.zoneList = await loadZoneList();
 
-    await zones.loadZones();
+    // ! Throws exception on error.
+    await this.zoneList.load();
 
-    return zones;
+    // ! Throws exception on error.
+    this.zoneList.init();
+  }
+
+  // ! Throws exception on error.
+  public static update()
+  {
+    // ! Throws exception on error.
+    this.getZoneList().update();
+  }
+
+  // ! Throws exception on error.
+  private static getZoneList()
+  {
+    if (this.zoneList === "Doesn't exist")
+      throw new Error("Zone list isn't loaded yet");
+
+    return this.zoneList;
   }
 
   // ---------------- Public methods --------------------
@@ -52,6 +77,7 @@ export class Zones extends Shared.Zones
     }
   }
 
+  // ! Throws exception on error.
   public async save()
   {
     // ! Throws exception on error.
@@ -63,55 +89,72 @@ export class Zones extends Shared.Zones
 
   // ---------------- Private methods -------------------
 
-  // ! Throws exception on error.
-  private async loadZones()
+  private add(zone: Zone)
   {
-    // Entities listed in this.zones hasn't been loaded yet,
-    // the list contains only "invalid entity references".
-    //   So we iterate through these invalid references, load
-    // each zone using id stored in the reference and replace
-    // the invalid reference with a newly loaded zone.
+    if (this.zones.has(zone))
+    {
+      throw Error(`Attempt to add zone ${zone.debugId}`
+        + ` which already exists in Zones`);
+    }
+
+    this.zones.add(zone);
+  }
+
+  // ! Throws exception on error.
+  private async load()
+  {
     for (const zone of this.zones)
     {
-      if (!zone.isValid())
-      {
-        // ! Throws exception on error.
-        const loadedZone = await loadZone(zone.getId());
-
-        this.replaceZoneReference(zone, loadedZone);
-      }
+      // ! Throws exception on error.
+      await this.loadZoneReference(zone);
     }
   }
 
-  // // ! Throws exception on error.
-  // private async loadAssets()
-  // {
-  //   for (const zone of this.zones)
-  //   {
-  //     // ! Throws exception on error.
-  //     await zone.loadAssets();
-  //   }
-  // }
+  // ! Throws exception on error.
+  private async loadZoneReference(reference: Zone)
+  {
+    if (!reference.isValid())
+    {
+      // ! Throws exception on error.
+      const zone = await loadZone(reference.getId());
+
+      this.replaceZoneReference(reference, zone);
+    }
+  }
 
   private replaceZoneReference(oldReference: Zone, newReference: Zone)
   {
     this.zones.delete(oldReference);
     this.zones.add(newReference);
   }
+
+  private init()
+  {
+    for (const zone of this.zones)
+    {
+      // ! Throws exception on error.
+      zone.init();
+    }
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
-async function loadListOfZones()
+async function loadZoneList()
 {
   const path = FileSystem.composePath(Zones.dataDirectory, Zones.fileName);
-
   // ! Throws exception on error.
   const readResult = await FileSystem.readFile(path);
 
   if (readResult === "File doesn't exist")
+  {
+    Syslog.log("[INFO]", `File ${path} doesn't exist, starting with no`
+      + ` zones. This is ok only if you are building new data from the`
+      + ` scratch, otherwise it's an error`);
+
     // ! Throws exception on error.
     return ClassFactory.newInstance(Zones);
+  }
 
   // ! Throws exception on error.
   return Serializable.deserialize(readResult.data).dynamicCast(Zones);
@@ -123,8 +166,6 @@ async function loadZone(id: string)
   const directory = Zone.dataDirectory;
   // ! Throws exception on error.
   const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
-
-  zone.init();
 
   return zone;
 }

@@ -18,9 +18,11 @@ import { Assets } from "../../Server/Asset/Assets";
 
 export namespace Game
 {
+  // ! Throws exception on error.
   export function update()
   {
-    getZones().update();
+    // ! Throws exception on error.
+    Zones.update();
   }
 
   // ! Throws exception on error.
@@ -32,16 +34,4 @@ export namespace Game
     // ! Throws exception on error.
     await Zones.load();
   }
-}
-
-// ----------------- Auxiliary Functions ---------------------
-
-function getZones()
-{
-  if (zones === "Not loaded")
-  {
-    throw Error(`Zones aren't loaded yet`);
-  }
-
-  return zones;
 }

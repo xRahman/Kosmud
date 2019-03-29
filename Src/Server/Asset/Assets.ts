@@ -144,18 +144,18 @@ export class Assets extends Serializable
     await FileSystem.writeFile(assetsDataDirectory, fileName, data);
   }
 
-  public async loadAsset(id: string)
-  {
-    // ! Throws exception on error.
-    const entity = await Entities.loadEntity(assetsDataDirectory, id);
+  // public async loadAsset(id: string)
+  // {
+  //   // ! Throws exception on error.
+  //   const entity = await Entities.loadEntity(assetsDataDirectory, id);
 
-    // ! Throws exception on error.
-    const asset = entity.dynamicCast(Asset);
+  //   // ! Throws exception on error.
+  //   const asset = entity.dynamicCast(Asset);
 
-    // await asset.load();
+  //   // await asset.load();
 
-    return asset;
-  }
+  //   return asset;
+  // }
 
   public async save()
   {
@@ -174,7 +174,7 @@ export class Assets extends Serializable
     for (const asset of this.assets)
     {
       // ! Throws exception on error.
-      await this.loadEntity(asset);
+      await this.loadAssetReference(asset);
     }
   }
 
@@ -187,19 +187,18 @@ export class Assets extends Serializable
     }
   }
 
-  private async loadEntity(asset: ServerAsset)
+  // ! Throws exception on error.
+  private async loadAssetReference(reference: ServerAsset)
   {
-    // When asset list is loaded, it contains invalid references
-    // to asset enties (because they haven't been loaded yet).
-    if (!asset.isValid())
+    if (!reference.isValid())
     {
       // ! Throws exception on error.
-      const loadedAsset = await loadAssetEntity(asset.getId());
+      const asset = await loadAsset(reference.getId());
 
       // ! Throws exception on error.
-      await loadedAsset.load();
+      await asset.load();
 
-      this.replaceAssetReference(asset, loadedAsset);
+      this.replaceAssetReference(reference, asset);
     }
   }
 
@@ -244,8 +243,8 @@ async function loadAssetList()
   if (readResult === "File doesn't exist")
   {
     Syslog.log("[INFO]", `File ${path} doesn't exist, starting with no`
-      + ` assets. This should only happen when you are building new data`
-      + ` from the scratch, otherwise it's an error`);
+      + ` assets. This is ok only if you are building new data from the`
+      + ` scratch, otherwise it's an error`);
 
     // ! Throws exception on error.
     return ClassFactory.newInstance(Assets);
@@ -256,7 +255,7 @@ async function loadAssetList()
 }
 
 // ! Throws exception on error.
-async function loadAssetEntity(id: string)
+async function loadAsset(id: string)
 {
   // ! Throws exception on error.
   const asset = await Entities.loadEntity(assetsDataDirectory, id);

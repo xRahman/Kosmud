@@ -11,6 +11,10 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: ServerAsset a ClientAsset asi přejmenovat na Asset.
+
+TODO: Pokud nebude potřeba Shared/Zones, smazat příslušný soubor.
+
 TODO: Místo "Doesn't exist" by bylo asi lepší použít prostě 'undefined'.
   Znamená to to samý, je to kratší a zafunguje to i u stringů.
 
