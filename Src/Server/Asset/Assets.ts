@@ -52,54 +52,80 @@ export class Assets extends Serializable
     this.assetList.init();
   }
 
-  public newShapeAsset(name: string)
+  // ! Throws exception on error.
+  public static newShapeAsset(name: string)
   {
     const asset = Entities.newRootEntity(ShapeAsset);
 
-    asset.setName(name);
-    this.assets.add(asset);
+    // ! Throws exception on error.
+    this.addAsset(asset, name);
 
     return asset;
   }
 
-  public newTilemapAsset(name: string)
+  // ! Throws exception on error.
+  public static newTilemapAsset(name: string)
   {
     const asset = Entities.newRootEntity(TilemapAsset);
 
-    asset.setName(name);
-    this.assets.add(asset);
+    // ! Throws exception on error.
+    this.addAsset(asset, name);
 
     return asset;
   }
 
-  public newSoundAsset(name: string)
+  // ! Throws exception on error.
+  public static newSoundAsset(name: string)
   {
     const asset = Entities.newRootEntity(SoundAsset);
 
-    asset.setName(name);
-    this.assets.add(asset);
+    // ! Throws exception on error.
+    this.addAsset(asset, name);
 
     return asset;
   }
 
-  public newTextureAsset(name: string)
+  // ! Throws exception on error.
+  public static newTextureAsset(name: string)
   {
     const asset = Entities.newRootEntity(TextureAsset);
 
-    asset.setName(name);
-    this.assets.add(asset);
+    // ! Throws exception on error.
+    this.addAsset(asset, name);
 
     return asset;
   }
 
-  public newTextureAtlasAsset(name: string)
+  // ! Throws exception on error.
+  public static newTextureAtlasAsset(name: string)
   {
     const asset = Entities.newRootEntity(TextureAtlasAsset);
 
-    asset.setName(name);
+    // ! Throws exception on error.
+    this.addAsset(asset, name);
 
     return asset;
   }
+
+  // ! Throws exception on error.
+  private static addAsset(asset: ServerAsset, name: string)
+  {
+    asset.setName(name);
+
+    // ! Throws exception on error.
+    this.getAssetList().assets.add(asset);
+  }
+
+  // ! Throws exception on error.
+  private static getAssetList()
+  {
+    if (this.assetList === "Doesn't exist")
+      throw new Error("Asset list isn't loaded yet");
+
+    return this.assetList;
+  }
+
+  // ---------------- Public methods --------------------
 
   public async saveAsset(asset: Asset)
   {
