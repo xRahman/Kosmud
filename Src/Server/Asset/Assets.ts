@@ -1,6 +1,7 @@
 /*  Part of Kosmud  */
 
 // import { Attributes } from "../../Shared/Class/Attributes";
+import { Syslog } from "../../Shared/Log/Syslog";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { Serializable } from "../../Shared/Class/Serializable";
 // import { JsonObject } from "../../Shared/Class/JsonObject";
@@ -20,12 +21,16 @@ const assetsDataDirectory = "./Data/Assets/";
 
 export class Assets extends Serializable
 {
+  // -------------- Static class data -------------------
+
   public static dataDirectory = "./Data/";
   public static fileName = "assets.json";
 
   protected static version = 0;
 
-  private static instance = new Assets();
+  private static assetList: Assets | "Doesn't exist" = "Doesn't exist";
+
+  // ----------------- Private data ---------------------
 
   private readonly assets = new Set<ServerAsset>();
 
@@ -34,18 +39,17 @@ export class Assets extends Serializable
   // ! Throws exception on error.
   public static async load()
   {
-    // ! Throws exception on error.
-    this.instance = await loadAssetsInstance();
+    if (this.assetList !== "Doesn't exist")
+      throw Error("Asset list already exists");
 
     // ! Throws exception on error.
-    await this.instance.loadAssetDescriptors();
+    this.assetList = await loadAssetList();
 
     // ! Throws exception on error.
-    await this.instance.loadAssetData();
+    await this.assetList.load();
 
-    this.instance.init();
-
-    // return assets;
+    // ! Throws exception on error.
+    this.assetList.init();
   }
 
   public newShapeAsset(name: string)
@@ -139,22 +143,37 @@ export class Assets extends Serializable
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
-  private async loadAssetDescriptors()
+  private async load()
   {
-    // Entities listed in this.assets haven't been loaded yet,
-    // the list contains only "invalid entity references".
-    //   So we iterate through these invalid references, load
-    // each asset using id stored in the reference and replace
-    // the invalid reference with a newly loaded asset.
     for (const asset of this.assets)
     {
-      if (!asset.isValid())
-      {
-        // ! Throws exception on error.
-        const loadedAsset = await loadAssetDescriptor(asset.getId());
+      // ! Throws exception on error.
+      await this.loadEntity(asset);
+    }
+  }
 
-        this.replaceAssetReference(asset, loadedAsset);
-      }
+  private init()
+  {
+    for (const asset of this.assets)
+    {
+      // ! Throws exception on error.
+      asset.init();
+    }
+  }
+
+  private async loadEntity(asset: ServerAsset)
+  {
+    // When asset list is loaded, it contains invalid references
+    // to asset enties (because they haven't been loaded yet).
+    if (!asset.isValid())
+    {
+      // ! Throws exception on error.
+      const loadedAsset = await loadAssetEntity(asset.getId());
+
+      // ! Throws exception on error.
+      await loadedAsset.load();
+
+      this.replaceAssetReference(asset, loadedAsset);
     }
   }
 
@@ -166,31 +185,6 @@ export class Assets extends Serializable
   {
     this.assets.delete(oldReference);
     this.assets.add(newReference);
-  }
-
-  // ! Throws exception on error.
-  private async loadAssetData()
-  {
-    for (const asset of this.assets)
-    {
-      if (asset.load !== undefined)
-      {
-        // ! Throws exception on error.
-        await asset.load();
-      }
-    }
-  }
-
-  private init()
-  {
-    for (const asset of this.assets)
-    {
-      if (asset.init !== undefined)
-      {
-        // ! Throws exception on error.
-        asset.init();
-      }
-    }
   }
 
 //   // ! Throws exception on error.
@@ -215,30 +209,34 @@ export class Assets extends Serializable
 
 // ----------------- Auxiliary Functions ---------------------
 
-async function loadAssetsInstance()
+async function loadAssetList()
 {
   const path = FileSystem.composePath(Assets.dataDirectory, Assets.fileName);
   // ! Throws exception on error.
   const readResult = await FileSystem.readFile(path);
 
   if (readResult === "File doesn't exist")
+  {
+    Syslog.log("[INFO]", `File ${path} doesn't exist, starting with no`
+      + ` assets. This should only happen when you are building new data`
+      + ` from the scratch, otherwise it's an error`);
+
     // ! Throws exception on error.
     return ClassFactory.newInstance(Assets);
+  }
 
   // ! Throws exception on error.
   return Serializable.deserialize(readResult.data).dynamicCast(Assets);
 }
 
 // ! Throws exception on error.
-async function loadAssetDescriptor(id: string)
+async function loadAssetEntity(id: string)
 {
   // ! Throws exception on error.
   const asset = await Entities.loadEntity(assetsDataDirectory, id);
 
   // ! Throws exception on error.
-  // Note that ServerAsset is just an interface so unfortunately
-  // we can't typecheck it in runtime and we need to typecast.
-  return asset.dynamicCast(Asset) as ServerAsset;
+  return asset.dynamicCast(ServerAsset);
 }
 
 // // ! Throws exception on error.
