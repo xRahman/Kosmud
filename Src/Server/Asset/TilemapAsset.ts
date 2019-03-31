@@ -6,9 +6,9 @@ import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
 import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { TilemapDescriptor } from "../../Shared/Asset/TilemapDescriptor";
-import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { Asset } from "../../Server/Asset/Asset";
 
-export class TilemapAsset extends ServerAsset
+export class TilemapAsset extends Asset
 {
   public readonly descriptor = new TilemapDescriptor();
 

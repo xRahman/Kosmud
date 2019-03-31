@@ -5,10 +5,10 @@ import { Physics } from "../../Shared/Physics/Physics";
 import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
 import { ShapeDescriptor } from "../../Shared/Asset/ShapeDescriptor";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/Asset";
 import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
 
-export class ShapeAsset extends ClientAsset
+export class ShapeAsset extends Asset
 {
   public readonly descriptor = new ShapeDescriptor();
 

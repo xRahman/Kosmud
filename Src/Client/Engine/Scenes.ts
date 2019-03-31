@@ -2,7 +2,7 @@
 
 import { Scene } from "../../Client/Engine/Scene";
 import { Zone } from "../../Client/Game/Zone";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/ClientAsset";
 import { Renderer } from "../../Client/Engine/Renderer";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { BackgroundScene } from "../../Client/Background/BackgroundScene";

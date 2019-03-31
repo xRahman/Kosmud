@@ -5,9 +5,9 @@ import { Physics } from "../../Shared/Physics/Physics";
 import { Entities } from "../../Server/Class/Entities";
 import { ShapeDescriptor } from "../../Shared/Asset/ShapeDescriptor";
 import { TilemapAsset } from "../../Server/Asset/TilemapAsset";
-import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { Asset } from "../../Server/Asset/Asset";
 
-export class ShapeAsset extends ServerAsset
+export class ShapeAsset extends Asset
 {
   public readonly descriptor = new ShapeDescriptor();
 

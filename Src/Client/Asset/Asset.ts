@@ -1,9 +1,9 @@
 /*  Part of Kosmud  */
 
-import { Asset } from "../../Shared/Asset/Asset";
 import { Scene } from "../../Client/Engine/Scene";
+import * as Shared from "../../Shared/Asset/Asset";
 
-export abstract class ClientAsset extends Asset
+export abstract class Asset extends Shared.Asset
 {
   public abstract load(scene: Scene): void;
 }

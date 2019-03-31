@@ -8,8 +8,7 @@ import { Serializable } from "../../Shared/Class/Serializable";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 // import { Physics } from "../../Shared/Physics/Physics";
 // import { Tilemap } from "../../Shared/Engine/Tilemap";
-import { Asset } from "../../Shared/Asset/Asset";
-import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { Asset } from "../../Server/Asset/Asset";
 import { ShapeAsset } from "../../Server/Asset/ShapeAsset";
 import { TilemapAsset } from "../../Server/Asset/TilemapAsset";
 import { SoundAsset } from "../../Server/Asset/SoundAsset";
@@ -32,7 +31,7 @@ export class Assets extends Serializable
 
   // ----------------- Private data ---------------------
 
-  private readonly assets = new Set<ServerAsset>();
+  private readonly assets = new Set<Asset>();
 
   // ------------- Public static methods ----------------
 
@@ -108,7 +107,7 @@ export class Assets extends Serializable
   }
 
   // ! Throws exception on error.
-  private static addAsset(asset: ServerAsset, name: string)
+  private static addAsset(asset: Asset, name: string)
   {
     asset.setName(name);
 
@@ -188,7 +187,7 @@ export class Assets extends Serializable
   }
 
   // ! Throws exception on error.
-  private async loadAssetReference(reference: ServerAsset)
+  private async loadAssetReference(reference: Asset)
   {
     if (!reference.isValid())
     {
@@ -204,8 +203,8 @@ export class Assets extends Serializable
 
   private replaceAssetReference
   (
-    oldReference: ServerAsset,
-    newReference: ServerAsset
+    oldReference: Asset,
+    newReference: Asset
   )
   {
     this.assets.delete(oldReference);
@@ -261,7 +260,7 @@ async function loadAsset(id: string)
   const asset = await Entities.loadEntity(assetsDataDirectory, id);
 
   // ! Throws exception on error.
-  return asset.dynamicCast(ServerAsset);
+  return asset.dynamicCast(Asset);
 }
 
 // // ! Throws exception on error.

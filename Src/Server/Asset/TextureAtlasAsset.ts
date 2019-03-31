@@ -3,9 +3,9 @@
 import { Entities } from "../../Server/Class/Entities";
 import { TextureAtlasDescriptor } from
   "../../Shared/Asset/TextureAtlasDescriptor";
-import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { Asset } from "../../Server/Asset/Asset";
 
-export class TextureAtlasAsset extends ServerAsset
+export class TextureAtlasAsset extends Asset
 {
   public readonly descriptor = new TextureAtlasDescriptor();
 

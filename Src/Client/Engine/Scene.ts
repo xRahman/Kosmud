@@ -18,7 +18,7 @@ import { Sound } from "../../Client/Engine/Sound";
 import { SceneInput } from "../../Client/Engine/SceneInput";
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Tilemap } from "../../Client/Engine/Tilemap";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/ClientAsset";
 import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
 import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
 import { SoundAsset } from "../../Client/Asset/SoundAsset";
@@ -32,7 +32,7 @@ export abstract class Scene
   private finishLoading: Types.ResolveFunction<void> | "Not loading"
     = "Not loading";
 
-  private assets: Set<ClientAsset> | "Not set" = "Not set";
+  private assets: Set<Asset> | "Not set" = "Not set";
 
   private readonly tilemapAssets = new Set<TilemapAsset>();
   private readonly shapeAssets = new Set<ShapeAsset>();
@@ -58,7 +58,7 @@ export abstract class Scene
 
   // ---------------- Public methods --------------------
 
-  public setAssets(assets: Set<ClientAsset>)
+  public setAssets(assets: Set<Asset>)
   {
     this.assets = assets;
   }

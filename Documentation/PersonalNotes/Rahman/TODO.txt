@@ -12,6 +12,7 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 -----------------------
 
 TODO: ServerAsset a ClientAsset asi přejmenovat na Asset.
+[done]
 
 TODO: Pokud nebude potřeba Shared/Zones, smazat příslušný soubor.
 

@@ -1,14 +1,14 @@
 /*  Part of Kosmud  */
 
 import { Attributes } from "../../Shared/Class/Attributes";
-import { Types } from "../../Shared/Utils/Types";
+// import { Types } from "../../Shared/Utils/Types";
 import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
 import { TilemapDescriptor } from "../../Shared/Asset/TilemapDescriptor";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/Asset";
 import { Tilemap } from "../../Client/Engine/Tilemap";
 
-export class TilemapAsset extends ClientAsset
+export class TilemapAsset extends Asset
 {
   public readonly descriptor = new TilemapDescriptor();
 

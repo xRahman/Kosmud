@@ -3,13 +3,13 @@
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Player } from "../../Client/Game/Player";
 import { Zone } from "../../Client/Game/Zone";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/ClientAsset";
 import { Connection } from "../../Client/Net/Connection";
 import { Scenes } from "../../Client/Engine/Scenes";
 import * as Shared from "../../Shared/Protocol/LoginResponse";
 
 export class LoginResponse
-  extends Shared.LoginResponse<Player, Zone, ClientAsset>
+  extends Shared.LoginResponse<Player, Zone, Asset>
 {
   // ---------------- Public methods --------------------
 
@@ -36,7 +36,7 @@ export class LoginResponse
 // ----------------- Auxiliary Functions ---------------------
 
 /// TODO: Tohle by se dalo přesunout do Scenes.
-async function loadFlightScene(zone: Zone, assets: Set<ClientAsset>)
+async function loadFlightScene(zone: Zone, assets: Set<Asset>)
 {
   try
   {

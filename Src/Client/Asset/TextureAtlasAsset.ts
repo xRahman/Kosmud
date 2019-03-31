@@ -4,9 +4,9 @@ import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
 import { TextureAtlasDescriptor } from
   "../../Shared/Asset/TextureAtlasDescriptor";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/Asset";
 
-export class TextureAtlasAsset extends ClientAsset
+export class TextureAtlasAsset extends Asset
 {
   public readonly descriptor = new TextureAtlasDescriptor();
 

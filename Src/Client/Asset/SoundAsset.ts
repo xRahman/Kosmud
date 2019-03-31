@@ -3,9 +3,9 @@
 import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
 import { SoundDescriptor } from "../../Shared/Asset/SoundDescriptor";
-import { ClientAsset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/Asset";
 
-export class SoundAsset extends ClientAsset
+export class SoundAsset extends Asset
 {
   public readonly descriptor = new SoundDescriptor();
 

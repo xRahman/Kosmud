@@ -2,9 +2,9 @@
 
 import { Entities } from "../../Server/Class/Entities";
 import { SoundDescriptor } from "../../Shared/Asset/SoundDescriptor";
-import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { Asset } from "../../Server/Asset/Asset";
 
-export class SoundAsset extends ServerAsset
+export class SoundAsset extends Asset
 {
   public readonly descriptor = new SoundDescriptor();
 

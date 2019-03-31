@@ -2,9 +2,9 @@
 
 import { Entities } from "../../Server/Class/Entities";
 import { TextureDescriptor } from "../../Shared/Asset/TextureDescriptor";
-import { ServerAsset } from "../../Server/Asset/ServerAsset";
+import { Asset } from "../../Server/Asset/Asset";
 
-export class TextureAsset extends ServerAsset
+export class TextureAsset extends Asset
 {
   public readonly descriptor = new TextureDescriptor();
 
