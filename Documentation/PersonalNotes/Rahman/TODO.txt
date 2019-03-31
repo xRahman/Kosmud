@@ -23,9 +23,6 @@ TODO: Pokud nebude potřeba Shared/Zones, smazat příslušný soubor.
 TODO: Místo "Doesn't exist" by bylo asi lepší použít prostě 'undefined'.
   Znamená to to samý, je to kratší a zafunguje to i u stringů.
 
-TODO: Shared/Ship nemůže odkazovat na assety
- (ty existují až na klientu a serveru)
-- tzn. odkazy na assety je potřeba přesunout až do Client/Ship a Server/Ship.
 
 TODO: ShapeAsset se odkazuje na TilemapAsset
 - asi nemá smysl, aby se ShapeDescriptor odkazoval na TilemapDescriptor

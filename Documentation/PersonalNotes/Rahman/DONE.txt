@@ -1,3 +1,9 @@
+TODO: Shared/Ship nemůže odkazovat na assety
+ (ty existují až na klientu a serveru)
+- tzn. odkazy na assety je potřeba přesunout až do Client/Ship a Server/Ship.
+Už může, udělal jsem interfacy.
+[done]
+
 Hmm, tak asi všechno špatně, protože v shared kódu potřebuju pracovat assetama.
   Což nejde, když je jen client a server verze assetů...
 - leda by tam byl jen odkaz na deskriptor.
