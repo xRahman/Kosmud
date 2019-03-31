@@ -1,8 +1,8 @@
 /*  Part of Kosmud  */
 
 import { Scene } from "../../Client/Engine/Scene";
-import { Zone } from "../../Client/Game/Zone";
-import { Asset } from "../../Client/Asset/ClientAsset";
+// import { Zone } from "../../Client/Game/Zone";
+// import { Asset } from "../../Client/Asset/Asset";
 import { Renderer } from "../../Client/Engine/Renderer";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 import { BackgroundScene } from "../../Client/Background/BackgroundScene";

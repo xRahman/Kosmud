@@ -1,7 +1,7 @@
 /*  Part of Kosmud  */
 
-import { Attributes } from "../../Shared/Class/Attributes";
-import { Tilemap } from "../../Shared/Engine/Tilemap";
+// import { Attributes } from "../../Shared/Class/Attributes";
+// import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { AssetDescriptor } from "../../Shared/Asset/AssetDescriptor";
 
 export class TilemapDescriptor extends AssetDescriptor

@@ -3,8 +3,9 @@
 import { Entities } from "../../Server/Class/Entities";
 import { TextureDescriptor } from "../../Shared/Asset/TextureDescriptor";
 import { Asset } from "../../Server/Asset/Asset";
+import * as Shared from "../../Shared/Asset/TextureAsset";
 
-export class TextureAsset extends Asset
+export class TextureAsset extends Asset implements Shared.TextureAsset
 {
   public readonly descriptor = new TextureDescriptor();
 

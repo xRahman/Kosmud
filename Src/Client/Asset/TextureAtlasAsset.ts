@@ -5,8 +5,11 @@ import { Entities } from "../../Shared/Class/Entities";
 import { TextureAtlasDescriptor } from
   "../../Shared/Asset/TextureAtlasDescriptor";
 import { Asset } from "../../Client/Asset/Asset";
+import * as Shared from "../../Shared/Asset/TextureAtlasAsset";
 
-export class TextureAtlasAsset extends Asset
+export class TextureAtlasAsset
+  extends Asset
+  implements Shared.TextureAtlasAsset
 {
   public readonly descriptor = new TextureAtlasDescriptor();
 

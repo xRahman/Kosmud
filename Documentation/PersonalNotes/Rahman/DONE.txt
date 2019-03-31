@@ -1,3 +1,17 @@
+Hmm, tak asi všechno špatně, protože v shared kódu potřebuju pracovat assetama.
+  Což nejde, když je jen client a server verze assetů...
+- leda by tam byl jen odkaz na deskriptor.
+- nebo je ještě možnost udělat shared verze assetů jako interfacy.
+  (To by mohlo bejt ok, na shared verze určitě nebude potřeba typecastovat).
+Hmm tak interface úplně nepomohly - Shared.ShapeAsset nemá metodu getShape(),
+  protože ten je až ve zděděné classe.
+- možná ji přidat do interfacu? Stejně jí imho mají oba potomci.
+Ok, to zabralo.
+[done]
+
+TODO: ServerAsset a ClientAsset asi přejmenovat na Asset.
+[done]
+
 TODO: Opravit serializaci a deserializaci entit v Packetu.
 [done]
 

@@ -11,8 +11,12 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: ServerAsset a ClientAsset asi přejmenovat na Asset.
-[done]
+
+TODO: Zvážit, jeslti by se Zones a Assets nedaly přesat jako namespace + class.
+  Možná by to bylo přehlednější než verze se statickými metodami.
+
+TODO: Zkontrolovat, že se assety dobře vytváří (zejména ShapeAssety, které
+  potřebují referenci na TilemapAsset).
 
 TODO: Pokud nebude potřeba Shared/Zones, smazat příslušný soubor.
 

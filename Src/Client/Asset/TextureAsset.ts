@@ -4,8 +4,9 @@ import { Scene } from "../../Client/Engine/Scene";
 import { Entities } from "../../Shared/Class/Entities";
 import { TextureDescriptor } from "../../Shared/Asset/TextureDescriptor";
 import { Asset } from "../../Client/Asset/Asset";
+import * as Shared from "../../Shared/Asset/TextureAsset";
 
-export class TextureAsset extends Asset
+export class TextureAsset extends Asset implements Shared.TextureAsset
 {
   public readonly descriptor = new TextureDescriptor();
 

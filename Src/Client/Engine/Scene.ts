@@ -18,7 +18,7 @@ import { Sound } from "../../Client/Engine/Sound";
 import { SceneInput } from "../../Client/Engine/SceneInput";
 import { Scenes } from "../../Client/Engine/Scenes";
 import { Tilemap } from "../../Client/Engine/Tilemap";
-import { Asset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/Asset";
 import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
 import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
 import { SoundAsset } from "../../Client/Asset/SoundAsset";

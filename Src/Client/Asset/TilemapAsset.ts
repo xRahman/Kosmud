@@ -7,8 +7,9 @@ import { Entities } from "../../Shared/Class/Entities";
 import { TilemapDescriptor } from "../../Shared/Asset/TilemapDescriptor";
 import { Asset } from "../../Client/Asset/Asset";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import * as Shared from "../../Shared/Asset/TilemapAsset";
 
-export class TilemapAsset extends Asset
+export class TilemapAsset extends Asset implements Shared.TilemapAsset
 {
   public readonly descriptor = new TilemapDescriptor();
 

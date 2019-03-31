@@ -3,7 +3,7 @@
 import { REPORT } from "../../Shared/Log/REPORT";
 import { Player } from "../../Client/Game/Player";
 import { Zone } from "../../Client/Game/Zone";
-import { Asset } from "../../Client/Asset/ClientAsset";
+import { Asset } from "../../Client/Asset/Asset";
 import { Connection } from "../../Client/Net/Connection";
 import { Scenes } from "../../Client/Engine/Scenes";
 import * as Shared from "../../Shared/Protocol/LoginResponse";

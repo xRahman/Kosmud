@@ -7,8 +7,9 @@ import { Entities } from "../../Shared/Class/Entities";
 import { ShapeDescriptor } from "../../Shared/Asset/ShapeDescriptor";
 import { Asset } from "../../Client/Asset/Asset";
 import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
+import * as Shared from "../../Shared/Asset/ShapeAsset";
 
-export class ShapeAsset extends Asset
+export class ShapeAsset extends Asset implements Shared.ShapeAsset
 {
   public readonly descriptor = new ShapeDescriptor();
 
