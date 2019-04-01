@@ -67,21 +67,24 @@ async function testCreatePlayerShipAndZone()
   const ship = Ships.newShip("Fighter");
 
   const tilemapAsset = Assets.newTilemapAsset("Basic ships");
-  tilemapAsset.path = "Tilemaps/Ships/basic_ships.json";
+  tilemapAsset.descriptor.path = "Tilemaps/Ships/basic_ships.json";
   ship.setTilemapAsset(tilemapAsset);
-  await Assets.saveAsset(tilemapAsset);
+  // await Assets.saveAsset(tilemapAsset);
+  await tilemapAsset.save();
 
   const shapeAsset = Assets.newShapeAsset("Fighter hull");
   shapeAsset.setTilemapAsset(tilemapAsset);
-  shapeAsset.objectName = "Hull";
-  shapeAsset.objectLayerName = "Basic fighter";
+  shapeAsset.descriptor.objectName = "Hull";
+  shapeAsset.descriptor.objectLayerName = "Basic fighter";
   ship.setShapeAsset(shapeAsset);
-  await Assets.saveAsset(shapeAsset);
+  // await Assets.saveAsset(shapeAsset);
+  await shapeAsset.save();
 
   const exhaustSoundAsset = Assets.newSoundAsset("Exhaust sound 00");
-  exhaustSoundAsset.path = "Sound/Ship/Engine/ShipEngine.mp3";
+  exhaustSoundAsset.descriptor.path = "Sound/Ship/Engine/ShipEngine.mp3";
   ship.setExhaustSoundAsset(exhaustSoundAsset);
-  await Assets.saveAsset(exhaustSoundAsset);
+  // await Assets.saveAsset(exhaustSoundAsset);
+  await exhaustSoundAsset.save();
 
   await Assets.save();
 

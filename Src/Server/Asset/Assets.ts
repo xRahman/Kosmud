@@ -3,11 +3,11 @@
 // import { Attributes } from "../../Shared/Class/Attributes";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
-import { Serializable } from "../../Shared/Class/Serializable";
 // import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 // import { Physics } from "../../Shared/Physics/Physics";
 // import { Tilemap } from "../../Shared/Engine/Tilemap";
+import { Game } from "../../Server/Game/Game";
 import { Asset } from "../../Server/Asset/Asset";
 import { ShapeAsset } from "../../Server/Asset/ShapeAsset";
 import { TilemapAsset } from "../../Server/Asset/TilemapAsset";
@@ -15,14 +15,13 @@ import { SoundAsset } from "../../Server/Asset/SoundAsset";
 import { TextureAsset } from "../../Server/Asset/TextureAsset";
 import { TextureAtlasAsset } from "../../Server/Asset/TextureAtlasAsset";
 import { Entities } from "../../Server/Class/Entities";
-
-const assetsDataDirectory = "./Data/Assets/";
+import { Serializable } from "../../Shared/Class/Serializable";
 
 export class Assets extends Serializable
 {
   // -------------- Static class data -------------------
 
-  public static dataDirectory = "./Data/";
+  public static dataDirectory = `${Game.dataDirectory}Assets/`;
   public static fileName = "assets.json";
 
   protected static version = 0;
@@ -49,6 +48,15 @@ export class Assets extends Serializable
 
     // ! Throws exception on error.
     this.assetList.init();
+  }
+
+  public static async save()
+  {
+    // ! Throws exception on error.
+    const data = this.getAssetList().serialize("Save to file");
+
+    // ! Throws exception on error.
+    await FileSystem.writeFile(Game.dataDirectory, Assets.fileName, data);
   }
 
   // ! Throws exception on error.
@@ -126,22 +134,22 @@ export class Assets extends Serializable
 
   // ---------------- Public methods --------------------
 
-  public async saveAsset(asset: Asset)
-  {
-    // ! Throws exception on error.
-    const fileName = Entities.getFileName(asset.getId());
+  // public async saveAsset(asset: Asset)
+  // {
+  //   // ! Throws exception on error.
+  //   const fileName = Entities.getFileName(asset.getId());
 
-    // ! Throws exception on error.
-    const data = asset.serialize("Save to file");
+  //   // ! Throws exception on error.
+  //   const data = asset.serialize("Save to file");
 
-    /// TODO: Loadovat definice assetů z podadresářů podle class name
-    ///   by znamenalo savovat className do referencí, takže prozatím
-    ///   hodím všechno do Data/Assets.
-    /// const directory = `./Data/Assets/${asset.getClassName()}/`;
+  //   /// TODO: Loadovat definice assetů z podadresářů podle class name
+  //   ///   by znamenalo savovat className do referencí, takže prozatím
+  //   ///   hodím všechno do Data/Assets.
+  //   /// const directory = `./Data/Assets/${asset.getClassName()}/`;
 
-    // ! Throws exception on error.
-    await FileSystem.writeFile(assetsDataDirectory, fileName, data);
-  }
+  //   // ! Throws exception on error.
+  //   await FileSystem.writeFile(assetsDataDirectory, fileName, data);
+  // }
 
   // public async loadAsset(id: string)
   // {
@@ -155,15 +163,6 @@ export class Assets extends Serializable
 
   //   return asset;
   // }
-
-  public async save()
-  {
-    // ! Throws exception on error.
-    const data = this.serialize("Save to file");
-
-    // ! Throws exception on error.
-    await FileSystem.writeFile(Assets.dataDirectory, Assets.fileName, data);
-  }
 
   // ---------------- Private methods -------------------
 
@@ -235,7 +234,7 @@ export class Assets extends Serializable
 
 async function loadAssetList()
 {
-  const path = FileSystem.composePath(Assets.dataDirectory, Assets.fileName);
+  const path = FileSystem.composePath(Game.dataDirectory, Assets.fileName);
   // ! Throws exception on error.
   const readResult = await FileSystem.readFile(path);
 
@@ -257,7 +256,7 @@ async function loadAssetList()
 async function loadAsset(id: string)
 {
   // ! Throws exception on error.
-  const asset = await Entities.loadEntity(assetsDataDirectory, id);
+  const asset = await Entities.loadEntity(Assets.dataDirectory, id);
 
   // ! Throws exception on error.
   return asset.dynamicCast(Asset);

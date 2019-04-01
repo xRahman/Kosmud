@@ -4,6 +4,7 @@ import { Syslog } from "../../Shared/Log/Syslog";
 import { Serializable } from "../../Shared/Class/Serializable";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
+import { Game } from "../../Server/Game/Game";
 import { Zone } from "../../Server/Game/Zone";
 import { Entities } from "../../Server/Class/Entities";
 
@@ -11,7 +12,6 @@ export class Zones extends Serializable
 {
   // -------------- Static class data -------------------
 
-  public static dataDirectory = "./Data/";
   public static fileName = "zones.json";
 
   protected static version = 0;
@@ -41,10 +41,32 @@ export class Zones extends Serializable
   }
 
   // ! Throws exception on error.
+  public static async save()
+  {
+    // ! Throws exception on error.
+    const data = this.getZoneList().serialize("Save to file");
+
+    // ! Throws exception on error.
+    await FileSystem.writeFile(Game.dataDirectory, Zones.fileName, data);
+  }
+
+  // ! Throws exception on error.
   public static update()
   {
     // ! Throws exception on error.
     this.getZoneList().update();
+  }
+
+  public static newZone(name: string)
+  {
+    const zone = Entities.newRootEntity(Zone);
+
+    zone.setName(name);
+    // ! Throws exception on error.
+    this.getZoneList().add(zone);
+    zone.init();
+
+    return zone;
   }
 
   // ! Throws exception on error.
@@ -58,33 +80,12 @@ export class Zones extends Serializable
 
   // ---------------- Public methods --------------------
 
-  public newZone(name: string)
-  {
-    const zone = Entities.newRootEntity(Zone);
-
-    zone.setName(name);
-    this.add(zone);
-    zone.init();
-
-    return zone;
-  }
-
   public update()
   {
     for (const zone of this.zones)
     {
       zone.update();
     }
-  }
-
-  // ! Throws exception on error.
-  public async save()
-  {
-    // ! Throws exception on error.
-    const data = this.serialize("Save to file");
-
-    // ! Throws exception on error.
-    await FileSystem.writeFile(Zones.dataDirectory, Zones.fileName, data);
   }
 
   // ---------------- Private methods -------------------
@@ -142,7 +143,7 @@ export class Zones extends Serializable
 
 async function loadZoneList()
 {
-  const path = FileSystem.composePath(Zones.dataDirectory, Zones.fileName);
+  const path = FileSystem.composePath(Game.dataDirectory, Zones.fileName);
   // ! Throws exception on error.
   const readResult = await FileSystem.readFile(path);
 

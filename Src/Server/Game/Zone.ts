@@ -9,6 +9,7 @@ import { ClassFactory } from "../../Shared/Class/ClassFactory";
 // import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
 import { Entities } from "../../Server/Class/Entities";
+import { Game } from "../../Server/Game/Game";
 // import { Asset } from "../../Shared/Asset/Asset";
 // import { Assets } from "../../Server/Asset/Assets";
 import { Ship } from "../../Server/Game/Ship";
@@ -18,7 +19,7 @@ import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
 {
-  public static dataDirectory = "./Data/Zones/";
+  public static dataDirectory = `${Game.dataDirectory}Zones/`;
 
   protected static version = 0;
 

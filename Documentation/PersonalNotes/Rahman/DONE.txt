@@ -1,3 +1,56 @@
+TODO: Zkontrolovat, že se assety dobře vytváří (zejména ShapeAssety, které
+  potřebují referenci na TilemapAsset).
+- snad jo, při vyrábění ShapeAssetu v LoginRequest se ručně volá
+  setTilemapAsset().
+TODO: nějak musím vyřešit, aby se při výrobě tilemapAssetu správně zinicializoval
+  odkaz na příslušnej TilemapAsset.
+[done]
+
+TODO: Nepovinný metody (v ServerAsset) se mi vůbec nelíběj. Spíš by v předkovi
+  měla bejt prázdná metoda s tím, že kdo potřebuje, tak si ji přetíží
+  a implementuje.
+- neměly by pak bejt potřeba metody jako getTilemapAsset(). Ta existuje
+  jen proto, aby se mohl vrátit explicitně Server/TilemapAssset. Ten se
+  ale neliší tím, jaké má properties, jen má trochu jiný chování.
+    Ten, kdo ho používá, tudíž nepotřebuje vědět, že to je ServerAsset.
+  Když ta metoda bude i na SharedAssetu, tak ji prostě zavolá a udělá to
+  správnou věc díky tomu, že je přetížená.
+Sakryš. Problém je v tom, že load() na klientu není async a má parametr
+  'scene'.
+Ok, pak je tu ještě varianta s kompozicí.
+- v /Shared budou pouze společná data (ShapeDescriptorData)
+- v /Client bude ClientDescriptor s metodou load(), který bude mít
+  .data typu ShapeDescriptorData.
+- v /Server bude ServerDescriptor s metodama load() a init(), který bude mít
+  .data typu ShapeDescriptorData.
+Jak to pořeší getTilemapAsset()?
+- není žádný společný předek, takže ShapeDescriptory na clientu a na serveru
+  si ji každej implementuje zvlášť (to je asi ok řešení).
+Jak bude fungovat posílání?
+- blbě, protože chybí společnej předek. I když, musí nutně chybět?
+/Shared/ShapeDescriptor bude zděděnej z Entity (což je Serializable)
+  a bude mít property .data: ShapeDescriptorData.
+/Client/ShapeDescriptor bude zděděnej ze /Shared/ShapeDescriptor
+  a bude se jmenovat stejně jako na serveru, takže by posílání mělo zafungovat.
+Loadování (a případně inicializace) assetů musí být polymorfní.
+- hmm, možná ale míchám dohromady Deskriptory a vlastní assety.
+    Assety se loadují z descriptorů, proto potřebuju u deskriptorů dost šílenou
+  dědičnost...
+Mohly by se assety loadovat nezávisle?
+- Deskriptory assetů by měly bejt čistě datové struktury a měly by bejt
+  deklarované jen v /Shared.
+- Na klienta se neposílají assety, ale deskriptory assetů. Assety si klient
+  vyrobí podle deskriptorů.
+  - Tohle je ale problém. Klient musí nějak vědět, které assety má vyrábět.
+    Když assety vyrábí deskriptory, tak ty samozřejmě vědí, co mají vyrobit.
+    - Mělo by to bejt asi tak, že entita má assety (i serverová) a ty se
+      pošlou a zinicializujou podle svých deskriptorů.
+- Na serveru vůbec nemusí existovat assety, které se tam nepoužívají
+  (textury, zvuky).
+==> Nakonec jsem to udělal tak, že Assety existují jen na Clientu a Serveru
+  a odkazují se na Shared descriptory.
+[done]
+
 TODO: Shared/Ship nemůže odkazovat na assety
  (ty existují až na klientu a serveru)
 - tzn. odkazy na assety je potřeba přesunout až do Client/Ship a Server/Ship.

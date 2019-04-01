@@ -18,6 +18,8 @@ import { Assets } from "../../Server/Asset/Assets";
 
 export namespace Game
 {
+  export const dataDirectory = "./Data/";
+
   // ! Throws exception on error.
   export function update()
   {
