@@ -5,6 +5,7 @@
   (all objects in the same zone can physically influence each other).
 */
 
+import { Entities } from "../../Shared/Class/Entities";
 import { Ship } from "../../Client/Game/Ship";
 import { FlightScene } from "../../Client/Flight/FlightScene";
 // import { Tilemap } from "../../Client/Engine/Tilemap";
@@ -172,6 +173,8 @@ export class Zone extends Shared.Zone
   //   }
   // }
 }
+
+Entities.createRootPrototypeEntity(Zone);
 
 // ----------------- Auxiliary Functions ---------------------
 

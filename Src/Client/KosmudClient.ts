@@ -15,6 +15,9 @@ import { Gui } from "../Client/Gui/Gui";
 import { Renderer } from "../Client/Engine/Renderer";
 import { Connection } from "../Client/Net/Connection";
 
+/// HACK: Neregistrovala se mi root prototype entita.
+import "../Client/Game/Zone";
+
 async function start()
 {
   Syslog.log("[INFO]", "Starting Kosmud client...");

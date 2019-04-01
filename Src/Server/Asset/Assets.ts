@@ -188,10 +188,11 @@ export class Assets extends Serializable
   // ! Throws exception on error.
   private async loadAssetReference(reference: Asset)
   {
+    // If the reference is valid it means it's already loaded.
     if (!reference.isValid())
     {
       // ! Throws exception on error.
-      const asset = await loadAsset(reference.getId());
+      const asset = await loadAssetEntity(reference.getId());
 
       // ! Throws exception on error.
       await asset.load();
@@ -253,7 +254,7 @@ async function loadAssetList()
 }
 
 // ! Throws exception on error.
-async function loadAsset(id: string)
+async function loadAssetEntity(id: string)
 {
   // ! Throws exception on error.
   const asset = await Entities.loadEntity(Assets.dataDirectory, id);

@@ -1,3 +1,17 @@
+TOFIX: (Entity with id 'Zone' is not in Entities)
+    at Function.get (Entities.js:14)
+    at Function.loadEntityFromJsonObject (Entities.js:58)
+    at LoginResponse.deserializeEntities (Packet.js:67)
+    at LoginResponse.customDeserializeProperty (Packet.js:54)
+    at LoginResponse.deserializeProperty (Serializable.js:310)
+    at LoginResponse.deserialize (Serializable.js:99)
+    at Function.deserialize (Serializable.js:54)
+    at Connection.<anonymous> (PacketHandler.js:21)
+    at Generator.next (<anonymous>)
+    at KosmudClient.js:16
+- zóna se zjevně na Clientu nikde rozumně neimportuje.
+[hacknuto]
+
 TODO: Zkontrolovat, že se assety dobře vytváří (zejména ShapeAssety, které
   potřebují referenci na TilemapAsset).
 - snad jo, při vyrábění ShapeAssetu v LoginRequest se ručně volá

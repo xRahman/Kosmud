@@ -19,7 +19,9 @@ import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
 {
-  public static readonly dataDirectory = `${Game.dataDirectory}Zones/`;
+  /// Tohle nejspíš způsobuje cyklickou dependanci importů.
+  // public static readonly dataDirectory = `${Game.dataDirectory}Zones/`;
+  public static readonly dataDirectory = `./Data/Zones/`;
 
   protected static version = 0;
 

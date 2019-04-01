@@ -1,0 +1,12 @@
+{
+  "className": "Player",
+  "id": "o-jtysyphc",
+  "prototypeId": "Player",
+  "version": 0,
+  "activeShip":
+  {
+    "className": "Reference",
+    "id": "k-jtysyphc",
+    "version": 0
+  }
+}

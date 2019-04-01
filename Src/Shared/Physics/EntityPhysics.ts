@@ -43,7 +43,12 @@ export class EntityPhysics extends Serializable
 
   private physicsBody: PhysicsBody | "Not in physics world" =
     "Not in physics world";
-  protected static physicsBody: Attributes = { saved: false };
+  protected static physicsBody: Attributes =
+  {
+    saved: false,
+    sentToClient: false,
+    sentToServer: false
+  };
 
   // --------------- Public accessors -------------------
 

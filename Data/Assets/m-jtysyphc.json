@@ -1,0 +1,20 @@
+{
+  "className": "ShapeAsset",
+  "id": "m-jtysyphc",
+  "prototypeId": "ShapeAsset",
+  "name": "Fighter hull",
+  "version": 0,
+  "descriptor":
+  {
+    "className": "ShapeDescriptor",
+    "version": 0,
+    "objectName": "Hull",
+    "objectLayerName": "Basic fighter"
+  },
+  "tilemapAsset":
+  {
+    "className": "Reference",
+    "id": "l-jtysyphc",
+    "version": 0
+  }
+}

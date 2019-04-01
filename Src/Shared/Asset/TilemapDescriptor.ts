@@ -6,6 +6,8 @@ import { AssetDescriptor } from "../../Shared/Asset/AssetDescriptor";
 
 export class TilemapDescriptor extends AssetDescriptor
 {
+  protected static version = 0;
+
   public path = "<missing file path>";
 
   // private tilemap: Tilemap | "Not set" = "Not set";

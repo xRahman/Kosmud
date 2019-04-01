@@ -11,6 +11,11 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Odhackovat tvrdej import Zone.ts z KosmudClient.ts.
+
+
+TODO: Zkontrolovat wording hlášky v Serializable.ts:402
+
 
 TODO: Client adresář by měl bejt definovanej konstantou, neměl by se
   přilepovat explicitní string.

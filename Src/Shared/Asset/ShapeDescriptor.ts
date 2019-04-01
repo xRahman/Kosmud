@@ -7,6 +7,8 @@ import { AssetDescriptor } from "../../Shared/Asset/AssetDescriptor";
 
 export class ShapeDescriptor extends AssetDescriptor
 {
+  protected static version = 0;
+
   public objectLayerName = "<missing object layer name>";
   public objectName = "<missing object name>";
 
