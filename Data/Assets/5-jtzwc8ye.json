@@ -1,0 +1,13 @@
+{
+  "className": "SoundAsset",
+  "id": "5-jtzwc8ye",
+  "prototypeId": "SoundAsset",
+  "name": "Exhaust sound 00",
+  "version": 0,
+  "descriptor":
+  {
+    "className": "SoundDescriptor",
+    "version": 0,
+    "path": "Sound/Ship/Engine/ShipEngine.mp3"
+  }
+}

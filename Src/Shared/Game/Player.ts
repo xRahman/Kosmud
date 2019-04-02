@@ -9,7 +9,6 @@ export class Player extends Entity
 
   // ---------------- Public methods --------------------
 
-  // ! Throws exception on error.
   public setActiveShip(ship: Ship)
   {
     this.activeShip = ship;

@@ -5,7 +5,7 @@ import { Packet } from "../../Shared/Protocol/Packet";
 
 export class MouseInput extends Packet
 {
-  public mousePosition: Vector | "Not set" = "Not set";
+  public mousePosition: Vector | undefined = undefined;
 }
 
 // ------------------ Type declarations ----------------------

@@ -11,6 +11,9 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Player v connection na Clientu je invalid entity. Zjistit proč.
+- aha tak player je v pohodě, activeShip je invalid...
+
 TODO: Odhackovat tvrdej import Zone.ts z KosmudClient.ts.
 
 

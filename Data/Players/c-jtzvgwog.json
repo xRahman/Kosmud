@@ -1,0 +1,12 @@
+{
+  "className": "Player",
+  "id": "c-jtzvgwog",
+  "prototypeId": "Player",
+  "version": 0,
+  "activeShip":
+  {
+    "className": "Reference",
+    "id": "8-jtzvgwog",
+    "version": 0
+  }
+}

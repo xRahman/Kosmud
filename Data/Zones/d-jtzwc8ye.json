@@ -1,0 +1,114 @@
+{
+  "className": "Zone",
+  "id": "d-jtzwc8ye",
+  "prototypeId": "Zone",
+  "name": "Test zone",
+  "version": 0,
+  "contents":
+  {
+    "className": "EntityContents",
+    "version": 0,
+    "contents": [
+    {
+      "className": "Ship",
+      "id": "e-jtzwc8ye",
+      "prototypeId": "Ship",
+      "name": "Fighter",
+      "version": 0,
+      "assets":
+      {
+        "className": "Set",
+        "version": 0,
+        "set": [
+        {
+          "className": "Reference",
+          "id": "f-jtzwc8ye",
+          "version": 0
+        },
+        {
+          "className": "Reference",
+          "id": "g-jtzwc8ye",
+          "version": 0
+        },
+        {
+          "className": "Reference",
+          "id": "h-jtzwc8ye",
+          "version": 0
+        }]
+      },
+      "physics":
+      {
+        "className": "VehiclePhysics",
+        "version": 0,
+        "waypoint":
+        {
+          "position":
+          {
+            "className": "Vector",
+            "version": 0,
+            "x": 0,
+            "y": 0
+          }
+        },
+        "entity":
+        {
+          "className": "Reference",
+          "id": "e-jtzwc8ye",
+          "version": 0
+        },
+        "shapeAsset":
+        {
+          "className": "Reference",
+          "id": "g-jtzwc8ye",
+          "version": 0
+        }
+      },
+      "tilemapAsset":
+      {
+        "className": "Reference",
+        "id": "f-jtzwc8ye",
+        "version": 0
+      },
+      "exhaustSoundAsset":
+      {
+        "className": "Reference",
+        "id": "h-jtzwc8ye",
+        "version": 0
+      },
+      "container":
+      {
+        "className": "Reference",
+        "id": "d-jtzwc8ye",
+        "version": 0
+      },
+      "zone":
+      {
+        "className": "Reference",
+        "id": "d-jtzwc8ye",
+        "version": 0
+      }
+    }]
+  },
+  "vehicles":
+  {
+    "className": "Set",
+    "version": 0,
+    "set": [
+    {
+      "className": "Reference",
+      "id": "e-jtzwc8ye",
+      "version": 0
+    }]
+  },
+  "physicsEntities":
+  {
+    "className": "Set",
+    "version": 0,
+    "set": [
+    {
+      "className": "Reference",
+      "id": "e-jtzwc8ye",
+      "version": 0
+    }]
+  }
+}

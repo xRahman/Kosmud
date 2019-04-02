@@ -1,0 +1,13 @@
+{
+  "className": "TilemapAsset",
+  "id": "3-jtzwc8ye",
+  "prototypeId": "TilemapAsset",
+  "name": "Basic ships",
+  "version": 0,
+  "descriptor":
+  {
+    "className": "TilemapDescriptor",
+    "version": 0,
+    "path": "Tilemaps/Ships/basic_ships.json"
+  }
+}
