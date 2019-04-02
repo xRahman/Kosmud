@@ -27,9 +27,7 @@ export class Packet extends Serializable
   protected addEntity<T extends Entity>(entity: T): T
   {
     if (this.entities.has(entity))
-    {
       throw Error(`Packet ${this.debugId} already has ${entity.debugId}`);
-    }
 
     this.entities.add(entity);
 

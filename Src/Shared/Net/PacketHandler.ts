@@ -13,20 +13,17 @@ export abstract class PacketHandler
     /// DEBUG:
     // console.log(data);
 
-    let packet: Packet;
-
     try
     {
-      packet = Serializable.deserialize(data).dynamicCast(Packet);
+      const packet = Serializable.deserialize(data).dynamicCast(Packet);
+
+      await this.processPacket(packet);
     }
     catch (error)
     {
       REPORT(error, `Failed to deserialize incoming packet.`
         + ` Packet data: "${data}"`);
-      return;
     }
-
-    await this.processPacket(packet);
   }
 
   // --------------- Protected methods ------------------

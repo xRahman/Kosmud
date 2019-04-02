@@ -45,18 +45,24 @@ function createOkResponse(player: Player)
   // ! Throws exception on error.
   const response = ClassFactory.newInstance(LoginResponse);
 
-  // ! Throws exception on error.
-  response.setPlayer(player);
-
   if (player.isInZone())
   {
     // ! Throws exception on error.
     const zone = player.getZone();
     const assets = zone.compileListOfAssets();
 
-    response.setZone(zone);
+    /// Zase zkusím prohodit pořadí kvůli prolinkování při deserializaci...
     response.setAssets(assets);
+    response.setZone(zone);
   }
+
+  /// Zkusím tohle hodit až za setnutí zóny do packetu,
+  /// aby se při deserializaci nejdřív vytvořila zóna
+  /// a player.activeShip se rovnou nastavila jako valid entita.
+  /// (Pomohlo to. Úplně se mi ale nelíbí, že musím takhle pitomě
+  ///  řešit pořadí. Budu muset vymyslet, co s tím).
+  // ! Throws exception on error.
+  response.setPlayer(player);
 
   return response;
 }

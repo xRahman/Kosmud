@@ -11,8 +11,25 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+Problém: Prolinkování referencí při deserializaci.
+- asi by to šlo udělat tak, že zkusím, jestli už entita existuje, pokud ano,
+  vezmu si na ni referenci a pokud ne, uložím se do seznamu referencí,
+  které je třeba prolinkovat dodatečně.
+  - v seznamu by byl vždycky objekt, název property, která se má nastavit
+    a příslušný idčko.
+
+
 TODO: Player v connection na Clientu je invalid entity. Zjistit proč.
 - aha tak player je v pohodě, activeShip je invalid...
+- nejspíš to je tím, že playera nepřidávám do entit packetu.
+  - tak zjevně přidávám. Hmm.
+- jo aha, player se tam dává, ale activeShip možná ne...
+Setnutí playera do packetu až po setnutí zóny pomohlo (při deserializaci
+  se rovnou nastaví reference na velid entitu). Uvnitř activeShip jsou ale
+  pořád invalid reference na assety - a to je problém, protože ty jsou
+  v contentu packetu, kterej se deserializuje až po entitách.
+  - i když vlastně ne, assety jsou taky entity. Zjevně se ale do packetu
+    dávaj až po lodi.
 
 TODO: Odhackovat tvrdej import Zone.ts z KosmudClient.ts.
 
