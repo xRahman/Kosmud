@@ -621,8 +621,8 @@ export class Serializable extends Attributable
     if (!targetIsValid)
     {
       throw Error(`Failed to deserialize because target property`
-        + ` '${param.propertyName}'${inFile(param.path)} is not 'null'`
-        + ` or 'Set' when deserializing property of type 'Set'`);
+        + ` '${param.propertyName}'${inFile(param.path)} is not 'Set',`
+        + ` 'null' or 'undefined' when deserializing property of type Set`);
     }
 
     return this.readSet(param);
@@ -642,8 +642,8 @@ export class Serializable extends Attributable
     if (!targetIsValid)
     {
       throw Error(`Failed to deserialize because target property`
-        + ` '${param.propertyName}'${inFile(param.path)} is not 'null'`
-        + ` or 'Map' when deserializing property of type 'Map'`);
+        + ` '${param.propertyName}'${inFile(param.path)} is not 'Map',`
+        + ` 'null' or 'undefined' when deserializing property of type Map`);
     }
 
     return this.readMap(param);
@@ -666,8 +666,8 @@ export class Serializable extends Attributable
     if (!targetIsValid)
     {
       throw Error(`Failed to deserialize because target property`
-        + ` '${param.propertyName}'${inFile(param.path)} is not 'null'`
-        + ` or 'Array' when deserializing property of type 'Array'`);
+        + ` '${param.propertyName}'${inFile(param.path)} is not 'Array'`
+        + ` 'null' or 'undefined' when deserializing property of type Array`);
     }
 
     return this.readArray(param);
@@ -687,8 +687,8 @@ export class Serializable extends Attributable
     if (!targetIsValid)
     {
       throw Error(`Failed to deserialize because target property`
-        + ` '${param.propertyName}'${inFile(param.path)} is not 'null',`
-        + ` 'undefined' or 'object' when deserializing 'object' property`);
+        + ` '${param.propertyName}'${inFile(param.path)} is not 'object',`
+        + ` 'null' or 'undefined' when deserializing property of type object`);
     }
 
     return this.readObject(param);
@@ -1158,9 +1158,9 @@ function deserializeAsBitvector(param: Serializable.DeserializeParam)
   if (!targetIsValid)
   {
     throw Error(`Failed to deserialize because target property`
-      + ` '${param.propertyName}'${inFile(param.path)} is not 'null',`
-      + ` 'undefined' or 'bitvector' when deserializing property of`
-      + ` type 'bitvector'`);
+      + ` '${param.propertyName}'${inFile(param.path)} is not 'bitvector',`
+      + ` 'null' or 'undefined' when deserializing property of type`
+      + ` bitvector`);
   }
 
   return readBitvector(param);
@@ -1180,9 +1180,8 @@ function deserializeAsVector(param: Serializable.DeserializeParam)
   if (!targetIsValid)
   {
     throw Error(`Failed to deserialize because target property`
-      + ` '${param.propertyName}'${inFile(param.path)} is not 'null',`
-      + ` 'undefined' or 'Vector' when deserializing property of type`
-      + ` 'Vector'`);
+      + ` '${param.propertyName}'${inFile(param.path)} is not 'Vector',`
+      + ` 'null' or 'undefined' when deserializing property of type Vector`);
   }
 
   return readVector(param);

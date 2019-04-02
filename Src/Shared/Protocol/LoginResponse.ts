@@ -8,9 +8,12 @@ import { Packet } from "../../Shared/Protocol/Packet";
 export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
   extends Packet
 {
-  private player: P | "Not set" = "Not set";
-  private zone: Z | "Not set" = "Not set";
-  private assets: Set<A> | "Not set" = "Not set";
+  private player: P | undefined = undefined;
+  private zone: Z | undefined = undefined;
+  /// Pozn.: "neinicializovaná" hodnota musí být 'undefined' a ne nějakej
+  ///   string (třeba "Not set"), protože při deserializaci se kontroluje,
+  ///   jestli se zapisuje do proměnné správného typu (nebo undefined).
+  private assets: Set<A> | undefined = undefined;
 
   // ! Throws exception on error.
   public setPlayer(player: P)
@@ -41,10 +44,8 @@ export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
   // ! Throws exception on error.
   protected getPlayer()
   {
-    if (this.player === "Not set")
-    {
-      throw Error(`Missing 'player' in login response`);
-    }
+    if (!this.player)
+      throw Error("Missing 'player' in login response");
 
     return this.player;
   }
@@ -52,9 +53,9 @@ export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
   // ! Throws exception on error.
   protected getZone()
   {
-    if (this.zone === "Not set")
+    if (!this.zone)
     {
-      throw Error(`Missing 'zone' in login response`);
+      throw Error("Missing 'zone' in login response");
     }
 
     return this.zone;
@@ -62,15 +63,15 @@ export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
 
   protected hasZone()
   {
-    return this.zone !== "Not set";
+    return this.zone !== undefined;
   }
 
   // ! Throws exception on error.
   protected getAssets()
   {
-    if (this.assets === "Not set")
+    if (!this.assets)
     {
-      throw Error(`Missing 'assets' in login response`);
+      throw Error("Missing 'assets' in login response");
     }
 
     return this.assets;
