@@ -1,3 +1,11 @@
+TODO: Při savování souborů musí existovat adresář.
+- nechce se mi vynucovat existence adresáře při každym savu,
+  takže bych asi měl existenci adresářů checkovat při startu.
+- na druhou stranu bych musel testovat i existenci podadresářů
+  (Players, Assets, Zones...).
+- řeší to FS.outputFile()
+[done]
+
 TOFIX: (Entity with id 'Zone' is not in Entities)
     at Function.get (Entities.js:14)
     at Function.loadEntityFromJsonObject (Entities.js:58)
