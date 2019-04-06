@@ -11,6 +11,7 @@ export class SetWaypoint extends Shared.SetWaypoint
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
+    // ! Throws exception on error.
     const waypoint = this.getWaypoint();
 
     // ! Throws exception on error.
