@@ -11,6 +11,7 @@ import { EnterFlightResponse } from
   "../../Client/Protocol/EnterFlightResponse";
 import { KeyboardInput } from "../../Shared/Protocol/KeyboardInput";
 import { MouseInput } from "../../Shared/Protocol/MouseInput";
+import { SetWaypoint } from "../../Shared/Protocol/SetWaypoint";
 import { LoginRequest } from "../../Shared/Protocol/LoginRequest";
 import { LoginResponse } from "../../Client/Protocol/LoginResponse";
 import * as Shared from "../../Shared/Net/Connection";
@@ -30,6 +31,7 @@ ClassFactory.registerClassPrototype(LoginRequest);
 ClassFactory.registerClassPrototype(LoginResponse);
 ClassFactory.registerClassPrototype(KeyboardInput);
 ClassFactory.registerClassPrototype(MouseInput);
+ClassFactory.registerClassPrototype(SetWaypoint);
 
 export class Connection extends Shared.Connection<Player>
 {
