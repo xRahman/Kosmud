@@ -21,7 +21,8 @@ export class ShapeAsset extends Asset implements Shared.ShapeAsset
   private static readonly shape: Attributes =
   {
     saved: false,
-    sentToClient: false
+    sentToClient: false,
+    sentToServer: false
   };
 
   // ---------------- Public methods --------------------

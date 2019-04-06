@@ -8,12 +8,13 @@ import { Packet } from "../../Shared/Protocol/Packet";
 export class LoginResponse<P extends Player, Z extends Zone, A extends Asset>
   extends Packet
 {
-  private player: P | undefined = undefined;
-  private zone: Z | undefined = undefined;
   /// Pozn.: "neinicializovaná" hodnota musí být 'undefined' a ne nějakej
   ///   string (třeba "Not set"), protože při deserializaci se kontroluje,
   ///   jestli se zapisuje do proměnné správného typu (nebo undefined).
   private assets: Set<A> | undefined = undefined;
+
+  private player: P | undefined = undefined;
+  private zone: Z | undefined = undefined;
 
   // ! Throws exception on error.
   public setPlayer(player: P)

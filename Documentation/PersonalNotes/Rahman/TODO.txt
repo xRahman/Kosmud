@@ -11,6 +11,10 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Shape assetu se neinicializuje property .shape
+- asi by se to mělo dělat až po loadu scény (v tom se nejspíš stáhnou
+  data tilemapy, ze kterých se shape vyčítá).
+
 Problém: Prolinkování referencí při deserializaci.
 - asi by to šlo udělat tak, že zkusím, jestli už entita existuje, pokud ano,
   vezmu si na ni referenci a pokud ne, uložím se do seznamu referencí,
