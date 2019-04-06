@@ -72,10 +72,25 @@ async function testCreatePlayerShipAndZone()
   const zone = Zones.newZone("Test zone");
   const ship = Ships.newShip("Fighter");
 
+  const textureAsset = Assets.newTextureAsset("Basic ships Texture");
+  textureAsset.descriptor.path = "Textures/Ships/basic_ships.png";
+  ship.setTextureAsset(textureAsset);
+  await textureAsset.save();
+
+  const textureAtlasAsset = Assets.newTextureAtlasAsset
+  (
+    "Exhaust yellow rectangular Texture atlas"
+  );
+  textureAtlasAsset.descriptor.path =
+    "Textures/Effects/Exhausts/ExhaustYellowRectangular.json";
+  textureAtlasAsset.descriptor.textureDirectory =
+    "Textures/Effects/Exhausts";
+  ship.setTextureAtlasAsset(textureAtlasAsset);
+  await textureAtlasAsset.save();
+
   const tilemapAsset = Assets.newTilemapAsset("Basic ships");
   tilemapAsset.descriptor.path = "Tilemaps/Ships/basic_ships.json";
   ship.setTilemapAsset(tilemapAsset);
-  // await Assets.saveAsset(tilemapAsset);
   await tilemapAsset.save();
 
   const shapeAsset = Assets.newShapeAsset("Fighter hull");
@@ -83,13 +98,11 @@ async function testCreatePlayerShipAndZone()
   shapeAsset.descriptor.objectName = "Hull";
   shapeAsset.descriptor.objectLayerName = "Basic fighter";
   ship.setShapeAsset(shapeAsset);
-  // await Assets.saveAsset(shapeAsset);
   await shapeAsset.save();
 
   const exhaustSoundAsset = Assets.newSoundAsset("Exhaust sound 00");
   exhaustSoundAsset.descriptor.path = "Sound/Ship/Engine/ShipEngine.mp3";
   ship.setExhaustSoundAsset(exhaustSoundAsset);
-  // await Assets.saveAsset(exhaustSoundAsset);
   await exhaustSoundAsset.save();
 
   await Assets.save();

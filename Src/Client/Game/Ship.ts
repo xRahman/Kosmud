@@ -4,7 +4,7 @@ import { ZoneUpdate } from "../../Shared/Protocol/ZoneUpdate";
 import { Vector } from "../../Shared/Physics/Vector";
 import { ShipModel } from "../../Client/Flight/ShipModel";
 import { FlightScene } from "../../Client/Flight/FlightScene";
-import { Zone } from "../../Client/Game/Zone";
+// import { Zone } from "../../Client/Game/Zone";
 import { Entities } from "../../Shared/Class/Entities";
 import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
 import { SoundAsset } from "../../Client/Asset/SoundAsset";
@@ -18,20 +18,20 @@ export class Ship extends Shared.Ship
   // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  /// TODO: Ship (obecně game entity) asi má odkaz na zónu, ve které
-  ///   se nachází - takže parametr asi není potřeba.
-  public createModel(scene: FlightScene, zone: Zone)
+  public createModel(scene: FlightScene)
   {
     if (this.model !== "Not created")
-    {
       throw Error(`Ship ${this.debugId} already has a model`);
-    }
 
     this.model = new ShipModel
     (
       scene,
       // ! Throws exception on error.
       this.getTilemapAsset().getTilemap(),
+      // ! Throws exception on error.
+      this.getTextureAsset(),
+      // ! Throws exception on error.
+      this.getTextureAtlasAsset(),
       // ! Throws exception on error.
       this.getShapeAsset(),
       // ! Throws exception on error.

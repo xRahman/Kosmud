@@ -1,6 +1,8 @@
 /*  Part of Kosmud  */
 
 // import { Zone } from "../../Shared/Game/Zone";
+import { TextureAsset } from "../Asset/TextureAsset";
+import { TextureAtlasAsset } from "../Asset/TextureAtlasAsset";
 import { TilemapAsset } from "../Asset/TilemapAsset";
 import { SoundAsset } from "../Asset/SoundAsset";
 import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
@@ -8,6 +10,8 @@ import { Vehicle } from "../../Shared/Game/Vehicle";
 
 export class Ship extends Vehicle
 {
+  private textureAsset: TextureAsset | "Not set" = "Not set";
+  private textureAtlasAsset: TextureAtlasAsset | "Not set" = "Not set";
   private tilemapAsset: TilemapAsset | "Not set" = "Not set";
   private exhaustSoundAsset: SoundAsset | "Not set" = "Not set";
   // Tohle je v .physics
@@ -20,6 +24,28 @@ export class Ship extends Vehicle
   {
     // ! Throws exception on error.
     this.physics.setPosition(position);
+  }
+
+  // ! Throws exception on error.
+  public setTextureAsset(asset: TextureAsset)
+  {
+    if (this.textureAsset !== "Not set")
+      // ! Throws exception on error.
+      this.removeAsset(this.textureAsset);
+
+    // ! Throws exception on error.
+    this.textureAsset = this.addAsset(asset);
+  }
+
+  // ! Throws exception on error.
+  public setTextureAtlasAsset(asset: TextureAtlasAsset)
+  {
+    if (this.textureAtlasAsset !== "Not set")
+      // ! Throws exception on error.
+      this.removeAsset(this.textureAtlasAsset);
+
+    // ! Throws exception on error.
+    this.textureAtlasAsset = this.addAsset(asset);
   }
 
   // ! Throws exception on error.
@@ -53,12 +79,26 @@ export class Ship extends Vehicle
 
   // --------------- Protected methods ------------------
 
+  protected getTextureAsset()
+  {
+    if (this.textureAsset === "Not set")
+      throw Error(`${this.debugId} doesn't have texture asset`);
+
+    return this.textureAsset;
+  }
+
+  protected getTextureAtlasAsset()
+  {
+    if (this.textureAtlasAsset === "Not set")
+      throw Error(`${this.debugId} doesn't have texture asset`);
+
+    return this.textureAtlasAsset;
+  }
+
   protected getTilemapAsset()
   {
     if (this.tilemapAsset === "Not set")
-    {
-      throw new Error(`${this.debugId} doesn't have tilemap asset`);
-    }
+      throw Error(`${this.debugId} doesn't have tilemap asset`);
 
     return this.tilemapAsset;
   }
@@ -66,9 +106,7 @@ export class Ship extends Vehicle
   protected getExhaustSoundAsset()
   {
     if (this.exhaustSoundAsset === "Not set")
-    {
-      throw new Error(`${this.debugId} doesn't have exhaust sound asset`);
-    }
+      throw Error(`${this.debugId} doesn't have exhaust sound asset`);
 
     return this.exhaustSoundAsset;
   }

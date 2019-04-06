@@ -14,9 +14,9 @@ import * as Shared from "../../Shared/Game/Zone";
 
 export class Zone extends Shared.Zone
 {
-  // ~ Overrides Shared.Zone.ships.
+  // ~ Overrides Shared.Zone.vehicles.
   //  (We need to override to use Client/Ship instead of Shared/Ship).
-  protected readonly ships = new Set<Ship>();
+  protected readonly vehicles = new Set<Ship>();
 
   private scene: FlightScene | "Not assigned" = "Not assigned";
 
@@ -51,10 +51,10 @@ export class Zone extends Shared.Zone
   // ! Throws exception on error.
   public createModels()
   {
-    for (const ship of this.ships.values())
+    for (const vehicle of this.vehicles)
     {
       // ! Throws exception on error.
-      ship.createModel(this.getScene(), this);
+      vehicle.createModel(this.getScene());
     }
   }
 

@@ -12,9 +12,11 @@ import { Exhausts } from "../../Client/Flight/Exhausts";
 import { Vehicle } from "../../Shared/Game/Vehicle";
 import { SoundAsset } from "../../Client/Asset/SoundAsset";
 import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
+import { TextureAsset } from "../../Shared/Asset/TextureAsset";
+import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
 // import { Physics } from "../../Shared/Physics/Physics";
 
-const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
+// const BASIC_SHIPS_TEXTURE_ID = "Basic ships Texture";
 
 const BASIC_FIGHTER_TILEMAP_LAYER = "Basic fighter";
 const HULL_TILEMAP_OBJECT_NAME = "Hull";
@@ -22,9 +24,7 @@ const HULL_TILEMAP_OBJECT_NAME = "Hull";
 export class ShipModel
 {
   private readonly graphicContainer: GraphicContainer;
-
   private readonly shipSprites: Array<Sprite>;
-
   private readonly vectorsModel: VectorsModel;
   private readonly exhausts: Exhausts;
   private readonly shapeModel: ShapeModel;
@@ -34,6 +34,8 @@ export class ShipModel
   (
     private readonly scene: FlightScene,
     private readonly tilemap: Tilemap,
+    textureAsset: TextureAsset,
+    textureAtlasAsset: TextureAtlasAsset,
     shapeAsset: ShapeAsset,
     exhaustSoundAsset: SoundAsset
   )
@@ -47,12 +49,14 @@ export class ShipModel
       scene,
       tilemap,
       BASIC_FIGHTER_TILEMAP_LAYER,
+      textureAtlasAsset,
       this.graphicContainer,
       exhaustSoundAsset
     );
 
     // ! Throws exception on error.
-    this.shipSprites = this.createShipSprites();
+    this.shipSprites = this.createShipSprites(textureAsset);
+
     this.shapeModel = new ShapeModel
     (
       scene,
@@ -89,18 +93,19 @@ export class ShipModel
     torqueRatio: number
   )
   {
-    this.exhausts.update
-    (
-      forwardThrustRatio,
-      leftwardThrustRatio,
-      torqueRatio
-    );
+    /// DEBUG:
+    // this.exhausts.update
+    // (
+    //   forwardThrustRatio,
+    //   leftwardThrustRatio,
+    //   torqueRatio
+    // );
   }
 
   // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
-  private createShipSprites()
+  private createShipSprites(textureAsset: TextureAsset)
   {
     // ! Throws exception on error.
     return this.tilemap.createSprites
@@ -110,7 +115,7 @@ export class ShipModel
       HULL_TILEMAP_OBJECT_NAME,
       {
         graphicContainer: this.graphicContainer,
-        textureOrAtlasId: BASIC_SHIPS_TEXTURE_ID
+        textureOrAtlasId: textureAsset.getId()
       }
     );
   }

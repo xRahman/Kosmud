@@ -36,6 +36,7 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.init().
   public init()
   {
+
     super.init();
 
     this.updateCamera();
@@ -115,9 +116,7 @@ export class FlightScene extends Scene
   private getInput()
   {
     if (this.input === "Doesn't exist")
-    {
       throw Error(`Scene ${this.debugId} doesn't have input active yet`);
-    }
 
     return this.input;
   }
@@ -126,9 +125,7 @@ export class FlightScene extends Scene
   private getSceneGUI()
   {
     if (this.sceneGUI === "Doesn't exist")
-    {
       throw Error(`Scene GUI doesn't exists yet in ${this.debugId}`);
-    }
 
     return this.sceneGUI;
   }

@@ -6,6 +6,8 @@ import { FlightScene } from "../../Client/Flight/FlightScene";
 import { ExhaustModel } from "../../Client/Flight/ExhaustModel";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
+import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
+import { TextureAtlasAsset } from "../../Shared/Asset/TextureAtlasAsset";
 import { SoundAsset } from "../../Client/Asset/SoundAsset";
 import { SpriteAnimation } from "../Engine/SpriteAnimation";
 import { NonnegativeNumber } from "../../Shared/Utils/NonnegativeNumber";
@@ -43,18 +45,24 @@ export class Exhausts
     scene: FlightScene,
     tilemap: Tilemap,
     tilemapObjectLayerName: string,
+    textureAtlasAsset: TextureAtlasAsset,
     graphicContainer: GraphicContainer,
     exhaustSoundAsset: SoundAsset
   )
   {
-    this.exhaustSpriteAnimation = this.createExhaustAnimation(scene);
+    this.exhaustSpriteAnimation = this.createExhaustAnimation
+    (
+      scene,
+      textureAtlasAsset.getId()
+    );
 
     const exhaustConfig: ExhaustModel.Config =
     {
       scene,
-      tilemap,
+      tilemap, // tilemap
       tilemapObjectLayerName,
-      exhaustTextureOrAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+      // exhaustTextureOrAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+      exhaustTextureOrAtlasId: textureAtlasAsset.getId(),
       graphicContainer,
       exhaustAnimationName: this.exhaustAnimationName,
       exhaustSoundAsset
@@ -141,12 +149,13 @@ export class Exhausts
 
   // ---------------- Private methods -------------------
 
-  private createExhaustAnimation(scene: FlightScene)
+  private createExhaustAnimation(scene: FlightScene, textureAtlasId: string)
   {
     const exhaustAnimationConfig: SpriteAnimation.Config =
     {
       animationName: this.exhaustAnimationName,
-      textureAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+      // textureAtlasId: EXHAUST_YELLOW_RECTANGULAR_TEXTURE_ATLAS_ID,
+      textureAtlasId,
       pathInTextureAtlas: "ExhaustYellowRectangular/",
       numberOfFrames: 8,
       frameRate: 25,
