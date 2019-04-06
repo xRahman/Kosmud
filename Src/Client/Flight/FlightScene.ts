@@ -85,6 +85,8 @@ export class FlightScene extends Scene
   // ! Throws exception on error.
   protected loadAssets()
   {
+    super.loadAssets();
+
     /// TODO: Tohle předělat (SceneGUI assety je třeba přidat do seznamu
     ///   assetů ve scéně coby entity)
     FlightSceneGUI.loadAssets(this);

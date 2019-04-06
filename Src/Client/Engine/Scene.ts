@@ -217,6 +217,8 @@ export abstract class Scene
       throw Error(`${this.debugId} already has ${shapeAsset} in`
         + ` the list of shape assets`);
     }
+
+    this.shapeAssets.add(shapeAsset);
   }
 
   // --------------- Protected methods ------------------
@@ -290,6 +292,8 @@ export abstract class Scene
       throw Error(`${this.debugId} already has ${tilemapAsset} in`
         + ` the list of tilemap assets`);
     }
+
+    this.tilemapAssets.add(tilemapAsset);
   }
 
   // ! Throws exception on error.

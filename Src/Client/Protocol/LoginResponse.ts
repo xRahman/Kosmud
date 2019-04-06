@@ -18,16 +18,14 @@ export class LoginResponse
   {
     connection.setPlayer(this.getPlayer());
 
-    // this.initAssets();
-
     if (this.hasZone())
     {
-      this.getZone().init();
-
       await loadFlightScene(this.getZone(), this.getAssets());
 
       initBackgroundScene();
       initFlightScene();
+
+      this.getZone().init();
     }
 
     /// Tady by asi mělo bejt ještě setnutí stavu GUI, aby se
@@ -35,15 +33,6 @@ export class LoginResponse
   }
 
   // ---------------- Private methods -------------------
-
-  // private initAssets()
-  // {
-  //   if (!this.assets)
-  //     return;
-
-  //   for (const asset of this.assets)
-  //     asset.init();
-  // }
 }
 
 // ----------------- Auxiliary Functions ---------------------
