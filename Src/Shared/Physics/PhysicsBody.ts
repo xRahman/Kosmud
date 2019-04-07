@@ -22,7 +22,6 @@ export class PhysicsBody
 
   constructor
   (
-    /// TODO: Tohle nesavovat.
     private readonly entity: Entity,
     box2dWorld: b2World,
     entityPhysics: EntityPhysics,
@@ -70,6 +69,12 @@ export class PhysicsBody
     const rotation = this.box2dBody.GetAngle().validate();
 
     return new ZeroTo2Pi(rotation);
+  }
+
+  // ! Throws exception on error.
+  public setRotation(rotation: ZeroTo2Pi)
+  {
+    this.box2dBody.SetAngle(rotation.valueOf());
   }
 
   // ! Throws exception on error.
@@ -218,10 +223,10 @@ function createBody
 
   bodyDefinition.position.Set
   (
-    entityPhysics.initialPosition.x,
-    entityPhysics.initialPosition.y
+    entityPhysics.getX(),
+    entityPhysics.getY()
   );
-  bodyDefinition.angle = entityPhysics.initialRotation.valueOf();
+  bodyDefinition.angle = entityPhysics.getRotation().valueOf();
   bodyDefinition.type = b2BodyType.b2_dynamicBody;
 
   const box2dBody = box2dWorld.CreateBody(bodyDefinition);

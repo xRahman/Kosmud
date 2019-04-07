@@ -21,10 +21,17 @@ export namespace Game
   export const dataDirectory = "./Data/";
 
   // ! Throws exception on error.
-  export function update()
+  export function steer()
   {
     // ! Throws exception on error.
-    Zones.update();
+    Zones.steer();
+  }
+
+  // ! Throws exception on error.
+  export function updatePositionsAndRotations()
+  {
+    // ! Throws exception on error.
+    Zones.updatePositionsAndRotations();
   }
 
   // ! Throws exception on error.

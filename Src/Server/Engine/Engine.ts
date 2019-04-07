@@ -43,8 +43,9 @@ function tick(miliseconds: number)
 {
   try
   {
-    Game.update();
+    Game.steer();
     Physics.update(miliseconds);
+    Game.updatePositionsAndRotations();
     Connections.updateClients();
   }
   catch (error)

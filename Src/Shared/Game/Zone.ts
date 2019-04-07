@@ -141,9 +141,34 @@ export abstract class Zone extends ContainerEntity<GameEntity>
     );
   }
 
-  public update()
+  public steer()
   {
-    this.steerVehicles();
+    for (const vehicle of this.vehicles)
+    {
+      try
+      {
+        vehicle.steer();
+      }
+      catch (error)
+      {
+        REPORT(error, `Failed to steer vehicle ${vehicle.debugId}`);
+      }
+    }
+  }
+
+  public updatePositionsAndRotations()
+  {
+    for (const vehicle of this.vehicles)
+    {
+      try
+      {
+        vehicle.updatePositionAndRotation();
+      }
+      catch (error)
+      {
+        REPORT(error, `Failed to update vehicle ${vehicle.debugId}`);
+      }
+    }
   }
 
   // Called after zone is loaded or created.
@@ -253,14 +278,6 @@ export abstract class Zone extends ContainerEntity<GameEntity>
     }
   }
 
-  private steerVehicles()
-  {
-    for (const vehicle of this.vehicles.values())
-    {
-      steer(vehicle);
-    }
-  }
-
   // ! Throws exception on error.
   private getPhysicsWorld()
   {
@@ -315,18 +332,6 @@ export abstract class Zone extends ContainerEntity<GameEntity>
 }
 
 // ----------------- Auxiliary Functions ---------------------
-
-function steer(vehicle: Vehicle)
-{
-  try
-  {
-    vehicle.steer();
-  }
-  catch (error)
-  {
-    REPORT(error, `Failed to steer vehicle ${vehicle.debugId}`);
-  }
-}
 
 // ------------------ Type declarations ----------------------
 

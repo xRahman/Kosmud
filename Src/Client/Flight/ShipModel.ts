@@ -2,6 +2,7 @@
 
 // import { MinusOneToOne } from "../../Shared/Utils/MinusOneToOne";
 // import { Vector } from "../../Shared/Physics/Vector";
+import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 import { Sprite } from "../../Client/Engine/Sprite";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Tilemap } from "../../Client/Engine/Tilemap";
@@ -75,7 +76,7 @@ export class ShipModel
     this.vectorsModel.update(position);
   }
 
-  public setRotation(rotation: number)
+  public setRotation(rotation: ZeroTo2Pi)
   {
     this.graphicContainer.setRotation(rotation);
   }
@@ -83,6 +84,25 @@ export class ShipModel
   public drawVectors(vehicle: Vehicle)
   {
     this.vectorsModel.draw(vehicle);
+  }
+
+  public update(vehicle: Vehicle)
+  {
+    // ! Throws exception on error.
+    this.setPosition(vehicle.physics.getPosition());
+    // ! Throws exception on error.
+    this.setRotation(vehicle.physics.getRotation());
+
+    // ! Throws exception on error.
+    this.drawVectors(vehicle);
+
+    // ! Throws exception on error.
+    this.updateExhausts
+    (
+      vehicle.physics.getForwardThrustRatio(),
+      vehicle.physics.getLeftwardThrustRatio(),
+      vehicle.physics.getTorqueRatio()
+    );
   }
 
   /// TODO: Tohle udělat nějak líp (provolávání přes 3 classy se mi nelíbí)

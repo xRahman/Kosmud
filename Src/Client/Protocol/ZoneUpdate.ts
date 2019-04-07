@@ -12,16 +12,10 @@ export class ZoneUpdate extends Shared.ZoneUpdate
   // ~ Overrides Packet.process().
   public async process(connection: Connection)
   {
-    /// DEBUG:
-    console.log("ZoneUpdate.process()", this.vehicles);
-
-    /// 'ships' už by měly bejt updatnutý, protože jsou poslaný
-    ///   jako entity.
-    /// Ještě je ale potřeba zavolat něco jako onZoneUpdate(), aby se
-    ///   přepočítaly modely (např. exhausty)
-
-    /// Ehm - vlastně asi nemusím složitě provolávat přes zónu k lodím,
-    /// když mám přímo seznam updatnutých lodí, což?
+    // Vehicles are updated automatically - they are sent as
+    // entities and deserialized along with the packet.
+    //   We still need to update graphics based on the new
+    // data though.
 
     // ! Throws exception on error.
     for (const vehicle of this.vehicles)
@@ -29,15 +23,6 @@ export class ZoneUpdate extends Shared.ZoneUpdate
       // ! Throws exception on error.
       vehicle.update();
     }
-
-    /// To be deleted.
-    // const flightScene = Scenes.getFlightScene();
-    // if (flightScene.isActive())
-    //    flightScene.onZoneUpdate();
-    //
-    /// TODO: Přepsat.
-    // if (Scenes.getFlightScene().isActive())
-    //   connection.getZone().updateShips(this.shipStates);
   }
 }
 

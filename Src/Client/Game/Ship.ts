@@ -10,6 +10,7 @@ import { TilemapAsset } from "../../Client/Asset/TilemapAsset";
 import { SoundAsset } from "../../Client/Asset/SoundAsset";
 import * as Shared from "../../Shared/Game/Ship";
 import { ShapeAsset } from "../../Client/Asset/ShapeAsset";
+import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 
 export class Ship extends Shared.Ship
 {
@@ -42,46 +43,19 @@ export class Ship extends Shared.Ship
     );
   }
 
-  // // ! Throws exception on error.
-  // public update(shipState: ZoneUpdate.ShipState)
-  // {
-  //   /// DEBUG:
-  //   console.log("Ship.update()", shipState.shipPosition);
-
-  //   this.setPosition(shipState.shipPosition);
-  //   this.setRotation(shipState.shipRotation);
-
-  //   this.setVectors(shipState);
-
-  //   // ! Throws exception on error.
-  //   this.getModel().updateExhausts
-  //   (
-  //     shipState.forwardThrustRatio,
-  //     shipState.leftwardThrustRatio,
-  //     shipState.torqueRatio
-  //   );
-  // }
   // ! Throws exception on error.
   public update()
   {
-    /// DEBUG:
-    console.log("Ship.update()");
+    /// TODO: Správně by se ZoneUpdate packety neměly posílat,
+    /// dokud nejsou modely vytvořené.
+    // // ! Throws exception on error.
+    // this.getModel().update(this);
 
-    // this.setPosition(shipState.shipPosition);
-    // this.setRotation(shipState.shipRotation);
-
-    // this.setVectors(shipState);
-
-    // ! Throws exception on error.
-    this.getModel().drawVectors(this);
-
-    // ! Throws exception on error.
-    this.getModel().updateExhausts
-    (
-      this.physics.getForwardThrustRatio(),
-      this.physics.getLeftwardThrustRatio(),
-      this.physics.getTorqueRatio()
-    );
+    if (this.model !== "Not created")
+    {
+      this.physics.updatePhysicsPositionAndRotation();
+      this.model.update(this);
+    }
   }
 
   // ! Throws exception on error.
@@ -96,7 +70,7 @@ export class Ship extends Shared.Ship
   }
 
   // ! Throws exception on error.
-  public setRotation(rotation: number)
+  public setRotation(rotation: ZeroTo2Pi)
   {
     // this.rotation = rotation;
 
@@ -151,29 +125,6 @@ export class Ship extends Shared.Ship
 
     return this.model;
   }
-
-// private setVectors(shipState: ZoneUpdate.ShipState)
-// {
-//   this.physics.setVelocity(shipState.shipVelocity);
-//   this.physics.desiredVelocity.set(shipState.desiredVelocity);
-//   this.physics.steeringForce.set(shipState.steeringForce);
-//   // this.physics.desiredSteeringForce.set(shipState.desiredSteeringForce);
-//   // this.physics.desiredForwardSteeringForce.set
-//   // (
-//   //   shipState.desiredForwardSteeringForce
-//   // );
-//   // this.physics.desiredLeftwardSteeringForce.set
-//   // (
-//   //   shipState.desiredLeftwardSteeringForce
-//   // );
-
-//   // this.physics.brakingDistance = shipState.brakingDistance;
-//   // this.physics.stoppingDistance = shipState.stoppingDistance;
-//   // this.physics.desiredRotation.set(shipState.desiredRotation);
-
-//   // ! Throws exception on error.
-//   this.getModel().drawVectors(this);
-// }
 }
 
 // ------------------ Type Declarations ----------------------

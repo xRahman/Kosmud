@@ -11,9 +11,17 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
-TODO: Umožnit deserializaci entity do existující entity.
-- udělal jsem to tak, že Entities.instantiateEntity() vrátí existující
-  entitu.
+TODO: Neposílat ZoneUpdate packety, dokud nejsou vytvořené modely
+  (viz Client/Ship.update()).
+
+TODO: Jak v ZoneUpdate posílám kompletní Ship, tak se možná přepisuje
+  poizce waypointu na klientu (ale možná taky ne). Každopádně to zkontrolovat.
+
+TODO: Asi budu opravdu potřebovat speciální serializační mód na posílání
+  zone updatů - nemá např. smysl, posílat znova assety.
+
+TODO: Pořešit vyrábění dat, abych nemusel promazávat .Data
+  (stačí je vyrobit jednou).
 
 Sakryš potřeboval bych asi i u packetů udělat to, co u assetů, tzn.
   do shared dát jen interfacy (a případně data) a až na klientu a serveru
@@ -22,13 +30,16 @@ Sakryš potřeboval bych asi i u packetů udělat to, co u assetů, tzn.
 TODO: Reportování exceptionů formátovat srozumitelnějš (napsat tak něco jako
   original exception: "").
 
-TODO: ZoneUpdate.process()
 
 TODO: Ship sprite se sice vyrábí z tilemapy (v ShipModel.createShipSprites()),
   ale textura se musí loadnout ručně.
   - opravdu si tilemapa svoje textury neloadne sama? Prozkoumat.
+    (opravdu ne - ship je totiž dynamickej objekt).
+- animace by se taky ideálně měla číst a vyrábět rovnou z dat tilemapy.
+  (teď to dělám tak, že navíc vyrobím texture atlas a animaci načtu z něj).
 
-TODO: Výhledově odhackovat hard import modulů v KosmudClient.ts
+
+TODO: Zkontrolovat wording hlášky v Serializable.ts:402
 
 TODO: ShipModel v createShipSprites() používá chybné idčko textury
   (správně se má použít idčko texture assetu).
@@ -45,51 +56,25 @@ TODO: Zóna má property .vehicles, do který se ale ukládají Ships.
  mít vlastní classu).
 
 
-TODO: Shape assetu se neinicializuje property .shape
-- asi by se to mělo dělat až po loadu scény (v tom se nejspíš stáhnou
-  data tilemapy, ze kterých se shape vyčítá).
-
 Problém: Prolinkování referencí při deserializaci.
 - asi by to šlo udělat tak, že zkusím, jestli už entita existuje, pokud ano,
   vezmu si na ni referenci a pokud ne, uložím se do seznamu referencí,
   které je třeba prolinkovat dodatečně.
   - v seznamu by byl vždycky objekt, název property, která se má nastavit
     a příslušný idčko.
+(Prozatím jsem to vyřešil pořadím serializace, ale není to obecný řešení,
+ reference mohou být zacyklené.)
+ - možná to vyřešit tak, že se reference budou prolinkovávat až on-demand.
+   (test jestli je valid a když ne, tak si řeknu Entitám od správnou):
+{
+  if (!this.ship.isValid())
+    this.ship = Entities.updateReference(this.ship);
+}
 
-
-TODO: Player v connection na Clientu je invalid entity. Zjistit proč.
-- aha tak player je v pohodě, activeShip je invalid...
-- nejspíš to je tím, že playera nepřidávám do entit packetu.
-  - tak zjevně přidávám. Hmm.
-- jo aha, player se tam dává, ale activeShip možná ne...
-Setnutí playera do packetu až po setnutí zóny pomohlo (při deserializaci
-  se rovnou nastaví reference na velid entitu). Uvnitř activeShip jsou ale
-  pořád invalid reference na assety - a to je problém, protože ty jsou
-  v contentu packetu, kterej se deserializuje až po entitách.
-  - i když vlastně ne, assety jsou taky entity. Zjevně se ale do packetu
-    dávaj až po lodi.
-
-TODO: Odhackovat tvrdej import Zone.ts z KosmudClient.ts.
-
-
-TODO: Zkontrolovat wording hlášky v Serializable.ts:402
-
+TODO: Výhledově odhackovat hard import modulů v KosmudClient.ts
 
 TODO: Client adresář by měl bejt definovanej konstantou, neměl by se
   přilepovat explicitní string.
-
-
-
-Zóna by měla vědět, jaké pod ni spadají definice assetů, aby
-  se daly poslat spolu s ní.
-- definice by možná neměly bejt entity (to až vlastní assety).
-  (entity jsem z toho chtěl mít kvůli tomu, aby assety měly unikátní
-   idčko - to se totiž používá v Phaseru.)
-  => Všechny assety musí existovat i na serveru, protože idčka entit
-   se generují jen tam.
-Možná bych se měl vykašlat na optimální řešení a udělat to přes brute-force.
-  Optimalizovat můžu potom.
-- tzn. narvat assety do entity a nechat je, ať si je loadnou samy.
 
 
 Výhledově (refactoring):

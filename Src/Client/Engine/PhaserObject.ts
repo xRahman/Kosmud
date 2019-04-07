@@ -6,6 +6,7 @@
     ('y' axis and angles are inverted).
 */
 
+import { ZeroTo2Pi } from "../../Shared/Utils/ZeroTo2Pi";
 import { GraphicContainer } from "../../Client/Engine/GraphicContainer";
 import { Coords } from "../../Shared/Engine/Coords";
 
@@ -15,11 +16,11 @@ export abstract class PhaserObject
 
   // ---------------- Public methods --------------------
 
-  public setRotation(rotation: number)
+  public setRotation(rotation: ZeroTo2Pi)
   {
     this.phaserObject.setRotation
     (
-      Coords.ServerToClient.angle(rotation)
+      Coords.ServerToClient.angle(rotation.valueOf())
     );
   }
 

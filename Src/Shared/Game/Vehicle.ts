@@ -26,4 +26,9 @@ export abstract class Vehicle extends PhysicsEntity
   {
     // Nothing here (descendants can override this method).
   }
+
+  public updatePositionAndRotation()
+  {
+    this.physics.updateStoredPositionAndRotation();
+  }
 }

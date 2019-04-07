@@ -1,3 +1,34 @@
+TODO: Player v connection na Clientu je invalid entity. Zjistit proč.
+- aha tak player je v pohodě, activeShip je invalid...
+- nejspíš to je tím, že playera nepřidávám do entit packetu.
+  - tak zjevně přidávám. Hmm.
+- jo aha, player se tam dává, ale activeShip možná ne...
+Setnutí playera do packetu až po setnutí zóny pomohlo (při deserializaci
+  se rovnou nastaví reference na velid entitu). Uvnitř activeShip jsou ale
+  pořád invalid reference na assety - a to je problém, protože ty jsou
+  v contentu packetu, kterej se deserializuje až po entitách.
+  - i když vlastně ne, assety jsou taky entity. Zjevně se ale do packetu
+    dávaj až po lodi.
+[done]
+
+TODO: Shape assetu se neinicializuje property .shape
+- asi by se to mělo dělat až po loadu scény (v tom se nejspíš stáhnou
+  data tilemapy, ze kterých se shape vyčítá).
+[done]
+
+TODO: ZoneUpdate.process()
+- ještě se mi neupdatuje pozice modelu lodi.
+- pozice se vůbec neposílá.
+  - je to zřejmě tím, že se drží jen uvnitř physics body
+Hmm, na clientu je to ale zjevně jinak. Tam fyzika vůbec netiká (zatím),
+  místo toho by se do ní měly setovat hodnoty z EntityPhysics.
+[done]
+
+TODO: Umožnit deserializaci entity do existující entity.
+- udělal jsem to tak, že Entities.instantiateEntity() vrátí existující
+  entitu.
+[done]
+
 TODO: Při savování souborů musí existovat adresář.
 - nechce se mi vynucovat existence adresáře při každym savu,
   takže bych asi měl existenci adresářů checkovat při startu.

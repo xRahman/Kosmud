@@ -16,7 +16,7 @@ export class Zones extends Serializable
 
   protected static version = 0;
 
-  private static zoneList: Zones | "Doesn't exist" = "Doesn't exist";
+  private static instance: Zones | "Doesn't exist" = "Doesn't exist";
 
   // ----------------- Private data ---------------------
 
@@ -27,34 +27,47 @@ export class Zones extends Serializable
   // ! Throws exception on error.
   public static async load()
   {
-    if (this.zoneList !== "Doesn't exist")
+    if (this.instance !== "Doesn't exist")
       throw Error("Zone list already exists");
 
     // ! Throws exception on error.
-    this.zoneList = await loadZoneList();
+    this.instance = await loadZoneList();
 
     // ! Throws exception on error.
-    await this.zoneList.load();
+    await this.instance.load();
 
     // ! Throws exception on error.
-    this.zoneList.init();
+    this.instance.init();
   }
 
   // ! Throws exception on error.
   public static async save()
   {
     // ! Throws exception on error.
-    const data = this.getZoneList().serialize("Save to file");
+    const data = this.getInstance().serialize("Save to file");
 
     // ! Throws exception on error.
     await FileSystem.writeFile(Game.dataDirectory, Zones.fileName, data);
   }
 
   // ! Throws exception on error.
-  public static update()
+  public static steer()
   {
     // ! Throws exception on error.
-    this.getZoneList().update();
+    for (const zone of this.getInstance().zones)
+    {
+      zone.steer();
+    }
+  }
+
+  // ! Throws exception on error.
+  public static updatePositionsAndRotations()
+  {
+    // ! Throws exception on error.
+    for (const zone of this.getInstance().zones)
+    {
+      zone.updatePositionsAndRotations();
+    }
   }
 
   public static newZone(name: string)
@@ -63,30 +76,22 @@ export class Zones extends Serializable
 
     zone.setName(name);
     // ! Throws exception on error.
-    this.getZoneList().add(zone);
+    this.getInstance().add(zone);
     zone.init();
 
     return zone;
   }
 
   // ! Throws exception on error.
-  private static getZoneList()
+  private static getInstance()
   {
-    if (this.zoneList === "Doesn't exist")
-      throw new Error("Zone list isn't loaded yet");
+    if (this.instance === "Doesn't exist")
+      throw new Error("Zones aren't loaded yet");
 
-    return this.zoneList;
+    return this.instance;
   }
 
   // ---------------- Public methods --------------------
-
-  public update()
-  {
-    for (const zone of this.zones)
-    {
-      zone.update();
-    }
-  }
 
   // ---------------- Private methods -------------------
 

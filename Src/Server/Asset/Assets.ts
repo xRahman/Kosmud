@@ -26,7 +26,7 @@ export class Assets extends Serializable
 
   protected static version = 0;
 
-  private static assetList: Assets | "Doesn't exist" = "Doesn't exist";
+  private static instance: Assets | "Doesn't exist" = "Doesn't exist";
 
   // ----------------- Private data ---------------------
 
@@ -37,23 +37,23 @@ export class Assets extends Serializable
   // ! Throws exception on error.
   public static async load()
   {
-    if (this.assetList !== "Doesn't exist")
+    if (this.instance !== "Doesn't exist")
       throw Error("Asset list already exists");
 
     // ! Throws exception on error.
-    this.assetList = await loadAssetList();
+    this.instance = await loadAssetList();
 
     // ! Throws exception on error.
-    await this.assetList.load();
+    await this.instance.load();
 
     // ! Throws exception on error.
-    this.assetList.init();
+    this.instance.init();
   }
 
   public static async save()
   {
     // ! Throws exception on error.
-    const data = this.getAssetList().serialize("Save to file");
+    const data = this.getInstance().serialize("Save to file");
 
     // ! Throws exception on error.
     await FileSystem.writeFile(Game.dataDirectory, Assets.fileName, data);
@@ -120,49 +120,19 @@ export class Assets extends Serializable
     asset.setName(name);
 
     // ! Throws exception on error.
-    this.getAssetList().assets.add(asset);
+    this.getInstance().assets.add(asset);
   }
 
   // ! Throws exception on error.
-  private static getAssetList()
+  private static getInstance()
   {
-    if (this.assetList === "Doesn't exist")
-      throw new Error("Asset list isn't loaded yet");
+    if (this.instance === "Doesn't exist")
+      throw new Error("Assets aren't loaded yet");
 
-    return this.assetList;
+    return this.instance;
   }
 
   // ---------------- Public methods --------------------
-
-  // public async saveAsset(asset: Asset)
-  // {
-  //   // ! Throws exception on error.
-  //   const fileName = Entities.getFileName(asset.getId());
-
-  //   // ! Throws exception on error.
-  //   const data = asset.serialize("Save to file");
-
-  //   /// TODO: Loadovat definice assetů z podadresářů podle class name
-  //   ///   by znamenalo savovat className do referencí, takže prozatím
-  //   ///   hodím všechno do Data/Assets.
-  //   /// const directory = `./Data/Assets/${asset.getClassName()}/`;
-
-  //   // ! Throws exception on error.
-  //   await FileSystem.writeFile(assetsDataDirectory, fileName, data);
-  // }
-
-  // public async loadAsset(id: string)
-  // {
-  //   // ! Throws exception on error.
-  //   const entity = await Entities.loadEntity(assetsDataDirectory, id);
-
-  //   // ! Throws exception on error.
-  //   const asset = entity.dynamicCast(Asset);
-
-  //   // await asset.load();
-
-  //   return asset;
-  // }
 
   // ---------------- Private methods -------------------
 

@@ -20,7 +20,7 @@ import { Physics } from "../../Shared/Physics/Physics";
 // import { ShapeAsset } from "../../Shared/Asset/ShapeAsset";
 // import { Serializable } from "../../Shared/Class/Serializable";
 import { EntityPhysics } from "../../Shared/Physics/EntityPhysics";
-import { Vehicle } from "../Game/Vehicle";
+// import { Vehicle } from "../../Shared/Game/Vehicle";
 
 export class VehiclePhysics extends EntityPhysics
 {
