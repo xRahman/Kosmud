@@ -121,20 +121,20 @@ export abstract class Zone extends ContainerEntity<GameEntity>
   // }
 
   // ! Throws exception on error.
-  public addVehicle(ship: Ship)
+  public addVehicle(vehicle: Ship)
   {
-    if (this.vehicles.has(ship))
+    if (this.vehicles.has(vehicle))
     {
       throw Error(`Zone ${this.debugId} already has`
-        + ` ship ${ship.debugId}`);
+        + ` ship ${vehicle.debugId}`);
     }
 
-    this.insert(ship);
-    this.vehicles.add(ship);
-    this.physicsEntities.add(ship);
-    ship.setZone(this);
+    this.insert(vehicle);
+    this.vehicles.add(vehicle);
+    this.physicsEntities.add(vehicle);
+    vehicle.setZone(this);
 
-    ship.addToPhysicsWorld
+    vehicle.addToPhysicsWorld
     (
       // ! Throws exception on error.
       this.getPhysicsWorld()

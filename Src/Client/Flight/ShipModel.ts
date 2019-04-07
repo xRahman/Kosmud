@@ -93,13 +93,12 @@ export class ShipModel
     torqueRatio: number
   )
   {
-    /// DEBUG:
-    // this.exhausts.update
-    // (
-    //   forwardThrustRatio,
-    //   leftwardThrustRatio,
-    //   torqueRatio
-    // );
+    this.exhausts.update
+    (
+      forwardThrustRatio,
+      leftwardThrustRatio,
+      torqueRatio
+    );
   }
 
   // ---------------- Private methods -------------------

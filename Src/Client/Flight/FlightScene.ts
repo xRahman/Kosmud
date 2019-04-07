@@ -36,7 +36,6 @@ export class FlightScene extends Scene
   // ~ Overrides Scene.init().
   public init()
   {
-
     super.init();
 
     this.updateCamera();
@@ -64,6 +63,11 @@ export class FlightScene extends Scene
 
     return this.getSceneGUI().moveWaypoint(position);
   }
+
+  /// Asi nebude potřeba.
+  // public onZoneUpdate()
+  // {
+  // }
 
   // --------------- Protected methods ------------------
 
@@ -102,8 +106,6 @@ export class FlightScene extends Scene
   // 'update()' is called in every rendering tick.
   protected update()
   {
-    super.update();
-
     // // ! Throws exception on error.
     // this.getSceneGUI().update();
 

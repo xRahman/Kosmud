@@ -67,15 +67,24 @@ export class Zone extends Shared.Zone
 
   public getUpdate()
   {
-    const shipStates: Array<ZoneUpdate.ShipState> = [];
+    const update = ClassFactory.newInstance(ZoneUpdate);
 
-    for (const ship of this.ships.values())
+    for (const vehicle of this.vehicles)
     {
-      shipStates.push(ship.getStateUpdate());
+      update.addVehicle(vehicle);
     }
 
-    /// TODO: Původně to mělo jako parametr 'shipStates'.
-    return ClassFactory.newInstance(ZoneUpdate);
+    return update;
+
+    // const shipStates: Array<ZoneUpdate.ShipState> = [];
+
+    // for (const ship of this.ships.values())
+    // {
+    //   shipStates.push(ship.getStateUpdate());
+    // }
+
+    // /// TODO: Původně to mělo jako parametr 'shipStates'.
+    // return ClassFactory.newInstance(ZoneUpdate);
   }
 
   // // ~ Overrides Shared.Zone.init().

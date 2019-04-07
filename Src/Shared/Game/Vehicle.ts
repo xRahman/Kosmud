@@ -21,4 +21,9 @@ export abstract class Vehicle extends PhysicsEntity
     // ! Throws exception on error.
     this.physics.steer();
   }
+
+  public update()
+  {
+    // Nothing here (descendants can override this method).
+  }
 }

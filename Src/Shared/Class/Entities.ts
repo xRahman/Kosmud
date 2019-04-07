@@ -76,12 +76,14 @@ export class Entities
     return this.instantiateEntity(prototype, Class.name);
   }
 
+  // ! Throws exception on error.
   public static loadEntityFromJsonObject
   (
     jsonObject: object,
     expectedId?: string
   )
   {
+    // ! Throws exception on error.
     const id = readId(jsonObject, ID);
 
     if (expectedId !== undefined && expectedId !== id)
@@ -91,6 +93,7 @@ export class Entities
         + ` is part of the name of file where the entity is saved)`);
     }
 
+    // ! Throws exception on error.
     const prototypeId = readId(jsonObject, PROTOTYPE_ID);
     // ! Throws exception on error.
     const prototype = this.get(prototypeId);
@@ -104,11 +107,17 @@ export class Entities
   // ! Throws exception on error.
   protected static instantiateEntity(prototype: Entity, id: string)
   {
-    if (this.entities.has(id))
-    {
-      throw Error(`Failed to instantiate entity because entity`
-        + ` with id '${id}' already exists in Entities`);
-    }
+    // if (this.entities.has(id))
+    // {
+    //   throw Error(`Failed to instantiate entity because entity`
+    //     + ` with id '${id}' already exists in Entities`);
+    // }
+
+    const existingEntity = this.entities.get(id);
+
+    // Change: Allow overwritting of existing entities.
+    if (existingEntity)
+      return existingEntity;
 
     const entity = ClassFactory.instantiate(prototype);
 

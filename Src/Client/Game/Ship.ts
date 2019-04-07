@@ -42,20 +42,45 @@ export class Ship extends Shared.Ship
     );
   }
 
-  // ! Throws exception on error.
-  public update(shipState: ZoneUpdate.ShipState)
-  {
-    this.setPosition(shipState.shipPosition);
-    this.setRotation(shipState.shipRotation);
+  // // ! Throws exception on error.
+  // public update(shipState: ZoneUpdate.ShipState)
+  // {
+  //   /// DEBUG:
+  //   console.log("Ship.update()", shipState.shipPosition);
 
-    this.setVectors(shipState);
+  //   this.setPosition(shipState.shipPosition);
+  //   this.setRotation(shipState.shipRotation);
+
+  //   this.setVectors(shipState);
+
+  //   // ! Throws exception on error.
+  //   this.getModel().updateExhausts
+  //   (
+  //     shipState.forwardThrustRatio,
+  //     shipState.leftwardThrustRatio,
+  //     shipState.torqueRatio
+  //   );
+  // }
+  // ! Throws exception on error.
+  public update()
+  {
+    /// DEBUG:
+    console.log("Ship.update()");
+
+    // this.setPosition(shipState.shipPosition);
+    // this.setRotation(shipState.shipRotation);
+
+    // this.setVectors(shipState);
+
+    // ! Throws exception on error.
+    this.getModel().drawVectors(this);
 
     // ! Throws exception on error.
     this.getModel().updateExhausts
     (
-      shipState.forwardThrustRatio,
-      shipState.leftwardThrustRatio,
-      shipState.torqueRatio
+      this.physics.getForwardThrustRatio(),
+      this.physics.getLeftwardThrustRatio(),
+      this.physics.getTorqueRatio()
     );
   }
 
@@ -127,28 +152,28 @@ export class Ship extends Shared.Ship
     return this.model;
   }
 
-  private setVectors(shipState: ZoneUpdate.ShipState)
-  {
-    this.physics.setVelocity(shipState.shipVelocity);
-    this.physics.desiredVelocity.set(shipState.desiredVelocity);
-    this.physics.steeringForce.set(shipState.steeringForce);
-    // this.physics.desiredSteeringForce.set(shipState.desiredSteeringForce);
-    // this.physics.desiredForwardSteeringForce.set
-    // (
-    //   shipState.desiredForwardSteeringForce
-    // );
-    // this.physics.desiredLeftwardSteeringForce.set
-    // (
-    //   shipState.desiredLeftwardSteeringForce
-    // );
+// private setVectors(shipState: ZoneUpdate.ShipState)
+// {
+//   this.physics.setVelocity(shipState.shipVelocity);
+//   this.physics.desiredVelocity.set(shipState.desiredVelocity);
+//   this.physics.steeringForce.set(shipState.steeringForce);
+//   // this.physics.desiredSteeringForce.set(shipState.desiredSteeringForce);
+//   // this.physics.desiredForwardSteeringForce.set
+//   // (
+//   //   shipState.desiredForwardSteeringForce
+//   // );
+//   // this.physics.desiredLeftwardSteeringForce.set
+//   // (
+//   //   shipState.desiredLeftwardSteeringForce
+//   // );
 
-    // this.physics.brakingDistance = shipState.brakingDistance;
-    // this.physics.stoppingDistance = shipState.stoppingDistance;
-    // this.physics.desiredRotation.set(shipState.desiredRotation);
+//   // this.physics.brakingDistance = shipState.brakingDistance;
+//   // this.physics.stoppingDistance = shipState.stoppingDistance;
+//   // this.physics.desiredRotation.set(shipState.desiredRotation);
 
-    // ! Throws exception on error.
-    this.getModel().drawVectors(this);
-  }
+//   // ! Throws exception on error.
+//   this.getModel().drawVectors(this);
+// }
 }
 
 // ------------------ Type Declarations ----------------------

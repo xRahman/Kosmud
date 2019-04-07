@@ -50,12 +50,14 @@ export class Packet extends Serializable
     return "Property isn't serialized customly";
   }
 
+  // ! Throws exception on error.
   // ~ Overrides Serializable.customDeserializeProperty.
   // Deserialize all entities from packet's 'entities' property when
   // the packet is deserialized.
   protected customDeserializeProperty(param: Serializable.DeserializeParam)
   {
     if (param.propertyName === ENTITIES)
+      // ! Throws exception on error.
       return this.deserializeEntities(param.sourceProperty);
 
     return "Property isn't deserialized customly";
@@ -73,12 +75,14 @@ export class Packet extends Serializable
     return serializedEntities;
   }
 
+  // ! Throws exception on error.
   private deserializeEntities(sourceProperty: any)
   {
     const entites = new Set();
 
     for (const jsonObject of sourceProperty)
     {
+      // ! Throws exception on error.
       const entity = Entities.loadEntityFromJsonObject(jsonObject);
 
       entites.add(entity);

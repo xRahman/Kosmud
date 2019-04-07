@@ -10,31 +10,32 @@ export class Ship extends Shared.Ship
 
   // ---------------- Public methods --------------------
 
-  public getStateUpdate(): ZoneUpdate.ShipState
-  {
-    const shipState: ZoneUpdate.ShipState =
-    {
-      shipId: this.getId(),
-      shipPosition: this.physics.getPosition(),
-      shipRotation: this.physics.getRotation().valueOf(),
-      shipVelocity: this.physics.getVelocity(),
-      desiredVelocity: this.physics.getDesiredVelocity(),
-      steeringForce: this.physics.getSteeringForce(),
-      // desiredSteeringForce: this.physics.getDesiredSteeringForce(),
-      // desiredForwardSteeringForce:
-      //   this.physics.getDesiredForwardSteeringForce(),
-      // desiredLeftwardSteeringForce:
-      //   this.physics.getDesiredLeftwardSteeringForce(),
-      forwardThrustRatio: this.physics.getForwardThrustRatio(),
-      leftwardThrustRatio: this.physics.getLeftwardThrustRatio(),
-      torqueRatio: this.physics.getTorqueRatio(),
-      // brakingDistance: this.physics.brakingDistance,
-      // stoppingDistance: this.physics.stoppingDistance,
-      // desiredRotation: this.physics.desiredRotation.valueOf()
-    };
+  /// To be deleted.
+  // public getStateUpdate(): ZoneUpdate.ShipState
+  // {
+  //   const shipState: ZoneUpdate.ShipState =
+  //   {
+  //     shipId: this.getId(),
+  //     shipPosition: this.physics.getPosition(),
+  //     shipRotation: this.physics.getRotation().valueOf(),
+  //     shipVelocity: this.physics.getVelocity(),
+  //     desiredVelocity: this.physics.getDesiredVelocity(),
+  //     steeringForce: this.physics.getSteeringForce(),
+  //     // desiredSteeringForce: this.physics.getDesiredSteeringForce(),
+  //     // desiredForwardSteeringForce:
+  //     //   this.physics.getDesiredForwardSteeringForce(),
+  //     // desiredLeftwardSteeringForce:
+  //     //   this.physics.getDesiredLeftwardSteeringForce(),
+  //     forwardThrustRatio: this.physics.getForwardThrustRatio(),
+  //     leftwardThrustRatio: this.physics.getLeftwardThrustRatio(),
+  //     torqueRatio: this.physics.getTorqueRatio(),
+  //     // brakingDistance: this.physics.brakingDistance,
+  //     // stoppingDistance: this.physics.stoppingDistance,
+  //     // desiredRotation: this.physics.desiredRotation.valueOf()
+  //   };
 
-    return shipState;
-  }
+  //   return shipState;
+  // }
 
   // public async loadTilemap()
   // {

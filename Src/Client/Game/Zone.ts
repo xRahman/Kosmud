@@ -66,23 +66,23 @@ export class Zone extends Shared.Zone
   //   return super.getTilemap(name) as Tilemap;
   // }
 
-  public updateShips(shipStates: Array<ZoneUpdate.ShipState>)
-  {
-    /// TODO: Předělat
-    // for (const shipState of shipStates)
-    // {
-    //   const ship = this.getShip(shipState.shipId);
+  // public updateShips(shipStates: Array<ZoneUpdate.ShipState>)
+  // {
+  //   /// TODO: Předělat
+  //   for (const shipState of shipStates)
+  //   {
+  //     const ship = this.getShip(shipState.shipId);
 
-    //   if (ship === "Not found")
-    //   {
-    //     throw Error(`Failed to update ship because ship`
-    //       + ` with id ${shipState.shipId} isn't present in`
-    //       + ` zone ${this.debugId}`);
-    //   }
+  //     if (ship === "Not found")
+  //     {
+  //       throw Error(`Failed to update ship because ship`
+  //         + ` with id ${shipState.shipId} isn't present in`
+  //         + ` zone ${this.debugId}`);
+  //     }
 
-    //   ship.update(shipState);
-    // }
-  }
+  //     ship.update(shipState);
+  //   }
+  // }
 
   /// TODO: Tohle by asi vůbec nemělo bejt v zóně
   ///   (player ship bude v playerovi).

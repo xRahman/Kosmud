@@ -11,6 +11,19 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 -----------------------
 
+TODO: Umožnit deserializaci entity do existující entity.
+- udělal jsem to tak, že Entities.instantiateEntity() vrátí existující
+  entitu.
+
+Sakryš potřeboval bych asi i u packetů udělat to, co u assetů, tzn.
+  do shared dát jen interfacy (a případně data) a až na klientu a serveru
+  je implementovat.
+
+TODO: Reportování exceptionů formátovat srozumitelnějš (napsat tak něco jako
+  original exception: "").
+
+TODO: ZoneUpdate.process()
+
 TODO: Ship sprite se sice vyrábí z tilemapy (v ShipModel.createShipSprites()),
   ale textura se musí loadnout ručně.
   - opravdu si tilemapa svoje textury neloadne sama? Prozkoumat.
@@ -27,6 +40,9 @@ TODO: V ShipModel jsou nějaký konstanty, který by imho měly bejt
   v definicích assetů.
 
 TODO: Zóna má property .vehicles, do který se ale ukládají Ships.
+- obecně mám bordel v tom, co jsou vehicles a co ship.
+(vehicles je asi lepší nápad, protože třeba rakety budou nejspíš
+ mít vlastní classu).
 
 
 TODO: Shape assetu se neinicializuje property .shape
