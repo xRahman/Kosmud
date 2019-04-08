@@ -153,17 +153,17 @@ export class EntityPhysics extends Serializable
   {
     if (this.physicsBody !== "Not in physics world")
     {
-      const rotation = this.getPhysicsBody().getRotation();
+      const physicsRotation = this.getPhysicsBody().getRotation();
 
-      if (rotation.valueOf() !== this.rotation.valueOf())
+      if (physicsRotation.valueOf() !== this.rotation.valueOf())
       {
-        throw Error(`Rotation ${this.rotation.valueOf} of`
+        throw Error(`Rotation ${this.rotation.valueOf()} of`
           + ` ${this.getEntity().debugId} is not`
           + ` synchronized with rotation of it's physics`
-          + ` body ${rotation.valueOf()}`);
+          + ` body ${physicsRotation.valueOf()}`);
       }
 
-      return rotation;
+      return physicsRotation;
     }
 
     return this.rotation;
