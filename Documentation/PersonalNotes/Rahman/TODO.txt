@@ -39,13 +39,6 @@ TODO: Ship sprite se sice vyrábí z tilemapy (v ShipModel.createShipSprites()),
   (teď to dělám tak, že navíc vyrobím texture atlas a animaci načtu z něj).
 
 
-TODO: Zkontrolovat wording hlášky v Serializable.ts:402
-
-TODO: ShipModel v createShipSprites() používá chybné idčko textury
-  (správně se má použít idčko texture assetu).
-- do ShipModelu bych tudíž měl passovat texture asset.
-- tudíž ho musí mít Ship.
-
 
 TODO: V ShipModel jsou nějaký konstanty, který by imho měly bejt
   v definicích assetů.

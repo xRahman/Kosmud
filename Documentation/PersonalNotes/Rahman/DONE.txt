@@ -1,3 +1,9 @@
+TODO: ShipModel v createShipSprites() používá chybné idčko textury
+  (správně se má použít idčko texture assetu).
+- do ShipModelu bych tudíž měl passovat texture asset.
+- tudíž ho musí mít Ship.
+[done]
+
 TODO: Player v connection na Clientu je invalid entity. Zjistit proč.
 - aha tak player je v pohodě, activeShip je invalid...
 - nejspíš to je tím, že playera nepřidávám do entit packetu.
