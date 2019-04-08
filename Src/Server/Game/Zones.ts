@@ -16,7 +16,7 @@ export class Zones extends Serializable
 
   protected static version = 0;
 
-  private static instance: Zones | "Doesn't exist" = "Doesn't exist";
+  private static instance: Zones | undefined = undefined;
 
   // ----------------- Private data ---------------------
 
@@ -27,8 +27,8 @@ export class Zones extends Serializable
   // ! Throws exception on error.
   public static async load()
   {
-    if (this.instance !== "Doesn't exist")
-      throw Error("Zone list already exists");
+    if (this.instance)
+      throw Error("Instance of Zones already exists");
 
     // ! Throws exception on error.
     this.instance = await loadZoneList();
@@ -85,7 +85,7 @@ export class Zones extends Serializable
   // ! Throws exception on error.
   private static getInstance()
   {
-    if (this.instance === "Doesn't exist")
+    if (!this.instance)
       throw new Error("Zones aren't loaded yet");
 
     return this.instance;
