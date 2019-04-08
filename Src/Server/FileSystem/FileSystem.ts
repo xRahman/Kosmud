@@ -413,7 +413,7 @@ async function write(path: string, data: string)
 
   try
   {
-    // 'output file' creates the directory if it doesn't exist.
+    // 'FS.outputFile()' creates the directory if it doesn't exist.
     await FS.outputFile(path, data, UTF8);
   }
   catch (error)
