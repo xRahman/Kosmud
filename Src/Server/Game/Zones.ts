@@ -8,94 +8,45 @@ import { Game } from "../../Server/Game/Game";
 import { Zone } from "../../Server/Game/Zone";
 import { Entities } from "../../Server/Class/Entities";
 
+const ZONES_FILE_NAME = "zones.json";
+
+let instance: Zones | undefined;
+
+// ------------------------ Class ----------------------------
+
+// Zones are saved using an instance of serializable class.
 export class Zones extends Serializable
 {
-  // -------------- Static class data -------------------
-
-  public static fileName = "zones.json";
-
   protected static version = 0;
-
-  private static instance: Zones | undefined = undefined;
 
   // ----------------- Private data ---------------------
 
-  protected zones = new Set<Zone>();
-
-  // ------------- Public static methods ----------------
-
-  // ! Throws exception on error.
-  public static async load()
-  {
-    if (this.instance)
-      throw Error("Instance of Zones already exists");
-
-    // ! Throws exception on error.
-    this.instance = await loadZoneList();
-
-    // ! Throws exception on error.
-    await this.instance.load();
-
-    // ! Throws exception on error.
-    this.instance.init();
-  }
-
-  // ! Throws exception on error.
-  public static async save()
-  {
-    // ! Throws exception on error.
-    const data = this.getInstance().serialize("Save to file");
-
-    // ! Throws exception on error.
-    await FileSystem.writeFile(Game.dataDirectory, Zones.fileName, data);
-  }
-
-  // ! Throws exception on error.
-  public static steer()
-  {
-    // ! Throws exception on error.
-    for (const zone of this.getInstance().zones)
-    {
-      zone.steer();
-    }
-  }
-
-  // ! Throws exception on error.
-  public static updatePositionsAndRotations()
-  {
-    // ! Throws exception on error.
-    for (const zone of this.getInstance().zones)
-    {
-      zone.updatePositionsAndRotations();
-    }
-  }
-
-  public static newZone(name: string)
-  {
-    const zone = Entities.newRootEntity(Zone);
-
-    zone.setName(name);
-    // ! Throws exception on error.
-    this.getInstance().add(zone);
-    zone.init();
-
-    return zone;
-  }
-
-  // ! Throws exception on error.
-  private static getInstance()
-  {
-    if (!this.instance)
-      throw new Error("Zones aren't loaded yet");
-
-    return this.instance;
-  }
+  private readonly zones = new Set<Zone>();
 
   // ---------------- Public methods --------------------
 
-  // ---------------- Private methods -------------------
+  // ! Throws exception on error.
+  public async load()
+  {
+    for (const zone of this.zones)
+    {
+      // ! Throws exception on error.
+      await this.loadZoneReference(zone);
+    }
+  }
 
-  private add(zone: Zone)
+  // ! Throws exception on error.
+  public init()
+  {
+    for (const zone of this.zones)
+    {
+      // ! Throws exception on error.
+      zone.init();
+    }
+  }
+
+  // ! Throws exception on error.
+  public addZone(zone: Zone)
   {
     if (this.zones.has(zone))
     {
@@ -106,15 +57,25 @@ export class Zones extends Serializable
     this.zones.add(zone);
   }
 
-  // ! Throws exception on error.
-  private async load()
+  public steerVehicles()
   {
     for (const zone of this.zones)
     {
-      // ! Throws exception on error.
-      await this.loadZoneReference(zone);
+      zone.steerVehicles();
     }
   }
+
+  // ! Throws exception on error.
+  public updatePositionsAndRotations()
+  {
+    // ! Throws exception on error.
+    for (const zone of this.zones)
+    {
+      zone.updatePositionsAndRotations();
+    }
+  }
+
+  // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
   private async loadZoneReference(reference: Zone)
@@ -133,22 +94,91 @@ export class Zones extends Serializable
     this.zones.delete(oldReference);
     this.zones.add(newReference);
   }
+}
 
-  private init()
+ClassFactory.registerClassPrototype(Zones);
+
+// ---------------------- Namespace --------------------------
+
+export namespace Zones
+{
+  // ! Throws exception on error.
+  export async function load()
   {
-    for (const zone of this.zones)
-    {
-      // ! Throws exception on error.
-      zone.init();
-    }
+    if (instance)
+      throw Error("Instance of Zones already exists");
+
+    // ! Throws exception on error.
+    instance = await loadZoneList();
+
+    // ! Throws exception on error.
+    await instance.load();
+
+    // ! Throws exception on error.
+    instance.init();
+  }
+
+  // ! Throws exception on error.
+  export async function save()
+  {
+    // ! Throws exception on error.
+    const data = getInstance().serialize("Save to file");
+
+    // ! Throws exception on error.
+    await FileSystem.writeFile(Game.dataDirectory, ZONES_FILE_NAME, data);
+  }
+
+  // ! Throws exception on error.
+  export function steerVehicles()
+  {
+    // ! Throws exception on error.
+    getInstance().steerVehicles();
+  }
+
+  // ! Throws exception on error.
+  export function updatePositionsAndRotations()
+  {
+    // ! Throws exception on error.
+    getInstance().updatePositionsAndRotations();
+  }
+
+  export function newZone(name: string)
+  {
+    const zone = Entities.newRootEntity(Zone);
+
+    zone.setName(name);
+    // ! Throws exception on error.
+    getInstance().addZone(zone);
+    zone.init();
+
+    return zone;
   }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
+// ! Throws exception on error.
+async function loadZone(id: string)
+{
+  const directory = Zone.dataDirectory;
+  // ! Throws exception on error.
+  const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
+
+  return zone;
+}
+
+// ! Throws exception on error.
+function getInstance()
+{
+  if (!instance)
+    throw new Error("Zones aren't loaded yet");
+
+  return instance;
+}
+
 async function loadZoneList()
 {
-  const path = FileSystem.composePath(Game.dataDirectory, Zones.fileName);
+  const path = FileSystem.composePath(Game.dataDirectory, ZONES_FILE_NAME);
   // ! Throws exception on error.
   const readResult = await FileSystem.readFile(path);
 
@@ -165,15 +195,3 @@ async function loadZoneList()
   // ! Throws exception on error.
   return Serializable.deserialize(readResult.data).dynamicCast(Zones);
 }
-
-// ! Throws exception on error.
-async function loadZone(id: string)
-{
-  const directory = Zone.dataDirectory;
-  // ! Throws exception on error.
-  const zone = (await Entities.loadEntity(directory, id)).dynamicCast(Zone);
-
-  return zone;
-}
-
-ClassFactory.registerClassPrototype(Zones);

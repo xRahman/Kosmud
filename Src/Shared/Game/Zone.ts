@@ -141,7 +141,7 @@ export abstract class Zone extends ContainerEntity<GameEntity>
     );
   }
 
-  public steer()
+  public steerVehicles()
   {
     for (const vehicle of this.vehicles)
     {

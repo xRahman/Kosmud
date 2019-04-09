@@ -1,12 +1,8 @@
 /*  Part of Kosmud  */
 
-// import { Attributes } from "../../Shared/Class/Attributes";
 import { Syslog } from "../../Shared/Log/Syslog";
 import { ClassFactory } from "../../Shared/Class/ClassFactory";
-// import { JsonObject } from "../../Shared/Class/JsonObject";
 import { FileSystem } from "../../Server/FileSystem/FileSystem";
-// import { Physics } from "../../Shared/Physics/Physics";
-// import { Tilemap } from "../../Shared/Engine/Tilemap";
 import { Game } from "../../Server/Game/Game";
 import { Asset } from "../../Server/Asset/Asset";
 import { ShapeAsset } from "../../Server/Asset/ShapeAsset";
@@ -17,127 +13,34 @@ import { TextureAtlasAsset } from "../../Server/Asset/TextureAtlasAsset";
 import { Entities } from "../../Server/Class/Entities";
 import { Serializable } from "../../Shared/Class/Serializable";
 
+const ASSETS_FILE_NAME = "assets.json";
+
+let instance: Assets | undefined;
+
+// ------------------------ Class ----------------------------
+
+// Assets are saved using an instance of serializable class.
 export class Assets extends Serializable
 {
-  // -------------- Static class data -------------------
-
-  public static dataDirectory = `${Game.dataDirectory}Assets/`;
-  public static fileName = "assets.json";
-
   protected static version = 0;
-
-  private static instance: Assets | undefined = undefined;
 
   // ----------------- Private data ---------------------
 
   private readonly assets = new Set<Asset>();
 
-  // ------------- Public static methods ----------------
+  // ---------------- Public methods --------------------
 
   // ! Throws exception on error.
-  public static async load()
-  {
-    if (this.instance)
-      throw Error("Instance of Assets already exists");
-
-    // ! Throws exception on error.
-    this.instance = await loadAssetList();
-
-    // ! Throws exception on error.
-    await this.instance.load();
-
-    // ! Throws exception on error.
-    this.instance.init();
-  }
-
-  public static async save()
-  {
-    // ! Throws exception on error.
-    const data = this.getInstance().serialize("Save to file");
-
-    // ! Throws exception on error.
-    await FileSystem.writeFile(Game.dataDirectory, Assets.fileName, data);
-  }
-
-  // ! Throws exception on error.
-  public static newShapeAsset(name: string)
-  {
-    const asset = Entities.newRootEntity(ShapeAsset);
-
-    // ! Throws exception on error.
-    this.addAsset(asset, name);
-
-    return asset;
-  }
-
-  // ! Throws exception on error.
-  public static newTilemapAsset(name: string)
-  {
-    const asset = Entities.newRootEntity(TilemapAsset);
-
-    // ! Throws exception on error.
-    this.addAsset(asset, name);
-
-    return asset;
-  }
-
-  // ! Throws exception on error.
-  public static newSoundAsset(name: string)
-  {
-    const asset = Entities.newRootEntity(SoundAsset);
-
-    // ! Throws exception on error.
-    this.addAsset(asset, name);
-
-    return asset;
-  }
-
-  // ! Throws exception on error.
-  public static newTextureAsset(name: string)
-  {
-    const asset = Entities.newRootEntity(TextureAsset);
-
-    // ! Throws exception on error.
-    this.addAsset(asset, name);
-
-    return asset;
-  }
-
-  // ! Throws exception on error.
-  public static newTextureAtlasAsset(name: string)
-  {
-    const asset = Entities.newRootEntity(TextureAtlasAsset);
-
-    // ! Throws exception on error.
-    this.addAsset(asset, name);
-
-    return asset;
-  }
-
-  // ! Throws exception on error.
-  private static addAsset(asset: Asset, name: string)
+  public addAsset(asset: Asset, name: string)
   {
     asset.setName(name);
 
     // ! Throws exception on error.
-    this.getInstance().assets.add(asset);
+    getInstance().assets.add(asset);
   }
 
   // ! Throws exception on error.
-  private static getInstance()
-  {
-    if (!this.instance)
-      throw new Error("Assets aren't loaded yet");
-
-    return this.instance;
-  }
-
-  // ---------------- Public methods --------------------
-
-  // ---------------- Private methods -------------------
-
-  // ! Throws exception on error.
-  private async load()
+  public async load()
   {
     for (const asset of this.assets)
     {
@@ -146,7 +49,7 @@ export class Assets extends Serializable
     }
   }
 
-  private init()
+  public init()
   {
     for (const asset of this.assets)
     {
@@ -154,6 +57,8 @@ export class Assets extends Serializable
       asset.init();
     }
   }
+
+  // ---------------- Private methods -------------------
 
   // ! Throws exception on error.
   private async loadAssetReference(reference: Asset)
@@ -180,32 +85,102 @@ export class Assets extends Serializable
     this.assets.delete(oldReference);
     this.assets.add(newReference);
   }
+}
 
-//   // ! Throws exception on error.
-//   protected initShapes()
-//   {
-//     for (const shapeAsset of this.shapeAssets)
-//     {
-//       // ! Throws exception on error.
-//       const tilemap = shapeAsset.getTilemapAsset().getTilemap();
+ClassFactory.registerClassPrototype(Assets);
 
-//       // ! Throws exception on error.
-//       const shape = tilemap.getShape
-//       (
-//         shapeAsset.objectLayerName,
-//         shapeAsset.objectName
-//       );
+// ---------------------- Namespace --------------------------
 
-//       shapeAsset.setShape(shape);
-//     }
-//   }
+export namespace Assets
+{
+  export const dataDirectory = `${Game.dataDirectory}Assets/`;
+
+  // ! Throws exception on error.
+  export async function load()
+  {
+    if (instance)
+      throw Error("Instance of Assets already exists");
+
+    // ! Throws exception on error.
+    instance = await loadAssetList();
+
+    // ! Throws exception on error.
+    await getInstance().load();
+
+    // ! Throws exception on error.
+    getInstance().init();
+  }
+
+  export async function save()
+  {
+    // ! Throws exception on error.
+    const data = getInstance().serialize("Save to file");
+
+    // ! Throws exception on error.
+    await FileSystem.writeFile(Game.dataDirectory, ASSETS_FILE_NAME, data);
+  }
+
+  // ! Throws exception on error.
+  export function newShapeAsset(name: string)
+  {
+    const asset = Entities.newRootEntity(ShapeAsset);
+
+    // ! Throws exception on error.
+    getInstance().addAsset(asset, name);
+
+    return asset;
+  }
+
+  // ! Throws exception on error.
+  export function newTilemapAsset(name: string)
+  {
+    const asset = Entities.newRootEntity(TilemapAsset);
+
+    // ! Throws exception on error.
+    getInstance().addAsset(asset, name);
+
+    return asset;
+  }
+
+  // ! Throws exception on error.
+  export function newSoundAsset(name: string)
+  {
+    const asset = Entities.newRootEntity(SoundAsset);
+
+    // ! Throws exception on error.
+    getInstance().addAsset(asset, name);
+
+    return asset;
+  }
+
+  // ! Throws exception on error.
+  export function newTextureAsset(name: string)
+  {
+    const asset = Entities.newRootEntity(TextureAsset);
+
+    // ! Throws exception on error.
+    getInstance().addAsset(asset, name);
+
+    return asset;
+  }
+
+  // ! Throws exception on error.
+  export function newTextureAtlasAsset(name: string)
+  {
+    const asset = Entities.newRootEntity(TextureAtlasAsset);
+
+    // ! Throws exception on error.
+    getInstance().addAsset(asset, name);
+
+    return asset;
+  }
 }
 
 // ----------------- Auxiliary Functions ---------------------
 
 async function loadAssetList()
 {
-  const path = FileSystem.composePath(Game.dataDirectory, Assets.fileName);
+  const path = FileSystem.composePath(Game.dataDirectory, ASSETS_FILE_NAME);
   // ! Throws exception on error.
   const readResult = await FileSystem.readFile(path);
 
@@ -233,26 +208,11 @@ async function loadAssetEntity(id: string)
   return asset.dynamicCast(Asset);
 }
 
-// // ! Throws exception on error.
-// async function loadTilemap(tilemapAsset: TilemapAsset)
-// {
-//   const tilemapJsonPath = `./Client/${tilemapAsset.path}`;
+// ! Throws exception on error.
+function getInstance()
+{
+  if (!instance)
+    throw new Error("Assets aren't loaded yet");
 
-//   // ! Throws exception on error.
-//   const jsonData = await loadTilemapJsonData(tilemapJsonPath);
-
-//   // ! Throws exception on error.
-//   tilemapAsset.setTilemap(new Tilemap(tilemapAsset.getId(), jsonData));
-// }
-
-// // ! Throws exception on error.
-// async function loadTilemapJsonData(jsonFilePath: string)
-// {
-//   // ! Throws exception on error.
-//   const jsonData = await FileSystem.readExistingFile(jsonFilePath);
-
-//   // ! Throws exception on error.
-//   return JsonObject.parse(jsonData);
-// }
-
-ClassFactory.registerClassPrototype(Assets);
+  return instance;
+}
