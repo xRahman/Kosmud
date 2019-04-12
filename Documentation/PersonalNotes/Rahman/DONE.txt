@@ -1,3 +1,7 @@
+TODO: Spousta exceptionů s desyncem position (která se ovšem liší
+  až na posledním desetinným místě...)
+[fixed]
+
 TODO: Zvážit, jeslti by se Zones a Assets nedaly přesat jako namespace + class.
   Možná by to bylo přehlednější než verze se statickými metodami.
 [done]

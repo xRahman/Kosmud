@@ -73,9 +73,6 @@ TODO: Client adresář by měl bejt definovanej konstantou, neměl by se
 Výhledově (refactoring):
 -------------------------
 
-TODO: Spousta exceptionů s desyncem position (která se ovšem liší
-  až na posledním desetinným místě...)
-
 TODO: Projít Asset descriptory a zamyslet se nad tím, jestli jsou properties
   rozumně inicializované.
 
