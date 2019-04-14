@@ -9,6 +9,81 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
   https://github.com/photonstorm/phaser/issues/3779
 - fixnuli to. Otázka je, kdy releasnou verzi, ve které to bude opravené.
 
+
+===============================================================================
+
+TODO: Prozkoumat private (a možná protected) konstruktory.
+- mělo by to fungovat tak, že class pak jde vyrobit pouze statickou
+  factory metodou (která si samozřejmě vezme isntanci z ClassFactory).
+- Hmm, to by pak mohlo fungovat tak, že všechny dynamické classy budou
+  mít prostě metodu newInstance().
+TODO: Pak je ještě jedna možnost - že by konstruktory fungovaly jako
+  factory funkce (protože konstruktor v zásadě asi může vrátit co chce).
+  - constructor by asi class factory passnul this, takže by ho mohla
+    využít jako root prototyp, pokud by ho ještě neměla. Díky tomu by
+    možná dokonce vůbec nebyla potřeba registrace.
+NOTE: Pokud by se instance vyráběly konstruktorem, mohl bych zrušit
+  zone.init() (přesunout to do konstruktoru).
+
+TODO: I v současné verzi mi trochu drhne terminologie:
+
+// Tohle vyrábí prototypovou entitu pro všechny zóny.
+Entities.createRootPrototypeEntity(Zone);
+// Tohle vyrábí jejího potomka.
+Entities.newRootEntity(Zone);
+
+ÚVAHY:
+- má to celý jeden podstatnej háček: Aby se vyrobil root prototyp
+  classy, musí se někde zavolat new(). A to si nejsem jistej, že
+  se bude při loadování dělat.
+  - leda že bych se při loadování vrátil k tomu, že se bude volat
+    konstruktor.
+
+- pokud tohle chci vážně odzkoušet, musím všude zrušit
+  Entities.createRootPrototypeEntity() - v tom se totiž volá new(),
+  což teď zkouší dělat automatickou instnaciaci.
+Tak ne, je to asi ještě složitější. Provolá se onInstantiation(),
+  protože volám Entities.instantiate().
+  - že by se konstruktor volal ještě dřív, než se provede inicializace
+  properties v classe?
+(anyways než se do toho pustím, musím vyřešit předchozí problém).
+
+Související problém je, že když budou mít serializable classy
+  public konstruktor, tak mě to bude svádět v něm něco inicializovat.
+  Což se ovšem při deserializaci neprovede.
+  - problém je to kvůli tomu, že property pak může bejt undefined,
+    když se nepovede deserializovat, ale typescript s tím nepočítá,
+    protože je validně inicializovaná v konstruktoru.
+  Proto jsem chtěl zvážit private konstruktor (aby se muselo instanciovat
+  přes ClassFactory).
+  - (instanci pak může vytvořit jedině metoda tý samý classy).
+
+
+Otázka je, o co mi jde a co by bylo nejlepší řešení.
+- vyrábět instance přes new() by asi bylo hezký, na druhou stranu
+  mi to nepomůže, když budu instanciovat z existujícího prototypu
+  (asi by to šlo udělat přes new(prototypeId), ale je to takový divný).
+- na druhou stranu bych potřeboval vyřešit registrování root prototypů.
+
+Co vlastně potřebuju vyřešit?
+------------------------------
+1) Registrování root prototypů
+2) Zakázat konstruktory
+   (aby se v nich neinicializovalo a aby se instanciovalo přes ClassFactory)
+
+
+Registrování root prototypů
+----------------------------
+- nejjednodušší asi bude na to udělat extra soubor. Beztak musím
+  spoustu class řešit ručně z Connection a tak.
+  - jeden by byl na serveru a jeden na klientu.
+
+Když bych měl private konstruktor, tak root prototyp Zóny bych asi
+  musel vytvářet voláním statické metody Zóny - a tu bych asi musel v Zóně
+  ručně implementovat, což není zrovna pohodlný.
+
+===============================================================================
+
 -----------------------
 
 TODO: Neposílat ZoneUpdate packety, dokud nejsou vytvořené modely
@@ -474,18 +549,6 @@ TODO: Projít zónu a všechno, co je do ní vloženo (Ship nejspíš) a zkontro
 TODO: Packet SetWaypoint se může jmenovat prostě jen Waypoint.
   Nebo WaypointChange, WaypointMove
 
-TODO: Prozkoumat private (a možná protected) konstruktory.
-- mělo by to fungovat tak, že class pak jde vyrobit pouze statickou
-  factory metodou (která si samozřejmě vezme isntanci z ClassFactory).
-- Hmm, to by pak mohlo fungovat tak, že všechny dynamické classy budou
-  mít prostě metodu newInstance().
-TODO: Pak je ještě jedna možnost - že by konstruktory fungovaly jako
-  factory funkce (protože konstruktor v zásadě asi může vrátit co chce).
-  - constructor by asi class factory passnul this, takže by ho mohla
-    využít jako root prototyp, pokud by ho ještě neměla. Díky tomu by
-    možná dokonce vůbec nebyla potřeba registrace.
-NOTE: Pokud by se instance vyráběly konstruktorem, mohl bych zrušit
-  zone.init() (přesunout to do konstruktoru).
 
 ÚVAHA: Psát si vyráběcí funkci na každou blbost je asi zbytečná spousta
   kódu.

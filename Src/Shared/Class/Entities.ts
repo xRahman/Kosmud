@@ -21,9 +21,7 @@ export class Entities
     const entity = this.entities.get(id);
 
     if (entity === undefined)
-    {
       throw Error(`Entity with id '${id}' is not in Entities`);
-    }
 
     return entity;
   }
@@ -61,6 +59,34 @@ export class Entities
     //   From this time on, entity.isValid() will also return 'false'.
     entity.invalidate();
   }
+
+  /*
+  /// TEST:
+  public static newEntityTest(newInstance: Entity)
+  {
+    const className = newInstance.getClassName();
+
+    let prototype: Entity;
+
+    if (this.has(className))
+    {
+      prototype = this.get(className);
+    }
+    else
+    {
+      // If we don't have a prototype yet, use 'newInstance'
+      // as the prototype.
+
+      // ! Throws exception on error.
+      // Note: Id 'className' se setne uvnitř instantiateEntity.
+      // (a taky se to rovnou přidá do Entities).
+      newInstance.setId(`${className}Prototype`);
+      prototype = this.instantiateEntity(newInstance, className);
+    }
+
+    return ClassFactory.instantiate(prototype);
+  }
+  */
 
   // ! Throws exception on error.
   public static createRootPrototypeEntity<T extends Entity>

@@ -28,11 +28,37 @@
 import { Types } from "../../Shared/Utils/Types";
 import { ID, Serializable } from "../../Shared/Class/Serializable";
 
+/*
+/// TEST:
+/// Tohle asi způsobí zacyklení importů, ale prozatím
+/// to budu ignorovat.
+import { Entities } from "../../Shared/Class/Entities";
+*/
+
 export class Entity extends Serializable
 {
   private id = "<missing id>";
   private name = "<missing name>";
   private prototypeId = "<missing prototype id>";
+
+  /*
+  /// TEST:
+  constructor()
+  {
+    super();
+
+    // const className = this.getClassName();
+
+    /// Idea tady je, že pokud ještě neexistuje prototyp
+    /// týhle classy, použije se místo něj this (což je
+    /// nově vytvořená instance téhle classy). Jinak se
+    /// použije už existující prototyp.
+    //
+    /// Tohle asi způsobí zacyklení importů, ale prozatím
+    /// to budu ignorovat.
+    return Entities.newEntityTest(this);
+  }
+  */
 
   // --------------- Public methods ---------------------
 

@@ -82,6 +82,20 @@ interface ObjectType { [key: string]: any; }
 
 export class Serializable extends Attributable
 {
+  /*
+  // /// TEST:
+  // constructor()
+  // {
+  //   super();
+
+  //   const className = this.getClassName();
+
+  //   /// Instancování entit asi bude muset zařídit konstruktor
+  //   /// v Entity - obyč Serializable nebude zděděné z entity.
+  //   /// Takže se prozatím přesunu tam.
+  // }
+  */
+
   // ------------- Protected static data ----------------
 
   // 'version' is used to convert data from older formats.

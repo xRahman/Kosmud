@@ -144,6 +144,13 @@ export namespace Zones
 
   export function newZone(name: string)
   {
+    /*
+    /// TEST:
+    /// Idea: Konstruktor si sám zaregistruje root entitu, pokud
+    /// neexistuje.
+    const zone = new Zone();
+    */
+
     const zone = Entities.newRootEntity(Zone);
 
     zone.setName(name);
