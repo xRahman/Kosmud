@@ -12,6 +12,48 @@ TODO: Sledovat opravu https://github.com/photonstorm/phaser/pull/3964
 
 ===============================================================================
 
+class Ancestor
+{
+    protected constructor()
+    {
+        console.log('Ancestor.constructor()');
+    }
+
+    public static instantiate<T extends Ancestor>(this: { new(): T }): T
+    {
+        return new this();
+    }
+}
+
+class Descendant extends Ancestor
+{
+    protected constructor()
+    {
+        super();
+
+        console.log('Descendant.constructor()');
+    }
+}
+
+// const d = new Descendant();
+
+const a = new Descendant();
+
+const d = Descendant.instantiate();
+
+
+
+Hmm, tak private konstructory to asi taky neřešej.
+
+Když je konstructor private, tak se z classy nedá dědit (což je taky dobrý
+  vědět). Když je protected, tak se sice dědit dá, ale potomek si může udělat
+  konstruktor jakej chce...
+
+I když nějakej smysl to asi má, aspoň u existujících class tím můžu zajistit,
+  že nepůjdou zvenku instanciovat jinak než přes class factory.
+
+===============================================================================
+
 TODO: Prozkoumat private (a možná protected) konstruktory.
 - mělo by to fungovat tak, že class pak jde vyrobit pouze statickou
   factory metodou (která si samozřejmě vezme isntanci z ClassFactory).
